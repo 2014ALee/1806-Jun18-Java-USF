@@ -1,6 +1,5 @@
 # Batch Info Document
 
-
 **Batch Name:** 1806 Jun18 AP-USF
 **Skill Type:** Full Stack Java/JEE
 
@@ -16,7 +15,6 @@ _Timesheets will be submitted every Friday before COB_
 ___
 
 ## Dress Code
-
 
 **Monday:** Business Professional
 **Tuesday:** Business Casual
