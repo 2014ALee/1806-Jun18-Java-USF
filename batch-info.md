@@ -1,5 +1,6 @@
 # Batch Info Document
 
+
 Batch Name: 1806 Jun18 AP-USF
 Skill Type: Full Stack Java/JEE
 
@@ -12,7 +13,9 @@ HR POC email: david.fay@revature.com
 Work Hours: Monday - Friday, 9am - 5pm
 _Timesheets will be submitted every Friday before COB_
 
-#### Dress Code
+
+## Dress Code
+
 
 Monday: Business Professional
 Tuesday - Thursday: Business Casual
