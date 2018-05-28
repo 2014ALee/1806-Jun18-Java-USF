@@ -24,9 +24,9 @@ ___
 
 **Tuesday:** Business Casual
 
-**Wednesday** Business Casual
+**Wednesday:** Business Casual
 
-**Thursday** Business Casual
+**Thursday:** Business Casual
 
 **Friday:** Smart Casual
 
