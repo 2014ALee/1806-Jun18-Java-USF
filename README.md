@@ -69,7 +69,7 @@ ___
 
 **Project 2:** Group (3+)
 
-**Project 3:** Batch (an in-production, enterprise-level, application presented to Revature product owners, stakeholders, and clients)
+**Project 3:** Batch (an in-production, enterprise-level application presented to Revature product owners, stakeholders, and clients)
 
 ___
 
