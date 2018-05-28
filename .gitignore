@@ -40,6 +40,7 @@ local.properties
 # Eclipse Core 
 .project 
 Servers/
+RemoteSystemsTempFiles/
 
 # External tool builders 
 .externalToolBuilders/ 
