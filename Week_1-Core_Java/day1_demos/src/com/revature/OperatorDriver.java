@@ -1,201 +1,156 @@
 package com.revature;
 
-import java.util.ArrayList;
-import java.util.List;
-
-
 public class OperatorDriver {
-	
+
 	public static void main(String[] args) {
-		
 		/*
 		 * Operators
 		 * 
-		 * Types:
-		 * 	- Unary
-		 * 	- Arithmetic
-		 * 	- Relational
-		 * 	- Logical
-		 * 	- Assignment
-		 * 	- Bitwise Shifting
-		 * 	- Ternary
+		 * Types: - Unary - Arithmetic - Relational - Logical - Assignment - Bitwise
+		 * Shifting - Ternary
 		 */
-		
+
 		/*
 		 * Unary Operators
 		 * 
-		 * 		Postfix and Prefix
+		 * - Postfix and Prefix
 		 */
-		
-		// prefix logical NOT
+
+		// Prefix Logical NOT
+
 		boolean bool = true;
-		System.out.println("not bool = " + !bool);
-		
+		System.out.println("not bool " + !bool);
+
 		// prefix positive
 		int x = +456;
 		System.out.println(x);
-		
+
 		// prefix negative
-		int y = 78;
+		int y = 456;
 		System.out.println(-y);
-		
+
 		// prefix increment
 		System.out.println(++x);
-		
+
 		// prefix decrement
 		System.out.println(--x);
-		
-		// postfix increment
-		System.out.println(y++);
-		
-		//postfix decrement
-		System.out.println(y--);
-		System.out.println(y);
-		
+
 		/*
-		 * Arithmetic Operators
+		 * Arithmetic
 		 * 
-		 * Addition
-		 * Subtraction
-		 * Multiplication
-		 * Division
-		 * Modulus
+		 * Addition Subtraction Multiplication Division Modulus
 		 */
-		// addition
+
+		// Addition
 		int mySum = 4 + 5;
-		System.out.println(mySum);
-		
-		// subtraction
-		int myDifference = mySum - 7;
-		System.out.println(myDifference);
-		
-		// multiplication
-		int myProduct = mySum * myDifference;
-		System.out.println(myProduct);
-		
-		// division
-		double myQuotient = myDifference / mySum;
-		System.out.println(myQuotient); // this doesn't work properly...
-		
-		myQuotient = 2 / 9;
-		System.out.println(myQuotient); // this doesn't work
-		
-		myQuotient = 2d / 9d;
+
+		// Subtraction
+		int myDiff = mySum - 7;
+
+		// Multiplication
+		int myProduct = mySum * myDiff;
+
+		// Division
+		double myQuotient = myDiff / mySum;
+		System.out.println(myQuotient); // Doesn't work properly
+
+		myQuotient = (double) myDiff / mySum;
 		System.out.println(myQuotient);
-		
-		myQuotient = 2. / 9.;
-		System.out.println(myQuotient);
-		
-		myQuotient = 2. / 9;
-		System.out.println(myQuotient);
-		
-		myQuotient = (double) myDifference / mySum;
-		System.out.println(myQuotient);
-		
-		int myValue = 0;
-		long myLongValue = 345345348768734345L;
-		myValue = (int) myLongValue;
-		System.out.println(myValue);
-		
+
+		// Modulus
+
 		double myRemainder = 12 % 5;
 		System.out.println(myRemainder);
-		
+
 		/*
-		 * Relational Operators
+		 * Relational
+		 * 
 		 */
 		int a = 0;
 		int b = 1;
 		int c = 2;
-		int d = 2;
-		String myStr = "hello";
-		
-		ArrayList<String> myArrayList = new ArrayList<>(); 
-		
+
 		System.out.println(a > b);
-		System.out.println(a < b);
-		System.out.println(c < d);
-		System.out.println(c <= d);
-		System.out.println(d >= a);
-		System.out.println("------------");
-		System.out.println(myStr instanceof String);
-		System.out.println(myStr instanceof Object);
-		System.out.println(myArrayList instanceof ArrayList);
-		System.out.println(myArrayList instanceof List);
-		System.out.println("------------");
-		System.out.println(c == d);
-		System.out.println(a != b);
-		System.out.println("------------");
-		
-		java.awt.List myAwtList; 	// I can still access non-imported classes using the fully-qualified path name
-		
+
 		/*
-		 * Logical Operators
+		 * Logical
 		 */
-		boolean value1 = true;
-		boolean value2 = false;
-		boolean value3 = true;
-		
+
 		// logical AND
-		boolean result = value1 && value2;
-		System.out.println(result);
-		
-		result = value1 && value3;
-		System.out.println(result);
-		
+		boolean one = true;
+		boolean two = false;
+		boolean three = true;
+		System.out.println(one && two);
+		System.out.println(one && three);
+
 		// logical OR
-		result = value1 || value2;
-		System.out.println(result);
+		System.out.println(one || two);
 		
 		/*
-		 * Bitwise Operators (Short-Circuit Operators)
+		 * Bitwise (Short circuit) Operators
 		 */
-		// bitwise AND
-		result = value2 & value1;
-		System.out.println(result);
 		
-		// bitwise OR
-		result = value1 | value2;
-		System.out.println(result);
+		//bitwise AND
+		//If first value is false, it exits as false and doesn't look at the second value
+		System.out.println(two & one);
 		
-		// bitwise XOR
-		result = value1 ^ value3;
-		System.out.println(result);
+		//bitwise OR
 		
-		int myBinary = 0b0010; //base 2
-		int myOctal = 010; // base 8
-		int myHex = 0x3f; // base 16
+		//bitwise XOR
+		System.out.println(one ^ three);
 		
-		System.out.println(myBinary);
-		System.out.println(myOctal);
-		System.out.println(myHex);
+		//Binary (Base 2)
+		int myBinary = 0b0010;
+		
+		//Octal (
+		int myOctal = 010;
+		
+		//Hexadecimal (Base 16)
+		int myHex = 0x3f;
 		
 		/*
 		 * Assignment Operators
 		 */
-		// simple assignment
+		
+		//Simple assignment
 		int z = 54;
 		
-		// plus-equals
+		//Plus equals
 		z += 5;
-		System.out.println(z);
 		
-		// minus-equals
+		//Minus equals
 		z -= 10;
-		System.out.println(z);
 		
-		// multiply-equals
+		//Mult. Equals
 		z *= 4;
-		System.out.println(z);
 		
-		// divide-equals
+		//Divide equals 
 		z /= 2;
-		System.out.println(z);
 		
-		// mod-equals
-		z %= 6;
-		System.out.println(z);
+		//Mod equals
+		z %= 2;
 		
+		//AND equals
+		boolean u = true;
+		u &= true;
 		
+		/*
+		 * Order of Operations
+		 * 
+		 * postfix
+		 * prefix
+		 * multiplicative (Multiplication, Division, Modulus)
+		 * Additive (Addition, subtraction)
+		 * Shifting
+		 * Relational
+		 * Equality
+		 * Bitwise AND
+		 * Bitwise XOR
+		 * Bitwise OR
+		 * Logical AND
+		 * Logical OR
+		 * Ternary
+		 * Assignment
+		 */
 	}
-
 }
