@@ -17,7 +17,7 @@ public class IntroDriver {
 	long myLong = 3453456L;
 	
 	float myFloat = 3.14159f;
-	double myDouble = 45.2342342d;
+	double myDouble = 45.23423d;
 	
 	char myChar = 'a';
 	
