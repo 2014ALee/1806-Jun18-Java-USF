@@ -36,6 +36,8 @@ public class ScopeDriver {
 	static class SomeClass{
 		public static int myInnerInt = 6;
 		
+		
+		
 		public int getMyOutterInt() {
 			return myOuterInt;
 		}
