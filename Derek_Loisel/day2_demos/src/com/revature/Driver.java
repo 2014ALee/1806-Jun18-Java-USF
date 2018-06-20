@@ -17,7 +17,7 @@ public class Driver {
 		person1.setLastName("Loisel");
 		person1.setPrimarySkill(Skill.JAVA);
 		
-		System.out.println(person1); //doesnt need to call overridded toString because its implicit in println
+		System.out.println(person1); //toString is overridden in Person class, doesnt need to call overridded toString because its implicit in println
 	
 	Person person2 = new Person("Wezley", "Singleton", 27, Skill.JAVA);
 	
