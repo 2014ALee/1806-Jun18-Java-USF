@@ -3,6 +3,7 @@ package com.revature;
 import com.revature.models.Animal;
 import com.revature.models.Cat;
 import com.revature.models.InterfaceA;
+import com.revature.models.InterfaceB;
 import com.revature.models.InterfaceImpl;
 
 public class AbstractDriver {
@@ -29,6 +30,16 @@ public class AbstractDriver {
 		
 		InterfaceA implB = new InterfaceImpl();
 		implB.doSomethingElse();
+		
+		InterfaceImpl implC = new InterfaceImpl();
+		implC.doSomething();
+		
+		InterfaceA implD = new InterfaceImpl();
+		implD.doSomething();
+		
+		InterfaceB implE = new InterfaceImpl();
+		implE.doSomethingCrazy();
+		
 		
 		
 	}

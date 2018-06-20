@@ -7,10 +7,12 @@ package com.revature.models;
 
 public interface InterfaceB extends InterfaceA{
 	
-	void doSomething();
+	//void doSomething();
 	
 	@Override
 	default void doSomethingElse() {
 		System.out.println("InterfaceB is doing something else...");
 	}
+	
+	
 }

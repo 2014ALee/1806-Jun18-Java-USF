@@ -15,4 +15,7 @@ public interface InterfaceA {
 	default void doSomethingElse() {
 		System.out.println("InterfaceA is doing something else...");
 	}
+	
+	void doSomethingCrazy();
+
 }

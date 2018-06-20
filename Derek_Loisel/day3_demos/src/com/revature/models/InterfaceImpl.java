@@ -1,6 +1,6 @@
 package com.revature.models;
 
-public class InterfaceImpl implements InterfaceA, InterfaceB{
+public class InterfaceImpl implements /*InterfaceA, //this is implied*/ InterfaceB{
 
 	@Override
 	public void doSomething() {
@@ -8,9 +8,8 @@ public class InterfaceImpl implements InterfaceA, InterfaceB{
 	}
 	
 	
-	/*@Override
-	public void makeSound() {
+	public void doSomethingCrazy(){
 		
-	}*/
-	
+		System.out.println("doing something crazy");
+	}
 }
