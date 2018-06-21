@@ -1,0 +1,4 @@
+Order of execution:
+the execution of java code start with static bloc of the most super class before calling any constructor.
+After executing all the static blocs in order of superiority than other codes blocs and codes in the 
+classes will be loaded first. The classes constructor will be call only after the object is created.
