@@ -1,0 +1,9 @@
+There are two type of interfaces: Functional interfaces and Marker interfaces
+
+Functional Interfaces contain on and only one abstract method 
+*defined in itself(inherited abstract methods don't count)
+*have as many default methods as desired
+
+Marker Interfaces have empty abstract methods
+Example: serializable, clonable, remote
+
