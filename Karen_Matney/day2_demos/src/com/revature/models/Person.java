@@ -1,28 +1,27 @@
 package com.revature.models;
 
 public class Person {
-
 	// Class level variables: have to be declared outside of a method and
 	// can be seen by all the methods in a class
 	private String firstName;
 	private String lastName;
 	private int age;
 	private Skill primarySkill;
-	
+
 	public Person() {
 		this.firstName = "firstName";
 		this.lastName = "lastName";
 		this.age = 0;
 		this.primarySkill = Skill.JAVA;
 	}
-	
+
 	public Person(String fn, String ln, int age, Skill primeSkill) {
 		this.firstName = fn;
 		this.lastName = ln;
 		this.age = age;
 		this.primarySkill = primeSkill;
 	}
-	
+
 	public String getFirstName() {
 		// int x = 4;  // Method-level scope can't be seen outisde of this code block
 		// System.out.println(x);
@@ -39,7 +38,7 @@ public class Person {
 		// System.out.println(z); // z = 4
 		return firstName;
 	}
-	
+
 	public void setFirstName(String name) {
 		// System.out.println(x); // this does not work because 'x' is not visible within this scope
 		this.firstName = name;
@@ -110,6 +109,5 @@ public class Person {
 		if (primarySkill != other.primarySkill)
 			return false;
 		return true;
-	}
-	
+	}	
 }

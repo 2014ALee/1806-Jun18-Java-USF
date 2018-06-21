@@ -21,7 +21,7 @@ public class ControlDriver {
 		 * 	- nested if statements
 		 *	- switch statements
 		 */
-		
+
 		/*
 		 * if
 		 * 
@@ -30,13 +30,13 @@ public class ControlDriver {
 		 * The statements within the block are only executed if the condition is found to be true.
 		 * Otherwise, the statements are ignored completely.
 		 */
-		
+
 		int num = 72; 
-		
+
 		if(num < 100) {
 			System.out.println(num + ", The variable 'num' is less than 100");
 		}
-		
+
 		/*
 		 * if/else
 		 * 
@@ -47,13 +47,13 @@ public class ControlDriver {
 		 * and the statements within the else block are ignored. Otherwise, the converse happens.
 		 */
 		num = 101;
-		
+
 		if(num < 100) {
 			System.out.println(num + ", The variable \"num\" is less than 100");
 		} else {
 			System.out.println(num + ", The variable \"num\" is more than 100");
 		}
-		
+
 		/*
 		 * if/else-if
 		 * 
@@ -62,7 +62,7 @@ public class ControlDriver {
 		 * blocks as we wish. This is known as a "if-else ladder".
 		 */
 		num = 100;
-		
+
 		if(num < 100) {
 			System.out.println(num + ", The variable \"num\" is less than 100");
 		} else if (num < 100) {
@@ -70,7 +70,7 @@ public class ControlDriver {
 		} else { // Last else not needed
 			System.out.println(num + ", The variable \"num\" is exacly 100");
 		}
-		
+
 		/*
 		 * Nested if
 		 * 
@@ -81,15 +81,15 @@ public class ControlDriver {
 		 * evaluate to true.
 		 */
 		num = 64;
-		
+
 		if(num < 100) {
 			System.out.println("The variable \"num\" is less than 100");
-			
+
 			if(num % 2 == 0) {
 				System.out.println("The variable \"num\" is even.");
 			}
 		}
-		
+
 		/*
 		 * Switch
 		 * 
@@ -99,7 +99,7 @@ public class ControlDriver {
 		 * CHECK FOR MORE NOTES LATER
 		 */
 		String str = "Greeting";
-		
+
 		switch(str) {
 		case "greeting":
 			System.out.println("Hello there, fellow coder!");
@@ -114,7 +114,7 @@ public class ControlDriver {
 			System.out.println("RAWR!");
 			break; // Don't need
 		}
-		
+
 		/*
 		 * Looping statements
 		 * 
@@ -126,7 +126,7 @@ public class ControlDriver {
 		 * 		- do-while
 		 * 
 		 */
-		
+
 		/*
 		 * for
 		 * 
@@ -135,17 +135,17 @@ public class ControlDriver {
 		 * 		- conditional step
 		 * 		- manipulation step (iterative step)
 		 */
-		
+
 		for(int i = 0; i < 5; i++) {
 			System.out.println("The value of 'i' is: " + i);
 		}
-		
+
 		for(int i = 10; i > 3; i--) {
 			System.out.println("The value of 'i' is: " + i);
 		}
-		
+
 		System.out.println("-----------");
-		
+
 		for(int i = 0, j = 10; i < 10 && j > 0; i++, j--) {
 			if(i == 0) {
 				System.out.print(i);
@@ -155,10 +155,10 @@ public class ControlDriver {
 		}
 
 		System.out.println("\n-----------");
-		
+
 		// break in loops means skip the following all together
 		// continue in loops means skip the following and go back to the beginning of the loop
-		
+
 		for(int i = 0; i < 100; i+=3) {
 			if(i == 0) {
 				System.out.print(i);;
@@ -166,28 +166,28 @@ public class ControlDriver {
 				System.out.print(", " + i);
 			}
 		}
-		
+
 		System.out.println("\n-----------");
-		
+
 		// for (;;) valid, but is an infinite loop
-		
+
 		/*
 		 * while
 		 */
-		
+
 		num = 10;
 		while(num > 1) {
 			System.out.println(num);
 			num--;
 		}
-		
+
 		/*
 		 * do-while
 		 * 
 		 * Will always execute once
 		 */
 		num = 0;
-		
+
 		do {
 			System.out.println("This will execute at least once!");
 		} while (num < 0);
