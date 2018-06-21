@@ -15,11 +15,11 @@ public class QuestionNine {
 			numsArrayList.add(i);
 
 		// run the prime method on the ArrayList
-		primes(numsArrayList);
+		printPrimes(numsArrayList);
 
 	}
 
-	public static void primes(ArrayList<Integer> list) {
+	public static void printPrimes(ArrayList<Integer> list) {
 		//loop through each number in the ArrayList
 		for (int num : list) {
 			//set a counter to determine how many times a number was divisible by the num being checked

@@ -10,12 +10,12 @@ public class QuestionThree {
 		reverseString("reverse this string");		
 	}
 	
-	public static void reverseString(String str)
+	private static void reverseString(String str)
 	{	
 		//go through each char of the string as a char array
 		for(char letter : str.toCharArray())
 		{
-			//tac the chars onto the front of the string one at a time
+			//tack the chars onto the front of the string one at a time
 			str = letter + str;
 		}
 		

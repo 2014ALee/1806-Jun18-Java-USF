@@ -5,7 +5,12 @@ public class QuestionTwo {
 	//Q2. Write a program to display the first 25 Fibonacci numbers starting at 0.
 
 	public static void main(String[] args) {
+		//method to print the first 25 fibonacci numbers
+		printFibonacciNumbers();
+	}
 	
+	private static void printFibonacciNumbers() {
+		
 		//create an array to hold the values
 		int[] fibonacciIntArray = new int[25]; 
 

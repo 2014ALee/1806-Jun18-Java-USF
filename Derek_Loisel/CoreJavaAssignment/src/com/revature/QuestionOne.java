@@ -19,7 +19,7 @@ public class QuestionOne {
 		}
 	}
 		
-	public static void bubbleSort(int[] numArray) {
+	private static void bubbleSort(int[] numArray) {
 		
 	    int temp;
 
