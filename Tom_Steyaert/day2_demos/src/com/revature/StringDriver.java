@@ -24,7 +24,9 @@ public class StringDriver {
 		
 		StringBuilder bldr = new StringBuilder("My string builder object");
 		StringBuilder bldr2 = new StringBuilder("My string builder object");
-		System.out.println(bldr==bldr2);
+		bldr2.reverse();
+		
+		System.out.println(bldr2);
 		System.out.println(bldr.equals(bldr2));
 		
 		
