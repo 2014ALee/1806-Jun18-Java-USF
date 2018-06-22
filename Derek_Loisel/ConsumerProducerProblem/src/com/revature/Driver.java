@@ -52,8 +52,8 @@ public class Driver
      t2.start();
 
      //close both threads when they end
-     t1.join();
-     t2.join();
+//     t1.join();
+//     t2.join();
  }
 
  // This class has a list, producer adds items to list and consumer removes items.
