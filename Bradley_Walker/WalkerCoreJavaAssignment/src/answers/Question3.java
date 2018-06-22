@@ -1,5 +1,7 @@
 package answers;
 
+import java.util.ArrayList;
+
 public class Question3 {
 	// Reversing a String
 
@@ -9,22 +11,15 @@ public class Question3 {
 		// Reverse the string
 		s = reverseString(s);
 		System.out.println("Reversed: " + s);
+		ArrayList<String> str = new ArrayList<String>();
 	}
 	
 	public static String reverseString(String s) {
-		// Store the string in a character array
-		char[] chars = s.toCharArray();
-		
-		// Create a new array to store the characters in reverse order
-		char[] result = new char[chars.length];
-		
-		// Loop through the character array and store the characters in reverse order
-		// in the result array
-		for(int i = 0; i < chars.length; i++) 
-			result[i] = chars[(chars.length - 1) - i];
-		
-		// Return a new string from the result array
-		return new String(result).intern();
+		// Loop through the characters in the string and add them to the beginning of the original string
+		for(char c : s.toCharArray())
+			s = c + s;
+		// Return the first half of the string
+		return s.substring(0, s.length() / 2);
 	}
 
 }
