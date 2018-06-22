@@ -6,14 +6,16 @@ public class User implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	
-	private transient String firstName;
+	private String firstName;
 	private String lastName;
 	private String username;
 	private String password;
 	private String email;
+	private double balance;
 	
 	public User() {	}
 
+	//constructor for user registration
 	public User(String firstName, String lastName, String username, String password, String email) {
 		super();
 		this.firstName = firstName;
@@ -61,6 +63,14 @@ public class User implements Serializable {
 
 	public void setEmail(String email) {
 		this.email = email;
+	}
+
+	public double getBalance() {
+		return balance;
+	}
+	
+	public void setBalance(Double balance) {
+		this.balance = balance;
 	}
 
 	@Override
