@@ -12,9 +12,11 @@ import java.io.ObjectOutputStream;
 
 import com.revature.models.User;
 
-public class SerializationDriver {
+public class Driver {
 
+	//create a User object to store user input
 	private static User user = null;
+	//create a BufferedReader to read user input
 	private static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
 	public static void main(String[] args) {
@@ -25,6 +27,7 @@ public class SerializationDriver {
 
 	private static void mainMenu() {
 
+		//string to store user input
 		String userInput;
 
 		System.out.println("+--------------MAIN MENU--------------+");
@@ -34,38 +37,40 @@ public class SerializationDriver {
 		System.out.print("Selection: ");
 
 		try {
+			//get user input from main menu
 			userInput = br.readLine();
 
 			switch(userInput) {
 			case "1":
-				//System.out.println("Navigating to Login Menu...");
 				login();
 				break;
 			case "2":
-				//System.out.println("Navigating to Registration Menu...");
 				register();
 				break;
 			default:
-				System.out.println("Invalid selection, please try again.\n");
+				System.out.println("Invalid selection, please try again!\n");
+				//back to main menu
 				mainMenu();
 			}
 
-		} catch (IOException e) {
+		} catch (IOException ioe) {
 			//System.out.println("[LOG] - Error while reading from console");
 			//e.printStackTrace();
+			mainMenu();
 		}
 
 	}
 	
 	private static void register() {
 		
+		//Strings to store user input for User object
 		String firstName, lastName, username, password, email;
 		
-		System.out.println("\n+--------------REGISTRATION--------------+");
-		
+		System.out.println("\n+--------------REGISTRATION--------------+");		
 		
 		try {
 			
+			//get user input to make User object
 			System.out.print("First name: ");
 			firstName = br.readLine();
 			
@@ -81,67 +86,64 @@ public class SerializationDriver {
 			System.out.print("Email Address: ");
 			email = br.readLine();
 			
+			//create new User object
 			user = new User(firstName, lastName, username, password, email);
-			//System.out.println("Checking username availability...");
-			
+
+			//check username availability
 			if(usernameAvailable(user)) {
-				//System.out.println("Username available!");
-				//System.out.println("Creating new user, " + user.getUsername() + "...\n");
+				//username available
+				//create new user
 				serializeUser(user);
 			} else {
 				System.out.println("Username is not available. Please try again...");
 				register();
 			}
-			
-			
-		} catch (IOException e) {
+					
+		} catch (IOException ioe) {
 			//System.out.println("[LOG] - Error while reading from console");
 			//e.printStackTrace();
+			mainMenu();
 		}
-		
-		
+				
 	}
 	
+	//check if the username is available by comparing the user input to the serialized file names
+		private static boolean usernameAvailable(User u) {
+			
+			String fileName = u.getUsername() + ".ser";
+			File file = new File(fileName);
+			
+			if(file.exists()) {
+				return false;
+			} else {
+				return true;
+			}
+		}
+		
+	//store the User object into the text file if they're registering with a valid username
 	private static void serializeUser(User u) {
 		
+		//create a string to name the users file according to username
 		String fileName = u.getUsername() + ".ser";
 		
-		/*
-		 * Try-with-Resources block
-		 * 
-		 * Syntactically it is a try block with a set of parenthesis that is used to declared and initialize any
-		 * variables whose data type implement the AutoCloseable interface. Any variables declared here will be 
-		 * automatically closed after the try/catch execution.
-		 */
+		//try with resources to autoclose after the try/catch
 		try (FileOutputStream fos = new FileOutputStream(fileName);
 				ObjectOutputStream oos = new ObjectOutputStream(fos);) {
-			
-			/*
-			 * Write the specified object to the ObjectOutputStream. The class of the object, the signature of
-			 * the class, and the values of the non-transient and non-static fields of the class and all of its
-			 * supertypes are written.
-			 */
+						
+			//Write the specified object to the ObjectOutputStream.			
 			oos.writeObject(u);
+				
 			
+			//***call  home page function here
 			
-		} catch (FileNotFoundException e) {
+		} catch (FileNotFoundException fnfe) {
 			//System.out.println("[LOG] - An error occurred while accessing the file");
 			//e.printStackTrace();
-		} catch (IOException e) {
+			mainMenu();
+		} catch (IOException ioe) {
 			//System.out.println("[LOG] - An error occurred while writing the file");
 			//e.printStackTrace();
-		}
-	}
-	
-	private static boolean usernameAvailable(User u) {
-		
-		String fileName = u.getUsername() + ".ser";
-		File file = new File(fileName);
-		
-		if(file.exists()) {
-			return false;
-		} else {
-			return true;
+			mainMenu();
 		}
 	}
 	
@@ -160,16 +162,20 @@ public class SerializationDriver {
 			password = br.readLine();
 			
 			if(credentialsValid(username, password)) {
-				System.out.println("Login successful!");
+				//login successful
+				
+				//***call  home page function here
+				
 				return;
 			} else {
-				System.out.println("Login unsuccessful!\n");
+				System.out.println("Login failed!\n");
 				mainMenu();
 			}
 			
-		} catch (IOException e) {
+		} catch (IOException ioe) {
 			//System.out.println("[LOG] - Error while reading from console");
 			//e.printStackTrace();
+			mainMenu();
 		}
 	}
 	
@@ -191,12 +197,15 @@ public class SerializationDriver {
 		} catch (FileNotFoundException e) {
 			System.out.println("[LOG] - An error occurred while accessing the file");
 			//e.printStackTrace();
+			mainMenu();
 		} catch (IOException e) {
 			System.out.println("[LOG] - An error occurred while writing the file");
 			//e.printStackTrace();
+			mainMenu();
 		} catch (ClassNotFoundException e) {
 			System.out.println("[LOG] - An error occurred while deserializing the object");
 			//e.printStackTrace();
+			mainMenu();
 		}
 		
 		return false;
