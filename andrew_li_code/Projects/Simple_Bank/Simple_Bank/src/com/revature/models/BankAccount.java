@@ -1,5 +1,6 @@
 package com.revature.models;
 
+import com.revature.exceptions.NegativeAmountException;
 import com.revature.utils.StringHandler;
 /*
  * Representation of a bank account.
@@ -57,7 +58,10 @@ public class BankAccount {
 	 * return true if there are sufficient funds,
 	 * and update the balance.
 	 */
-	public boolean withdraw(double amount) {
+	public boolean withdraw(double amount) throws NegativeAmountException {
+		if (amount < 0) {
+			throw new NegativeAmountException();
+		}
 		if (amount > this.balance) {
 			return false;
 		}
@@ -76,8 +80,14 @@ public class BankAccount {
 	/*
 	 * Increase the balance when depositing.
 	 */
-	public void deposit(double amount) {
-		balance += amount;
+	public boolean deposit(double amount) throws NegativeAmountException {
+		if (amount < 0) {
+			throw new NegativeAmountException();
+		}
+		else {
+			balance += amount;
+			return true;
+		}
 	}
 
 	@Override
