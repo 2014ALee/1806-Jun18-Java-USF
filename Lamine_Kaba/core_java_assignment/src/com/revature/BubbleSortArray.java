@@ -11,7 +11,7 @@ public class BubbleSortArray {
 		
 		for(int i = 0; i < indexCount; i++) {
 			
-			//System.out.print("Original order of the array is: " + array[i]);
+			// Compare and sort by smallest 
 			
 			for(int j = 1; j < (indexCount-i); j++) {
 				
