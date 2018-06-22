@@ -1,0 +1,23 @@
+Getting Started
+In the "Test View" tree on the left, there are multiple categories of tests - Standard Tests,  Practice Tests, Objective wise Test, and Custom Tests.
+Each category has multiple Tests.
+To take any of these tests, just double click on the Test node.
+For example, double click on Test 1 under Standard Test to start Test 1.
+You will be asked to enter a name for this attempt. 
+You can take any test any number of times.
+Each attempt is showed right under the Test.
+For example,  if you take Test 1 with the name, First Attempt, you will see a node named First Attempt under Test 1.
+Standard Tests mimic the real test in terms of topic distribution, toughness level,  and time.
+You should start with the first standard test.
+After taking the test,  go through the explanations for each question...even for the questions that you answered correctly.
+This is because we try to put lot of useful information in the explanations, which can help you understand the concept better. 
+Identify the topics in which you scored least and study those topics from any book. 
+Develop some sample programs to test out the concepts if necessary. 
+ Only after you are comfortable with topics on which you scored least,  you should attempt the next test. 
+Your goal is to increase the scores on these topics on the next test. 
+If you are able to pass all the tests comfortably, you will pass the real test with flying colors!  Practice Tests are useful when you want to check your level of preparation. 
+It contains Easy, Tough, and Very Tough tests. 
+It may also contain a Most Missed Test. 
+This test contains questions that are answered wrong the most by all the users of this question bank. 
+To use this test, you need internet connection because it fetches the list of most missed questions dynamically from our server. 
+Objective-wise Tests are useful when you are following a book and after each chapter/topic/exam objective, you want to solve questions only from that topic.
