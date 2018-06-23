@@ -2,8 +2,6 @@ package com.revature.models;
 
 import java.util.Comparator;
 
-import com.revature.Employee;
-
 public class EmployeeCompare implements Comparator<Employee>{
 
 	@Override 

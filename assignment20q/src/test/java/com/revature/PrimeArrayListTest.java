@@ -7,8 +7,9 @@ import org.junit.Test;
 public class PrimeArrayListTest {
 
 	@Test
-	public void test() {
-		fail("Not yet implemented");
+	public void testIsPrime() {
+		PrimeArrayList pra = new PrimeArrayList();
+		int i = 561;
+		assertTrue("It is not Prime",pra.isPrime(i));
 	}
-
 }

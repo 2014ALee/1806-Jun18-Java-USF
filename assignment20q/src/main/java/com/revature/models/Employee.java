@@ -1,4 +1,4 @@
-package com.revature;
+package com.revature.models;
 public class Employee{
 	private String name;
 	private Integer age;

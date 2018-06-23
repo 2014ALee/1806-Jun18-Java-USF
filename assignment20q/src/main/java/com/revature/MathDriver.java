@@ -7,10 +7,10 @@ public class MathDriver {
 		MathImp maths = new MathImp();
 		int i = 20;
 		int j = 5;
-		maths.add(i, j);
-		maths.subtract(i, j);
-		maths.multiply(i, j);
-		maths.division(i, j);
+		System.out.println(maths.add(i, j));
+		System.out.println(maths.subtract(i, j));
+		System.out.println(maths.multiply(i, j));
+		System.out.println(maths.division(i, j));
 	}
 	
 }

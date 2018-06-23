@@ -20,7 +20,8 @@ public class ArrayListAlter {
 				negSum = negSum + num;
 		System.out.println(posSum);
 		System.out.println(negSum);
-		nums.removeIf(n -> PrimeArrayList.isPrime(n));
+		PrimeArrayList pra = new PrimeArrayList();
+		nums.removeIf(n -> pra.isPrime(n));
 		System.out.println(Arrays.toString(nums.toArray()));
 	}
 }

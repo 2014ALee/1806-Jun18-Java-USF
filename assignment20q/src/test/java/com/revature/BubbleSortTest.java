@@ -17,8 +17,7 @@ public class BubbleSortTest {
 		BubbleSort bubbleSort = new BubbleSort();
 		Arrays.sort(array2);
 		bubbleSort.sortArray(array1);
-		Assert.assertTrue("equal",array2.equals(array1));
-//		Assert.assertEquals("They are equal",array2, array1);
+		Assert.assertTrue("They are not equal",Arrays.toString(array2).equals(Arrays.toString(array1)));
 	}
 
 }

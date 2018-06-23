@@ -11,17 +11,20 @@ public class PrimeArrayList {
 		primes(nums);
 	}
 	public static void primes(ArrayList<Integer> nums) {
+		PrimeArrayList pra = new PrimeArrayList();
 		for (int num : nums)
-			if (isPrime(num))
+			if (pra.isPrime(num))
 				System.out.println(num);
 	}
-	public static boolean isPrime(int num) {
+	public boolean isPrime(int num) {
 			int counter = 0;
-			for(int i = num; i>= 1; i--)
-				if(num%i == 0)
-					counter = counter +1;
-			if (counter == 2)
-				return true;
+			EvenSteven even = new EvenSteven();
+			if(!(even.isEven(num)))
+				for(int i = num; i>= 1; i--)
+					if(num%i == 0)
+						counter = counter +1;
+				if (counter == 2)
+					return true;
 		return false;
 	}
 }

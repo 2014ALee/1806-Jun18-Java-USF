@@ -9,6 +9,7 @@ public class IntrestCalc {
 	
 	public static void main(String[] args) {
 		Scanner scanner = new Scanner(System.in);
+		IntrestCalc intC = new IntrestCalc();
 		
 		System.out.print("Enter principal: ");
 		principal = scanner.nextDouble();
@@ -19,11 +20,11 @@ public class IntrestCalc {
 		System.out.print("Enter year: ");
 		years = scanner.nextInt();
 		
-		System.out.println(intrestCalc(principal, rate, years));
+		System.out.println(intC.intrestCalc(principal, rate, years));
 		scanner.close();
 	}
 	
-	public static double intrestCalc(double principal, double rate, int years) {
+	public double intrestCalc(double principal, double rate, int years) {
 		double intrest = principal * rate * years;
 		return intrest;
 	}

@@ -8,7 +8,8 @@ public class TriangleTest {
 
 	@Test
 	public void test() {
-		fail("Not yet implemented");
+		Triangle.printTriangle(10);
+		fail("Nothing to implement void method");
 	}
 
 }

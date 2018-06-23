@@ -7,8 +7,8 @@ import org.junit.Test;
 public class ReverseStringTest {
 
 	@Test
-	public void test() {
-		fail("Not yet implemented");
+	public void testReverseStr() {
+		ReverseString rev = new ReverseString();
+		assertTrue("They are not equal","fire".equals(rev.reverseStr("erif")));
 	}
-
 }

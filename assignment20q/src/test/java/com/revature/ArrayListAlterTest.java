@@ -8,6 +8,6 @@ public class ArrayListAlterTest {
 
 	@Test
 	public void test() {
-		fail("Not yet implemented");
+		fail("Not yet implemented Nothing to implement");
 	}
 }

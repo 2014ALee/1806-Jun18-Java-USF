@@ -7,8 +7,9 @@ import org.junit.Test;
 public class NFactorialTest {
 
 	@Test
-	public void test() {
-		fail("Not yet implemented");
+	public void testNFactFinder() {
+		int i = 5;
+		assertTrue("Exspected 120", 120 == NFactorial.nFactFinder(i));
 	}
 
 }

@@ -7,8 +7,8 @@ import org.junit.Test;
 public class SubStringTest {
 
 	@Test
-	public void test() {
-		fail("Not yet implemented");
+	public void testSubStringBuilder() {
+		SubString sub = new SubString();
+		assertTrue("They are not equal","Smi".equals(sub.subStringBuilder("Smith", 3)));
 	}
-
 }

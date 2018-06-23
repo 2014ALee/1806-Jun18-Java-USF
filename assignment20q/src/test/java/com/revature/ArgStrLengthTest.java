@@ -8,7 +8,7 @@ public class ArgStrLengthTest {
 
 	@Test
 	public void test() {
-		fail("dontknow");
+		fail("Nothing to implement");
 	}
 
 }
