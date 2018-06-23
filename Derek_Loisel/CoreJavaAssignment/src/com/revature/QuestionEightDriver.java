@@ -3,7 +3,7 @@ package com.revature;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class QuestionEight {
+public class QuestionEightDriver {
 
 	//Q8. Write a program that stores the following strings in an ArrayList and saves all the palindromes in another ArrayList.
 	//“karan”, “madam”, ”tom”, “civic”, “radar”, “jimmy”, “kayak”, “john”,  “refer”, “billy”, “did”
@@ -13,7 +13,10 @@ public class QuestionEight {
 
 	public static void main(String[] args) {
 
+		//create an ArrayList of the Strings
 		ArrayList<String> arrayList = createStringArrayList();
+		
+		//create an ArrayList of palindromes of the passed ArrayList of Strings
 		ArrayList<String> palindromes = createPalindromesArrayList(arrayList);
 		printPalindromes(palindromes);
 	}
@@ -66,4 +69,5 @@ public class QuestionEight {
 		}
 		
 	}
+	
 }

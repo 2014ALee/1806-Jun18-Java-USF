@@ -1,6 +1,6 @@
 package com.revature;
 
-public class QuestionSix {
+public class QuestionSixDriver {
 
 public static void main(String[] args) {
 	

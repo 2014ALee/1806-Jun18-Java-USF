@@ -1,6 +1,6 @@
 package com.revature;
 
-public class QuestionThree {
+public class QuestionThreeDriver {
 	
 	//Q3. Reverse a string without using a temporary variable.  Do NOT use reverse() in the StringBuffer or the StringBuilder APIs.
 	

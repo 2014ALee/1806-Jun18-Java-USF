@@ -1,6 +1,6 @@
 package com.revature;
 
-public class QuestionTwo {
+public class QuestionTwoDriver {
 
 	//Q2. Write a program to display the first 25 Fibonacci numbers starting at 0.
 
@@ -8,9 +8,9 @@ public class QuestionTwo {
 		//method to print the first 25 fibonacci numbers
 		printFibonacciNumbers();
 	}
-	
+
 	private static void printFibonacciNumbers() {
-		
+
 		//create an array to hold the values
 		int[] fibonacciIntArray = new int[25]; 
 
@@ -23,13 +23,13 @@ public class QuestionTwo {
 		{ 
 			fibonacciIntArray[i] = fibonacciIntArray[i-1] + fibonacciIntArray[i-2]; 
 		}
-		
+
 		//print the array
 		for(int i=0; i< fibonacciIntArray.length; i++) 
 		{ 
-		System.out.print(fibonacciIntArray[i] + " "); 
+			System.out.print(fibonacciIntArray[i] + " "); 
 		} 
 	}
 
-	
+
 }

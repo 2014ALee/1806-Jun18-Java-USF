@@ -1,6 +1,6 @@
 package com.revature;
 
-public class QuestionTen {
+public class QuestionTenDriver {
 
 	// Q10. Find the minimum of 2 numbers using ternary operators
 	

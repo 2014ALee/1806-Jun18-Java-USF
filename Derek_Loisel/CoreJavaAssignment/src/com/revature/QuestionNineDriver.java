@@ -2,7 +2,7 @@ package com.revature;
 
 import java.util.ArrayList;
 
-public class QuestionNine {
+public class QuestionNineDriver {
 
 	// Q9. Create an ArrayList which stores numbers from 1 to 100 and prints out all
 	// the prime numbers to the console.
