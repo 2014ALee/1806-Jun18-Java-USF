@@ -3,8 +3,37 @@ package com.revature;
 public class ProcessorDriver {
 
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
+		
+		Processor myProcessor = new Processor();
+		
+		Thread t1 = new Thread(new Runnable() {
 
+			@Override
+			public void run() {
+				try {
+					myProcessor.producer();
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+			}
+			
+		});
+		
+		Thread t2 = new Thread(new Runnable() {
+
+			@Override
+			public void run() {
+				try {
+					myProcessor.consumer();
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+			}
+			
+		});
+		
+		t1.start();
+		t2.start();
 	}
 
 }

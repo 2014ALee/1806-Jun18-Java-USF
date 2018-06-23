@@ -25,6 +25,49 @@ public class MainDriver {
 			System.out.print(" ,");
 		}
 		
+		System.out.println("\n-------------------------------");
+		
+		/*
+		 * Q2  FibonacciNumbers
+		 */
+		
+		FibonacciNumbers myFibonacci = new FibonacciNumbers();
+		
+		myFibonacci.display();
+		
+		System.out.println("\n-------------------------------");
+		
+		/*
+		 * Q3 Reverse String
+		 */
+		
+		ReverseString myReverse = new ReverseString();
+		
+		myReverse.reverseString();
+		
+		System.out.println("\n-------------------------------");
+		
+		/*
+		 * Q4 N factorial
+		 */
+		
+		Nfactorial.factorial();		
 	}
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
