@@ -4,9 +4,9 @@ public class Question10 {
 
 	public static int getMinimumValue(int a, int b) {
 		
-		//int minimumValue = 
+		int minimumValue = (a < b) ? a : b; 
 		
-		return 0;
+		return minimumValue;
 	}
 	
 	public static void main(String[] args) {
