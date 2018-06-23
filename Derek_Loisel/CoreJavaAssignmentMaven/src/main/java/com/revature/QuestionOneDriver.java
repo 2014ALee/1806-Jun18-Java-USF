@@ -10,7 +10,7 @@ public class QuestionOneDriver {
 		int[] myNumArray = new int[] {1, 0, 5, 6, 3, 2, 3, 7, 9, 8, 4};
 		
 		//run the sorting method on the array
-		bubbleSort(myNumArray);
+		myNumArray = (bubbleSort(myNumArray));
 		
 		//print the sorted array
 		for (int num : myNumArray)
@@ -19,7 +19,7 @@ public class QuestionOneDriver {
 		}
 	}
 		
-	private static void bubbleSort(int[] numArray) {
+	private static int[] bubbleSort(int[] numArray) {
 		
 	    int temp;
 
@@ -40,6 +40,8 @@ public class QuestionOneDriver {
 
 	        }
 	    }
+	    
+	    return numArray;
 	}
 	
 	
