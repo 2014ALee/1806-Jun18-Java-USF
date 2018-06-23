@@ -1,6 +1,6 @@
 package com.revature;
 
-public class QuestionSixteen {
+public class QuestionSixteenDriver {
 
 	
 //	Q16. Write a program to display the number of characters for a string input. 

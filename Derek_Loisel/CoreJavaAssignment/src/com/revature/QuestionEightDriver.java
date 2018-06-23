@@ -18,7 +18,12 @@ public class QuestionEightDriver {
 		
 		//create an ArrayList of palindromes of the passed ArrayList of Strings
 		ArrayList<String> palindromes = createPalindromesArrayList(arrayList);
-		printPalindromes(palindromes);
+
+		//Print palindrome ArrayList
+		for (String str : palindromes) {		
+			System.out.println(str);
+		}
+		
 	}
 
 	private static ArrayList<String> createStringArrayList() {
@@ -46,28 +51,22 @@ public class QuestionEightDriver {
 
 		for (String str : array)
 		{
-
-			//
+			//create string builder from the string
 			StringBuilder sb = new StringBuilder(str);
-			if (str.equals(sb.reverse())) {
-				//convert stringbuilder back to string before adding it to the arraylist
-				String reversedStr = sb.reverse().toString();
-				palindromesArray.add(reversedStr);
+			
+			//reverse it and compare to the string
+			String s1 = sb.reverse().toString();
+			
+			if (s1.equals(str)) {
+				//equal
+				palindromesArray.add(str);
+			}else {
+				//not equal
 			}
-
 		}
 
 		//return the ArrayList of palindromes
 		return palindromesArray;
 	}
-	
-	private static void printPalindromes(ArrayList<String> palindromesList){
 		
-		for(String str : palindromesList) {
-			
-			System.out.println(str);
-		}
-		
-	}
-	
 }
