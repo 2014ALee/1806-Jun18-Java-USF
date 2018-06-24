@@ -4,12 +4,13 @@ public class Question16 {
 
 	public static void main(String[] args) {
 		String[] inputString = args;
-		charCounter(inputString);
+		int numChar = charCounter(inputString);
+		System.out.println("Number of characters = " + numChar);
 	}
 	
-	public static void charCounter(String[] input) {
+	public static int charCounter(String[] input) {
 		String str = String.join(" ", input);
-		System.out.println("Number of characters = " + str.length());		
+		return str.length();		
 	}
 	
 }

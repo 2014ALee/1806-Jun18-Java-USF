@@ -1,69 +1,77 @@
-package simple.bank.models;
+package com.revature.models;
 
 import java.io.Serializable;
 
 public class User implements Serializable {
-	
+
 	private static final long serialVersionUID = 1L;
-	private String firstName;
+	
+	private transient String firstName;
 	private String lastName;
-	private String loginName;
+	private String username;
 	private String password;
-	private double balance = 0.0;
+	private String email;
 	
-	public User() {}
-	
-	
-	public User(String firstName, String lastName, String loginName, String password) {
+	public User() {	}
+
+	public User(String firstName, String lastName, String username, String password, String email) {
 		super();
 		this.firstName = firstName;
 		this.lastName = lastName;
-		this.loginName = loginName;
+		this.username = username;
 		this.password = password;
+		this.email = email;
 	}
 
 	public String getFirstName() {
 		return firstName;
 	}
+
 	public void setFirstName(String firstName) {
 		this.firstName = firstName;
 	}
+
 	public String getLastName() {
 		return lastName;
 	}
+
 	public void setLastName(String lastName) {
 		this.lastName = lastName;
 	}
-	public String getLoginName() {
-		return loginName;
+
+	public String getUsername() {
+		return username;
 	}
-	public void setLoginName(String loginName) {
-		this.loginName = loginName;
+
+	public void setUsername(String username) {
+		this.username = username;
 	}
+
 	public String getPassword() {
 		return password;
 	}
+
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	public double getBalance() {
-		return balance;
+
+	public String getEmail() {
+		return email;
 	}
-	public void setBalance(double balance) {
-		this.balance = balance;
+
+	public void setEmail(String email) {
+		this.email = email;
 	}
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		long temp;
-		temp = Double.doubleToLongBits(balance);
-		result = prime * result + (int) (temp ^ (temp >>> 32));
+		result = prime * result + ((email == null) ? 0 : email.hashCode());
 		result = prime * result + ((firstName == null) ? 0 : firstName.hashCode());
 		result = prime * result + ((lastName == null) ? 0 : lastName.hashCode());
 		result = prime * result + ((password == null) ? 0 : password.hashCode());
-		result = prime * result + ((loginName == null) ? 0 : loginName.hashCode());
+		result = prime * result + ((username == null) ? 0 : username.hashCode());
 		return result;
 	}
 
@@ -76,12 +84,10 @@ public class User implements Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		User other = (User) obj;
-		if (Double.doubleToLongBits(balance) != Double.doubleToLongBits(other.balance))
-			return false;
-		if (loginName == null) {
-			if (other.loginName != null)
+		if (email == null) {
+			if (other.email != null)
 				return false;
-		} else if (!loginName.equals(other.loginName))
+		} else if (!email.equals(other.email))
 			return false;
 		if (firstName == null) {
 			if (other.firstName != null)
@@ -98,15 +104,18 @@ public class User implements Serializable {
 				return false;
 		} else if (!password.equals(other.password))
 			return false;
+		if (username == null) {
+			if (other.username != null)
+				return false;
+		} else if (!username.equals(other.username))
+			return false;
 		return true;
 	}
 
-
 	@Override
 	public String toString() {
-		return "User [firstName=" + firstName + ", lastName=" + lastName + ", loginName=" + loginName
-				+ ", password=" + password + "]";
+		return "User [firstName=" + firstName + ", lastName=" + lastName + ", username=" + username + ", password="
+				+ password + ", email=" + email + "]";
 	}
-	
 
 }
