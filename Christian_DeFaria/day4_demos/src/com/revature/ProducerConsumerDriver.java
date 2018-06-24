@@ -16,6 +16,11 @@ public class ProducerConsumerDriver {
 		Consumer c2 = new Consumer(count);
 		
 		p.start();
+		try {
+			Thread.sleep(50);
+		}catch(InterruptedException e) {
+			e.printStackTrace();
+		}
 		c1.start();
 		c2.start();
 		
