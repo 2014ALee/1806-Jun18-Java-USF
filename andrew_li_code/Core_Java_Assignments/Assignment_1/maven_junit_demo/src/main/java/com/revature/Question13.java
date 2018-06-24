@@ -1,6 +1,8 @@
 package com.revature;
 
 public class Question13 {
+	private static String printedString = "";
+	
 	public static void main(String[] args) {
 		String printed = "";
 		/*
@@ -42,6 +44,11 @@ public class Question13 {
 			
 			// Finally it's time to print.
 			System.out.println(printed);
+			printedString += printed + "\n";
 		}
+	}
+	
+	public static String getPrinted() {
+		return printedString;
 	}
 }

@@ -19,7 +19,7 @@ public class Question3Test {
 				reverseWithoutTempVar("cat"));
 		assertEquals("torrac should be carrot spelled backward.", "carrot",
 				reverseWithoutTempVar("torrac"));
-		System.out.println("Question three test cases passed.");
+		System.out.println("Question 3 test cases passed!");
 	}
 
 }

@@ -8,12 +8,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Question20 {
+	private static ArrayList<String> printedStrings = new ArrayList<String>();
+	
 	public static void main(String[] args) {
 		/*
 		 * Declare buffer for use, simplify filepath, and create
 		 * an ArrayList to store each line.
-		 */
-		final String FILE_PATH = "C:\\Users\\Andrew\\1806-Jun18-Java-USF\\andrew_li_code\\Core_Java_Assignments\\Core_Java_Assignment_1\\Core_Java_Assignment\\resources\\data.txt";
+		 */	
+		final String FILE_PATH = System.getProperty("user.dir") + "\\resources\\data.txt";
 		BufferedReader br = null;
 		List<String> lines = new ArrayList<String>();
 		
@@ -69,7 +71,11 @@ public class Question20 {
 			// State: [state] State
 			display += "State: " + words[3] + " State";
 			System.out.println(display);
+			printedStrings.add(display);
 			System.out.println("____________________________________________________________\n");
 		}
+	}
+	public static String getString(int i) {
+		return printedStrings.get(i);
 	}
 }

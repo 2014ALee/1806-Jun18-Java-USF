@@ -15,13 +15,13 @@ public class Question8Test {
 						"repper"), true);
 		assertEquals("Testing palindromes for odd number", 
 				Question8.isPalindrome(
-						"peter"), true);
+						"reter"), true);
 		assertEquals("Testing failed palindromes for even number", 
 				Question8.isPalindrome(
-						"laser"), true);
-		assertEquals("Testing palindromes for odd number", 
+						"rapper"), false);
+		assertEquals("Testing failed palindromes for odd number", 
 				Question8.isPalindrome(
-						"rapper"), true);
+						"laser"), false);
 		System.out.println("Palindromes worked");
 	}
 

@@ -19,7 +19,7 @@ public class Question4Test {
 				factorial(5), 120);
 		assertEquals("Factorial Test 5",
 				factorial(0), 1);
-		System.out.println("Question 4 test cases passed.");
+		System.out.println("Question 4 test cases passed!");
 	}
 	
 	@Test(expected=IllegalArgumentException.class)

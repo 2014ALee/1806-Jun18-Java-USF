@@ -4,7 +4,6 @@ import static com.revature.Question19.generate;
 import static org.junit.Assert.*;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 import org.junit.Test;
 
