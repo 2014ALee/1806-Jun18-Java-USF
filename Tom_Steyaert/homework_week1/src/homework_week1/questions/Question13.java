@@ -29,14 +29,17 @@ public class Question13 {
 	public static LinkedList<Integer> getTriangleLine(int lineNumber){
 
 		//the for loop below prints one line of 0's and 1's
+		//we store this line as a Linked List
 		LinkedList<Integer> linkedList = new LinkedList<Integer>();
 
 		for(int i = 1; i <= lineNumber; i++) {
 
 			int toAdd = numberToAppend(i);
 
+			//if the line number is even, we add to the head of the list
 			if(Question6.isEven(i)) {
 				linkedList.addFirst(toAdd);
+			//if the line is odd we add to the end of the list	
 			} else {
 				linkedList.addLast(toAdd);
 			}
@@ -48,7 +51,7 @@ public class Question13 {
 	public static void printTriangle(int numberOfLines) {
 		LinkedList<Integer> linkedList = new LinkedList<Integer>();
 
-		//the outter for loop prints one line of 0's and 1's per iteration	
+		//the outter for loop prints one line of the triangle per iteration	
 		for(int j = 1; j <= numberOfLines; j++) {	
 			linkedList = getTriangleLine(j);
 			printLinkedList(linkedList);

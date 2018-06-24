@@ -8,19 +8,23 @@ public class Question4 {
 	//to get to our final value	
 	int multiplyBy = input;
 	
-	int factorial = multiplyBy;
+	//the factorial product get store hear
+	int factorialProduct = multiplyBy;
 	
-		if(input==1) {
+	//if we pass in a 1, we know that the factorial is 1*1, which is 1
+		if(input == 1) {
 			return 1;
 		}
 			
-		for(int i=0; i<input-2; i++){
-		factorial = factorial * (multiplyBy - 1);
+		for(int i = 0; i < input - 2; i++){
+		
+		//we multiply the factorial value with the number one less than it	
+		factorialProduct = factorialProduct * (multiplyBy - 1);
 		
 		multiplyBy--;
 		}
 		
-		return factorial;
+		return factorialProduct;
 	}
 	
 	public static void main(String[] args) {

@@ -1,8 +1,10 @@
-package homework_week1.questions;
+package J_Unit_tests;
 
 import static org.junit.Assert.*;
 
 import org.junit.Test;
+
+import homework_week1.questions.Question9;
 
 public class Question9Test {
 

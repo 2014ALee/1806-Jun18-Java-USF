@@ -42,7 +42,7 @@ public class EmployeeComparator implements Comparator<Employee>{
 		}
 
 		//we only iterate through our strings for as long as the smaller string is
-		if(str1.length()<=str2.length()) {
+		if(str1.length() <= str2.length()) {
 			shorterLength = str1.length();
 		} else {
 			shorterLength = str2.length();
@@ -52,18 +52,18 @@ public class EmployeeComparator implements Comparator<Employee>{
 		//we know that word comes first, so we return 1
 		for(int i = 0; i < shorterLength; i++) {
 			if(str1.charAt(i) < str2.charAt(i)) {
-				return 1;
-			} else if(str1.charAt(i) > str2.charAt(i)) {
 				return -1;
+			} else if(str1.charAt(i) > str2.charAt(i)) {
+				return 1;
 			}
 		}
 
 		//if one of the strings is a substring of the other one
 		//we say the longer string goes first
-		if(str1.length()>str2.length()) {
-			return 1;
-		} else {
+		if(str1.length() > str2.length()) {
 			return -1;
+		} else {
+			return 1;
 		}
 
 	}

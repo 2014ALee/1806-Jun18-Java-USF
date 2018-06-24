@@ -10,6 +10,9 @@ public class Question17 {
 	private static double rate;
 	private static int time;
 
+	//we get user input to get our loan information, one field at a time
+	//if the user inputs the wrong data type needed, we throw an exception
+	//and tell them an incorrect input was entered
 	public static double calculateInterest() throws InputMismatchException {
 
 		System.out.println("Provide your loan's principal, rate, and duration below");

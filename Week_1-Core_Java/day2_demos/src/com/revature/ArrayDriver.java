@@ -22,7 +22,7 @@ public class ArrayDriver {
 		 * 		- The length of an array can be found by invoking the 'length' member on any array
 		 */
 		
-		// Arrays can be declared in one of two ways:
+		//  Arrays can be declared in one of two ways:
 		int myIntArray[]; // this a valid array declaration
 		int[] myOtherIntArray; // this is also a valid array declaration
 		

@@ -36,6 +36,7 @@ public class Question19 {
 
 	public static ArrayList<Integer> removePrimes(ArrayList<Integer> myArrayList){
 
+		//below we remove the primes from our array list
 		for(int i = 0; i < myArrayList.size(); i++) {
 			if(Question9.isPrime(myArrayList.get(i))) {
 				myArrayList.remove(i);
@@ -54,7 +55,7 @@ public class Question19 {
 			System.out.println("ArrayList [" + i + "] = " + arrayList.get(i));
 		}
 	}
-	
+
 	public static void main(String[] args) {
 
 		ArrayList<Integer> myArrayList= new ArrayList<Integer>();	

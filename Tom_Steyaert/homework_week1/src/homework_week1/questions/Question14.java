@@ -7,7 +7,7 @@ public class Question14 {
 	static Scanner inputReader = new Scanner(System.in);
 	static Date date = new Date();
 
-	public static void goToCases(int caseNumber) {
+	public static String goToCases(int caseNumber) {
 
 		switch(caseNumber) {
 
@@ -17,22 +17,26 @@ public class Question14 {
 			int userInput = inputReader.nextInt();
 
 			System.out.println("The square root is " + Math.sqrt(userInput) + "\n");
-			break;
+			
+			return "Case 1 Complete";
+
 
 		case 2 :
 
 			System.out.println("The date is "+ date.toString().substring(0, 9));
-			break;
+			
+			return "Case 2 Complete";
 
 		case 3 :
 
 			String str = "I am learning Core Java";
 			String[] stringArray = str.split("learning");
-			break;
+		
+			return "Case 3 Complete";
 
 		default :
-
 			System.out.println("Invalid input");
+			return "Invalid Input";
 		}		
 	}
 
