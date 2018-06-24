@@ -14,9 +14,6 @@ public class Question5 {
 	// and returns a substring of the original string without
 	// using the built in substring methods.
 	public static String subString(String str, int idx) {
-		// Subtract 1 because we want the substring to be between
-		// 0 and idx - 1 inclusive.
-		idx -= 1;
 		// Convert the string to a character array
 		char[] chars = str.toCharArray();
 		// Create the array which will hold the substring

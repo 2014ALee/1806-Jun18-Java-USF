@@ -5,7 +5,8 @@ public class Question1 {
 
 	public static void main(String[] args) {
 		// This is the list of numbers to be sorted
-		int[] nums = {1,0,5,6,3,2,3,7,9,8,4};
+//		int[] nums = {1,0,5,6,3,2,3,7,9,8,4};
+		int[] nums = {4, 7, 1, 8, 5, 4, 5, 6, 7, 8, 7, 9, 2, 0, 0, 1, 7, 2, 1, 1, 3, 4, 0};
 		
 		nums = bubbleSort(nums);
 		

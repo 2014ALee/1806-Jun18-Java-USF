@@ -5,7 +5,7 @@ public class Question6 {
 	// Assuming that 0 counts as even
 
 	public static void main(String[] args) {
-		int num = -3;
+		int num = -39;
 		String result = num + " is " + ((isEven(num)) ? "even" : "odd");
 		System.out.println(result);
 	}

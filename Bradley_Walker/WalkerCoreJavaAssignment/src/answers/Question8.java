@@ -8,7 +8,7 @@ public class Question8 {
 
 	public static void main(String[] args) {
 		// Create the lists
-		String[] w = {"karan", "madam", "tom", "civic", "radar", "jimmy", "kayak", "john", "refer", "billy", "did"};
+		String[] w = {"karan", "madam", "tom", "civic", "radar", "jimmy", "kayak", "john", "refer", "billy", "did", "avid diva"};
 		ArrayList<String> words = new ArrayList<String>(Arrays.asList(w));
 		ArrayList<String> palindromes = new ArrayList<String>();
 		

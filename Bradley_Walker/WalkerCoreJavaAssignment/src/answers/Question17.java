@@ -14,7 +14,7 @@ public class Question17 {
 		// an exception occurs, just restart the program.
 		try {
 			System.out.print("Enter the principal: ");
-			double pricipal = scan.nextDouble();
+			double principal = scan.nextDouble();
 			
 			System.out.print("Enter the interest rate: ");
 			double rate = scan.nextDouble();
@@ -23,13 +23,17 @@ public class Question17 {
 			double time = scan.nextDouble();
 			
 			// Doing the math here
-			double interest = pricipal * rate * time;
+			double interest = calculateSimpleInterest(principal, rate, time);
 			System.out.println("The simple interest is $" + interest);
 		}
 		catch(Exception e) {
 			System.out.println("Invalid Input!");
 			main(args);
 		}
+	}
+	
+	public static double calculateSimpleInterest(double principal, double rate, double time) {
+		return principal * rate * time;
 	}
 
 }

@@ -13,8 +13,21 @@ public class Question12 {
 		for(int i = 0; i < 100; i++)
 			nums[i] = i+1;
 		
-		for(int num : nums)
+		for(int num : getEvens(nums))
+			System.out.print(num + " ");
+	}
+	
+	public static int[] getEvens(int[] nums) {
+		ArrayList<Integer> evens = new ArrayList<>();
+		for(int num : nums) {
 			if(Question6.isEven(num))
-				System.out.print(num + " ");
+				evens.add(num);
+		}
+		
+		int[] result = new int[evens.size()];
+		for(int i = 0; i < evens.size(); i++)
+			result[i] = evens.get(i);
+		
+		return result;
 	}
 }
