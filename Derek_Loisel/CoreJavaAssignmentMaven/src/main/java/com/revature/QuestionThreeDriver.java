@@ -7,10 +7,11 @@ public class QuestionThreeDriver {
 	public static void main(String[] args) 
 	{
 		//method to reverse a string without using temp vars or StringBuilder/StringBuffer
-		reverseString("reverse this string");		
+		System.out.println(reverseString("reverse this"));		
+		
 	}
 	
-	private static void reverseString(String str)
+	public static String reverseString(String str)
 	{	
 		//go through each char of the string as a char array
 		for(char letter : str.toCharArray())
@@ -21,7 +22,8 @@ public class QuestionThreeDriver {
 		
 		//only keep the first half of the string which contains the chars you tacked on
 		str = str.substring(0, str.length()/2);
-		//print out the remaining reversed string
-		System.out.println(str);
+
+		//return the reversed string
+		return str;
 	}
 }

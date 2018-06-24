@@ -1,6 +1,6 @@
 package com.revature;
 
-public class QuesetionFourDriver {
+public class QuestionFourDriver {
 
 	//Q4. Write a program to compute N factorial.
 
@@ -11,7 +11,7 @@ public class QuesetionFourDriver {
 
 	}  
 
-	private static int computeFactorial(int number) {
+	public static int computeFactorial(int number) {
 
 		//start the factorial at 1
 		int fact = 1;     

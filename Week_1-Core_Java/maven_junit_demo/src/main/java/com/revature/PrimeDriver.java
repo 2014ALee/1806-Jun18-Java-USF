@@ -16,7 +16,7 @@ public class PrimeDriver {
 
 		boolean isPrime = false;
 		HashSet<BigInteger> testSet = populateSet(number);
-		
+
 		System.out.println("Prime candidate: " + number);
 
 		/*
@@ -29,7 +29,7 @@ public class PrimeDriver {
 		 */
 		for (BigInteger testElement : testSet) {
 			System.out.println("Test element: " + testElement);
-			
+
 			BigInteger testResult = testElement.pow(number.intValue()).mod(number);
 
 			if(testResult.equals(testElement)) {

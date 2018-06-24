@@ -9,12 +9,13 @@ public class QuestionSevenComparator implements Comparator<QuestionSevenEmployee
 		
 		int a = 0;
 		
-		//sort by name unless they're equal, then by department unless they're equal, then finally by age
+		//sort by name unless they're equal, then by department unless they're equal, then finally by age. a will remain 0 if they're all the same
 		a = emp1.getName().compareTo(emp2.getName()) ;
 		
 		if (a == 0) {	
 			a = emp1.getDepartment().compareTo(emp2.getDepartment()) ;			
-		}else if (a == 0){
+		}
+		if (a == 0){
 			a = emp1.getAge().compareTo(emp2.getAge()) ;
 		}
 		

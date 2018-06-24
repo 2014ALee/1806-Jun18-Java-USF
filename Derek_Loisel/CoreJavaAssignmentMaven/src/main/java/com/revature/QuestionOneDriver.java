@@ -19,7 +19,7 @@ public class QuestionOneDriver {
 		}
 	}
 		
-	private static int[] bubbleSort(int[] numArray) {
+	public static int[] bubbleSort(int[] numArray) {
 		
 	    int temp;
 
