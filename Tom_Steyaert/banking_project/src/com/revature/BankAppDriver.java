@@ -26,29 +26,47 @@ public class BankAppDriver {
 	//the following method saves the userBank by serializing it
 	//and placing it in a .txt file
 	public static void persistUserBank() {
-		
-		//we use the time to generate a unique and informative file title
-		String fileName = Long.toString(currentTime.getTime()) + ".txt";
 
-		FileOutputStream file;
-		
 		try {
 
-			file = new FileOutputStream(fileName);
+			FileOutputStream file = new FileOutputStream("Bank.txt");
 			ObjectOutputStream out = new ObjectOutputStream(file);
 
-			//here we write to our file and close it
 			out.writeObject(userBank);
+
 			out.close();
 			file.close();
 
-		} catch (FileNotFoundException e) {
-			System.out.println("error writing object to file");
-
 		} catch (IOException e) {
-			System.out.println("error writing object to file");
 
+			System.out.println("Error saving userbank");
+
+			e.printStackTrace();
 		}
+	}  
+
+	public static void retrieveUserBankFile(){
+		try {
+
+			if(new File("Bank.txt").exists()) {
+
+				FileInputStream file = new FileInputStream("Bank.txt");
+				ObjectInputStream in = new ObjectInputStream(file);
+
+				TreeMap map = (TreeMap)in.readObject();
+				userBank = map;
+
+				in.close();
+				file.close();
+			}
+
+		} catch (IOException | ClassNotFoundException e) {
+
+			System.out.println("Error saving userbank");
+
+			e.printStackTrace();
+		}
+
 	}
 
 	public static void mainMenu() {
@@ -74,12 +92,12 @@ public class BankAppDriver {
 				registerAccount();
 
 			} else if(optionChosen.equals("3")) {
-				
+
 				System.out.println("\nApplication ended");
 				System.exit(0);
 
-			//this else is executed if they input a string, but it isn't any of the options given	
-			//then we return to the main menu	
+				//this else is executed if they input a string, but it isn't any of the options given	
+				//then we return to the main menu	
 			} else {
 				System.out.println("\nInvalid selection, please try again\n\n");
 				mainMenu();
@@ -144,9 +162,9 @@ public class BankAppDriver {
 			if(!currentUser.deposit(amountToDeposit)) {
 
 				System.out.println("Invalid amount entered for deposit: Enter an amount greater than 0");
-				
+
 				loggedInMenu(userName);
-				
+
 			} else {
 
 				//since we made a change to a user's account, we save our data
@@ -165,7 +183,7 @@ public class BankAppDriver {
 
 	}
 
-	
+
 	//for simplicity we treat money as a whole number, or int in our program
 	public static void loggedInMenu(String userName) {
 		User currentUser = userBank.get(userName);
@@ -205,7 +223,7 @@ public class BankAppDriver {
 			}
 
 			if(optionChosen.equals("5")) {
-				
+
 				System.out.println("\nApplication ended");
 				System.exit(0);
 			}
@@ -262,7 +280,7 @@ public class BankAppDriver {
 
 			System.out.println("\n\n                Login");
 			System.out.println("------------------------------------------------------------");
-			
+
 			//we get our username and password
 			System.out.print("Username:");
 			String userName = userInputReader.readLine();
@@ -276,7 +294,7 @@ public class BankAppDriver {
 				System.out.println("Login failed, returning to main menu");
 				mainMenu();
 
-			//if the password entered doesn't match the saved password for that user we go back to the main menu	
+				//if the password entered doesn't match the saved password for that user we go back to the main menu	
 			} else if (!userBank.get(userName).getPassword().equals(password)){
 
 				System.out.println("Login failed, returning to main menu");
@@ -296,7 +314,7 @@ public class BankAppDriver {
 	}
 
 	public static void main(String[] args) {
+		retrieveUserBankFile();
 		mainMenu();
-		
 	}
 }
