@@ -40,8 +40,10 @@ public class BankAccount {
 				stringRepr.indexOf(", ") + 2, stringRepr.length());
 		
 		// Parsing out the hashed password next
-		parsed.hashedPassword = stringRepr.substring(
-				stringRepr.indexOf("hashedPassword=") + 15,
+		stringRepr = stringRepr.substring(
+				stringRepr.lastIndexOf("hashedPassword=") + 15,
+				stringRepr.length());
+		parsed.hashedPassword = stringRepr.substring(0,
 				stringRepr.indexOf(", "));
 		stringRepr = stringRepr.substring(
 				stringRepr.indexOf(", ") + 2, stringRepr.length());

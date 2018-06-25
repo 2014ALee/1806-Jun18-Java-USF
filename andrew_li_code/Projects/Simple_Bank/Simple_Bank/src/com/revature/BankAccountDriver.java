@@ -11,9 +11,14 @@ public class BankAccountDriver {
 		 * the user has just started and is definitely
 		 * not finished.
 		 */
-		BankAccount ba = FirstStage.stage1();
-		if (ba != null) {
-			SecondStage.handleSession(ba);
+		boolean notExited = true;
+		while (notExited) {
+			BankAccount ba = FirstStage.stage1();
+			if (ba != null) {
+				SecondStage.handleSession(ba);
+			} else {
+				notExited = false;
+			}
 		}
 	}
 }

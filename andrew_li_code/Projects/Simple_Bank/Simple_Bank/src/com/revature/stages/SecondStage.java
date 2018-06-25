@@ -19,7 +19,7 @@ public class SecondStage {
 			switch (userInput) { // Exit out of the loop if user wants to log out.
 				case "log out": case "logout":
 					notFinished = false;
-					System.out.println("Exiting out of this program.");
+					System.out.println("Logging out and returning to main menu.");
 					break;
 				case "deposit":
 					double amount = ConsoleHandler.promptNumber(

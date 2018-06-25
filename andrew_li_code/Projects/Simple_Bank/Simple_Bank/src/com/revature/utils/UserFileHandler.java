@@ -49,6 +49,7 @@ public class UserFileHandler {
 	 */
 	public String readFile() {
 		String text = "";
+		// Set it to false once we got our text from file.
 		boolean notClosing = true;
 		
 		try {
@@ -59,6 +60,7 @@ public class UserFileHandler {
 				text += line;
 				line = br.readLine();
 			}
+			// This would be when we're done with the reading.
 			notClosing = false;
 			br.close();
 			// FileNotFoundException should not occur.
@@ -90,6 +92,7 @@ public class UserFileHandler {
 					new FileWriter(this.filePath));
 			bw.write(text);
 			bw.flush();
+			// Successfully wrote to file.
 			output = true;
 			bw.close();
 		} catch (IOException e) {
