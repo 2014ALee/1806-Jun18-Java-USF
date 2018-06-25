@@ -26,8 +26,7 @@ public class QuestionOneDriver {
 	    //loop through the length of the numArray
 	    for (int i = 0; i < numArray.length; i++) {
 	    	//loop through the numArray one iteration ahead to compare it with the previous index
-	    	//you only need to loop length - i because you already checked i iterations, it would be redundant but wouldnt break the code to loop the whole length
-	        for (int j = 1; j < (numArray.length - i); j++) {
+	        for (int j = 1; j < (numArray.length); j++) {
 	        	//check if the previous index is greater than the current
 	            if (numArray[j - 1] > numArray[j]) {
 	            	//if previous iteration is greater, you want to swap the values.  Set a temp var to hold that value
