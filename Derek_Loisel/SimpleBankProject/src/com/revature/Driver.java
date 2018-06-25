@@ -30,7 +30,7 @@ public class Driver {
 		// string to store user input
 		String userInput;
 
-		System.out.println("--------------MAIN MENU--------------");
+		System.out.println("\n-------------MAIN MENU-------------");
 
 		System.out.println("[1] - Login");
 		System.out.println("[2] - Register");
@@ -69,7 +69,7 @@ public class Driver {
 		// Strings to store user input for User object
 		String firstName, lastName, username, password, email;
 
-		System.out.println("\n-------------REGISTRATION--------------");
+		System.out.println("\n-----------REGISTRATION------------");
 
 		try {
 
@@ -153,7 +153,7 @@ public class Driver {
 
 		String username, password;
 
-		System.out.println("\n----------------LOGIN----------------");
+		System.out.println("\n---------------LOGIN---------------");
 
 		try {
 
@@ -219,7 +219,7 @@ public class Driver {
 		// string to store user input
 		String userInput;
 
-		System.out.println("--------------HOME PAGE--------------");
+		System.out.println("\n-------------HOME PAGE-------------");
 
 		System.out.println("[1] - Deposit");
 		System.out.println("[2] - Withdraw");
@@ -262,7 +262,7 @@ public class Driver {
 
 		Double amountToDeposit = 0d;
 
-		System.out.println("----------------DEPOSIT-----------------");
+		System.out.println("\n--------------DEPOSIT--------------");
 		System.out.print("How much would you like to deposit? ");
 		try {
 
@@ -324,7 +324,7 @@ public class Driver {
 	private static void withdraw() {
 		Double amountToWithdraw = 0d;
 
-		System.out.println("---------------Withdraw----------------");
+		System.out.println("\n-------------Withdraw--------------");
 		System.out.print("How much would you like to withdraw? ");
 		try {
 
@@ -397,9 +397,9 @@ public class Driver {
 
 		String userInput;
 
-		System.out.println("-------------VIEW BALANCE----------------");
+		System.out.println("\n-----------VIEW BALANCE------------");
 		System.out.println("Your current balance is: " + user.getBalance());
-		System.out.println("-----------------------------------------");
+		System.out.println("-----------------------------------");
 		System.out.println("[1] - Back to Home Page");
 		System.out.println("[2] - Logout");
 		System.out.print("Selection: ");
@@ -433,7 +433,7 @@ public class Driver {
 
 		String userInput;
 
-		System.out.println("--------------LOGOUT--------------");
+		System.out.println("\n---------------LOGOUT--------------");
 		System.out.println("Are you sure you want to log out?");
 		System.out.println("[1] - Yes");
 		System.out.println("[2] - No");
@@ -444,7 +444,7 @@ public class Driver {
 
 			switch (userInput) {
 			case "1":
-				// re serialization here before logout				
+				// re serialization here before logout to store the user obect back in the file			
 				serializeUser(user);
 
 				mainMenu();
