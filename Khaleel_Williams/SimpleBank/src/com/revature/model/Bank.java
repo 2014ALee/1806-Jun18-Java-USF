@@ -200,7 +200,7 @@ public class Bank {
 		int userInput = scan.nextInt();
 		
 		if (userInput >= 0) {
-			cus.setBalance(cus.getBalance()  + userInput);
+			cus.setBalance(cus.getBalance()  - userInput);
 		}else if(userInput > cus.getBalance()) {
 			System.out.println("You don't have enough funds to withdraw: " + userInput);
 			withdraw(cus);
