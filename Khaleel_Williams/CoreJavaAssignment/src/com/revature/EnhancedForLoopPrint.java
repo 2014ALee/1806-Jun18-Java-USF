@@ -1,8 +1,12 @@
-package com.revature.model;
+package com.revature;
 
 public class EnhancedForLoopPrint {
+	
+	public static void main(String[] args) {
+		EnhancedForLoop();
+	}
 
-	public void EnhancedForLoop() {
+	public static void EnhancedForLoop() {
 
 		//create an array of integers with 100 empty slots
 		int intArray[] = new int[100];

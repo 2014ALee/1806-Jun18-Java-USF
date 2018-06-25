@@ -1,8 +1,17 @@
-package com.revature.model;
+package com.revature;
 
 public class BubbleSort {
 
-	public void Sort(int[] myIntArray) {
+	public static void main(String[] args) {
+		int [] intArray = {8,4,2,8,9,1,4,3};
+		intArray = Sort(intArray);
+		
+		for(int num : intArray) {
+			System.out.print(num);
+		}
+		
+	}
+	public static int[] Sort(int[] myIntArray) {
 		
 		for(int num : myIntArray) {
 			for(int x = 0; x < myIntArray.length - 1; x++) {
@@ -16,10 +25,7 @@ public class BubbleSort {
 			}
 		}
 
-		for(int num : myIntArray) {
-			System.out.print(num);
-		}
-		
+		return myIntArray;
 	}
 
 }

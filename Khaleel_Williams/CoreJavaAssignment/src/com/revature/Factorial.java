@@ -1,8 +1,11 @@
-package com.revature.model;
+package com.revature;
 
 public class Factorial {
 	
-	public int Factor(int i) {
+	public static void main(String[] args) {
+		System.out.println("The factor of 8 is = " + Factor(8));
+	}
+	public static int Factor(int i) {
 		
 		if((i == 1) || (i == 0)) {
 			

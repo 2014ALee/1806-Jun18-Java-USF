@@ -1,9 +1,14 @@
-package com.revature.model;
+package com.revature;
 
 import java.util.Deque;
 import java.util.LinkedList;
 
 public class ReverseString {
+	
+	public static void main(String[] args) {
+		reverse("how are you?");
+	}
+	
 	
 	public static void reverse(String str) {
 		

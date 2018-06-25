@@ -2,6 +2,10 @@ package com.revatur;
 
 import java.util.ArrayList;
 
+import com.revature.BubbleSort;
+import com.revature.EnhancedForLoopPrint;
+import com.revature.Factorial;
+import com.revature.MinUsingTernary;
 import com.revature.model.*;
 
 public class CoreJavaDriver {
@@ -11,13 +15,8 @@ public class CoreJavaDriver {
 		BubbleSort bubble = new BubbleSort();
 		FibNumbers fib = new FibNumbers();
 		Factorial factor = new Factorial();
-		PrintPrimeNumbers prime = new PrintPrimeNumbers();
 		MinUsingTernary ternary = new MinUsingTernary();
 		EnhancedForLoopPrint driver = new EnhancedForLoopPrint();
-		
-		
-		
-		
 		
 		
 		

@@ -1,9 +1,13 @@
-package com.revature.model;
+package com.revature;
 
 import java.util.Deque;
 import java.util.LinkedList;
 
 public class DisplayTriangle {
+	
+	public static void main(String[] args) {
+		Triangle();
+	}
 
 	public static void Triangle() {
 
