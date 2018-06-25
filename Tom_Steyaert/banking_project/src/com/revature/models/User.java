@@ -5,7 +5,7 @@ import java.io.Serializable;
 public class User implements Comparable, Serializable{
 
 	private static final long serialVersionUID = 1L;
-	
+
 	private int balance = 0;
 	private String userName;
 	private String password;
@@ -17,11 +17,21 @@ public class User implements Comparable, Serializable{
 		this.password = password;
 	}
 
-	public void deposit(int amount) {
-		balance += amount;
+	public boolean deposit(int amount) {
+		if(amount <= 0) {
+			return false;
+		} else {
+
+			balance += amount;
+			return true;
+		}
 	}
-	
+
 	public boolean withdraw(int amount) {
+
+		if(amount < 0) {
+			return false;
+		}
 
 		if(amount > balance) {
 			return false;

@@ -1,8 +1,10 @@
-package homework_week1.questions.question18;
+package J_Unit_tests;
 
 import static org.junit.Assert.*;
 
 import org.junit.Test;
+
+import homework_week1.questions.question18.Subclass;
 
 public class Question18Test {
 	Subclass mySubclass = new Subclass();

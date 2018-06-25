@@ -23,31 +23,35 @@ public class BankAppDriver {
 	static TreeMap<String, User> userBank = new TreeMap<String, User>();
 
 
+	//the following method saves the userBank by serializing it
+	//and placing it in a .txt file
 	public static void persistUserBank() {
+		
+		//we use the time to generate a unique and informative file title
 		String fileName = Long.toString(currentTime.getTime()) + ".txt";
 
 		FileOutputStream file;
+		
 		try {
 
 			file = new FileOutputStream(fileName);
 			ObjectOutputStream out = new ObjectOutputStream(file);
 
+			//here we write to our file and close it
 			out.writeObject(userBank);
 			out.close();
 			file.close();
 
 		} catch (FileNotFoundException e) {
-			System.out.println("error");
+			System.out.println("error writing object to file");
 
 		} catch (IOException e) {
-			System.out.println("error");
+			System.out.println("error writing object to file");
 
 		}
 	}
 
 	public static void mainMenu() {
-
-		persistUserBank();
 
 		System.out.println("\n\n                Welcome to Revature Bank");
 		System.out.println("------------------------------------------------------------");
@@ -59,6 +63,8 @@ public class BankAppDriver {
 		try {
 			String optionChosen = userInputReader.readLine();
 
+			//depending on what value the user inputs, a different if statement
+			//is evaluated
 			if(optionChosen.equals("1")) {
 
 				logIn();
@@ -68,23 +74,27 @@ public class BankAppDriver {
 				registerAccount();
 
 			} else if(optionChosen.equals("3")) {
-				System.out.println("Application ended");
+				
+				System.out.println("\nApplication ended");
 				System.exit(0);
+
+			//this else is executed if they input a string, but it isn't any of the options given	
+			//then we return to the main menu	
 			} else {
 				System.out.println("\nInvalid selection, please try again\n\n");
 				mainMenu();
 			}
-
 		} catch (IOException e) {
 
 			System.out.println("\nError reading selection, please try again\n\n");
 			mainMenu();
 		}
-
 	}
 
 	public static void withdrawMoney(String userName) {
 
+		//we retrieve the user from the userBank; at this point we know
+		//the user exists since they must be logged in to withdraw money
 		User currentUser = userBank.get(userName);
 
 		int amountToWithdraw = 0;
@@ -94,7 +104,8 @@ public class BankAppDriver {
 
 			amountToWithdraw = Integer.parseInt(userInputReader.readLine());
 
-			//if this is true, we know the withdrawl was successful
+			//the withdraw method returns true if successful or false if not
+			//If the amount entered is less than or equal to zero, withdraw returns false
 			if(!currentUser.withdraw(amountToWithdraw)) {
 
 				System.out.println("\n Insufficient funds in your account");
@@ -103,7 +114,6 @@ public class BankAppDriver {
 			} else {
 
 				System.out.println("\n Withdrawl successful");
-
 				persistUserBank();
 
 				loggedInMenu(userName);
@@ -127,17 +137,24 @@ public class BankAppDriver {
 		User currentUser = userBank.get(userName);
 
 		try {
-			System.out.print("\n\n"
-					+ "Amount to deposit:");			
+			System.out.print("\n\n Amount to deposit:");			
 			amountToDeposit = Integer.parseInt(userInputReader.readLine());
 
-			currentUser.deposit(amountToDeposit);
+			//deposit returns false if the number entered is less than or equal to 0
+			if(!currentUser.deposit(amountToDeposit)) {
 
-			System.out.println("Money successfully deposited");
+				System.out.println("Invalid amount entered for deposit: Enter an amount greater than 0");
+				
+				loggedInMenu(userName);
+				
+			} else {
 
-			persistUserBank();
+				//since we made a change to a user's account, we save our data
+				System.out.println("Money successfully deposited");
+				persistUserBank();
 
-			loggedInMenu(userName);
+				loggedInMenu(userName);
+			}
 
 		} catch (NumberFormatException | IOException e) {
 
@@ -148,6 +165,8 @@ public class BankAppDriver {
 
 	}
 
+	
+	//for simplicity we treat money as a whole number, or int in our program
 	public static void loggedInMenu(String userName) {
 		User currentUser = userBank.get(userName);
 
@@ -173,25 +192,22 @@ public class BankAppDriver {
 			if(optionChosen.equals("2")) {
 
 				depositMoney(userName);
-
 			}
 
 			if(optionChosen.equals("3")) {
 
 				withdrawMoney(userName);
-
 			}
 
 			if(optionChosen.equals("4")) {
 
 				mainMenu();
-
 			}
 
 			if(optionChosen.equals("5")) {
-
+				
+				System.out.println("\nApplication ended");
 				System.exit(0);
-
 			}
 
 		} catch (IOException e) {
@@ -206,12 +222,12 @@ public class BankAppDriver {
 		try {
 			System.out.println("\n\n                Create New Account");
 			System.out.println("------------------------------------------------------------");
-			System.out.print("Username:");
 
+			//we get the username and password below
+			System.out.print("Username:");
 			String userName = userInputReader.readLine();
 
 			System.out.print("Password:");
-
 			String password = userInputReader.readLine();
 
 			User newUser = new User(userName, password);
@@ -224,7 +240,6 @@ public class BankAppDriver {
 				System.out.println("Account successfully registered");
 
 				persistUserBank();
-
 				mainMenu();
 
 			} else {
@@ -247,30 +262,31 @@ public class BankAppDriver {
 
 			System.out.println("\n\n                Login");
 			System.out.println("------------------------------------------------------------");
+			
+			//we get our username and password
 			System.out.print("Username:");
-
 			String userName = userInputReader.readLine();
 
 			System.out.print("Password:");
-
 			String password = userInputReader.readLine();
 
+			//if the user isn't found in the user bank, we return to the main menu
 			if(!userBank.containsKey(userName)) {
 
-				System.out.println("Login failed, please try again");
-				logIn();
+				System.out.println("Login failed, returning to main menu");
+				mainMenu();
 
+			//if the password entered doesn't match the saved password for that user we go back to the main menu	
 			} else if (!userBank.get(userName).getPassword().equals(password)){
 
-				System.out.println("Login failed, please try again");
-				logIn();			
+				System.out.println("Login failed, returning to main menu");
+				mainMenu();			
 
 			} else {
 
 				System.out.println("Login successful!");
 
 				loggedInMenu(userName);
-
 			}
 
 		} catch (IOException e) {
@@ -281,5 +297,6 @@ public class BankAppDriver {
 
 	public static void main(String[] args) {
 		mainMenu();
+		
 	}
 }

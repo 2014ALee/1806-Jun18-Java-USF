@@ -1,10 +1,13 @@
-package homework_week1.questions.question7;
+package J_Unit_tests;
 
 import static org.junit.Assert.*;
 
 import java.util.Arrays;
 
 import org.junit.Test;
+
+import homework_week1.questions.question7.Employee;
+import homework_week1.questions.question7.EmployeeComparator;
 
 public class Question7Test {
 
