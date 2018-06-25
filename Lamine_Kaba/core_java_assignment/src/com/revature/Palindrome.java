@@ -21,7 +21,7 @@ public class Palindrome {
 		originalList.add("billy");  
 		originalList.add("did"); 
 
-		System.out.println("Before Sorting!");
+		System.out.println("Before Sorting: ");
 
 		for(String obj:originalList)  
 			System.out.print(", " +obj); 
@@ -34,7 +34,7 @@ public class Palindrome {
 
 		sortedList = originalList;
 
-		System.out.println("\nAfer Sorting!");
+		System.out.println("\nAfer Sorting: ");
 
 		for(String obj:sortedList)  
 			System.out.print(", " +obj);  
@@ -49,7 +49,7 @@ public class Palindrome {
 			}
 		}
 
-		System.out.println("\nPalindrome!");
+		System.out.println("\nPalindrome are: ");
 
 		for(String obj:palindromes)  
 			System.out.print(", " +obj);

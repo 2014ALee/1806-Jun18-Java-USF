@@ -31,6 +31,8 @@ public class NumberArrayList {
                 i--;
             }
         }
+		
+		System.out.println("The prime numbers are: ");
 		System.out.println(myPrime);
 	}
 	
