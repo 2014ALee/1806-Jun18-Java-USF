@@ -9,11 +9,12 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.Scanner;
 
 
 
 public class SerializationDriver {
-
+	static Scanner userInput = new Scanner(System.in);
 	private static User user = null;
 	private static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
@@ -27,7 +28,7 @@ public class SerializationDriver {
 
 		String userInput;
 
-		System.out.println("    +--------------MAIN MENU--------------+");
+		System.out.println("\n    +--------------MAIN MENU--------------+");
 		System.out.println("          Welcome To Your Bank");
 		System.out.println("Please choose an option");
 		
@@ -91,6 +92,7 @@ public class SerializationDriver {
 				System.out.println("Username " + user.getUsername() + " Created successfully!");
 				//System.out.println("Creating new user, " + user.getUsername() + "...\n");
 				serializeUser(user);
+				login();
 			} else {
 				System.out.println("Username is not available. Please try again...");
 				register();
@@ -186,7 +188,7 @@ public class SerializationDriver {
 		
 		System.out.println("[1] - Deposit");
 		System.out.println("[2] - Withdraw");
-		System.out.println("[2] - View balance");
+		System.out.println("[3] - View balance");
 		System.out.print("Selection: ");
 		
 		String userInput;
@@ -197,15 +199,15 @@ public class SerializationDriver {
 			switch(userInput) {
 			case "1":
 				System.out.println("Navigating to deposit...");
-				login();
+				deposit();
 				break;
 			case "2":
 				System.out.println("Navigating to Withdraw...");
-				register();
+				withdraw();
 				break;
 			case "3":
 				System.out.println("Navigating to Balance...");
-				register();
+				checkBance();
 				break;
 			default:
 				System.out.println("Invalid selection, please try again.");
@@ -220,14 +222,102 @@ public class SerializationDriver {
 	}
 	
 	private static void deposit() {
-		System.out.println("Please enter the amount will will to deposit");
-		double depoAmount;
+		
+		System.out.println("\n    +--------------Deposit--------------+");
+		
+		System.out.println("Please enter the amount you will like to deposit");
+		double depoAmount = 0;
+		depoAmount = userInput.nextDouble();
+		
+		user.setBalance(user.getBalance() + depoAmount);
+		serializeUser(user);
+		System.out.println("Deposit successful...");
+		System.out.println("Do you want to check you balance?\nPress 'y' to make another transaction or any key to Logout");
+		
+		String yesNo;
 		try {
-			depoAmount = br.read();
+			yesNo = br.readLine();
+			if(yesNo.toLowerCase().equals("y")) {
+				System.out.println("Your balance is: " + user.getBalance());
+				System.out.println("Press 'y' to make another transaction or any key to Logout");
+				//String yesNo;
+				try {
+					yesNo = br.readLine();
+					if(yesNo.toLowerCase().equals("y")) {
+						activities();
+					}
+					else {
+						logout();
+					}
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			else {
+				logout();
+			}
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	
+	private static void withdraw() {
+		
+		System.out.println("\n    +--------------Withdraw--------------+");
+		
+		System.out.println("Please enter the amount you will like to withdraw");
+		double withdAmount = 0;
+		withdAmount = userInput.nextDouble();
+		
+		user.setBalance(user.getBalance() - withdAmount);
+		serializeUser(user);
+		System.out.println("Withdraw successful...");
+		System.out.println("Your balance is: " + user.getBalance());
+		System.out.println("Press 'y' to make another transaction or any key to Logout");
+		
+		String yesNo;
+		try {
+			yesNo = br.readLine();
+			if(yesNo.toLowerCase().equals("y")) {
+				activities();
+			}
+			else {
+				logout();
+			}
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	private static void checkBance() {
+		
+		System.out.println("\n    +--------------CheckBanlance--------------+");
+		
+		System.out.println("Your balance is: " + user.getBalance());
+		System.out.println("Press 'y' to make another transaction or any key to Logout");
+		
+		String yesNo;
+		try {
+			yesNo = br.readLine();
+			if(yesNo.toLowerCase().equals("y")) {
+				activities();
+			}
+			else {
+				logout();
+			}
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}	
+	}
+	
+	private static void logout() {
+		System.out.println("Thank you for your business!\nGoodbye!!");
+		mainMenu();
+		System.exit(0);
 	}
 	
 	private static boolean credentialsValid(String username, String password) {

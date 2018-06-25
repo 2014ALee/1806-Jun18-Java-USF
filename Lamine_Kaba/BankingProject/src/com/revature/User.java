@@ -13,7 +13,16 @@ public class User implements Serializable {
 	private String username;
 	private String password;
 	private String email;
+	private double balance;
 	
+	public double getBalance() {
+		return balance;
+	}
+
+	public void setBalance(double balance) {
+		this.balance = balance;
+	}
+
 	public User() {	}
 
 	public User(String firstName, String lastName, String username, String password, String email) {
