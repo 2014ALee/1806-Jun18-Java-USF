@@ -7,7 +7,7 @@ public class QuestionEighteenDriver extends QuestionEighteen {
 	public static void main(String[] args) {
 
 		//create string to pass to methods
-		String str1 = "Hi";
+		String str1 = "hi";
 		String str2 = "5";
 		
 		//create object to call methods
@@ -48,11 +48,14 @@ public class QuestionEighteenDriver extends QuestionEighteen {
 	}
 
 	@Override
-	public void printStringToIntPlusTen(String str) {
+	public int printStringToIntPlusTen(String str) {
 
 		int i = Integer.parseInt(str);
 		i += 10;
 		
+		//print i because question 18 says to print it from the method
 		System.out.println(i);
+		
+		return i;
 	}
 }

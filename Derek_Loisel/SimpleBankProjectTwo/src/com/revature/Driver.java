@@ -20,15 +20,61 @@ public class Driver {
 	private static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
 	public static void main(String[] args) {
-	
-		mainMenu();
+
+		//gather user input from main menu
+		String userInput = mainMenu();
+
+		//navigate to page based on user input
+		switch (userInput) {
+		
+		case "1":
+		{
+			login();
+			break;
+		}
+		
+		case "2":
+		{
+			//return the user object trying to register
+			user = register();
+
+			// check user name availability
+			if (usernameAvailable(user)) {
+				// username available				
+			} else {
+				System.out.println("Username is not available. Please try again...");
+				register();
+			}
+
+			// create new user
+			serializeUser(user);
+			//return to main menu
+			mainMenu();
+
+			break;
+		}
+		
+		case "3":
+		{
+			System.exit(0);
+		}
+		
+		default:
+		{
+			System.out.println("Invalid selection, please try again!\n");
+			mainMenu();
+		}
+
+		}
+
+
 
 	}
 
-	private static void mainMenu() {
+	private static String mainMenu() {
 
 		// string to store user input
-		String userInput;
+		String userInput = "";
 
 		System.out.println("+--------------MAIN MENU--------------+");
 
@@ -41,30 +87,17 @@ public class Driver {
 			// get user input from main menu
 			userInput = br.readLine();
 
-			switch (userInput) {
-			case "1":
-				login();
-				break;
-			case "2":
-				register();
-				break;
-			case "3":
-				System.exit(0);
-			default:
-				System.out.println("Invalid selection, please try again!\n");
-				// back to main menu
-				mainMenu();
-			}
-
 		} catch (IOException ioe) {
-			// System.out.println("[LOG] - Error while reading from console");
+
+			System.out.println("Invalid selection, please try again!\n");
 			// e.printStackTrace();
 			mainMenu();
 		}
 
+		return userInput;
 	}
 
-	private static void register() {
+	private static User register() {
 
 		// Strings to store user input for User object
 		String firstName, lastName, username, password, email;
@@ -89,26 +122,16 @@ public class Driver {
 			System.out.print("Email Address: ");
 			email = br.readLine();
 
-			// create new User object
+			// create new User object from user input to pass to usernameAvailable
 			user = new User(firstName, lastName, username, password, email);
 
-			// check username availability
-			if (usernameAvailable(user)) {
-				// username available
-				// create new user
-				serializeUser(user);
-				mainMenu();
-			} else {
-				System.out.println("Username is not available. Please try again...");
-				register();
-			}
-
 		} catch (IOException ioe) {
-			// System.out.println("[LOG] - Error while reading from console");
+			System.out.println("An error occured while registering, please try again");
 			// e.printStackTrace();
 			mainMenu();
 		}
 
+		return user;
 	}
 
 	// check if the username is available by comparing the user input to the
@@ -125,7 +148,8 @@ public class Driver {
 		}
 	}
 
-	// store the User object into the text file if they're registering with a valid username
+	// store the User object into the text file if they're registering with a valid
+	// username
 	private static void serializeUser(User u) {
 
 		// create a string to name the users file according to username
@@ -174,15 +198,15 @@ public class Driver {
 					user = (User) ois.readObject();
 
 				} catch (FileNotFoundException fnfe) {
-					System.out.println("Invalid login");
+					System.out.println("An error occurred while logging in");
 					// e.printStackTrace();
 					mainMenu();
 				} catch (IOException ioe) {
-					System.out.println("Invalid login");
+					System.out.println("An error occurred while logging in");
 					// e.printStackTrace();
 					mainMenu();
 				} catch (ClassNotFoundException cnfe) {
-					System.out.println("Invalid login");
+					System.out.println("An error occurred while logging in");
 					// e.printStackTrace();
 					mainMenu();
 				}
@@ -218,15 +242,15 @@ public class Driver {
 			}
 
 		} catch (FileNotFoundException fnfe) {
-			System.out.println("Invalid login");
+			System.out.println("An error occurred while logging in");
 			// e.printStackTrace();
 			mainMenu();
 		} catch (IOException ioe) {
-			System.out.println("Invalid login");
+			System.out.println("An error occurred while logging in");
 			// e.printStackTrace();
 			mainMenu();
 		} catch (ClassNotFoundException cnfe) {
-			System.out.println("Invalid login");
+			System.out.println("An error occurred while logging in");
 			// e.printStackTrace();
 			mainMenu();
 		}
@@ -348,7 +372,6 @@ public class Driver {
 		System.out.print("How much would you like to withdraw? ");
 		try {
 
-
 			// put the users input into the amount to withdraw
 			amountToWithdraw = Double.parseDouble(br.readLine());
 			if (amountToWithdraw < 0) {
@@ -409,7 +432,7 @@ public class Driver {
 		} catch (IOException ie) {
 			System.out.println("Please enter a valid number");
 			withdraw();
-			//ie.printStackTrace();
+			// ie.printStackTrace();
 		}
 	}
 

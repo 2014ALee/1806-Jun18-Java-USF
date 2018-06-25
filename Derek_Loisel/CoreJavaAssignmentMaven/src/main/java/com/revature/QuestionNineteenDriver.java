@@ -2,7 +2,7 @@ package com.revature;
 
 import java.util.ArrayList;
 
-public class QuestionNineteen {
+public class QuestionNineteenDriver {
 
 	//	Q19. Create an ArrayList and insert integers 1 through 10. Display the ArrayList. 
 	//	Add all the even numbers up and display the result. Add all the odd numbers up and display the result. 
@@ -19,50 +19,38 @@ public class QuestionNineteen {
 		System.out.println(numsArrayList);
 
 		//Add even numbers from ArrayList and display the result
-		System.out.println(addEvenNums(numsArrayList));
-
-		//Add odd numbers from ArrayList and display the result
-		System.out.println(addOddNums(numsArrayList));		
-
-		//remove prime numbers from the ArrayList
-		numsArrayList = removePrimes(numsArrayList);
-		
-		//print out the ArrayList of primes
-		System.out.println(numsArrayList);
-	}
-
-
-	public static int addEvenNums (ArrayList<Integer> intArrayList) {
-
 		int evenSum = 0;
 
-		for (int num : intArrayList) {			
+		for (int num : numsArrayList) {			
 			if(num % 2 == 0) {
 				evenSum += num;				
 			}
 		}
-
-		return evenSum;
-	}
-
-	public static int addOddNums (ArrayList<Integer> list) {
-
+		System.out.println(evenSum);
+		
+		//Add odd numbers from ArrayList and display the result
 		int oddSum = 0;
 
-		for (int num : list) {			
+		for (int num : numsArrayList) {			
 			if(num % 2 != 0) {
 				oddSum += num;				
 			}
-		}
+		}		
+		System.out.println(oddSum);
+		
+		//get non prime numbers from the ArrayList
+		numsArrayList = removePrimes(numsArrayList);
+		
+		//print out the array list of non primes
+		System.out.println(numsArrayList);
 
-		return oddSum;
 	}
-	
+
 	public static ArrayList<Integer> removePrimes (ArrayList<Integer> list) {
 		
 		ArrayList<Integer> tempArrayList = new ArrayList<Integer>();;
 		
-		//find the primes and add them to tempArrayList
+		//find the non primes and add them to tempArrayList
 		//loop through each number in the ArrayList
 		for (int num : list) {
 			//set a counter to determine how many times a number was divisible by the num being checked
@@ -75,7 +63,8 @@ public class QuestionNineteen {
 				if (num % i == 0)
 					counter = counter + 1;
 			//if the counter is 2 its prime because the number being checked was only divisible by 2 numbers (the number itself and 1)
-			if (counter == 2)
+			//so only add numbers when the counter does not equal 2 for non primes
+			if (counter != 2)
 				tempArrayList.add(num);
 		}
 		
