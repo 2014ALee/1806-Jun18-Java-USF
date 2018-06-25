@@ -246,7 +246,19 @@ public class BankDriver {
 
 	private static void withdraw(Double withdrawal) {
 		double balance = user.getBalance();
-		user.setBalance((balance - withdrawal > 0.0) ? balance - withdrawal : 0.0);
+		
+		if (balance - withdrawal > 0.0) {
+			user.setBalance(balance - withdrawal);
+		} else {
+			System.out.println("Insufficient funds for this transaction. Please try again.");
+			try {
+				Thread.sleep(2000);
+			} catch (InterruptedException e) {
+				System.out.println("An error occured.");
+			} finally {
+				withdrawMenu();
+			}
+		}
 	}
 	
 	private static void depositMenu() {

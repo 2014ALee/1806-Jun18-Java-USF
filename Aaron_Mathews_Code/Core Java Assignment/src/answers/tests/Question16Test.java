@@ -10,9 +10,9 @@ class Question16Test {
 
 	@Test
 	public void testCharCounter() {
-		String[] str  = {"Hello, " , "world!"};
+		String[] str  = {"Hello," , "world!"};
 		//13 String chars but method calls join() with " ".
-		assertEquals(14, Question16.charCounter(str));
+		assertEquals(13, Question16.charCounter(str));
 	}
 
 }
