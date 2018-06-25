@@ -30,7 +30,7 @@ public class Driver {
 		// string to store user input
 		String userInput;
 
-		System.out.println("+--------------MAIN MENU--------------+");
+		System.out.println("--------------MAIN MENU--------------");
 
 		System.out.println("[1] - Login");
 		System.out.println("[2] - Register");
@@ -69,7 +69,7 @@ public class Driver {
 		// Strings to store user input for User object
 		String firstName, lastName, username, password, email;
 
-		System.out.println("\n+--------------REGISTRATION--------------+");
+		System.out.println("\n-------------REGISTRATION--------------");
 
 		try {
 
@@ -153,7 +153,7 @@ public class Driver {
 
 		String username, password;
 
-		System.out.println("\n+--------------LOGIN--------------+");
+		System.out.println("\n----------------LOGIN----------------");
 
 		try {
 
@@ -165,28 +165,8 @@ public class Driver {
 
 			if (credentialsValid(username, password)) {
 				// login successful
-				// get users serialized object from file and store it in User object to access
-				// and modify its variables as needed
-				String fileName = username + ".ser";
-
-				try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(fileName))) {
-
-					user = (User) ois.readObject();
-
-				} catch (FileNotFoundException fnfe) {
-					System.out.println("Invalid login");
-					// e.printStackTrace();
-					mainMenu();
-				} catch (IOException ioe) {
-					System.out.println("Invalid login");
-					// e.printStackTrace();
-					mainMenu();
-				} catch (ClassNotFoundException cnfe) {
-					System.out.println("Invalid login");
-					// e.printStackTrace();
-					mainMenu();
-				}
 				// go to home page after successful login
+				//user object is already deserialized and set to user from the credentialsValid() method
 				homePage();
 
 				return;
@@ -239,7 +219,7 @@ public class Driver {
 		// string to store user input
 		String userInput;
 
-		System.out.println("+--------------HOME PAGE--------------+");
+		System.out.println("--------------HOME PAGE--------------");
 
 		System.out.println("[1] - Deposit");
 		System.out.println("[2] - Withdraw");
@@ -282,7 +262,7 @@ public class Driver {
 
 		Double amountToDeposit = 0d;
 
-		System.out.println("+-------------------DEPOSIT--------------------+");
+		System.out.println("----------------DEPOSIT-----------------");
 		System.out.print("How much would you like to deposit? ");
 		try {
 
@@ -344,7 +324,7 @@ public class Driver {
 	private static void withdraw() {
 		Double amountToWithdraw = 0d;
 
-		System.out.println("+-------------------Withdraw--------------------+");
+		System.out.println("---------------Withdraw----------------");
 		System.out.print("How much would you like to withdraw? ");
 		try {
 
@@ -417,9 +397,9 @@ public class Driver {
 
 		String userInput;
 
-		System.out.println("+-------------------VIEW BALANCE--------------------+");
+		System.out.println("-------------VIEW BALANCE----------------");
 		System.out.println("Your current balance is: " + user.getBalance());
-		System.out.println("----------------------------------------------------");
+		System.out.println("-----------------------------------------");
 		System.out.println("[1] - Back to Home Page");
 		System.out.println("[2] - Logout");
 		System.out.print("Selection: ");
@@ -453,7 +433,7 @@ public class Driver {
 
 		String userInput;
 
-		System.out.println("+--------------LOGOUT--------------+");
+		System.out.println("--------------LOGOUT--------------");
 		System.out.println("Are you sure you want to log out?");
 		System.out.println("[1] - Yes");
 		System.out.println("[2] - No");
@@ -464,26 +444,8 @@ public class Driver {
 
 			switch (userInput) {
 			case "1":
-				// re serialization here before logout
-				// create a string to name the users file according to username
-				String fileName = user.getUsername() + ".ser";
-
-				// try with resources to autoclose after the try/catch
-				try (FileOutputStream fos = new FileOutputStream(fileName);
-						ObjectOutputStream oos = new ObjectOutputStream(fos);) {
-
-					// Write the specified object to the ObjectOutputStream.
-					oos.writeObject(user);
-
-				} catch (FileNotFoundException fnfe) {
-					// System.out.println("[LOG] - An error occurred while accessing the file");
-					// e.printStackTrace();
-					mainMenu();
-				} catch (IOException ioe) {
-					// System.out.println("[LOG] - An error occurred while writing the file");
-					// e.printStackTrace();
-					mainMenu();
-				}
+				// re serialization here before logout				
+				serializeUser(user);
 
 				mainMenu();
 				break;

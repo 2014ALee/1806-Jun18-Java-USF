@@ -13,6 +13,7 @@ public class User implements Serializable {
 	private String email;
 	private double balance;
 	
+	//no args constructor
 	public User() {	}
 
 	//constructor for user registration
