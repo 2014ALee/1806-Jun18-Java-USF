@@ -14,7 +14,7 @@ import com.revature.models.User;
 
 public class Driver {
 
-	// create a User object to store user data
+	// create a User object to serialize, deserialize, and manipulate user data
 	private static User user = null;
 	// create a BufferedReader to read user input
 	private static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
