@@ -1,15 +1,56 @@
 package test;
 
+import java.text.DecimalFormat;
+
 public class Test {
+	private static DecimalFormat df2 = new DecimalFormat(".##");
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		
 		int x = 10;
 		
-		System.out.println(x++ * ++x * x++);
+		//System.out.println(x++ * ++x * x++);
+		
+		double x2 = 2.4745;
+		String x3;
+		
+		x3 = new DecimalFormat("#.00").format(x2);
+		
+		System.out.println("x3 string value is:");
+		System.out.println(x3);
+		
+		// Change x3 back to double
+		double x4;
+		x4 = Double.parseDouble(x3);
+		System.out.println("x4 after parsing is:");
+		System.out.println(x4);
+		
+		// Add value to x4
+		x4 = x4 + 5;
+		System.out.println("x4 + 5 is:");
+		System.out.println(x4);		
+		
+		/*
+		 * DecimalFormat df = new DecimalFormat("#.00"); 
+			Note the "00", meaning exactly two decimal places.
+			If you use "#.##" (# means "optional" digit), it will drop trailing zeroes - ie new DecimalFormat("#.##").format(3.0d);
+ 			prints just "3", not "3.00"
+		 */
+		
+		
 	}
-
+	
+	
+//	public static double trimp() {
+//		
+//		double x2 = 2.4745;
+//		
+//		return df2.format(x2);
+//		
+//	}
+	
+	
 }
 
 /*

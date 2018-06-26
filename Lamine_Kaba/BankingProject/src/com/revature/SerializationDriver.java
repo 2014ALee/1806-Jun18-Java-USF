@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.text.DecimalFormat;
 import java.util.Scanner;
 
 
@@ -189,6 +190,7 @@ public class SerializationDriver {
 		System.out.println("[1] - Deposit");
 		System.out.println("[2] - Withdraw");
 		System.out.println("[3] - View balance");
+		System.out.println("[4] - LogOut");
 		System.out.print("Selection: ");
 		
 		String userInput;
@@ -209,6 +211,10 @@ public class SerializationDriver {
 				System.out.println("Navigating to Balance...");
 				checkBance();
 				break;
+			case "4":
+				System.out.println(" ");
+				exitProgram();
+				break;
 			default:
 				System.out.println("Invalid selection, please try again.");
 				activities();
@@ -227,18 +233,26 @@ public class SerializationDriver {
 		
 		System.out.println("Please enter the amount you will like to deposit");
 		double depoAmount = 0;
+		
 		depoAmount = userInput.nextDouble();
 		
-		user.setBalance(user.getBalance() + depoAmount);
-		serializeUser(user);
-		System.out.println("Deposit successful...");
-		System.out.println("Do you want to check you balance?\nPress 'y' to make another transaction or any key to Logout");
+		if(depoAmount <= 0) {
+			System.out.println("Error! you can't deposit a negative value");
+			System.out.println("Please try again");
+			deposit();
+		}
+		else {
+			user.setBalance(user.getBalance() + trimedUserInput(depoAmount));
+			serializeUser(user);
+			System.out.println("Deposit successful...");
+			System.out.println("Do you want to check you balance?\nPress 'y' to make another transaction or any key to Logout");
+		}
 		
 		String yesNo;
 		try {
 			yesNo = br.readLine();
 			if(yesNo.toLowerCase().equals("y")) {
-				System.out.println("Your balance is: " + user.getBalance());
+				System.out.println("Your balance is: " + showAmount());
 				System.out.println("Press 'y' to make another transaction or any key to Logout");
 				//String yesNo;
 				try {
@@ -271,11 +285,24 @@ public class SerializationDriver {
 		double withdAmount = 0;
 		withdAmount = userInput.nextDouble();
 		
-		user.setBalance(user.getBalance() - withdAmount);
-		serializeUser(user);
-		System.out.println("Withdraw successful...");
-		System.out.println("Your balance is: " + user.getBalance());
-		System.out.println("Press 'y' to make another transaction or any key to Logout");
+		if(withdAmount < 0) {
+			System.out.println("Error! you can't withdraw a negative value");
+			System.out.println("Please try again");
+			withdraw();
+		}
+		else if(withdAmount > user.getBalance()) {
+			System.out.println("No sufficient found for the requested amount");
+			System.out.println("Your balance is: " + showAmount());
+			System.out.println("Please try again ");
+			withdraw();
+		}
+		else {
+			user.setBalance(user.getBalance() - trimedUserInput(withdAmount));
+			serializeUser(user);
+			System.out.println("Withdraw successful...");
+			System.out.println("Your balance is: " + showAmount());
+			System.out.println("Press 'y' to make another transaction or any key to Logout");
+		}
 		
 		String yesNo;
 		try {
@@ -296,7 +323,7 @@ public class SerializationDriver {
 		
 		System.out.println("\n    +--------------CheckBanlance--------------+");
 		
-		System.out.println("Your balance is: " + user.getBalance());
+		System.out.println("Your balance is: " + showAmount());
 		System.out.println("Press 'y' to make another transaction or any key to Logout");
 		
 		String yesNo;
@@ -316,7 +343,31 @@ public class SerializationDriver {
 	
 	private static void logout() {
 		System.out.println("Thank you for your business!\nGoodbye!!");
-		mainMenu();
+		System.exit(0);
+	}
+	
+	private static double trimedUserInput(double userInput) {
+		
+		double receivedInput = userInput;
+		
+		// Trim input to 2 decimal place string
+		String trimedInput;
+		trimedInput = new DecimalFormat("#.00").format(receivedInput);
+		
+		// Parse the trimed value back to double
+		double parsedDouble;
+		parsedDouble = Double.parseDouble(trimedInput);
+		
+		 return parsedDouble;
+	}
+	
+	private static String showAmount() {
+		
+		return  new DecimalFormat("#.00").format(user.getBalance());
+	}
+	
+	private static void exitProgram() {
+		System.out.println("Thank you for your visiting!\nGoodbye!!");
 		System.exit(0);
 	}
 	
