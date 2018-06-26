@@ -11,7 +11,10 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
 import com.revature.models.Pages;
+import com.revature.models.Serialize;
 import com.revature.models.User;
+import com.revature.models.UserActions;
+import com.revature.models.Validate;
 
 
 public class BankDriver {
@@ -22,169 +25,90 @@ public class BankDriver {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
 		// create a User object to serialize, deserialize, and manipulate user data
-		User user = null;
+		User user = new User();
 
-		//bool to exit app
+		//variable to exit app
 		boolean exitApp = false;
 
-		//bool for invalid input
-		boolean tryAgain = false;
+		//loop to start back at the main menu anytime
+		while(!exitApp){
 
-		//loop to start back at the main menu or exit
-		do {
+			///////////////////////////////////
 			//get user input from the main menu
-			String userInputStr = Pages.mainMenu(br);
+			String userInput = Pages.mainMenu(br);
 
-			switch (userInputStr) {
-			//user selected login
+			switch (userInput) {
+			//case 1 when user selected login
 			case "1":
-
 				do {
-					user = Pages.login(br, user);
-					//check if the user from login are valid
-					if (credentialsValid(user.getUsername(), user.getPassword(), user)) {
-						// login successful
-						// go to home page after successful login					
-						tryAgain = false;
-						//break;					
-					} else {
-						System.out.println("Login failed!\n");
-						tryAgain = true;
-					}					
-				}while(tryAgain);				
+					//set user object info from login page
+					user = Pages.loginPage(br, user);
+					//go to home page if login input was valid
+				}while(!user.isInputValid());				
 				break;
 
-				//user selected register
+				//case 2 when user selected register
 			case "2":
-				//loop to retry case if user input was invalid
 				do {
-					user = Pages.register(br, user);
-					// check username availability
-					if (usernameAvailable(user)) {
-						// username available
-						tryAgain = false;
-						// create new user
-						serializeUser(user);
-						tryAgain = false;
-						//break;
-					} else {
-						System.out.println("Username is not available. Please try again...");
-						tryAgain = true;
-					}	
-				}while(tryAgain);
-				break;
+					//set user object info from register page
+					user = Pages.registerPage(br, user);
 
-				//user selected exit
+					//serialize the new user if input was valid
+					if (user.isInputValid()) {
+						Serialize.serializeUser(user);
+					}				
+				}while(!user.isInputValid());
+				//back to main menu after succesful registration
+				continue;
+
+				//case 3 when user selected exit
 			case "3":
-				exitApp = true;
-				break;
-				
+				//exit app
+				System.exit(0);
+
 			default:
 				System.out.println("Invalid selection, please try again!\n");
-				// back to main menu			
+				user.setInputValid(false);
+				// back to main menu	
+				continue;
 			}
 
-			Pages.homePage(br, user);
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			//back to main menu unless exit was selected
-		}while(!exitApp);
+			//loop to start back at the home page at any time
+			boolean logout = false;
+			while(!logout) {
 
-		//exit app
-		System.exit(0);
+				///////////////////////////////////
+				//home page after successful login
+				userInput = Pages.homePage(br, user);
 
-	}
+				switch (userInput) {
+				case "1":
+					UserActions.deposit();
+					break;
+				case "2":
+					UserActions.withdraw();
+					break;
+				case "3":
+					UserActions.viewBalance();
+					break;
+				case "4":
+					UserActions.logout();
+					break;
+				default:
+					System.out.println("Invalid selection, please try again!\n");
+					// back to home page
+					continue;
 
-	private static boolean usernameAvailable(User u) {
-
-		String fileName = u.getUsername() + ".ser";
-		File file = new File(fileName);
-
-		if (file.exists()) {
-			return false;
-		} else {
-			return true;
-		}
-	}
-
-	// store the User object into the text file if they're registering with a valid username
-	private static void serializeUser(User u) {
-
-		// create a string to name the users file according to username
-		String fileName = u.getUsername() + ".ser";
-
-		// try with resources to autoclose after the try/catch
-		try (FileOutputStream fos = new FileOutputStream(fileName);
-				ObjectOutputStream oos = new ObjectOutputStream(fos);) {
-
-			// Write the specified object to the ObjectOutputStream.
-			oos.writeObject(u);
-
-		} catch (FileNotFoundException fnfe) {
-			// System.out.println("[LOG] - An error occurred while accessing the file");
-			fnfe.printStackTrace();
-		} catch (IOException ioe) {
-			// System.out.println("[LOG] - An error occurred while writing the file");
-			ioe.printStackTrace();
-		}
-	}
-
-	private static boolean credentialsValid(String username, String password, User user) {
-
-		String fileName = username + ".ser";
-
-		try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(fileName))) {
-
-			user = (User) ois.readObject();
-
-			if (user != null) {
-
-				if (username.equals(user.getUsername()) & password.equals(user.getPassword())) {
-					return true;
 				}
+
 			}
 
-		} catch (FileNotFoundException fnfe) {
-			//System.out.println("Invalid login");
-			fnfe.printStackTrace();
-
-		} catch (IOException ioe) {
-			//System.out.println("Invalid login");
-			ioe.printStackTrace();
-
-		} catch (ClassNotFoundException cnfe) {
-			//System.out.println("Invalid login");
-			cnfe.printStackTrace();
-
+			//back to main menu unless exit was selected
 		}
 
-		return false;
+
+
 	}
 
-
-	public static boolean validateUserInput(String userInput) {
-
-		boolean validated = false;
-
-
-
-		return validated;
-	}
 
 }

@@ -12,7 +12,8 @@ public class User implements Serializable {
 	private String password;
 	private String email;
 	private double balance;
-	
+	private boolean inputValid;
+
 	//no args constructor
 	public User() {	}
 
@@ -74,6 +75,14 @@ public class User implements Serializable {
 		this.balance = balance;
 	}
 
+	public boolean isInputValid() {
+		return inputValid;
+	}
+
+	public void setInputValid(boolean inputValid) {
+		this.inputValid = inputValid;
+	}
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;
