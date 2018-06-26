@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+//import java.util.regex;
 
 import com.revature.models.Account;
 
@@ -276,15 +277,17 @@ public class Driver {
 		
 		try {
 			userInput = br.readLine();
+			if(userInput.indexOf('.') != -1 && userInput.indexOf('.') < (userInput.length()-2))
+				userInput = userInput.substring(0, (userInput.indexOf('.')+1));
 			balance = Double.parseDouble(userInput);
 			
 			if(balance <= 0.0) {
-				clearScreen();
+				//clearScreen();
 				System.out.println("WITHDRAWL DENIED: $" + balance + " invalid deposit ammount.");
 				balance();
 			}
 			else if(balance > account.getBalance()) {
-				clearScreen();
+				//clearScreen();
 				System.out.println("WITHDRAWL DENIED: $" + balance + " excedes current balance: " + account.getBalance());
 				balance();
 			} else {
@@ -333,15 +336,17 @@ public class Driver {
 		
 		try {
 			userInput = br.readLine();
+			if(userInput.indexOf('.') != -1 && userInput.indexOf('.') < (userInput.length()-2))
+				userInput = userInput.substring(0, (userInput.indexOf('.')+1));
 			balance = Double.parseDouble(userInput);
 			
-			if(balance>0.0) {
+			if(balance>0) {
 				account.setBalance(account.getBalance() + balance);
 				serializeAccount(account);
 				System.out.println("Deposit Successful");
 				System.out.println("New Balance is: " + account.getBalance());
 			} else {
-				clearScreen();
+				//clearScreen();
 				System.out.println("DEPOST DENIED: $" + balance + " invalid deposit ammount.");
 				balance();
 			}
