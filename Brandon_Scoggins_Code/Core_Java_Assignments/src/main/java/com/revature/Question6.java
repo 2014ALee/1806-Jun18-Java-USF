@@ -6,7 +6,7 @@ public class Question6 {
 		System.out.println(isItEven(-12));
 	}
 	
-	private static boolean isItEven(int N) {
+	public static boolean isItEven(int N) {
 		// explain this silliness
 		char[] charArrayN = ("" + N).toCharArray();
 		System.out.println(charArrayN);
