@@ -157,7 +157,9 @@ public class Pages {
 		System.out.println("[1] - Deposit");
 		System.out.println("[2] - Withdraw");
 		System.out.println("[3] - View Balance");
-		System.out.println("[4] - Logout");
+		System.out.println("[4] - Transfer Funds");
+		System.out.println("[5] - Create New Account");
+		System.out.println("[6] - Logout");
 		System.out.print("Selection: ");
 
 		try {
@@ -175,6 +177,12 @@ public class Pages {
 				viewBalance();
 				break;
 			case "4":
+				transferFunds();
+				break;
+			case "5":
+				createNewAccount();
+				break;
+			case "6":
 				logout();
 				break;
 			default:
@@ -263,7 +271,7 @@ public class Pages {
 			// check if the user is sure they want to deposit
 			String userDepositInput = "";
 
-			System.out.println("Are you sure you want to deposit " + amountToDeposit + "to your " + accountChosen + " account?");
+			System.out.println("Are you sure you want to deposit " + amountToDeposit + " to your " + accountChosen + " account?");
 			System.out.println("[1] - Yes");
 			System.out.println("[2] - No");
 			System.out.print("Selection: ");
@@ -468,6 +476,8 @@ public class Pages {
 
 	public void transferFunds() {
 
+		System.out.println("This feature is not yet available, please try again later.");
+		homePage();
 	}
 
 	public void viewBalance() {
@@ -476,13 +486,13 @@ public class Pages {
 
 		System.out.println("\n-----------VIEW BALANCE------------");
 		if (user.getHasCheckingAccount()) {
-			System.out.println("Your current balance is: " + user.getCheckingBalance());
+			System.out.println("Your current Checking Account balance is: " + user.getCheckingBalance());
 		}
 		if (user.getHasSavingsAccount()) {
-			System.out.println("Your current balance is: " + user.getSavingsBalance());
+			System.out.println("Your current Savings Account balance is: " + user.getSavingsBalance());
 		}
 		if (user.getHasJointAccount()) {
-			System.out.println("Your current balance is: " + user.getJointBalance());
+			System.out.println("Your current Joint Account balance is: " + user.getJointBalance());
 		}		
 		System.out.println("-----------------------------------");
 		System.out.println("[1] - Back to Home Page");
@@ -610,9 +620,11 @@ public class Pages {
 		if(accountType == "Checking"){
 			//create checking account
 			user.setHasCheckingAccount(true);
+			homePage();
 		}else if(accountType == "Savings"){
 			//create savings account
 			user.setHasSavingsAccount(true);
+			homePage();
 		}else {		
 			//create joint account
 			user.setHasJointAccount(true);
@@ -643,7 +655,7 @@ public class Pages {
 				jointUser.setJointUsername(username);
 				jointUser.setJointPassword(password);
 				jointUser.setJointEmail(email);
-
+				homePage();
 			} catch (IOException ioe) {
 				// System.out.println("[LOG] - Error while reading from console");
 				// e.printStackTrace();
