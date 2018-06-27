@@ -24,14 +24,15 @@ public class Serialize {
 
 		} catch (FileNotFoundException fnfe) {
 			// System.out.println("[LOG] - An error occurred while accessing the file");
-			fnfe.printStackTrace();
+			//fnfe.printStackTrace();
+			Pages.page.mainMenu();
 		} catch (IOException ioe) {
 			// System.out.println("[LOG] - An error occurred while writing the file");
-			ioe.printStackTrace();
+			 //ioe.printStackTrace();
+			Pages.page.mainMenu();
 		}
 	}
-
-
+		
 	public static User deSerializeUser(String username, User user) {
 
 		String fileName = username + ".ser";
@@ -46,11 +47,13 @@ public class Serialize {
 
 		} catch (IOException ioe) {
 			//System.out.println("Invalid login");
-			ioe.printStackTrace();
+			//ioe.printStackTrace();
+			Pages.page.mainMenu();
 
 		} catch (ClassNotFoundException cnfe) {
 			//System.out.println("Invalid login");
-			cnfe.printStackTrace();
+			//cnfe.printStackTrace();
+			Pages.page.mainMenu();
 
 		}
 

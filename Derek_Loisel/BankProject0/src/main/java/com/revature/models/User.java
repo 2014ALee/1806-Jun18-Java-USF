@@ -11,9 +11,19 @@ public class User implements Serializable {
 	private String username;
 	private String password;
 	private String email;
-	private double balance;
-	private boolean inputValid;
-
+	private double checkingBalance;
+	private double savingsBalance;
+	private double jointBalance;
+	private boolean hasCheckingAccount;
+	private boolean hasSavingsAccount;
+	private boolean hasJointAccount;
+	//the username email and pass for the other person on the joint account
+	private String jointFirstName;
+	private String jointLastName;
+	private String jointUsername;
+	private String jointEmail;
+	private String jointPassword;
+	
 	//no args constructor
 	public User() {	}
 
@@ -67,20 +77,92 @@ public class User implements Serializable {
 		this.email = email;
 	}
 
-	public double getBalance() {
-		return balance;
+	public double getCheckingBalance() {
+		return checkingBalance;
+	}
+
+	public void setCheckingBalance(double checkingBalance) {
+		this.checkingBalance = checkingBalance;
+	}
+
+	public double getSavingsBalance() {
+		return savingsBalance;
+	}
+
+	public void setSavingsBalance(double savingsBalance) {
+		this.savingsBalance = savingsBalance;
+	}
+
+	public double getJointBalance() {
+		return jointBalance;
+	}
+
+	public void setJointBalance(double jointBalance) {
+		this.jointBalance = jointBalance;
+	}
+
+	public boolean getHasCheckingAccount() {
+		return hasCheckingAccount;
+	}
+
+	public void setHasCheckingAccount(boolean hasCheckingAccount) {
+		this.hasCheckingAccount = hasCheckingAccount;
+	}
+
+	public boolean getHasSavingsAccount() {
+		return hasSavingsAccount;
+	}
+
+	public void setHasSavingsAccount(boolean hasSavingsAccount) {
+		this.hasSavingsAccount = hasSavingsAccount;
+	}
+
+	public boolean getHasJointAccount() {
+		return hasJointAccount;
+	}
+
+	public void setHasJointAccount(boolean hasJointAccount) {
+		this.hasJointAccount = hasJointAccount;
 	}
 	
-	public void setBalance(Double balance) {
-		this.balance = balance;
+	public String getJointFirstName() {
+		return jointFirstName;
 	}
 
-	public boolean isInputValid() {
-		return inputValid;
+	public void setJointFirstName(String jointFirstName) {
+		this.jointFirstName = jointFirstName;
 	}
 
-	public void setInputValid(boolean inputValid) {
-		this.inputValid = inputValid;
+	public String getJointLastName() {
+		return jointLastName;
+	}
+
+	public void setJointLastName(String jointLastName) {
+		this.jointLastName = jointLastName;
+	}
+
+	public String getJointUsername() {
+		return jointUsername;
+	}
+
+	public void setJointUsername(String jointUsername) {
+		this.jointUsername = jointUsername;
+	}
+
+	public String getJointEmail() {
+		return jointEmail;
+	}
+
+	public void setJointEmail(String jointEmail) {
+		this.jointEmail = jointEmail;
+	}
+
+	public String getJointPassword() {
+		return jointPassword;
+	}
+
+	public void setJointPassword(String jointPassword) {
+		this.jointPassword = jointPassword;
 	}
 	
 	@Override
