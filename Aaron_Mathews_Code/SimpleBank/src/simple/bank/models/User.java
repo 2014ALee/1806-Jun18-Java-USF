@@ -1,6 +1,8 @@
 package simple.bank.models;
 
 import java.io.Serializable;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 
 public class User implements Serializable {
 	

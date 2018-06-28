@@ -1,0 +1,80 @@
+-- Function: MAX ID FROM the artist TABLE
+--CREATE OR REPLACE FUNCTION get_max_id
+--    RETURN number
+--AS 
+--    max_id NUMBER;
+--BEGIN 
+--    SELECT MAX(artistid)
+--    into max_id
+--    FROM artist;
+--    
+--    return max_id;
+--END;
+--/
+--Function is created AND stored IN function folder.
+
+--Invoke get MAX( id function
+DECLARE
+    max_id NUMBER;
+BEGIN
+    max_id := get_max_id();
+    DBMS_OUTPUT.PUT_LINE('The max id IN the artist TABLE is: ' || max_id);
+END;
+/
+--Remove the stored function get_max_id
+DROP FUNCTION get_max_id;
+
+--CREATE a function that returns ALL employees who are born after 1968
+CREATE OR REPLACE FUNCTION after_1968
+RETURN SYS_REFCURSOR
+IS
+    my_cursor SYS_REFCURSOR;
+BEGIN
+    OPEN my_cursor FOR --The result SET returned by the query is stored IN our declared cursor
+    SELECT firstname, lastname, birthdate
+    FROM employee
+    WHERE birthdate > DATE '1968-12-31';
+    RETURN my_cursor; -- Function returns SYS_REFCURSOR, so RETURN the declared cursor
+END;
+/
+
+--Using the dual TABLE to invoke our stored function
+SELECT after_1968()
+FROM dual;
+
+-- Procedure: Returns ALL the artists IN the artist
+CREATE OR REPLACE PROCEDURE get_all_artists(
+    my_cursor out SYS_REFCURSOR)
+IS
+BEGIN
+    OPEN my_cursor for 
+    SELECT artistid, name
+    FROM artist; 
+ END;
+ / 
+ 
+DECLARE 
+    artist_id ARTIST.ARTISTID%TYPE; --Ensures variable has the same type AS the one IN the data
+    artist_name ARTIST.NAME%TYPE;
+    my_cursor SYS_REFCURSOR;
+BEGIN 
+    get_all_artists(my_cursor);
+    
+    LOOP
+        FETCH my_cursor
+        INTO artist_id, artist_name;
+        
+        EXIT WHEN my_cursor%NOTFOUND;
+        DBMS_OUTPUT.PUT_LINE('Artist id: ' || artist_id || ', Artist name: ' || artist_name);
+    END LOOP;
+    CLOSE my_cursor;
+END;
+/
+
+
+
+
+
+
+
+
