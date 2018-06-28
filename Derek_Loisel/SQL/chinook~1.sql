@@ -70,7 +70,7 @@ FROM employee
 WHERE hiredate > DATE '2003-06-01' AND hiredate < DATE '2004-03-01';
 
 /*Task – Delete a record in Customer table where the name is Robert Walter (There may be constraints that rely on this, find out how to resolve them)*/
-
+commit;
 
 SELECT *
 FROM customer;
