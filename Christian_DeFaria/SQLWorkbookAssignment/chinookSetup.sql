@@ -1,4 +1,8 @@
+--1.0 Setting up Chinook
+--In this section you will begin the process of working with the Chinook database
+--Task – Open the Chinook.sql file and execute the scripts with in under the master.
 
+/*  Run as Admin */
 /*******************************************************************************
    Chinook Database - Version 1.4
    Script: Chinook_Oracle.sql
@@ -11,7 +15,7 @@
 /*******************************************************************************
    Drop database if it exists
 ********************************************************************************/
-DROP USER chinook CASCADE;
+--DROP USER chinook CASCADE;
 
 
 /*******************************************************************************
@@ -31,9 +35,9 @@ GRANT create view TO chinook;
 
 
 
-conn chinook/p4ssw0rd
+--conn chinook/p4ssw0rd
 
-
+/*      Run as Regular User(chinook)     */
 /*******************************************************************************
    Create Tables
 ********************************************************************************/
@@ -15821,4 +15825,4 @@ INSERT INTO PlaylistTrack (PlaylistId, TrackId) VALUES (17, 3290);
 INSERT INTO PlaylistTrack (PlaylistId, TrackId) VALUES (18, 597);
 
 commit;
-exit;
+--exit;
