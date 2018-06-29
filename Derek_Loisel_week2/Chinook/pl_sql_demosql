@@ -1,0 +1,108 @@
+-- FUNCTION: MAX id FROM the artist table (gets the last artist that was put inserted into the table)
+--(cant use inserts, updates, or deletes
+CREATE OR REPLACE FUNCTION get_max_id
+    RETURN NUMBER
+AS
+    max_id NUMBER; --declare variable
+BEGIN
+    SELECT MAX(artistid) 
+    INTO max_id --put the MAX artistid INTO the variable
+    FROM artist;
+    
+    RETURN max_id;
+END;
+/
+
+--now after the function is compiled you can use it to assign to a variable such as
+DECLARE
+    max_id NUMBER;
+BEGIN
+    max_id := get_max_id();
+    DBMS_OUTPUT.PUT_LINE('The max id in the artist table is: ' || max_id);/*like a sysou, the || is to concatenate*/
+END;
+/
+
+--remove stored function
+DROP FUNCTION get_max_id;
+
+--working with explicit cursor
+CREATE OR REPLACE FUNCTION after_1968
+    RETURN SYS_REFCURSOR -- a system reference cursor stores a results set
+IS
+    my_cursor SYS_REFCURSOR;
+BEGIN
+    OPEN my_cursor FOR
+    SELECT firstname, lastname, birthdate --stores result set in cursor
+    FROM employee
+    WHERE birthdate > DATE '1968-12-31';
+    
+    RETURN my_cursor;
+END after_1968;
+/ 
+
+--using the dual table to invoke our stored FUNCTION
+SELECT after_1968()
+FROM dual;
+
+--PROCEDURE : returns ALL the artists IN the artist
+CREATE OR REPLACE PROCEDURE get_all_artists(
+    my_cursor OUT SYS_REFCURSOR) --my_cursor is the parameter to pass in --OUT is going to change the value without returning it first
+IS -- include even if u dont add variables
+BEGIN
+    OPEN my_cursor FOR --need to OPEN AND close cursors
+    SELECT artistid, name
+    FROM artist;
+    
+END;
+/
+
+/*EXECUTE get_all_artists();*/  -- can use execute if PROCEDURE doesnt have any parameters
+
+DECLARE 
+    artist_id       ARTIST.ARTISTID%TYPE; -- ensures the artist_id var has the same datatype AS the artistid IN the artest table
+    artist_name     ARTIST.NAME%TYPE;
+    my_cursor       SYS_REFCURSOR;
+BEGIN
+    get_all_artists(my_cursor);
+    
+    LOOP
+        FETCH my_cursor
+        INTO artist_id, artist_name;
+        
+        EXIT WHEN my_cursor%NOTFOUND;
+        DBMS_OUTPUT.PUT_LINE('Artist ID: ' || artist_id || ', Artist name: ' || artist_name);
+    END LOOP;
+    CLOSE my_cursor;
+END ;
+/
+
+--index
+-- creating an index on the employee table
+CREATE INDEX emp_index ON employee (employeeid, firstname, lastname);
+
+SELECT employeeid, firstname, lastname
+FROM employee; --the index is used behind the scenes, only does all the work once then any other time its going to reference the index 
+
+--CREATE sequence that will be used to increment primary keys IN the artist table
+CREATE SEQUENCE art_seq
+MINVALUE 1 --doesnt matter if you have data in table already, could have 275
+MAXVALUE 9999999999999
+INCREMENT BY 1
+START WITH 276;
+--NOT associated with any table yet, need to CREATE trigger FOR it
+
+--crate a trigger that will use art_seq whenever a new row IS inserted
+CREATE OR REPLACE TRIGGER art_trigger
+BEFORE INSERT ON artist     --this logic will execute before any INSERT ON th artist table
+FOR EACH ROW                --it will do the logic FOR each row inserted
+
+BEGIN
+    SELECT art_seq.NEXTVAL
+    INTO :new.artistid --saying take the next value IN the art sequence AND put it INTO a new artist id
+    FROM dual;
+END ;
+--recommended to CREATE sequence FOR each table
+
+--INSERT artist INTO artist table with active trigger to increment artistid
+INSERT INTO artist (name) VALUES ('Megadeth');
+
