@@ -8,7 +8,7 @@ public class Triangle {
 	//    0 1 0 1
 
 	public static void main(String[] args) {
-		printTriangle(10);
+		printTriangle(100);
 	}
 
 	public static void printTriangle (int size) {

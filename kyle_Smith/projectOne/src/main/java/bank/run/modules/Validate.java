@@ -16,7 +16,7 @@ public class Validate {
 	public static Scanner sc = new Scanner(System.in); 
 	public static boolean validate(String username, String password) {
 		//	    String basePath = new File("").getAbsolutePath();
-		String fileName = new File("src/bank/run/util/data/" + username + ".ser").getAbsolutePath();
+		String fileName = new File("src/main/java/bank/run/util/data/" + username + ".ser").getAbsolutePath();
 		File tmp = new File(fileName);
 		boolean exists = tmp.exists();
 
@@ -50,7 +50,7 @@ public class Validate {
 		double checking, savings;
 		checking = user.getChecking();
 		savings = user.getSavings();
-		String fileName = new File("src/bank/run/util/data/" + user.getUsername() + ".ser").getAbsolutePath();
+		String fileName = new File("src/main/java/bank/run/util/data/" + user.getUsername() + ".ser").getAbsolutePath();
 		File tmp = new File(fileName);
 		boolean exists = tmp.exists();
 

@@ -7,6 +7,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.ObjectOutputStream;
+import java.text.DecimalFormat;
 import java.util.Scanner;
 
 import bank.run.util.User;
@@ -19,7 +20,8 @@ public class Register {
 	public static void register() {
 		String firstName, lastName, username, password, email;
 		double checking, savings;
-
+		savings = 0;
+		checking = 0;
 		System.out.println("+-------------------Registration----------------------+");
 
 		try {
@@ -55,7 +57,7 @@ public class Register {
 					System.out.println("Invalid email:" + email +"  re-register");
 					System.out.println("Email: ");
 					email = br.readLine();
-					if(!(email.matches("[A-Za-z0-9+_.-]+@(.+)"))) {
+					if(!(email.matches("[A-Za-z0-9+_.-]+@.+"))) {
 						continue;
 					}else if(i >= 5) {
 						System.out.println("To many attempts...");
@@ -64,13 +66,35 @@ public class Register {
 						i = -1;
 				}
 			}
-
-			System.out.println("Depoist into checking: ");
-			checking = sc.nextDouble();
-
-			System.out.println("Depoist into savings: ");
-			savings = sc.nextDouble();
-
+			DecimalFormat df = new DecimalFormat("###.##");
+			
+			for(int i = 0; i <=3; i++) {
+				System.out.println("Depoist into checking: ");
+				if(sc.hasNextDouble()) {
+					checking = 	Double.valueOf(df.format(Math.abs(sc.nextDouble())));
+					break;
+				}else if(i == 3) {
+					System.out.println("To many atempts please try again");
+					register();
+				}else {
+					System.out.println("Please enter money in correct format...");
+					sc.next();
+				}
+			}
+			
+			for(int i = 0; i <=3; i++) {
+				System.out.println("Depoist into savings: ");
+				if(sc.hasNextDouble()) {
+					savings = Double.valueOf(df.format(Math.abs(sc.nextDouble())));
+					break;
+				}else if(i == 3) {
+					System.out.println("To many atempts please try again");
+					register();
+				}else {
+					System.out.println("Please enter money in correct format...");
+					sc.next();
+				}
+			}
 			User user = new User(firstName, lastName, username, password, email, savings, checking);
 			System.out.println("Checking username availability...");
 
@@ -98,7 +122,7 @@ public class Register {
 	}
 
 	private static void serializeUser(User u) {
-		String fileName = new File("src/bank/run/util/data/" + u.getUsername() + ".ser").getAbsolutePath();
+		String fileName = new File("src/main/java/bank/run/util/data/" + u.getUsername() + ".ser").getAbsolutePath();
 		/*
 		 * Try-with-Resources block
 		 */
@@ -124,7 +148,7 @@ public class Register {
 
 	}
 	public static boolean isFilenameValid(String file) {
-		File f = new File(new File("src/bank/run/util/data/" + file + ".ser").getAbsolutePath());
+		File f = new File(new File("src/main/java/bank/run/util/data/" + file + ".ser").getAbsolutePath());
 		try {
 			f.getCanonicalPath();
 			return true;
