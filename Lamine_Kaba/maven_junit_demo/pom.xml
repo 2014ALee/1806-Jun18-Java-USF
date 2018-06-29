@@ -6,7 +6,7 @@
   <name>maven_junit_demo</name>
   <description>Week 1 day 5 Maven and junit demo</description>
   
-  <!-- User the properties tog to specify the properties of a project (version, encoding, etc. -->
+  <!-- User the properties tag to specify the properties of a project (version, encoding, etc. -->
   <properties>
   	<java.version>1.8</java.version>
   </properties>
