@@ -6,17 +6,24 @@ public class User implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	
+	private int userID;
+	private int accountID;
+	private int jointID;
+	
 	private String firstName;
 	private String lastName;
 	private String username;
 	private String password;
 	private String email;
+	
 	private double checkingBalance;
 	private double savingsBalance;
 	private double jointBalance;
+	
 	private boolean hasCheckingAccount;
 	private boolean hasSavingsAccount;
 	private boolean hasJointAccount;
+	
 	//the username email and pass for the other person on the joint account
 	private String jointFirstName;
 	private String jointLastName;
@@ -35,6 +42,30 @@ public class User implements Serializable {
 		this.username = username;
 		this.password = password;
 		this.email = email;
+	}
+
+	public int getUserID() {
+		return userID;
+	}
+
+	public void setUserID(int userID) {
+		this.userID = userID;
+	}
+
+	public int getAccountID() {
+		return accountID;
+	}
+
+	public void setAccountID(int accountID) {
+		this.accountID = accountID;
+	}
+
+	public int getJointID() {
+		return jointID;
+	}
+
+	public void setJointID(int jointID) {
+		this.jointID = jointID;
 	}
 
 	public String getFirstName() {

@@ -5,16 +5,17 @@ import java.io.File;
 public class Validate {
 
 	// check if the username is available by comparing the user input to the serialized file names
-	public static boolean usernameAvailable(User user) {
+	public static boolean usernameAvailable(User u) {
 
-		String fileName = user.getUsername() + ".ser";
-		File file = new File(fileName);
-
-		if (file.exists()) {
-			return false;
-		} else {
-			return true;
-		}
+		//call the getAllUsers() method from the usersDAO to get an arraylist of all the user objects from the database
+//		String fileName = u.getUsername() + ".ser";
+//		File file = new File(fileName);
+//
+//		if (file.exists()) {
+//			return false;
+//		} else {
+//			return true;
+//		}
 	}
 	
 //	public static boolean emailAvailable(User user) {
