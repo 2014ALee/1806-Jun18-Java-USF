@@ -131,7 +131,27 @@ END;
 /
 
 --Task – create a function that returns the length of a mediatype from the mediatype table
+CREATE OR REPLACE FUNCTION get_mediatype_length(passed_id IN NUMBER )
+    RETURN number
+AS
+    mediatype_length NUMBER ;
+BEGIN 
+    SELECT length(name)
+    INTO mediatype_length
+    FROM mediatype 
+    WHERE mediatypeid = passed_id;
+    
+    RETURN mediatype_length;
+END get_mediatype_length;
+/
 
+DECLARE 
+mediatype_length NUMBER;
+BEGIN
+mediatype_length := get_mediatype_length(1);
+DBMS_OUTPUT.PUT_LINE('The length of the mediatype: ' || mediatype_length);
+END; 
+/
 --SYSTEM DEFINED AGGREGATE FUNCTIONS
 --Task – Create a function that returns the average total of all invoices
 CREATE OR REPLACE FUNCTION get_avg_invoices
@@ -257,16 +277,140 @@ END;
 
 --STORED PROCEDURE WITH INPUT PARAMS
 --Task – Create a stored procedure that updates the personal information of an employee.
+CREATE OR REPLACE PROCEDURE update_employee_title(emp_id IN NUMBER, emp_title IN VARCHAR2  )
+AS
+BEGIN
+    UPDATE employee
+    SET title = emp_title
+    WHERE employeeid = emp_id;
+    
+END update_employee_title;
+/
+
+DECLARE
+emp_id NUMBER(10);
+emp_title VARCHAR2(40) ;
+BEGIN
+emp_id := 1;
+emp_title := 'boss';
+update_employee_title(emp_id, emp_title);
+END ;
+/
 
 --Task – Create a stored procedure that returns the managers of an employee.
+CREATE OR REPLACE PROCEDURE get_manager_id
+(emp_id IN NUMBER, my_cursor OUT SYS_REFCURSOR) 
+IS 
+BEGIN
+    OPEN my_cursor FOR 
+    SELECT reportsto  
+    FROM employee
+    WHERE employeeid = emp_id;
+     
+END get_manager_id ;
+/
+DECLARE 
+
+    emp_id NUMBER ;
+    manager_id NUMBER ; 
+    my_cursor SYS_REFCURSOR;
+BEGIN
+    emp_id := 2;
+    get_manager_id(emp_id, my_cursor);
+
+    LOOP 
+        FETCH my_cursor
+        INTO manager_id;
+    
+        EXIT WHEN my_cursor%NOTFOUND;
+
+        DBMS_OUTPUT.PUT_LINE(' manager_id: ' || manager_id);
+    END LOOP ;
+    CLOSE my_cursor;
+END;
+/
 
 --STORED PROCEDURE WITH OUTPUT PARAMS
 --Task – Create a stored procedure that returns the name and company of a customer.
+CREATE OR REPLACE PROCEDURE get_cust_name_and_company
+(cust_id IN NUMBER, my_cursor OUT SYS_REFCURSOR)
+AS
+BEGIN
+    OPEN my_cursor FOR 
+    SELECT firstname, lastname, company
+    FROM customer
+    WHERE customerid = cust_id;
+    
+    END get_cust_name_and_company;
+/
 
+DECLARE
+    emp_id NUMBER;
+    first_name VARCHAR2(50);
+    last_name VARCHAR2(50) ;
+    company_name VARCHAR2(50) ;
+    my_cursor SYS_REFCURSOR;
+    
+BEGIN
+    emp_id := 1;
+    get_cust_name_and_company(emp_id, my_cursor);
+    LOOP 
+    FETCH my_cursor
+    INTO first_name, last_name, company_name;
+     EXIT WHEN my_cursor%NOTFOUND;
+     
+     DBMS_OUTPUT.PUT_LINE('firstname: ' || first_name || ', lastname: ' || last_name || ', company: ' || company_name);
+     END LOOP ;
+     CLOSE my_cursor;
+END ;
+/
 --In this section you will be working with transactions. Transactions are usually nested within a stored procedure. You will also be working with handling errors in your SQL.
 --Task – Create a transaction that given a invoiceId will delete that invoice (There may be constraints that rely on this, find out how to resolve them).
+CREATE OR REPLACE PROCEDURE delete_invoice
+(invoice_id IN NUMBER)
+AS 
+BEGIN
+    DELETE FROM invoiceline
+    WHERE invoiceid = invoice_id;
+    IF (SQL%NOTFOUND)
+     THEN
+         dbms_output.put_line('This record does not exist in invoiceline');
+     END IF;
+    
+    DELETE FROM invoice
+    WHERE invoiceid = invoice_id;
+    IF (SQL%NOTFOUND)
+     THEN
+         dbms_output.put_line('This record does not exist in invoice ');
+     END IF;
+     
+END delete_invoice ;
+/
+
+DECLARE 
+    emp_id NUMBER ;
+BEGIN 
+    emp_id := 215;
+    delete_invoice(emp_id);
+END;
+/
 
 --Task – Create a transaction nested within a stored procedure that inserts a new record in the Customer table
+CREATE OR REPLACE PROCEDURE create_customer(cust_id IN NUMBER)
+AS 
+BEGIN
+
+INSERT INTO customer VALUES(cust_id, 'Derek', 'Loisel', 'Revature', '13103 Martin St', 'Coon Rapids', 'Minnesota', 'United States', '55448', '7637466978', 'n/a', 'djloisel19@gmail.com', 3);
+  
+END create_customer;
+/
+
+DECLARE 
+cust_id NUMBER;
+BEGIN 
+cust_id := 62;
+create_customer(cust_id);
+END ;
 
 --TRIGGERS
 --In this section you will create various kinds of triggers that work when certain DML statements are executed on a table.
@@ -314,13 +458,13 @@ DECLARE
 invoice_price NUMBER; 
 
 BEGIN
-SELECT total 
-INTO invoice_price
-FROM invoice;
+
+invoice_price := :old.total;
 
 IF (invoice_price > 50 )
-THEN dbms_output.put_line( 'This triggers after a row is deleted from the customer table');
-END if;
+    THEN
+    raise_application_error(20001, 'Price is over $50, can not delete');
+    END if;
 
 END;
 /
@@ -329,22 +473,40 @@ END;
 --In this section you will be working with combining various tables through the use of joins. You will work with outer, inner, right, left, cross, and self joins.
 --INNER
 --Task – Create an inner join that joins customers and orders and specifies the name of the customer and the invoiceId.
-
+SELECT c.firstname, c.lastname, i.invoiceid
+FROM customer c
+JOIN invoice i
+ON c.customerid = i.customerid;
 
 --OUTER
 --Task – Create an outer join that joins the customer and invoice table, specifying the CustomerId, firstname, lastname, invoiceId, and total.
+SELECT c.customerid, c.firstname, c.lastname, i.invoiceid, i.total
+FROM customer c
+LEFT OUTER JOIN invoice i
+ON c.customerid = i.customerid;
 
 --RIGHT
 --Task – Create a right join that joins album and artist specifying artist name and title.
+SELECT al.title, ar.name
+FROM album al
+RIGHT OUTER JOIN artist ar
+ON al.artistid = ar.artistid;
 
 --CROSS
 --Task – Create a cross join that joins album and artist and sorts by artist name in ascending order.
+SELECT *
+FROM album
+CROSS JOIN artist
+ORDER BY name ASC;
 
 --SELF
 --Task – Perform a self-join on the employee table, joining on the reports to column.
+SELECT *
+FROM employee a, employee b
+WHERE a.reportsto = b.reportsto;
 
 --INDEXES
 --In this section you will be creating Indexes on various tables. Indexes can speed up performance of reading data.
 --Task – Create an index on of table of your choice
-
+CREATE INDEX cust_index ON customer (customerid, firstname, lastname);
 

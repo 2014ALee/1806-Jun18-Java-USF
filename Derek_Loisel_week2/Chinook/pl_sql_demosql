@@ -104,5 +104,5 @@ END ;
 --recommended to CREATE sequence FOR each table
 
 --INSERT artist INTO artist table with active trigger to increment artistid
-INSERT INTO artist (name) VALUES ('Megadeth');
+INSERT INTO artist (name) VALUES ('Megadeth'); --it auto increments the artistid
 
