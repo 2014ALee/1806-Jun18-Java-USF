@@ -84,4 +84,4 @@ RemoteSystemsTempFiles/
 .worksheet 
 
 # .properties files
-.properties
+*.properties
