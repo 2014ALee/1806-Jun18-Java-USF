@@ -3,6 +3,12 @@ package com.revature.models;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
+
+import com.revature.dao.AccountDAO;
+import com.revature.dao.AccountDAOImpl;
+import com.revature.dao.UsersDAO;
+import com.revature.dao.UsersDAOImpl;
 
 public class Pages {
 
@@ -97,9 +103,20 @@ public class Pages {
 
 			// check username availability
 			if (Validate.usernameAndEmailAvailable(user)) {
-				// username available
-				// create new user
-				Serialize.serializeUser(user);
+				// username available, create new user
+				
+				//call the addAccount() method from the AccountDAO to add an account to the database and return the account object
+				AccountDAO accountDAO = new AccountDAOImpl();
+				Account account = new Account();
+				Account accountObj = accountDAO.addAccount(account);
+				
+				//create new user in database
+				UsersDAO usersDAO = new UsersDAOImpl();
+				//use the accounts pk as the new users account fk
+				user.setAccountID(accountObj.getAccountID());
+				user.setJointID(0);
+				User u = usersDAO.addUser(user);
+				
 				mainMenu();
 			} else {
 				System.out.println("Username is not available. Please try again...");

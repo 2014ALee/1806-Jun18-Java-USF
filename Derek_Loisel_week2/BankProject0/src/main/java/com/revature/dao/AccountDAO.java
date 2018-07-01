@@ -1,5 +1,8 @@
 package com.revature.dao;
 
-public class AccountDAO {
+import com.revature.models.Account;
 
+public interface AccountDAO {
+
+	public Account addAccount(Account newAccount);
 }

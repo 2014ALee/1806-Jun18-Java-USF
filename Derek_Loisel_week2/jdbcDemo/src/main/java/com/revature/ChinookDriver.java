@@ -15,24 +15,24 @@ public class ChinookDriver {
 		
 		ArtistDAO artistDao = new ArtistDaoImpl();
 		
-		//get all artists
-		ArrayList<Artist> artists = artistDao.getAllArtists();
-		
-		for (Artist art : artists) {
-			System.out.println(art);
-		}
-		
-		System.out.println("--------------------");
-		
-		//get artist by id
-		Artist art = artistDao.getArtistById(274);
-		System.out.println(art);
-		
-		System.out.println("--------------------");
-		
-		//get artist by name
-		ArrayList<Artist> artistList = artistDao.getArtistByName("Black Sabbath");
-		System.out.println(artistList);
+//		//get all artists
+//		ArrayList<Artist> artists = artistDao.getAllArtists();
+//		
+//		for (Artist art : artists) {
+//			System.out.println(art);
+//		}
+//		
+//		System.out.println("--------------------");
+//		
+//		//get artist by id
+//		Artist art = artistDao.getArtistById(274);
+//		System.out.println(art);
+//		
+//		System.out.println("--------------------");
+//		
+//		//get artist by name
+//		ArrayList<Artist> artistList = artistDao.getArtistByName("Black Sabbath");
+//		System.out.println(artistList);
 		
 		System.out.println("--------------------");
 		//add artist 
@@ -43,10 +43,10 @@ public class ChinookDriver {
 		
 		System.out.println("--------------------");
 		
-		Artist thisArtist = artistDao.getArtistById(1);
-		
-		for(Album artistAlbum : artistDao.getArtistAlbums(thisArtist)) {
-			System.out.println(artistAlbum);
+//		Artist thisArtist = artistDao.getArtistById(1);
+//		
+//		for(Album artistAlbum : artistDao.getArtistAlbums(thisArtist)) {
+//			System.out.println(artistAlbum);
 		}
 	}
 }

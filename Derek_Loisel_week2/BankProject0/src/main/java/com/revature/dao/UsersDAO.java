@@ -8,4 +8,6 @@ public interface UsersDAO {
 
 	
 	public ArrayList<User> getAllUsers();
+	
+	public User addUser(User newUser);
 }
