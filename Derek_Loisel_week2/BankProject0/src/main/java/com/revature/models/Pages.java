@@ -96,7 +96,7 @@ public class Pages {
 			user.setEmail(email);
 
 			// check username availability
-			if (Validate.usernameAvailable(user)) {
+			if (Validate.usernameAndEmailAvailable(user)) {
 				// username available
 				// create new user
 				Serialize.serializeUser(user);

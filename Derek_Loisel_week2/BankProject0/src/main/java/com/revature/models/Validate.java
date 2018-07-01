@@ -1,21 +1,33 @@
 package com.revature.models;
 
-import java.io.File;
+import java.util.ArrayList;
+
+import com.revature.dao.UsersDAO;
+import com.revature.dao.UsersDAOImpl;
 
 public class Validate {
 
 	// check if the username is available by comparing the user input to the serialized file names
-	public static boolean usernameAvailable(User u) {
+	public static boolean usernameAndEmailAvailable(User u) {
 
 		//call the getAllUsers() method from the usersDAO to get an arraylist of all the user objects from the database
-//		String fileName = u.getUsername() + ".ser";
-//		File file = new File(fileName);
-//
-//		if (file.exists()) {
-//			return false;
-//		} else {
-//			return true;
-//		}
+		UsersDAO usersDAO = new UsersDAOImpl();
+		ArrayList<User> usersList = usersDAO.getAllUsers();
+		
+		//check if the users input matches any of the usernames or emails from the users list, return false if it ever does
+		for (User user : usersList) {
+			
+			if (u.getUsername().equals(user.getUsername())){
+				return false;
+			}
+			
+			if (u.getEmail().equals(user.getEmail())) {
+				return false;
+			}
+		}
+		
+		return true;
+	
 	}
 	
 //	public static boolean emailAvailable(User user) {
