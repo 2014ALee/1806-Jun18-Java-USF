@@ -23,8 +23,7 @@ public class mainDriver {
 		mainMenu();
 	}
 
-	private static void mainMenu() {
-		// TODO Auto-generated method stub
+	private public static void mainMenu() {
 		String userInput;
 
 		System.out.println("======================Main Menu========================");
@@ -155,6 +154,10 @@ public class mainDriver {
 		{
 			System.out.println("========================Logging In=========================");
 			loggedInMenu();
+		}
+		else
+		{
+			System.out.println("========================Invalid Login======================");
 		}
 	}
 
