@@ -47,6 +47,5 @@ public class ChinookDriver {
 //		
 //		for(Album artistAlbum : artistDao.getArtistAlbums(thisArtist)) {
 //			System.out.println(artistAlbum);
-		}
-	}
+		}	
 }

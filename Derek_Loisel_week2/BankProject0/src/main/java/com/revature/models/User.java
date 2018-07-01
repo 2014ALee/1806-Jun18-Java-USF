@@ -1,12 +1,11 @@
 package com.revature.models;
 
-import java.io.Serializable;
-
-public class User implements Serializable {
-
-	private static final long serialVersionUID = 1L;
+public class User {
 	
-	private int userID;	
+	private int userID;
+	private int accountID;
+	private int jointID;
+	
 	private String username;
 	private String password;
 	private String firstName;
@@ -20,13 +19,6 @@ public class User implements Serializable {
 	private boolean hasCheckingAccount;
 	private boolean hasSavingsAccount;
 	private boolean hasJointAccount;
-	
-	//the username email and pass for the other person on the joint account
-	private String jointFirstName;
-	private String jointLastName;
-	private String jointUsername;
-	private String jointEmail;
-	private String jointPassword;
 	
 	//no args constructor
 	public User() {	}
@@ -46,6 +38,22 @@ public class User implements Serializable {
 
 	public void setUserID(int userID) {
 		this.userID = userID;
+	}
+
+	public int getAccountID() {
+		return accountID;
+	}
+
+	public void setAccountID(int accountID) {
+		this.accountID = accountID;
+	}
+
+	public int getJointID() {
+		return jointID;
+	}
+
+	public void setJointID(int jointID) {
+		this.jointID = jointID;
 	}
 
 	public String getUsername() {
@@ -136,50 +144,11 @@ public class User implements Serializable {
 		this.hasJointAccount = hasJointAccount;
 	}
 
-	public String getJointFirstName() {
-		return jointFirstName;
-	}
-
-	public void setJointFirstName(String jointFirstName) {
-		this.jointFirstName = jointFirstName;
-	}
-
-	public String getJointLastName() {
-		return jointLastName;
-	}
-
-	public void setJointLastName(String jointLastName) {
-		this.jointLastName = jointLastName;
-	}
-
-	public String getJointUsername() {
-		return jointUsername;
-	}
-
-	public void setJointUsername(String jointUsername) {
-		this.jointUsername = jointUsername;
-	}
-
-	public String getJointEmail() {
-		return jointEmail;
-	}
-
-	public void setJointEmail(String jointEmail) {
-		this.jointEmail = jointEmail;
-	}
-
-	public String getJointPassword() {
-		return jointPassword;
-	}
-
-	public void setJointPassword(String jointPassword) {
-		this.jointPassword = jointPassword;
-	}
-
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
+		result = prime * result + accountID;
 		long temp;
 		temp = Double.doubleToLongBits(checkingBalance);
 		result = prime * result + (int) (temp ^ (temp >>> 32));
@@ -190,11 +159,7 @@ public class User implements Serializable {
 		result = prime * result + (hasSavingsAccount ? 1231 : 1237);
 		temp = Double.doubleToLongBits(jointBalance);
 		result = prime * result + (int) (temp ^ (temp >>> 32));
-		result = prime * result + ((jointEmail == null) ? 0 : jointEmail.hashCode());
-		result = prime * result + ((jointFirstName == null) ? 0 : jointFirstName.hashCode());
-		result = prime * result + ((jointLastName == null) ? 0 : jointLastName.hashCode());
-		result = prime * result + ((jointPassword == null) ? 0 : jointPassword.hashCode());
-		result = prime * result + ((jointUsername == null) ? 0 : jointUsername.hashCode());
+		result = prime * result + jointID;
 		result = prime * result + ((lastName == null) ? 0 : lastName.hashCode());
 		result = prime * result + ((password == null) ? 0 : password.hashCode());
 		temp = Double.doubleToLongBits(savingsBalance);
@@ -213,6 +178,8 @@ public class User implements Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		User other = (User) obj;
+		if (accountID != other.accountID)
+			return false;
 		if (Double.doubleToLongBits(checkingBalance) != Double.doubleToLongBits(other.checkingBalance))
 			return false;
 		if (email == null) {
@@ -233,30 +200,7 @@ public class User implements Serializable {
 			return false;
 		if (Double.doubleToLongBits(jointBalance) != Double.doubleToLongBits(other.jointBalance))
 			return false;
-		if (jointEmail == null) {
-			if (other.jointEmail != null)
-				return false;
-		} else if (!jointEmail.equals(other.jointEmail))
-			return false;
-		if (jointFirstName == null) {
-			if (other.jointFirstName != null)
-				return false;
-		} else if (!jointFirstName.equals(other.jointFirstName))
-			return false;
-		if (jointLastName == null) {
-			if (other.jointLastName != null)
-				return false;
-		} else if (!jointLastName.equals(other.jointLastName))
-			return false;
-		if (jointPassword == null) {
-			if (other.jointPassword != null)
-				return false;
-		} else if (!jointPassword.equals(other.jointPassword))
-			return false;
-		if (jointUsername == null) {
-			if (other.jointUsername != null)
-				return false;
-		} else if (!jointUsername.equals(other.jointUsername))
+		if (jointID != other.jointID)
 			return false;
 		if (lastName == null) {
 			if (other.lastName != null)
@@ -282,15 +226,11 @@ public class User implements Serializable {
 
 	@Override
 	public String toString() {
-		return "User [userID=" + userID + ", username=" + username + ", password=" + password + ", firstName="
-				+ firstName + ", lastName=" + lastName + ", email=" + email + ", checkingBalance=" + checkingBalance
-				+ ", savingsBalance=" + savingsBalance + ", jointBalance=" + jointBalance + ", hasCheckingAccount="
-				+ hasCheckingAccount + ", hasSavingsAccount=" + hasSavingsAccount + ", hasJointAccount="
-				+ hasJointAccount + ", jointFirstName=" + jointFirstName + ", jointLastName=" + jointLastName
-				+ ", jointUsername=" + jointUsername + ", jointEmail=" + jointEmail + ", jointPassword=" + jointPassword
-				+ "]";
+		return "User [userID=" + userID + ", accountID=" + accountID + ", jointID=" + jointID + ", username=" + username
+				+ ", password=" + password + ", firstName=" + firstName + ", lastName=" + lastName + ", email=" + email
+				+ ", checkingBalance=" + checkingBalance + ", savingsBalance=" + savingsBalance + ", jointBalance="
+				+ jointBalance + ", hasCheckingAccount=" + hasCheckingAccount + ", hasSavingsAccount="
+				+ hasSavingsAccount + ", hasJointAccount=" + hasJointAccount + "]";
 	}
-
-	
 
 }

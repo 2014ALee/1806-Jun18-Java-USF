@@ -36,6 +36,10 @@ CREATE TABLE jointaccount(
         REFERENCES users (userid)
 );
 
+INSERT INTO jointaccount (user1id, user2id, jointbalance) VALUES (42, 26, 50);
+DELETE
+FROM jointaccount
+WHERE jointid = 3;
 SELECT *
 FROM account;
 
@@ -100,4 +104,14 @@ BEGIN
 END;
 /
 
-commit;
+CREATE OR REPLACE PROCEDURE get_account_by_userid(
+user_id IN NUMBER, my_cursor OUT SYS_REFCURSOR)
+AS
+BEGIN
+    OPEN my_cursor FOR 
+    SELECT *
+    FROM account
+    WHERE userid = user_id;
+    
+END get_account_by_userid;
+

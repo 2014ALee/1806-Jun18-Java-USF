@@ -9,5 +9,10 @@ public interface UsersDAO {
 	
 	public ArrayList<User> getAllUsers();
 	
+	public User getUserByUsername(User newUser);
+	
+	public int getUserIDByUsername(String username);
+	
 	public User addUser(User newUser);
+	
 }

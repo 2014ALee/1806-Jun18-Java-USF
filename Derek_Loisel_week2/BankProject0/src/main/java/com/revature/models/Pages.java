@@ -7,6 +7,8 @@ import java.util.ArrayList;
 
 import com.revature.dao.AccountDAO;
 import com.revature.dao.AccountDAOImpl;
+import com.revature.dao.JointAccountDAO;
+import com.revature.dao.JointAccountDAOImpl;
 import com.revature.dao.UsersDAO;
 import com.revature.dao.UsersDAOImpl;
 
@@ -28,6 +30,7 @@ public class Pages {
 	// create a BufferedReader to read user input
 	private BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
+	// create a page object to call the functions that represent each page
 	public static Pages page = new Pages();
 
 	public void mainMenu() {
@@ -115,7 +118,8 @@ public class Pages {
 				Account account = new Account();
 				account.setUserID(u.getUserID());
 				Account accountObj = accountDAO.addAccount(account);
-							
+						
+				//go back to main menu
 				mainMenu();
 			} else {
 				System.out.println("Username is not available. Please try again...");
@@ -143,16 +147,20 @@ public class Pages {
 
 			System.out.print("Password: ");
 			password = br.readLine();
-
-			if (Validate.credentialsValid(username, password, user)) {
+				
+			if (Validate.credentialsValid(username, password)) {
 				// login successful
+				System.out.println("Login Successful!");	
+				// set the class scoped static user object username so it's available after login
+				user = new User();
+				user.setUsername(username);
 				// go to home page after successful login
-				//user object is already deserialized and set to user from the credentialsValid() method
 				homePage();
 
 				return;
 			} else {
 				System.out.println("Login failed!\n");
+				//back to main menu after failed login
 				mainMenu();
 			}
 
@@ -541,7 +549,54 @@ public class Pages {
 	}
 
 	public void createNewAccount() {
-
+		
+		//get user data and account data to fill in the user object with updated data
+		//use the UsersDAO getUserByUsername() and the AccountDao getAccountByUserID() to update the user object
+		UsersDAO usersDAO = new UsersDAOImpl();
+		user = usersDAO.getUserByUsername(user);
+	
+		AccountDAO accountDAO = new AccountDAOImpl();
+		Account account = new Account();
+		account.setUserID(user.getUserID());
+		Account a = accountDAO.getAccountByUserID(account);
+		
+		//set user objects account info
+		user.setAccountID(a.getAccountID());
+		
+		if (a.getCheckingBalance() == -999999999) {
+			user.setHasCheckingAccount(false);
+		}else {
+			user.setHasCheckingAccount(true);
+			user.setCheckingBalance(a.getCheckingBalance());
+		}
+		
+		if (a.getSavingsBalance() == -999999999) {
+			//set users hasSavingsAccount to false
+			user.setHasSavingsAccount(false);
+		}else {
+			//set users hasSavingsAccount to true
+			user.setHasSavingsAccount(true);
+			user.setSavingsBalance(a.getSavingsBalance());
+		}
+		
+		//getJointAccountByUserID() to get the joint account matching the user id if a joint account exists, checks both user1id and user2id for a match		
+		JointAccountDAO jointAccountDAO = new JointAccountDAOImpl();
+		int userID = user.getUserID();
+		JointAccount j = jointAccountDAO.getJointAccountByUserID(userID);
+		
+		if (j.getJointID() == 0) {
+			
+			//if the jointid IS 0, then hasJointAccount is false because no account exists
+			user.setHasJointAccount(false);
+		}else {
+			
+			//if the jointid is not 0, then hasJointAccount is true because an account already exists
+			//set user objects joint account info
+			user.setJointID(j.getJointID());
+			user.setHasJointAccount(true);
+			user.setJointBalance(j.getJointBalance());
+		}	
+			
 		// string to store user input
 		String userInput;
 		String accountType = "";
@@ -633,44 +688,53 @@ public class Pages {
 			createNewAccount();
 		}
 
+		//create a checking or savings account by changing the balance from -999999999 to 0 in the database
 		if(accountType == "Checking"){
 			//create checking account
 			user.setHasCheckingAccount(true);
+			a.setCheckingBalance(0);
+			accountDAO.updateAccount(a);
+			System.out.println("Checking Account successfully created!");
+			//back to home page after account creation
 			homePage();
 		}else if(accountType == "Savings"){
 			//create savings account
 			user.setHasSavingsAccount(true);
+			a.setSavingsBalance(0);
+			accountDAO.updateAccount(a);
+			System.out.println("Savings Account successfully created!");
+			//back to home page after account creation
 			homePage();
 		}else {		
-			//create joint account
-			user.setHasJointAccount(true);
+			
 			//get joint user info
 			try {
 
-				// get user input to fill in joint user info
-				String firstName, lastName, username, password, email;
+				// get user input to fill in joint users username to lookup their id
+				String username = "";
 
-				System.out.print("First name of Joint member: ");
-				firstName = br.readLine();
-
-				System.out.print("Last name of Joint member: ");
-				lastName = br.readLine();
-
-				System.out.print("Username of Joint member: ");
+				System.out.print("What is the Username of the other member on the Joint Account? ");
 				username = br.readLine();
-
-				System.out.print("Password of Joint member: ");
-				password = br.readLine();
-
-				System.out.print("Email Address of Joint member: ");
-				email = br.readLine();
-
-				User jointUser = new User();
-				jointUser.setJointFirstName(firstName);
-				jointUser.setJointLastName(lastName);
-				jointUser.setJointUsername(username);
-				jointUser.setJointPassword(password);
-				jointUser.setJointEmail(email);
+				
+				//get second member of joint accounts userid from their username
+				int user2ID = usersDAO.getUserIDByUsername(username);
+				int user1ID = user.getUserID();
+				System.out.println(user2ID);
+				System.out.println(user1ID);
+				//create joint account using both of the users userid
+				JointAccount newJointAccount = new JointAccount();
+				newJointAccount.setUser1ID(user1ID);
+				newJointAccount.setUser2ID(user2ID);
+				newJointAccount.setJointBalance(0);
+				newJointAccount = jointAccountDAO.addJointAccount(newJointAccount);
+							
+				System.out.println(newJointAccount.getJointID());
+				System.out.println(newJointAccount.getUser1ID());
+				System.out.println(newJointAccount.getUser2ID());
+				System.out.println(newJointAccount.getJointBalance());			
+				user.setHasJointAccount(true);
+				
+				//go back to home after account successfully created
 				homePage();
 			} catch (IOException ioe) {
 				// System.out.println("[LOG] - Error while reading from console");
@@ -715,6 +779,12 @@ public class Pages {
 			homePage();
 		}
 
+	}
+	
+	public User updateUserObject(User user) {
+		
+		
+		return user;
 	}
 
 }
