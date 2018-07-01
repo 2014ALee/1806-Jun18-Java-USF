@@ -105,18 +105,17 @@ public class Pages {
 			if (Validate.usernameAndEmailAvailable(user)) {
 				// username available, create new user
 				
-				//call the addAccount() method from the AccountDAO to add an account to the database and return the account object
-				AccountDAO accountDAO = new AccountDAOImpl();
-				Account account = new Account();
-				Account accountObj = accountDAO.addAccount(account);
-				
 				//create new user in database
 				UsersDAO usersDAO = new UsersDAOImpl();
 				//use the accounts pk as the new users account fk
-				user.setAccountID(accountObj.getAccountID());
-				user.setJointID(0);
 				User u = usersDAO.addUser(user);
 				
+				//call the addAccount() method from the AccountDAO to add an account to the database and return the account object
+				AccountDAO accountDAO = new AccountDAOImpl();
+				Account account = new Account();
+				account.setUserID(u.getUserID());
+				Account accountObj = accountDAO.addAccount(account);
+							
 				mainMenu();
 			} else {
 				System.out.println("Username is not available. Please try again...");

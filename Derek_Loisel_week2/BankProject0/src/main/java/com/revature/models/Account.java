@@ -3,14 +3,16 @@ package com.revature.models;
 public class Account {
 
 	private int accountID;
+	private int userID;
 	private double checkingBalance;
 	private double savingsBalance;
-	
-	public Account() {};
-	
-	public Account(int accountID, double checkingBalance, double savingsBalance) {
+
+	public Account() {}
+
+	public Account(int accountID, int userID, double checkingBalance, double savingsBalance) {
 		super();
 		this.accountID = accountID;
+		this.userID = userID;
 		this.checkingBalance = checkingBalance;
 		this.savingsBalance = savingsBalance;
 	}
@@ -21,6 +23,14 @@ public class Account {
 
 	public void setAccountID(int accountID) {
 		this.accountID = accountID;
+	}
+
+	public int getUserID() {
+		return userID;
+	}
+
+	public void setUserID(int userID) {
+		this.userID = userID;
 	}
 
 	public double getCheckingBalance() {
@@ -49,6 +59,7 @@ public class Account {
 		result = prime * result + (int) (temp ^ (temp >>> 32));
 		temp = Double.doubleToLongBits(savingsBalance);
 		result = prime * result + (int) (temp ^ (temp >>> 32));
+		result = prime * result + userID;
 		return result;
 	}
 
@@ -67,14 +78,17 @@ public class Account {
 			return false;
 		if (Double.doubleToLongBits(savingsBalance) != Double.doubleToLongBits(other.savingsBalance))
 			return false;
+		if (userID != other.userID)
+			return false;
 		return true;
 	}
 
 	@Override
 	public String toString() {
-		return "Account [accountID=" + accountID + ", checkingBalance=" + checkingBalance + ", savingsBalance="
-				+ savingsBalance + "]";
-	}
-	
-	
+		return "Account [accountID=" + accountID + ", userID=" + userID + ", checkingBalance=" + checkingBalance
+				+ ", savingsBalance=" + savingsBalance + "]";
+	};
+
+
+
 }

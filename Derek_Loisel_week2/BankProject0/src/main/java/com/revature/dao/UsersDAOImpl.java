@@ -34,8 +34,6 @@ public class UsersDAOImpl implements UsersDAO {
 				User temp = new User();
 				//add the row contents to the user object
 				temp.setUserID(rs.getInt("userid")); //identifying column by column name string 
-				temp.setAccountID(rs.getInt("accountid"));
-				temp.setJointID(rs.getInt("jointid"));
 				temp.setUsername(rs.getString("username"));
 				temp.setPassword(rs.getString("pass"));
 				temp.setFirstName(rs.getString("firstname"));
@@ -63,20 +61,18 @@ public class UsersDAOImpl implements UsersDAO {
 			
 			//conn.setAutoCommit(false);
 			
-			String sql = "INSERT INTO users (accountid, jointid, username, pass, firstname, lastname, email) VALUES (?, ?, ?, ?, ?, ?, ?)";
+			String sql = "INSERT INTO users (username, pass, firstname, lastname, email) VALUES (?, ?, ?, ?, ?)";
 					
 			//an array of string objects that will take IN the primary keys that's generated WHEN you put the artist in
 			String[] keys = new String[1];// the 1 IS how many columns we're keeping track of keys for, here its only 1 for the name
 			keys[0] = "userid";  //you could then set keys[1] = "column" if there was another column you were keeping track of
 			
-			PreparedStatement pstmt = conn.prepareStatement(sql, keys); //pass in the sql statement as well as the keys you want to get back because you want to keep track of the key for the artist
-			pstmt.setInt(1, newUser.getAccountID());
-			pstmt.setInt(2, newUser.getJointID());
-			pstmt.setString(3, newUser.getUsername());
-			pstmt.setString(4, newUser.getPassword());
-			pstmt.setString(5, newUser.getFirstName());
-			pstmt.setString(6, newUser.getLastName());
-			pstmt.setString(7, newUser.getEmail());
+			PreparedStatement pstmt = conn.prepareStatement(sql, keys); //pass in the sql statement as well as the keys you want to get back because you want to keep track of the key for the artist			
+			pstmt.setString(1, newUser.getUsername());
+			pstmt.setString(2, newUser.getPassword());
+			pstmt.setString(3, newUser.getFirstName());
+			pstmt.setString(4, newUser.getLastName());
+			pstmt.setString(5, newUser.getEmail());
 					
 			int rowsUpdated = pstmt.executeUpdate(); //this isnt a query, its an update.  it also returns a value that tells you how many rows were updated
 			
@@ -89,8 +85,6 @@ public class UsersDAOImpl implements UsersDAO {
 				}
 				
 				//set the variables for the account object your returning 
-				u.setAccountID(newUser.getAccountID());
-				u.setJointID(newUser.getJointID());
 				u.setUsername(newUser.getUsername());
 				u.setPassword(newUser.getPassword());
 				u.setFirstName(newUser.getFirstName());
