@@ -7,9 +7,8 @@ public class Customers implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private String userName;
 	private String password;
-	private int checkingAcct; //not implemented
-	private int savingsAcct; // not implemented
-	private int balance;
+	private float balance;
+	
 	
 	public Customers() {}
 
@@ -18,13 +17,6 @@ public class Customers implements Serializable {
 		this.userName = username;
 		this.password = password;
 		this.balance = 0;
-	}
-	public Customers(String userName, String password, int checkingAcct, int savingsAcct) {
-		super();
-		this.userName = userName;
-		this.password = password;
-		this.checkingAcct = checkingAcct;
-		this.savingsAcct = savingsAcct;
 	}
 
 	public String getUserName() {
@@ -42,37 +34,20 @@ public class Customers implements Serializable {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-
-	public int getCheckingAcct() {
-		return checkingAcct;
-	}
-
-	public void setCheckingAcct(int checkingAcct) {
-		this.checkingAcct = checkingAcct;
-	}
-
-	public int getSavingsAcct() {
-		return savingsAcct;
-	}
-
-	public void setSavingsAcct(int savingsAcct) {
-		this.savingsAcct = savingsAcct;
-	}
 	
-	
-	public int getBalance() {
+	public float getBalance() {
 		return balance;
 	}
 
-	public void setBalance(int account) {
-		balance = account;
+	public void setBalance(float f) {
+		balance = f;
 	}
 	
-	public void subtract(int sub) {
+	public void subtract(float sub) {
 		balance -= sub;
 	}
 	
-	public void add(int sub) {
+	public void add(float sub) {
 		balance += sub;
 	}
 
@@ -80,9 +55,8 @@ public class Customers implements Serializable {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + checkingAcct;
+		result = prime * result + Float.floatToIntBits(balance);
 		result = prime * result + ((password == null) ? 0 : password.hashCode());
-		result = prime * result + savingsAcct;
 		result = prime * result + ((userName == null) ? 0 : userName.hashCode());
 		return result;
 	}
@@ -96,14 +70,12 @@ public class Customers implements Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		Customers other = (Customers) obj;
-		if (checkingAcct != other.checkingAcct)
+		if (Float.floatToIntBits(balance) != Float.floatToIntBits(other.balance))
 			return false;
 		if (password == null) {
 			if (other.password != null)
 				return false;
 		} else if (!password.equals(other.password))
-			return false;
-		if (savingsAcct != other.savingsAcct)
 			return false;
 		if (userName == null) {
 			if (other.userName != null)
@@ -115,8 +87,7 @@ public class Customers implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Customers [userName=" + userName + ", password=" + password + ", checkingAcct=" + checkingAcct
-				+ ", savingsAcct=" + savingsAcct + "]";
+		return "Customers [userName=" + userName + ", password=" + password + ", balance=" + balance + "]";
 	}
-		
+
 }
