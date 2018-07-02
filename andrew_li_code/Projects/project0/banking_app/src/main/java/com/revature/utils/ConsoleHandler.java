@@ -70,8 +70,8 @@ public class ConsoleHandler {
 				output = Double.parseDouble(userInput);
 				if (StringHandler.threeDot(userInput)) {
 					System.out.println("\nPlease include no "
-							+ "more than two digits after the "
-							+ "decimal.");
+							+ "more than two digits after a "
+							+ "dot.");
 				}
 				else {
 					needValidInput = false;

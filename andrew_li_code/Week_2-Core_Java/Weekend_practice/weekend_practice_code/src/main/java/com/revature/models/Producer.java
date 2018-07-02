@@ -4,9 +4,14 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class Producer extends Thread {
 	private ConcurrentLinkedQueue<Integer> destinationLine;
+	private Consumer consumer;
 	
 	public Producer(ConcurrentLinkedQueue<Integer> k) {
 		this.destinationLine = k;
+	}
+	
+	public void setConsumer(Consumer consumer) {
+		this.consumer = consumer;
 	}
 	
 	@Override
@@ -23,22 +28,24 @@ public class Producer extends Thread {
 			b *= b;
 			b *= 1000000000;
 			int k = (int) b;
-			synchronized (destinationLine) {
-				while (destinationLine.size() >= 10) {
-					System.out.println("Distribution line is full!!");
+				while (destinationLine.size() >= 1) {
+					try {
+						consumer.notify();
+					} catch (IllegalMonitorStateException e) {
+					}
 					try {
 						this.wait();
-						destinationLine.add(k);
-						System.out.println("Producing item " + ++i
-								+ " with value: " + k);
-						notify();
-						System.out.println("Notified Consumer!");
-						Thread.sleep(1000);
 					} catch (InterruptedException e) {
-
-						System.out.println("Access blocked!!!");
-						e.printStackTrace();
+					} catch (IllegalMonitorStateException e) {
 					}
+				}
+			synchronized (destinationLine) {
+				destinationLine.add(k);
+				System.out.println("Producing item " + ++i
+						+ " with value: " + k);
+				try {
+					consumer.notify();
+				} catch (IllegalMonitorStateException e) {
 				}
 			}
 		}

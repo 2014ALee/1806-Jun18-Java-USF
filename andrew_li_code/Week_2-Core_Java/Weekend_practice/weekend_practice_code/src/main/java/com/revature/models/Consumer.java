@@ -4,9 +4,14 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class Consumer extends Thread {
 	private ConcurrentLinkedQueue<Integer> supplyLine;
+	private Producer producer;
 	
 	public Consumer(ConcurrentLinkedQueue<Integer> k) {
 		this.supplyLine = k;
+	}
+	
+	public void setProducer(Producer producer) {
+		this.producer = producer;
 	}
 	
 	@Override
@@ -16,21 +21,24 @@ public class Consumer extends Thread {
 	
 	public void consume() {
 		for (int i = 0;;) {
-			synchronized (supplyLine) {
 				while (supplyLine.size() == 0) {
-					System.out.println("Supply line is empty!!!");
+					try {
+						producer.notify();
+					} catch (IllegalMonitorStateException e) {
+					}
 					try {
 						this.wait();
-						int k = supplyLine.poll();
-						System.out.println("Consuming item " + ++i
-								+ " with value: " + k);
-						notify();
-						System.out.println("Notified Producer!");
-						Thread.sleep(1000);
 					} catch (InterruptedException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
+					} catch (IllegalMonitorStateException e) {
 					}
+				}
+			synchronized (supplyLine) {
+				int k = supplyLine.poll();
+				System.out.println("Consuming item " + ++i
+						+ " with value: " + k);
+				try {
+					producer.notify();
+				} catch (IllegalMonitorStateException e) {
 				}
 			}
 		}

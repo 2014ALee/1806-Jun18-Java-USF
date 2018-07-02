@@ -62,7 +62,9 @@ public class StringHandler {
 		}
 		return command;
 	}
-	
+	/*
+	 * Check if there's more than two digits the first dot.
+	 */
 	public static boolean threeDot(String test) {
 		int index = test.indexOf('.');
 		if (index >= 0 && index < test.length() - 3) {

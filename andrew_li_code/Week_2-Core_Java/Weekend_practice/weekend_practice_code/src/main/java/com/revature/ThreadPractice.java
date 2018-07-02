@@ -7,6 +7,7 @@ import com.revature.models.Producer;
 
 public class ThreadPractice {
 	public static void main(String[] args) {
+		
 		ConcurrentLinkedQueue<Integer> lq = new ConcurrentLinkedQueue<Integer>();
 		lq.add(1240);
 		lq.add(1641);
@@ -16,6 +17,8 @@ public class ThreadPractice {
 		System.out.println("Running");
 		Consumer consumer = new Consumer(lq);
 		Producer producer = new Producer(lq);
+		consumer.setProducer(producer);
+		producer.setConsumer(consumer);
 		producer.start();
 		consumer.start();
 	}

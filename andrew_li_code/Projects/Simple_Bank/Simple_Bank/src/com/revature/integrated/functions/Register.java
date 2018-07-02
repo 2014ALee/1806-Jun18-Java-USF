@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import com.revature.models.BankAccount;
 import com.revature.utils.ConsoleHandler;
+import com.revature.utils.StringHandler;
 import com.revature.utils.UserFileHandler;
 
 public class Register {
@@ -12,7 +13,14 @@ public class Register {
 		String username = ConsoleHandler.promptUser("Enter the username that you will register for: ");
 		username = username.toLowerCase();
 		System.out.println("You entered " + username + " as your username.");
+		// If the username typed in an invalid username
+		while (!StringHandler.isAlphaNumeric(username)) {
+			username = ConsoleHandler.promptUser("\n\nAlphanumeric characters only. "
+					+ " Please type in a "
+					+ "valid username: ");
+		}
 		UserFileHandler uf = new UserFileHandler(username);
+		
 		
 		// Check if username is available.
 		boolean createFile = false;

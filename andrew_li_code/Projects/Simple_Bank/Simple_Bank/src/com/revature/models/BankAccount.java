@@ -52,6 +52,8 @@ public class BankAccount {
 		parsed.balance = Double.parseDouble(stringRepr.substring(
 				stringRepr.indexOf("balance=") + 8,
 				stringRepr.indexOf("]")));
+		parsed.balance = Math.round(parsed.balance * 100) / 100.0;;
+		parsed.balance += 0.001;
 		return parsed;
 	}
 	
@@ -64,19 +66,36 @@ public class BankAccount {
 		if (amount < 0) {
 			throw new NegativeAmountException();
 		}
-		if (amount > this.balance) {
+		
+		long pennies = (long) (100 * amount);
+		amount = pennies / 100.0;
+		
+		if (pennies > Math.round(100 * this.balance)) {
 			return false;
 		}
 		else {
 			this.balance -= amount;
+			this.balance = Math.round(this.balance * 100) / 100.0;
+			this.balance += 0.001;
 			return true;
 		}
 	}
 	/*
 	 * Getting the balance.
 	 */
-	public double getBalance() {
-		return balance;
+	public String getBalance() {
+		String output = "" + this.balance;
+		int decimalPlace = output.indexOf('.');
+		int placement = decimalPlace - output.length();
+		if (placement == -1) {
+			output += "00";
+		}
+		else if (placement == -2) {
+			output += "0";
+		} else if (placement < -3 && decimalPlace >= 0) {
+			return output.substring(0, decimalPlace + 3);
+		}
+		return output;
 	}
 	
 	/*
@@ -87,14 +106,16 @@ public class BankAccount {
 			throw new NegativeAmountException();
 		}
 		else {
-			balance += amount;
+			this.balance += amount;
+			this.balance = Math.round(this.balance * 100) / 100.0;
+			this.balance += 0.001;
 			return true;
 		}
 	}
 
 	@Override
 	public String toString() {
-		return "BankAccount [username=" + username + ", hashedPassword=" + hashedPassword + ", balance=" + balance
+		return "BankAccount [username=" + username + ", hashedPassword=" + hashedPassword + ", balance=" + this.getBalance()
 				+ "]";
 	}
 }
