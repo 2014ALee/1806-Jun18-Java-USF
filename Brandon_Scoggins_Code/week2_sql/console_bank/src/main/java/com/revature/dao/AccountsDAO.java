@@ -11,6 +11,8 @@ public interface AccountsDAO {
 	// check if active user is accountHolder
 	public ArrayList<User> getAllAccountUsers(User activeUser);
 	
+	public ArrayList<User> getAllAccountUsers(int accountId);
+	
 	public int getAccountHolderId(int accountId);
 	
 	public int getUserCheckingId(int userId);

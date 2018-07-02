@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>CSS Intro</title>
+    <!--
+        Including a link tag with the path to a stylesheet we would likek to use allows us to use thelyting of the EXTERNAL
+        stylesheet.
+    -->
+    <link rel="stylesheet" type="text/css" media="screen" href="main.css" />
+
+    <style>
+        body{
+           /* 
+             margin-left: 400px;
+             margin-right: 400px;
+            */
+            margin: 0px 400px 0px 400px; /*top, right, bottom, left*/
+            background-color: lightgrey;
+        }
+
+        h1{
+            color: blue;
+            font-family: Times;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+    <div class="main-header">
+        <h1>Introduction to CSS</h1>
+        <p><em>A little styling goes a long way...</em></p>
+    </div>
+    <br>
+    <div class="css-def">
+        <h2>What is CSS?</h2>
+        <p><abbr title="Casscading Style Sheets">CSS</abbr> allows you to create rules that
+        specify how the content of an element should appear. For esample, you can specify 
+        that the background of a page is a lifht grey, all of the paragraphs shold appera 
+        dark grey and use the arial typeface, or that all elvel one headings hould be in 
+        blue, italic, and times tpeface.</p>
+    </div>
+    <br>
+    <div class="understanding-css">
+        <h2>Understandin CSS: THinking <em>inside</em> the box</h2>
+        <p>
+            The key to understaing how CSS works is to image that thter is an invisible 
+            bosx around every HTML element. CSS allows us to create rules that control the 
+            way that each individual bos and its contens is presented.
+        </p>
+    </div>
+
+    <a href="http://www.w3schools.com">W3Schools</a>
+
+    <div id="inheritance">
+        <h2>CSS inheritance</h2>
+        <a href="http://google.com">Google</a>
+    </div>
+</body>
+</html>

@@ -1,0 +1,29 @@
+/*
+    CSS selectors
+
+        * { }           universal selector
+        p { }           type selectors
+        .classname { }  Class selector
+        #idvalue        id selector
+        h1, h2, h3 { }  multi-type selector
+        li > a { }      child selector (Ex. anchor tags that are children of list)
+        p a { }         Descendant selector
+        h1 + p { }      sibling/adjacent selector
+*/
+
+div {
+    border: 1px solid;
+    padding: 5px;
+    background-color: white;
+}
+
+p {
+    font-family: Arial;
+    color: darkgray;
+}
+
+#inheritance {
+    color: red;
+}
+
+.main

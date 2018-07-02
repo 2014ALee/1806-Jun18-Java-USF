@@ -9,9 +9,9 @@ public interface CheckingAccountDAO {
 
 	public double getCheckingBalance(User currentUser);
 	
-	public boolean depositChecking(User currentUser, double amount);
+	public boolean depositChecking(User currentUser, int targetAccountId, double amount);
 	
-	public boolean withdrawChecking(User currentUser, double amount);
+	public boolean withdrawChecking(User currentUser, int targetAccountId, double amount);
 	
 	public boolean createChecking(User currentUser);
 	

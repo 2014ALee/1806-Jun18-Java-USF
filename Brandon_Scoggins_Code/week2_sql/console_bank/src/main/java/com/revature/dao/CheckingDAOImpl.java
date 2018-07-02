@@ -18,24 +18,106 @@ public class CheckingDAOImpl implements CheckingAccountDAO{
 	
 	@Override
 	public double getCheckingBalance(User currentUser) {
-		// TODO Auto-generated method stub
+		
+		int userCheckingId = accountsDAO.getUserCheckingId(currentUser.getUserId());
+		
+		try(Connection conn = ConnectionFactory.getInstance().getConnection();){
+			
+			String sql = "SELECT balance FROM checkingAccounts WHERE accountId = ?";
+			
+			PreparedStatement pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setInt(1, userCheckingId);
+			
+			ResultSet rs = pstmt.executeQuery();
+			
+			if (rs.next()) {
+				return rs.getDouble(1);
+			}else {
+				System.out.println("unable to get checking balance");
+				return 0.0;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 		return 0;
 	}
 
 	@Override
-	public boolean depositChecking(User currentUser, double amount) {
-		// TODO Auto-generated method stub
+	public boolean depositChecking(User currentUser, int targetAccountId, double newAmount) {
+		// can deposit into any account you have access to 
+		
+		// check if user has access to target account
+		// in menu, check if amount is positive before calling this method
+		
+		ArrayList<User> authorizedUsers = accountsDAO.getAllAccountUsers(targetAccountId);
+		
+		boolean userAuthorized = false;
+		
+		for (User authorizedUser : authorizedUsers) {
+			if(authorizedUser.getUserId() == currentUser.getUserId()) {
+				System.out.println("User " + currentUser.getUserId() + " is authorized to deposit");
+				userAuthorized = true;
+				break;
+			}
+		}
+		
+		if(userAuthorized) {
+			try(Connection conn = ConnectionFactory.getInstance().getConnection();){
+
+				String sql = "UPDATE checkingAccounts SET balance = ? WHERE accountId = ?";
+
+				PreparedStatement pstmt = conn.prepareStatement(sql);
+
+				pstmt.setDouble(1, newAmount);
+				pstmt.setInt(2, targetAccountId);
+
+				if(pstmt.executeUpdate() != 0) {
+					System.out.println("deposit succesful\n");
+					return true;
+				}else {
+					System.out.println("deposit failed\n");
+					return false;
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		
 		return false;
 	}
 
 	@Override
-	public boolean withdrawChecking(User currentUser, double amount) {
+	public boolean withdrawChecking(User currentUser, int targetAccountId, double amount) {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override		// creates a new checking account. A separate method will pair the newest checking account to a main account
 	public boolean createChecking(User currentUser) {
+		
+		try(Connection conn = ConnectionFactory.getInstance().getConnection();){
+			
+			String sql = "SELECT checkingId FROM accounts WHERE accountHolderId = ?";
+			
+			PreparedStatement pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setInt(1, currentUser.getUserId());
+			
+			ResultSet rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				rs.getInt(1);
+				if(!rs.wasNull()) {
+					System.out.println("User " + currentUser.getUserId() + " already has a checking account");
+					return false;
+				}
+			}
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+		}
+		
 		
 		boolean success = false;
 		
@@ -55,6 +137,7 @@ public class CheckingDAOImpl implements CheckingAccountDAO{
 		
 		if(success) {
 			System.out.println("Checking account created for " + currentUser.getUserName());
+			pairCheckingToAccount(currentUser);
 			return true;
 		}else {
 			System.out.println("Failed to create checking account for " + currentUser.getUserName());

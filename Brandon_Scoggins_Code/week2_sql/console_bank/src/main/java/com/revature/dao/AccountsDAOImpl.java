@@ -70,6 +70,61 @@ public class AccountsDAOImpl implements AccountsDAO{
 		}
 		return allAccountUsers;
 	}
+	
+public ArrayList<User> getAllAccountUsers(int accountId) {
+		
+		ArrayList<User> allAccountUsers = new ArrayList<>();
+		
+		boolean accountIdExist = true;
+		
+		try(Connection conn = ConnectionFactory.getInstance().getConnection();){
+			
+			String sql = "SELECT accountId FROM accounts WHERE accountId = ?";
+			
+			PreparedStatement pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setInt(1, accountId);
+			
+			ResultSet rs = pstmt.executeQuery();
+			
+			if (!rs.next()) {
+				System.out.println("No account was found for that id.");
+				accountIdExist = false;
+			}
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+		}
+		
+		if(accountIdExist) {
+			try(Connection conn = ConnectionFactory.getInstance().getConnection();){
+
+				String sql = "SELECT userId FROM userAccount WHERE accountId = ? ORDER BY userId";
+
+				PreparedStatement pstmt = conn.prepareStatement(sql);
+
+				pstmt.setInt(1, accountId);
+
+				ResultSet rs = pstmt.executeQuery();
+
+				while(rs.next()) {
+
+					sql = "SELECT userId, firstName, lastName FROM users WHERE userId = ?";
+
+					pstmt = conn.prepareStatement(sql);
+
+					pstmt.setInt(1, rs.getInt(1));
+
+					ResultSet userRS = pstmt.executeQuery();
+					userRS.next();
+					allAccountUsers.add(new User(userRS.getInt(1), userRS.getString(2), userRS.getString(3), null, null, null));
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		return allAccountUsers;
+	}
 
 	@Override
 	public int getAccountHolderId(int accountId) {
@@ -164,25 +219,40 @@ public class AccountsDAOImpl implements AccountsDAO{
 		
 		int accountId = getAccountIdByUser(accountHolder);
 		
-		System.out.println("Authorizing user " + newUserId + " to account " + accountId + "...");
+		// check if user is already authorized
 		
-		try(Connection conn = ConnectionFactory.getInstance().getConnection();){
-
-			String sql = "INSERT INTO userAccount VALUES (?, ?)";
-
-			PreparedStatement pstmt = conn.prepareStatement(sql);
-			pstmt.setInt(1, newUserId);
-			pstmt.setInt(2, accountId);
-
-			if(pstmt.executeUpdate() != 0) {
-				System.out.println("authorization given to user " + newUserId);
-				return true;
-			}else {
-				System.out.println("Failed to authorize user " + newUserId);
-				return false;
+		ArrayList<User> authorizedUsers = getAllAccountUsers(accountHolder);
+		
+		boolean userAlreadyAuthorized = false;
+		
+		for (User authorizedUser : authorizedUsers) {
+			if(authorizedUser.getUserId() == newUserId) {
+				System.out.println("User " + newUserId + " is already authorized");
+				userAlreadyAuthorized = true;
 			}
-		} catch (SQLException e) {
-			e.printStackTrace();
+		}
+		
+		if(!userAlreadyAuthorized) {
+			System.out.println("Authorizing user " + newUserId + " to account " + accountId + "...");
+
+			try(Connection conn = ConnectionFactory.getInstance().getConnection();){
+
+				String sql = "INSERT INTO userAccount VALUES (?, ?)";
+
+				PreparedStatement pstmt = conn.prepareStatement(sql);
+				pstmt.setInt(1, newUserId);
+				pstmt.setInt(2, accountId);
+
+				if(pstmt.executeUpdate() != 0) {
+					System.out.println("authorization given to user " + newUserId);
+					return true;
+				}else {
+					System.out.println("Failed to authorize user " + newUserId);
+					return false;
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		}
 		return true;
 	}
