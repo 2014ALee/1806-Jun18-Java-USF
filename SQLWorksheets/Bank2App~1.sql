@@ -1,11 +1,14 @@
 CREATE TABLE ALL_USERS(
-    username    VARCHAR2(20) CONSTRAINT pk_username PRIMARY KEY,
-    first_name  VARCHAR2(20) NOT NULL,
-    last_name   VARCHAR2(20) NOT NULL,
-    email       VARCHAR2(20) UNIQUE NOT NULL,
+    username    VARCHAR2(99) CONSTRAINT pk_username PRIMARY KEY,
+    pass_word   VARCHAR2(99) NOT NULL,
+    first_name  VARCHAR2(99) NOT NULL,
+    last_name   VARCHAR2(99) NOT NULL,
+    email       VARCHAR2(99) UNIQUE NOT NULL,
     balance     NUMBER(5,2) DEFAULT (0.00) NOT NULL
     )
     
+    DROP TABLE ALL_USERS;
+    SELECT * FROM ALL_USERS WHERE username = 'test1' AND pass_word = 'pass';
 
 --procedure for creating a user
     CREATE OR REPLACE PROCEDURE register_user(

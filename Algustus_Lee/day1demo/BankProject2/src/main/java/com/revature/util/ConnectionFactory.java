@@ -21,7 +21,7 @@ public class ConnectionFactory {
 		return (build) ? cf = new ConnectionFactory():cf;
 	}
 
-	public Connection getConnection(String userName, String passWord) {
+	public Connection getConnection() {
 
 		Connection conn = null;
 		Properties prop = new Properties();
@@ -30,7 +30,7 @@ public class ConnectionFactory {
 			prop.load(new FileReader("C:\\Users\\AlgustusLee-Laptop\\project-repos\\1806-Jun18-Java-USF"+
 					"\\Algustus_Lee\\day1demo\\BankProject2\\src\\main\\resources\\bankapp.properties"));
 			Class.forName(prop.getProperty("driver"));
-			conn = DriverManager.getConnection(prop.getProperty("url"),userName,passWord);
+			conn = DriverManager.getConnection(prop.getProperty("url"),prop.getProperty("usr"),prop.getProperty("pw"));
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		} catch (SQLException e) {

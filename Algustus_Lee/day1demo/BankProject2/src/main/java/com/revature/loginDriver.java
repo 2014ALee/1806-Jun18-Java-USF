@@ -1,6 +1,8 @@
 package com.revature;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import com.revature.util.ConnectionFactory;
@@ -31,9 +33,17 @@ public class loginDriver extends menuDriver {
 	}
 	private static boolean validLogin(String userName, String password) {
 		System.out.println("=======================Establishing Connection=======================");
-
-		try(Connection conn = ConnectionFactory.getInstanceMethod().getConnection(userName, password)){
-			if(conn == null) {
+		try(Connection conn = ConnectionFactory.getInstanceMethod().getConnection()){
+			String sql = "SELECT * FROM ALL_USERS WHERE username = ? AND pass_word = ?";
+			PreparedStatement pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, userName);
+			pstmt.setString(2, password);
+			ResultSet rs = pstmt.executeQuery();
+			int rowCount = 0;
+			while(rs.next()) {
+				rowCount++;
+			}
+			if(rowCount != 1){
 				return false;
 			}
 			else {

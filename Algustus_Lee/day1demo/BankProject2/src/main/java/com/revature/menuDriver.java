@@ -7,7 +7,6 @@ import com.revature.models.userData;
 public class menuDriver extends mainDriver {
 	public static Scanner input = new Scanner(System.in);
 	public static Scanner loggedInput = new Scanner(System.in);
-	public static userData theUser = null;
 
 	public static void mainMenu() {
 		String userInput;
@@ -43,6 +42,8 @@ public class menuDriver extends mainDriver {
 	}
 	public static void loggedInMenu(String userName, String password) {
 		double inputNum;
+		userData theUser = null;
+		theUser = registerDriver.userdao.setUser(userName, theUser);
 		System.out.println("======================Welcome "+ theUser.getFirstName()+"========================");
 
 		System.out.println("==================Enter \"1\" to view balance==================");
@@ -61,7 +62,7 @@ public class menuDriver extends mainDriver {
 			System.out.println("==============ENTER DEPOSIT AMOUNT=================");
 			System.out.print(theUser.getUserName()+" >");
 			inputNum =loggedInput.nextDouble();
-			transactionDriver.deposit(theUser, inputNum);
+			registerDriver.userdao.deposit(theUser, inputNum);
 			System.out.println("============Current Balance: $"+theUser.getBalance()+"==============");
 			loggedInMenu(userName, password);
 			break;
@@ -69,13 +70,13 @@ public class menuDriver extends mainDriver {
 			System.out.println("============ENTER WITHDRAWL AMOUNT=================");
 			System.out.print(theUser.getUserName()+" >");
 			inputNum = loggedInput.nextDouble();
-			transactionDriver.withdraw(theUser, inputNum);
+			registerDriver.userdao.withdraw(theUser, inputNum);
 			System.out.println("============Current Balance: $"+theUser.getBalance()+"==============");
 			loggedInMenu(userName, password);
 			break;
 		case "4":
 			System.out.println("===================Goodbye "+theUser.getUserName()+"==========================");
-			logout();
+			logout(theUser);
 			break;
 		default:
 			System.out.println("=========Please select one of the options.==========");
@@ -85,7 +86,7 @@ public class menuDriver extends mainDriver {
 		}
 
 	}
-	private static void logout() {
+	private static void logout(userData theUser) {
 		theUser = null;
 		mainMenu();
 

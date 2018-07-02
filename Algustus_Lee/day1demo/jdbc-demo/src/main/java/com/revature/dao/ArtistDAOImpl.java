@@ -100,6 +100,7 @@ public class ArtistDAOImpl implements ArtistDAO {
 			
 			ResultSet rs = pstmt.getGeneratedKeys();
 			
+			
 			if(rowsUpdated != 0) {
 				
 				while(rs.next()) {

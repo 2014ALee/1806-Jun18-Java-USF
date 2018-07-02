@@ -4,9 +4,11 @@ DEFAULT TABLESPACE SYSTEM        -- Defines a default tablespace
 TEMPORARY TABLESPACE temp       -- Defines a temporary tablespace
 QUOTA 10M ON SYSTEM;             -- Establishes a row quota for the table space
 
+UPDATE ALL_USERS SET balance = ?;
 SELECT * FROM DBA_USERS;
 DROP USER TEST1 CASCADE;
 DROP USER TEST2 CASCADE;
+DROP USER TEST3 CASCADE;
 DROP USER HTEST CASCADE;
 DROP USER SQLTEST CASCADE;
 DROP USER TESTMAN CASCADE;

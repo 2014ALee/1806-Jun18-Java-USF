@@ -1,6 +1,5 @@
 package com.revature;
 
-import java.io.File;
 
 import com.revature.models.userData;
 import com.revature.dao.userDAO;
@@ -11,7 +10,7 @@ public class registerDriver extends menuDriver {
 //	public static Scanner input = new Scanner(System.in);
 //	public static Scanner loggedInput = new Scanner(System.in);
 //	public static userData theUser = null;
-	static userDAO userdao = new userDAOImpl();
+	public static userDAO userdao = new userDAOImpl();
 	
 	public static void register() {
 		String firstName;
@@ -19,6 +18,7 @@ public class registerDriver extends menuDriver {
 		String userName;
 		String password;
 		String email;
+		userData theUser;
 
 		System.out.println("=======================================================");
 		System.out.println("======================First Name=======================");
