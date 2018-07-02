@@ -56,13 +56,13 @@ UPDATE customer
 SET lastname = 'Walter', firstname = 'Robert'
 WHERE customerid = 32; -- used customerid because general don't want to update all 'Aaron Mitchell's in this scenario
 
--- Task: Update name of artist â€œCreedence Clearwater Revivalâ€? to â€œCCRâ€?
+-- Task: Update name of artist "Creedence Clearwater Revival" to "CCR"
 UPDATE artist
 SET name = 'CCR'
 WHERE name = 'Creedence Clearwater Revival';
 
 -- 2.5 LIKE
--- Task: Select all invoices with a billing address like â€œTâ€?
+-- Task: Select all invoices with a billing address like "T"
 SELECT *
 FROM invoice
 WHERE billingaddress LIKE '%T%';  -- Need percent on at least one side or it retrieves an empty result set
@@ -381,7 +381,7 @@ IS
 BEGIN
 DELETE FROM invoice
 WHERE invoiceid = i_invoiceid;
--- SAVEPOINT;
+COMMIT;
 END;
 /
 
@@ -409,46 +409,57 @@ e_email IN VARCHAR2
 )
 IS
 BEGIN
-INSERT INTO employee(lastname,firstname,title,reportsto,birthdate,hiredate,address,citystate,country,postalcode,phone,
+INSERT INTO employee(lastname,firstname,title,reportsto,birthdate,hiredate,address,city,state,country,postalcode,phone,
 fax,email)
 VALUES (e_lastname,e_firstname,e_title,e_reportsto,e_birthdate,e_hiredate,e_address,e_city,e_state,e_country,e_postalcode,
 e_phone,e_fax,e_email);
 
--- SAVEPOINT;
+COMMIT;
 END;
 /
 
 -- 6.1 AFTER/FOR
 -- Task - Create an after insert trigger on the employee table fired after a new record is inserted into the table.
-CREATE OR REPLACE TRIGGER name
-AFTER INSERT ON table
--- ON EACH ROW equivalent?
+CREATE OR REPLACE TRIGGER insert_commit
+AFTER INSERT ON employee
+FOR EACH ROW
 BEGIN
+ COMMIT;
 END;
 /
 
 -- Task: Create an after update trigger on the album table that fires after a row is inserted in the table
-CREATE OR REPLACE TRIGGER name
-AFTER INSERT ON table
--- ON EACH ROW equivalent?
+CREATE OR REPLACE TRIGGER update_commit
+AFTER UPDATE ON album
+FOR EACH ROW
 BEGIN
+    COMMIT;
 END;
 /
 
 -- Task: Create an after delete trigger on the customer table that fires after a row is deleted from the table.
-CREATE OR REPLACE TRIGGER name
-AFTER DELETE ON table
--- ON EACH ROW equivalent?
+CREATE OR REPLACE TRIGGER delete_commit
+AFTER DELETE ON customer
+FOR EACH ROW
 BEGIN
+    COMMIT;
 END;
 /
 
 -- 6.2 BEFORE
 -- Task: Create a before trigger that restricts the deletion of any invoice that is priced over 50 dollars.
-CREATE OR REPLACE TRIGGER name
-BEFORE INSERT ON table
--- ON EACH ROW equivalent?
+CREATE OR REPLACE TRIGGER restrict_over_50
+BEFORE DELETE ON invoice
+FOR EACH ROW
+DECLARE
+over_50 EXCEPTION;
 BEGIN
+    IF :OLD.total > 50 THEN
+        RAISE over_50;
+    END IF;
+    EXCEPTION
+        WHEN over_50 THEN
+            DBMS_OUTPUT.PUT_LINE('Error: Invoice over 50 dollars');
 END;
 /
 
