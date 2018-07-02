@@ -16,3 +16,6 @@ SELECT sysdate FROM dualy;
 
 -- Syntactically correct, logically flawed (we cannot covert "X" to a number)
 SELECT to_number(dummy) FROM dual;
+
+SELECT CURRENT_TIMESTAMP
+FROM DUAL;

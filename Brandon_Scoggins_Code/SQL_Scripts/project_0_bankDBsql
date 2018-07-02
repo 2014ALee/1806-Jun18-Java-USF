@@ -1,0 +1,292 @@
+-- Create a non-admin user to interact with the DB
+CREATE USER notadmin
+IDENTIFIED BY notadminpassword
+DEFAULT TABLESPACE users
+TEMPORARY TABLESPACE temp
+QUOTA 10M ON users;
+-- Grant the non-admin user some basic abilities
+GRANT CONNECT TO notadmin;
+GRANT RESOURCE TO notadmin;
+GRANT CREATE SESSION TO notadmin;
+GRANT CREATE TABLE TO notadmin;
+GRANT CREATE VIEW TO notadmin;
+-- Disconnect as admin
+DISCONNECT admin;
+-- Connect as non-admin user
+CONN notadmin/notadminpassword;
+-- Create the users table (holds user information)
+CREATE TABLE users(
+    userId          NUMBER(10), 
+    firstName       VARCHAR2(20)    NOT NULL,
+    lastName        VARCHAR2(20)    NOT NULL,
+    userName        VARCHAR2(20)    NOT NULL,
+    passWord        VARCHAR2(20)    NOT NULL,
+    email           VARCHAR2(255)   NOT NULL,
+    
+    CONSTRAINT pk_users PRIMARY KEY (userId),
+    CONSTRAINT uniq_user UNIQUE (userName, email)
+);
+-- Create checkingAccounts table (tracks checking accounts and their balances)
+CREATE TABLE checkingAccounts (
+    accountId       NUMBER(10)      PRIMARY KEY,
+    balance         NUMBER(10)      DEFAULT 0.00
+);
+-- Create savingsAccounts table (tracks savings accounts and their balances)
+CREATE TABLE savingsAccounts (
+    accountId       NUMBER(10)      PRIMARY KEY,
+    balance         NUMBER(10)      DEFAULT 0.00
+);
+-- Create transfers table (a junction table that links checkings and savings accounts
+-- for tracking of money transfers. A null value represents a deposit or withdrawal from
+-- the paired account)
+CREATE TABLE transfers (
+    transferId      NUMBER(10)      PRIMARY KEY,
+    checkingId      NUMBER(10),
+    savingsId       NUMBER(10),
+    
+    CONSTRAINT fk_checking_account_id FOREIGN KEY (checkingId) 
+                                        REFERENCES checkingAccounts(accountId),
+    CONSTRAINT fk_savings_account_id FOREIGN KEY (savingsId) 
+                                        REFERENCES savingsAccounts(accountId)
+);
+ALTER TABLE transfers
+DROP CONSTRAINT fk_checking_account_id; 
+
+ALTER TABLE transfers
+DROP CONSTRAINT fk_savings_account_id;
+
+ALTER TABLE transfers
+ADD CONSTRAINT fk_checking_account_id FOREIGN KEY (checkingId) 
+                                        REFERENCES checkingAccounts(accountId)
+                                        ON DELETE CASCADE;
+ALTER TABLE transfers
+ADD CONSTRAINT fk_savings_account_id FOREIGN KEY (savingsId) 
+                                        REFERENCES savingsAccounts(accountId)
+                                        ON DELETE CASCADE;
+-- Create transactions table (create an Id for each transaction and records the active user,
+-- the transferId, the amount of money transfered, and the date and time of the transaction)
+CREATE TABLE transactions(
+    transactionId   NUMBER(10)      PRIMARY KEY,
+    userId          NUMBER(10),
+    transferId      NUMBER(10),
+    amount          NUMBER(10)      DEFAULT 0.00,
+    dateOf          DATE            NOT NULL,
+    
+    CONSTRAINT fk_user FOREIGN KEY (userId) 
+                        REFERENCES users(userId),
+    CONSTRAINT fk_transfer FOREIGN KEY (transferId)
+                        REFERENCES transfers(transferId)
+);
+
+ALTER TABLE transactions
+DROP CONSTRAINT fk_user; 
+
+ALTER TABLE transactions
+DROP CONSTRAINT fk_transfer;
+
+ALTER TABLE transactions
+ADD CONSTRAINT fk_user FOREIGN KEY (userId) 
+                        REFERENCES users(userId)
+                        ON DELETE CASCADE;
+ALTER TABLE transactions
+ADD CONSTRAINT fk_transfer FOREIGN KEY (transferId)
+                        REFERENCES transfers(transferId)
+                        ON DELETE CASCADE;
+-- Create accounts table (records the account holder and which checking, savings, or both
+-- accounts they have)
+CREATE TABLE accounts(
+    accountid       NUMBER(10)      PRIMARY KEY,
+    accountHolderId NUMBER(10),
+    checkingId      NUMBER(10),
+    savingsId       NUMBER(10),
+    
+    CONSTRAINT fk_account_holder_id FOREIGN KEY (accountHolderId)
+                                    REFERENCES users(userId),
+    CONSTRAINT fk_checking_id FOREIGN KEY (checkingId) 
+                                        REFERENCES checkingAccounts(accountId),
+    CONSTRAINT fk_savings_id FOREIGN KEY (savingsId) 
+                                        REFERENCES savingsAccounts(accountId)
+);
+
+ALTER TABLE accounts
+DROP CONSTRAINT fk_account_holder_id;
+
+ALTER TABLE accounts
+ADD CONSTRAINT fk_account_holder_id FOREIGN KEY (accountHolderId)
+                                    REFERENCES users(userId)
+                                    ON DELETE CASCADE;
+ALTER TABLE accounts
+ADD CONSTRAINT uniq_acct_holders UNIQUE (accountHolderId);
+
+ALTER TABLE accounts
+DROP CONSTRAINT fk_checking_id;
+
+ALTER TABLE accounts
+ADD CONSTRAINT fk_checking_id FOREIGN KEY (checkingId) 
+                                        REFERENCES checkingAccounts(accountId)
+                                        ON DELETE CASCADE;   
+ALTER TABLE accounts
+DROP CONSTRAINT fk_savings_id;
+
+ALTER TABLE accounts
+ADD CONSTRAINT fk_savings_id FOREIGN KEY (savingsId) 
+                                        REFERENCES savingsAccounts(accountId)
+                                        ON DELETE CASCADE;                                        
+-- Create userAccounts table (holds information on which users can access which accounts)
+CREATE TABLE userAccount (
+    userId          NUMBER(10),
+    accountId       NUMBER(10),
+    
+    CONSTRAINT fk_user_id FOREIGN KEY (userId)
+                            REFERENCES users(userId),
+    CONSTRAINT fk_account_id FOREIGN KEY (accountId)
+                                REFERENCES accounts(accountId),
+    CONSTRAINT pk_user_account PRIMARY KEY (userId, accountId)
+);
+
+ALTER TABLE userAccount
+DROP CONSTRAINT fk_user_id;
+
+ALTER TABLE userAccount
+ADD CONSTRAINT fk_user_id FOREIGN KEY (userId)
+                            REFERENCES users(userId)
+                            ON DELETE CASCADE;  
+ALTER TABLE userAccount
+DROP CONSTRAINT fk_account_id;
+
+ALTER TABLE userAccount
+ADD CONSTRAINT fk_account_id FOREIGN KEY (accountId)
+                                REFERENCES accounts(accountId)
+                                ON DELETE CASCADE;                              
+-- Create some sequences and triggers to increment the primary keys properly
+-- User Id's
+CREATE SEQUENCE user_id_seq
+MINVALUE 1
+MAXVALUE 9999999999
+INCREMENT BY 1
+START WITH 1;
+
+CREATE OR REPLACE TRIGGER user_id_trigger
+BEFORE INSERT ON users
+FOR EACH ROW
+
+BEGIN
+    SELECT user_id_seq.NEXTVAL
+    INTO :new.userId
+    FROM dual;
+END;
+/
+-- Transfer Id's
+CREATE SEQUENCE transfer_id_seq
+MINVALUE 1
+MAXVALUE 9999999999
+INCREMENT BY 1
+START WITH 1;
+
+CREATE OR REPLACE TRIGGER transfer_id_trigger
+BEFORE INSERT ON transfers
+FOR EACH ROW
+
+BEGIN
+    SELECT transfer_id_seq.NEXTVAL
+    INTO :new.transferId
+    FROM dual;
+END;
+/
+-- Transaction Id's
+CREATE SEQUENCE transaction_id_seq
+MINVALUE 1
+MAXVALUE 9999999999
+INCREMENT BY 1
+START WITH 1;
+
+CREATE OR REPLACE TRIGGER transaction_id_trigger
+BEFORE INSERT ON transactions
+FOR EACH ROW
+
+BEGIN
+    SELECT transaction_id_seq.NEXTVAL
+    INTO :new.transactionId
+    FROM dual;
+END;
+/
+-- Savings Account Id's
+CREATE SEQUENCE savings_id_seq
+MINVALUE 1
+MAXVALUE 9999999999
+INCREMENT BY 1
+START WITH 1;
+
+CREATE OR REPLACE TRIGGER savings_id_trigger
+BEFORE INSERT ON savingsAccounts
+FOR EACH ROW
+
+BEGIN
+    SELECT savings_id_seq.NEXTVAL
+    INTO :new.accountId
+    FROM dual;
+END;
+/
+-- Checking Account Id's
+CREATE SEQUENCE checking_id_seq
+MINVALUE 1
+MAXVALUE 9999999999
+INCREMENT BY 1
+START WITH 1;
+
+CREATE OR REPLACE TRIGGER checking_id_trigger
+BEFORE INSERT ON checkingAccounts
+FOR EACH ROW
+
+BEGIN
+    SELECT checking_id_seq.NEXTVAL
+    INTO :new.accountId
+    FROM dual;
+END;
+/
+-- Account Id's
+CREATE SEQUENCE account_id_seq
+MINVALUE 1
+MAXVALUE 9999999999
+INCREMENT BY 1
+START WITH 1;
+
+CREATE OR REPLACE TRIGGER account_id_trigger
+BEFORE INSERT ON accounts
+FOR EACH ROW
+
+BEGIN
+    SELECT account_id_seq.NEXTVAL
+    INTO :new.accountId
+    FROM dual;
+END;
+/
+-- Trigger on transactions to get system date and time
+CREATE OR REPLACE TRIGGER get_date
+BEFORE INSERT ON transactions
+FOR EACH ROW
+
+BEGIN
+    SELECT CURRENT_TIMESTAMP
+    INTO :new.dateOf
+    FROM dual;
+END;
+/
+COMMIT;
+-- Insert a test user to make sure everything is working
+INSERT INTO users VALUES(3, 'testfirstname', 'testlastname', 'testusername', 'testpassword', 'testemail@email.com');
+SELECT *
+FROM users;
+-- Callable Procedure to log in a user and return the user fields
+CREATE OR REPLACE PROCEDURE log_in_user(
+    user_name_or_email IN users.userName%TYPE,
+    pass_word IN users.passWord%TYPE,
+    my_cursor OUT SYS_REFCURSOR)
+AS
+BEGIN
+    OPEN my_cursor FOR
+    SELECT * 
+    FROM users
+    WHERE (userName = user_name_or_email OR email = user_name_or_email) AND passWord = pass_word;
+END;
+/
