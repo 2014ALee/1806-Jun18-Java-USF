@@ -95,24 +95,85 @@ SELECT *
 	AND DATE'2004-03-01';
 
 -- 2.7 DELETE
-DELETE FROM INVOICELINE
+DELETE FROM INVOICELINE -- Now I'm at a place I can delete content.
     WHERE INVOICEID
     IN (SELECT INVOICEID 
-        FROM INVOICE
+        FROM INVOICE -- Cannot delete invoice yet, so I go up a layer and delete invoiceline with these invoiceid's
         WHERE CUSTOMERID
         IN (SELECT CUSTOMERID
-            FROM CUSTOMER
+            FROM CUSTOMER -- Can't delete this yet, so I go up a layer and delete from invoice with the customer id
             WHERE FIRSTNAME='Robert'
             AND LASTNAME='Walter'));
-DELETE FROM INVOICE
+DELETE FROM INVOICE -- Able to remove inner dependency after removing outer dependency
     WHERE CUSTOMERID
     IN (SELECT CUSTOMERID
         FROM CUSTOMER
         WHERE FIRSTNAME='Robert'
         AND LASTNAME='Walter');
-DELETE FROM CUSTOMER
+DELETE FROM CUSTOMER -- Finally able to delete the customer.
     WHERE FIRSTNAME='Robert'
     AND LASTNAME='Walter';
+
+
+-- From 3.0 through 6.2, I followed the general structure from the demos
+-- in order to create functions, procedures, transactions, and triggers.
+-- General layouts that I've adapted:
+
+/*
+create or replace FUNCTION [custom_name]
+    RETURN [TYPE]
+AS
+    [custom_name] [TYPE];
+    [custom_name] [TYPE];
+BEGIN
+    [Series of statements, and finally the return statement]
+END;
+/
+*/
+
+/*
+SELECT [Aggregate_function], [Aggregate_function]
+    INTO [custom_name], [custom_name]
+    FROM [TABLE];
+*/
+
+/*
+create or replace PROCEDURE [custom_name](
+    [custom_cursor_name] [IN/OUT] SYS_REFCURSOR),
+    [custom_name]   [IN/OUT] [table_name].[column_name]%TYPE,
+    ...)
+IS
+BEGIN
+    [statements]
+END;
+/
+*/
+
+/*
+create or replace TRIGGER [CUSTOM_NAME] 
+    AFTER
+    [INSERT/UPDATE/DELETE]
+    ON [TABLE]
+        DECLARE
+            [custom_variables] [TYPE];
+        BEGIN
+            [Series of statements]
+        END;
+/
+*/
+
+/*
+create or replace TRIGGER [CUSTOM_NAME]
+    BEFORE
+    [INSERT/UPDATE/DELETE]
+    ON [TABLE]
+        FOR EACH ROW WHEN ([CONDITION]) BEGIN
+            [CODE]
+        END;
+/
+*/
+
+
 
 
 
