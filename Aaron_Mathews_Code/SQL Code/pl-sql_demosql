@@ -49,7 +49,8 @@ IS
 BEGIN
     OPEN my_cursor for 
     SELECT artistid, name
-    FROM artist; 
+    FROM artist
+    ORDER BY artistid;
  END;
  / 
  
@@ -71,10 +72,29 @@ BEGIN
 END;
 /
 
+--Creating an index ON employee TABLE
+CREATE INDEX emp_index
+ON employee (employeeid, firstname, lastname);
 
+--SELECT employee, firstname, lastname
+--FROM employee;
 
+--CREATE a SEQUENCE that will be used to INCREMENT artist keys IN the artist table
+CREATE SEQUENCE art_seq
+MINVALUE 1
+MAXVALUE 9999999999999
+increment by 1
+START WITH 276;
 
+-- CREATE a trigger that will use art_SEQUENCE whenever a new row is inserted
+CREATE OR REPLACE TRIGGER art_trigger
+before INSERT ON artist 
+FOR EACH ROW 
 
+BEGIN 
+    SELECT art_seq.NEXTVAL
+    INTO :new.artistid
+    FROM dual;
+END;
 
-
-
+INSERT INTO artist (name) VALUES ('Megadeth');
