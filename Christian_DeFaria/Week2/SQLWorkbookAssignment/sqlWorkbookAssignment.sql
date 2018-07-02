@@ -237,20 +237,96 @@ END;
 --You will also be working with handling errors in your SQL.
 --Task – Create a transaction that given a invoiceId will delete that invoice (There may be constraints that rely on this, 
 --          find out how to resolve them).
-
+CREATE OR REPLACE PROCEDURE delete_invoice(
+    inv_id  IN  INVOICE.INVOICEID%TYPE)
+IS
+BEGIN
+    DELETE FROM invoiceline
+    WHERE invoiceid = inv_id;
+    DELETE FROM invoice
+    WHERE invoiceid = inv_id;
+    
+    commit;
+END;
 --Task – Create a transaction nested within a stored procedure that inserts a new record in the Customer table
-
-
+CREATE OR REPLACE PROCEDURE new_cust(
+    cust_id IN CUSTOMER.CUSTOMERID%TYPE,
+    fn IN CUSTOMER.FIRSTNAME%TYPE,
+    ln IN CUSTOMER.LASTNAME%TYPE,
+    comp IN CUSTOMER.COMPANY%TYPE,
+    addr IN CUSTOMER.ADDRESS%TYPE,
+    cty IN CUSTOMER.CITY%TYPE,
+    st IN CUSTOMER.STATE%TYPE,
+    cnty IN CUSTOMER.COUNTRY%TYPE,
+    pcode IN CUSTOMER.POSTALCODE%TYPE,
+    p_num IN CUSTOMER.PHONE%TYPE,
+    f_num IN CUSTOMER.FAX%TYPE,
+    e_mail IN CUSTOMER.EMAIL%TYPE,
+    support IN CUSTOMER.SUPPORTREPID%TYPE)
+IS
+BEGIN
+    INSERT INTO Customer (CustomerId, FirstName, LastName, Company, Address, City, State, Country, PostalCode, Phone, Fax, Email, SupportRepId) VALUES (cust_id, fn, ln, comp, addr, cty, st, cnty, pcode, p_num, f_num, e_mail, support);
+    COMMIT;
+END;
+/
 --6.0 Triggers
 --In this section you will create various kinds of triggers that work when certain DML statements are executed on a table.
 --6.1 AFTER/FOR
 --Task - Create an after insert trigger on the employee table fired after a new record is inserted into the table.
+CREATE OR REPLACE TRIGGER emp_trigger
+AFTER INSERT ON employee
+FOR EACH ROW
+
+DECLARE
+    usr  VARCHAR(20);
+
+BEGIN
+    SELECT user
+    INTO usr
+    FROM dual;
+END;
+/
 --Task – Create an after update trigger on the album table that fires after a row is inserted in the table
+CREATE OR REPLACE TRIGGER album_trigger
+AFTER UPDATE ON album
+FOR EACH ROW
+
+DECLARE
+    changedt    DATE;
+
+BEGIN
+    SELECT sysdate
+    INTO changedt
+    FROM dual;
+END;
+/
 --Task – Create an after delete trigger on the customer table that fires after a row is deleted from the table.
---
+CREATE OR REPLACE TRIGGER customer_trigger
+AFTER UPDATE ON customer
+FOR EACH ROW
+
+DECLARE
+    changetime    TIMESTAMP;
+
+BEGIN
+    SELECT systimestamp
+    INTO changetime
+    FROM dual;
+END;
+/
+
 --6.2 BEFORE
 --Task – Create a before trigger that restricts the deletion of any invoice that is priced over 50 dollars.
+CREATE OR REPLACE TRIGGER inv_trigger
+BEFORE DELETE ON invoice
+FOR EACH ROW
 
+BEGIN
+    IF :old.total > 50 
+    THEN RAISE_APPLICATION_ERROR(-20000, 'Deletion denied: Invoice total to high');
+    END IF;
+END;
+/
 
 --7.0 JOINS
 --In this section you will be working with combining various tables through the use of joins. You will work with outer, 
