@@ -3,6 +3,7 @@ package com.revature.models;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 import com.revature.dao.AccountDAO;
@@ -107,18 +108,18 @@ public class Pages {
 			// check username availability
 			if (Validate.usernameAndEmailAvailable(user)) {
 				// username available, create new user
-				
+
 				//create new user in database
 				UsersDAO usersDAO = new UsersDAOImpl();
 				//use the accounts pk as the new users account fk
 				User u = usersDAO.addUser(user);
-				
+
 				//call the addAccount() method from the AccountDAO to add an account to the database and return the account object
 				AccountDAO accountDAO = new AccountDAOImpl();
 				Account account = new Account();
 				account.setUserID(u.getUserID());
 				Account accountObj = accountDAO.addAccount(account);
-						
+
 				//go back to main menu
 				mainMenu();
 			} else {
@@ -147,7 +148,7 @@ public class Pages {
 
 			System.out.print("Password: ");
 			password = br.readLine();
-				
+
 			if (Validate.credentialsValid(username, password)) {
 				// login successful
 				System.out.println("Login Successful!");	
@@ -225,6 +226,9 @@ public class Pages {
 
 	public void deposit() {
 
+		//update the user object with all user and account info from the database
+		user = updateUserObject(user);
+
 		double amountToDeposit = 0d;
 		String userInput = "";
 		//variable to set which account the user chose to deposit to
@@ -291,7 +295,10 @@ public class Pages {
 				System.out.println("Please enter a valid number\n");
 				deposit();
 			}
-
+			
+			//make sure user can only input 2 decimal places
+			DecimalFormat df = new DecimalFormat(".##");
+			amountToDeposit = Double.parseDouble(df.format(amountToDeposit));
 			// check if the user is sure they want to deposit
 			String userDepositInput = "";
 
@@ -332,6 +339,23 @@ public class Pages {
 				user.setJointBalance(user.getJointBalance() + amountToDeposit);
 			}
 
+			if((accountChosen == "Checking") || (accountChosen == "Savings"))
+			{
+				//fill an account object to update the database
+				Account a = new Account();
+				a.setAccountID(user.getAccountID());
+				a.setUserID(user.getUserID());
+				a.setCheckingBalance(user.getCheckingBalance());
+				a.setSavingsBalance(user.getSavingsBalance());
+				AccountDAO accountDAO = new AccountDAOImpl();
+				accountDAO.updateAccount(a);
+			}else {
+				//update the joint balance in the database
+				int jointID = user.getJointID();
+				double newBalance = user.getJointBalance();		
+				JointAccountDAO jointDAO = new JointAccountDAOImpl();
+				jointDAO.updateJointBalanceByJointID(jointID, newBalance);
+			}
 
 			System.out.println("Deposit successful!  You deposited $" + amountToDeposit + " into your " + accountChosen + " account!" );
 			homePage();
@@ -348,6 +372,9 @@ public class Pages {
 	}
 
 	public void withdraw() {
+
+		//update the user object with all user and account info from the database
+		user = updateUserObject(user);
 
 		double amountToWithdraw = 0d;
 		String userInput = "";
@@ -416,7 +443,11 @@ public class Pages {
 				System.out.println("Please enter a valid number\n");
 				withdraw();
 			}
-
+			
+			//make sure user can only input 2 decimal places
+			DecimalFormat df = new DecimalFormat(".##");
+			amountToWithdraw = Double.parseDouble(df.format(amountToWithdraw));
+			
 			// check if the user is sure they want to withdraw
 			String userWithdrawalInput = "";
 
@@ -484,6 +515,24 @@ public class Pages {
 
 			}
 
+			if((accountChosen == "Checking") || (accountChosen == "Savings"))
+			{
+				//fill an account object to update the database
+				Account a = new Account();
+				a.setAccountID(user.getAccountID());
+				a.setUserID(user.getUserID());
+				a.setCheckingBalance(user.getCheckingBalance());
+				a.setSavingsBalance(user.getSavingsBalance());
+				AccountDAO accountDAO = new AccountDAOImpl();
+				accountDAO.updateAccount(a);
+			}else {
+				//update the joint balance in the database
+				int jointID = user.getJointID();
+				double newBalance = user.getJointBalance();		
+				JointAccountDAO jointDAO = new JointAccountDAOImpl();
+				jointDAO.updateJointBalanceByJointID(jointID, newBalance);
+			}
+
 			System.out.println("Withdrawal successful!  You withdrew $" + amountToWithdraw + " from your " + accountChosen + " account!");
 			homePage();
 
@@ -506,6 +555,9 @@ public class Pages {
 
 	public void viewBalance() {
 
+		//update the user object with all user and account info from the database
+		user = updateUserObject(user);
+
 		String userInput;
 
 		System.out.println("\n-----------VIEW BALANCE------------");
@@ -517,7 +569,10 @@ public class Pages {
 		}
 		if (user.getHasJointAccount()) {
 			System.out.println("Your current Joint Account balance is: " + user.getJointBalance());
-		}		
+		}	
+		if(user.getHasCheckingAccount() == false && user.getHasSavingsAccount() == false && user.getHasJointAccount() == false) {
+			System.out.println("Please open an account to view your balance!");
+		}
 		System.out.println("-----------------------------------");
 		System.out.println("[1] - Back to Home Page");
 		System.out.println("[2] - Logout");
@@ -549,54 +604,10 @@ public class Pages {
 	}
 
 	public void createNewAccount() {
-		
-		//get user data and account data to fill in the user object with updated data
-		//use the UsersDAO getUserByUsername() and the AccountDao getAccountByUserID() to update the user object
-		UsersDAO usersDAO = new UsersDAOImpl();
-		user = usersDAO.getUserByUsername(user);
-	
-		AccountDAO accountDAO = new AccountDAOImpl();
-		Account account = new Account();
-		account.setUserID(user.getUserID());
-		Account a = accountDAO.getAccountByUserID(account);
-		
-		//set user objects account info
-		user.setAccountID(a.getAccountID());
-		
-		if (a.getCheckingBalance() == -999999999) {
-			user.setHasCheckingAccount(false);
-		}else {
-			user.setHasCheckingAccount(true);
-			user.setCheckingBalance(a.getCheckingBalance());
-		}
-		
-		if (a.getSavingsBalance() == -999999999) {
-			//set users hasSavingsAccount to false
-			user.setHasSavingsAccount(false);
-		}else {
-			//set users hasSavingsAccount to true
-			user.setHasSavingsAccount(true);
-			user.setSavingsBalance(a.getSavingsBalance());
-		}
-		
-		//getJointAccountByUserID() to get the joint account matching the user id if a joint account exists, checks both user1id and user2id for a match		
-		JointAccountDAO jointAccountDAO = new JointAccountDAOImpl();
-		int userID = user.getUserID();
-		JointAccount j = jointAccountDAO.getJointAccountByUserID(userID);
-		
-		if (j.getJointID() == 0) {
-			
-			//if the jointid IS 0, then hasJointAccount is false because no account exists
-			user.setHasJointAccount(false);
-		}else {
-			
-			//if the jointid is not 0, then hasJointAccount is true because an account already exists
-			//set user objects joint account info
-			user.setJointID(j.getJointID());
-			user.setHasJointAccount(true);
-			user.setJointBalance(j.getJointBalance());
-		}	
-			
+
+		//update the user object with all user and account info
+		user = updateUserObject(user);
+
 		// string to store user input
 		String userInput;
 		String accountType = "";
@@ -688,6 +699,14 @@ public class Pages {
 			createNewAccount();
 		}
 
+		//update account object info before you pass it to update the database
+		AccountDAO accountDAO = new AccountDAOImpl();
+		Account a = new Account();
+		a.setAccountID(user.getAccountID());
+		a.setUserID(user.getUserID());
+		a.setCheckingBalance(user.getCheckingBalance());
+		a.setSavingsBalance(user.getSavingsBalance());
+
 		//create a checking or savings account by changing the balance from -999999999 to 0 in the database
 		if(accountType == "Checking"){
 			//create checking account
@@ -706,7 +725,7 @@ public class Pages {
 			//back to home page after account creation
 			homePage();
 		}else {		
-			
+			//create joint account
 			//get joint user info
 			try {
 
@@ -715,25 +734,37 @@ public class Pages {
 
 				System.out.print("What is the Username of the other member on the Joint Account? ");
 				username = br.readLine();
-				
+
 				//get second member of joint accounts userid from their username
+				UsersDAO usersDAO = new UsersDAOImpl();
 				int user2ID = usersDAO.getUserIDByUsername(username);
 				int user1ID = user.getUserID();
-				System.out.println(user2ID);
-				System.out.println(user1ID);
+
+				//make sure the username actually exists
+				if (user2ID == 0) {
+					System.out.println("This username does not exist, please try again!");
+					createNewAccount();
+				}
+
+				//check to make sure user2 doesnt already have a joint account with someone else
+				JointAccountDAO jointAccountDAO = new JointAccountDAOImpl();
+				JointAccount j = jointAccountDAO.getJointAccountByUserID(user2ID);
+				if (j.getJointID() != 0) {
+
+					//if the jointid is not 0, then a joint account already exists for this user
+					System.out.println("This person already has a Joint Account with somebody else");
+					//return to main
+					homePage();		
+				}	
+
 				//create joint account using both of the users userid
 				JointAccount newJointAccount = new JointAccount();
 				newJointAccount.setUser1ID(user1ID);
 				newJointAccount.setUser2ID(user2ID);
-				newJointAccount.setJointBalance(0);
-				newJointAccount = jointAccountDAO.addJointAccount(newJointAccount);
-							
-				System.out.println(newJointAccount.getJointID());
-				System.out.println(newJointAccount.getUser1ID());
-				System.out.println(newJointAccount.getUser2ID());
-				System.out.println(newJointAccount.getJointBalance());			
+				newJointAccount.setJointBalance(0);				
+				newJointAccount = jointAccountDAO.addJointAccount(newJointAccount);			
 				user.setHasJointAccount(true);
-				
+
 				//go back to home after account successfully created
 				homePage();
 			} catch (IOException ioe) {
@@ -780,10 +811,59 @@ public class Pages {
 		}
 
 	}
-	
+
 	public User updateUserObject(User user) {
-		
-		
+
+		//get user, account, and joint account data to fill in the user object with updated data
+		//getUserByUsername(), getAccountByUserID(), and getJointAccountByUserID() methods to fill in the user object 
+		UsersDAO usersDAO = new UsersDAOImpl();
+		user = usersDAO.getUserByUsername(user);
+
+		AccountDAO accountDAO = new AccountDAOImpl();
+		Account account = new Account();
+		account.setUserID(user.getUserID());
+		Account a = accountDAO.getAccountByUserID(account);
+
+		//set user objects account info
+		user.setAccountID(a.getAccountID());
+		user.setCheckingBalance(a.getCheckingBalance());
+		user.setSavingsBalance(a.getSavingsBalance());
+
+		if (a.getCheckingBalance() == -999999999) {
+			user.setHasCheckingAccount(false);
+		}else {
+			user.setHasCheckingAccount(true);		
+		}
+
+		if (a.getSavingsBalance() == -999999999) {
+			//set users hasSavingsAccount to false
+			user.setHasSavingsAccount(false);		
+		}else {
+			//set users hasSavingsAccount to true
+			user.setHasSavingsAccount(true);		
+		}
+
+		//getJointAccountByUserID() to get the joint account matching the user id if a joint account exists, checks both user1id and user2id for a match		
+		JointAccountDAO jointAccountDAO = new JointAccountDAOImpl();
+		int userID = user.getUserID();
+		JointAccount j = jointAccountDAO.getJointAccountByUserID(userID);
+
+		//set user objects joint info
+		user.setJointID(j.getJointID());
+		user.setJointBalance(j.getJointBalance());
+
+		if (j.getJointID() == 0) {
+
+			//if the jointid IS 0, then hasJointAccount is false because no account exists
+			user.setHasJointAccount(false);
+
+		}else {
+
+			//if the jointid is not 0, then hasJointAccount is true because an account already exists
+			//set user objects joint account info
+			user.setHasJointAccount(true);
+		}	
+
 		return user;
 	}
 

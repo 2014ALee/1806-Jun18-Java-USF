@@ -7,4 +7,6 @@ public interface JointAccountDAO {
 	public JointAccount getJointAccountByUserID(int id);
 	
 	public JointAccount addJointAccount(JointAccount newJointAccount);
+	
+	public boolean updateJointBalanceByJointID(int jointID, double newBalance);
 }

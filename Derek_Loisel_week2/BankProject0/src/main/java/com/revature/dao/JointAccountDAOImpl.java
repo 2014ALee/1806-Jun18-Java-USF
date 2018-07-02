@@ -12,9 +12,9 @@ public class JointAccountDAOImpl implements JointAccountDAO {
 
 	@Override
 	public JointAccount getJointAccountByUserID(int id) {
-		
+
 		JointAccount ja = new JointAccount();
-		
+
 		try(Connection conn = ConnectionFactory.getInstance().getConnection();){
 
 			String sql = "SELECT * FROM jointaccount WHERE user1id = ? OR user2id = ?";
@@ -22,7 +22,7 @@ public class JointAccountDAOImpl implements JointAccountDAO {
 			PreparedStatement pstmt = conn.prepareStatement(sql);
 			pstmt.setInt(1, id); 
 			pstmt.setInt(2, id);
-			
+
 			ResultSet rs = pstmt.executeQuery();
 
 			while(rs.next()) {
@@ -36,16 +36,16 @@ public class JointAccountDAOImpl implements JointAccountDAO {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		
+
 		return ja;
 	}
 
-	
+
 	@Override
 	public JointAccount addJointAccount(JointAccount newJointAccount) {
-		
+
 		JointAccount ja = new JointAccount();
-		
+
 		try(Connection conn = ConnectionFactory.getInstance().getConnection();){
 
 			String sql = "INSERT INTO jointaccount (user1id, user2id, jointbalance) VALUES (?, ?, ?)";
@@ -76,8 +76,29 @@ public class JointAccountDAOImpl implements JointAccountDAO {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-	
+
 		return ja;
 	}
 
+	public boolean updateJointBalanceByJointID(int jointID, double newBalance) {
+
+		try(Connection conn = ConnectionFactory.getInstance().getConnection();){
+
+			String sql = "UPDATE jointaccount SET jointbalance = ? WHERE jointid = ?";
+
+			PreparedStatement pstmt = conn.prepareStatement(sql);
+			pstmt.setDouble(1,  newBalance);
+			pstmt.setInt(2,  jointID);
+			
+			int rowsUpdated = pstmt.executeUpdate();
+
+			if(rowsUpdated != 0) {
+				return true;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return false;
+	}
 }
