@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import com.revature.dao.UsersDAO;
 import com.revature.dao.UsersDAOImpl;
 
-public class Validate {
+public class Validation {
 
 	// check if the username is available by comparing the user input to the serialized file names
 	public static boolean usernameAndEmailAvailable(User u) {

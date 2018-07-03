@@ -83,7 +83,7 @@ public class Pages{
 			user.setEmail(email);
 
 			// check username availability
-			if (Validate.usernameAndEmailAvailable(user)) {
+			if (Validation.usernameAndEmailAvailable(user)) {
 				// username available, create new user and 
 
 				// create new user in database
@@ -123,7 +123,7 @@ public class Pages{
 			System.out.print("Password: ");
 			password = br.readLine();
 
-			if (Validate.credentialsValid(username, password)) {
+			if (Validation.credentialsValid(username, password)) {
 				// login successful
 				System.out.println("Login Successful!");
 				// set the class scoped static user object username so it's available after
