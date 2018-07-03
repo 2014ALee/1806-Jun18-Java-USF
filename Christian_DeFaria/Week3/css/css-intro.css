@@ -1,0 +1,42 @@
+/*
+	CSS Selectors
+		* { }	Universal
+		p { } Type
+		.classname { }	=	Class Selector
+		#idvalue { }	=	ID Selector
+		h1, h2, h3 { }	=	Multitype Selector
+		li > a { }	=	Child Selector
+		p a { }	=	Decendent Selector
+		h1 + p { }	=	Sibling/Adjacent Selector
+*/
+
+div {
+	border: 1px solid;
+	padding: 5px;
+	background-color: white;
+}
+
+p {
+	font-family: Arial;
+	color: darkgray;
+}
+
+#inheritance {
+	color: red;
+}
+
+.main-header {
+	border-radius: 10px;
+}
+
+div > a.visited {
+	color: purple;
+}
+
+div > a.hover {
+	color: green;
+}
+
+div > a.click {
+	color: blue;
+}

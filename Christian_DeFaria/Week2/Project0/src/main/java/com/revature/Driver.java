@@ -11,8 +11,8 @@ import com.revature.models.Account;
 import com.revature.models.User;
 
 public class Driver {
-	private static User user = null;
-	private static Account account = null;
+	public static User user = null;
+	public static Account account = null;
 	private static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 	private static UserDAOImpl userDAO = new UserDAOImpl();
 	private static AccountDAOImpl accountDAO = new AccountDAOImpl();
@@ -21,7 +21,7 @@ public class Driver {
 		startMenu();
 	}
 
-	private static void startMenu() {
+	public static void startMenu() {
 		String userInput;
 		
 		System.out.println("+--------------Start Menu--------------+");
@@ -53,7 +53,7 @@ public class Driver {
 		
 	}
 
-	private static void register() {
+	public static void register() {
 		String username, password, email;
 		System.out.println("\n+--------------Registration--------------+");
 		
@@ -97,7 +97,7 @@ public class Driver {
 		
 	}
 
-	private static void login() {
+	public static void login() {
 		System.out.println("\n+--------------Login--------------+");
 		String username, password;
 		
@@ -125,7 +125,7 @@ public class Driver {
 		
 	}
 	
-	private static void mainMenu() {
+	public static void mainMenu() {
 		System.out.println("\n+--------------Main Menu--------------+");
 		System.out.println("Welcome: " + user.getUsername() + "\n\n");
 		
@@ -172,7 +172,7 @@ public class Driver {
 		}
 	}
 
-	private static void logout() {
+	public static void logout() {
 		account = null;
 		user = null;
 		clearScreen();
@@ -180,12 +180,12 @@ public class Driver {
 		
 	}
 
-	private static void clearScreen() {
+	public static void clearScreen() {
 		System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
 		
 	}
 
-	private static void createAccount() {
+	public static void createAccount() {
 		System.out.println("\n+--------------Account Creation Menu--------------+");
 		System.out.println("Welcome: " + user.getUsername() + "\n\n");
 		
@@ -218,7 +218,7 @@ public class Driver {
 		}
 	}
 
-	private static void balance() {
+	public static double balance() {
 		clearScreen();
 		System.out.println("\n+--------------" + user.getUsername() + "'s Balance--------------+");
 		System.out.println("Your available balance is: " + account.getBalance() + "\n\n");
@@ -233,6 +233,8 @@ public class Driver {
 			userInput = br.readLine();
 			
 			switch(userInput) {
+				case "0":
+					break;
 				case "1":
 					System.out.println("Navigating to Main Menu...");
 					clearScreen();
@@ -254,10 +256,11 @@ public class Driver {
 			System.out.println("[LOG] - Error while reading from file.");
 			e.printStackTrace();
 		}
+		return account.getBalance();
 		
 	}
 
-	private static void accountsMenu() {
+	public static int accountsMenu() {
 		System.out.println("\n+--------------Accounts Menu--------------+");
 		System.out.println("Welcome: " + user.getUsername() + "\n\n");
 		
@@ -295,9 +298,10 @@ public class Driver {
 			System.out.println("[LOG] - Error while reading from file.");
 			e.printStackTrace();
 		}
+		return account.getAccountId();
 	}
 
-	private static void withdrawl() {
+	public static double withdrawl() {
 		clearScreen();
 		System.out.println("\n+--------------" + user.getUsername() + "'s Balance--------------+");
 		System.out.println("Your available balance is: " + account.getBalance() + "\n\n");
@@ -334,6 +338,8 @@ public class Driver {
 			userInput = br.readLine();
 			
 			switch(userInput) {
+				case "0":
+					break;
 				case "1":
 					System.out.println("Navigating to Main Menu...");
 					clearScreen();
@@ -351,10 +357,11 @@ public class Driver {
 			System.out.println("[LOG] - Error while reading from file.");
 			e.printStackTrace();
 		}
+		return account.getBalance();
 		
 	}
 
-	private static void deposit() {
+	public static double deposit() {
 		clearScreen();
 		System.out.println("\n+--------------" + user.getUsername() + "'s Balance--------------+");
 		System.out.println("Your available balance is: " + account.getBalance() + "\n\n");
@@ -388,6 +395,8 @@ public class Driver {
 			userInput = br.readLine();
 			
 			switch(userInput) {
+				case "0":
+					break;
 				case "1":
 					System.out.println("Navigating to Main Menu...");
 					clearScreen();
@@ -405,7 +414,16 @@ public class Driver {
 			System.out.println("[LOG] - Error while reading from file.");
 			e.printStackTrace();
 		}
+		return account.getBalance();
 		
+	}
+	
+	public void setUser(User u) {
+		user = u;
+	}
+	
+	public void setAccount(Account a) {
+		account = a;
 	}
 
 }
