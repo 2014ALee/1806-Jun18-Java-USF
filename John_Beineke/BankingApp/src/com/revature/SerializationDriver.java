@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.text.DecimalFormat;
 import java.util.Scanner;
 
 import com.revature.models.User;
@@ -89,8 +90,8 @@ public class SerializationDriver {
 		
 			private static void loginMenu() {
 				String loginMenuInput;
-				
-			    System.out.println("Welcome to the login menu! Please select what you would"
+
+				System.out.println("Welcome to the login menu! Please select what you would"
 					+ " like to do from here.");
 			    
 			    System.out.println("[1] Deposit");
@@ -105,20 +106,27 @@ public class SerializationDriver {
 			    switch(loginMenuInput) {
 			    case "1":
 			    	System.out.println("How much would you like to deposit?");
-			    	double depositAmount = input.nextDouble();
+			    	double depositAmount = (input.nextDouble());
 			    	user.setBalance((user.getBalance() + depositAmount));
 			    	System.out.println("Depositing...");
 			    	serializeUser(user);
-			    	System.out.println("You successfully deposited " + depositAmount + " dollars! \n");
+			    	System.out.println("You successfully deposited: " + depositAmount + " dollars! \n");
 			    	loginMenu();
 			    	break;
 			    case "2":
 			    	System.out.println("How much would you like to withdraw?");
 			    	double withdrawalAmount = input.nextDouble();
+			    	if((user.getBalance()) - (withdrawalAmount) >= 0) {
 			    	user.setBalance((user.getBalance() - withdrawalAmount));
 			    	System.out.println("Withdrawing...");
 			    	serializeUser(user);
 			    	System.out.println("You successfully withdrew " + withdrawalAmount + " dollars! \n");
+			    	} else {
+			    		System.out.println("You may not overdraft! Please check your balance before withdrawing.\n");
+			    		loginMenu();
+				    	break;
+			    	}
+			    	
 			    	loginMenu();
 			    	break;
 			    case "3":
