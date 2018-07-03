@@ -83,3 +83,6 @@ RemoteSystemsTempFiles/
 .cache-main 
 .scala_dependencies 
 .worksheet 
+
+# .properties files
+*.properties
