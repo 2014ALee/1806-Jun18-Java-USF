@@ -26,7 +26,6 @@ public class Account {
 			{
 				balance1 = balance1 + amount;
 				//previousTransaction = amount;
-			
 			}
 		}
 		
