@@ -4,8 +4,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.text.DecimalFormat;
-import java.util.ArrayList;
-
 import com.revature.dao.AccountDAO;
 import com.revature.dao.AccountDAOImpl;
 import com.revature.dao.JointAccountDAO;
@@ -13,33 +11,19 @@ import com.revature.dao.JointAccountDAOImpl;
 import com.revature.dao.UsersDAO;
 import com.revature.dao.UsersDAOImpl;
 
-public class Pages {
+public class Pages{
 
-	//mainMenu
-	//register
-	//login
-	//home
-	//deposit
-	//withdraw
-	//transfer
-	//viewBalance
-	//newAccount
-
-	// create a User object to serialize, deserialize, and manipulate user data
-	public static User user = null;
+	// create a User object to store manipulate user data
+	private static User user = null;
 
 	// create a BufferedReader to read user input
 	private BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-
-	// create a page object to call the functions that represent each page
-	public static Pages page = new Pages();
 
 	public void mainMenu() {
 		// string to store user input
 		String userInput;
 
 		System.out.println("\n-------------MAIN MENU-------------");
-
 		System.out.println("[1] - Login");
 		System.out.println("[2] - Register");
 		System.out.println("[3] - Exit");
@@ -51,10 +35,10 @@ public class Pages {
 
 			switch (userInput) {
 			case "1":
-				login();
+				loginPage();
 				break;
 			case "2":
-				register();
+				registrationPage();
 				break;
 			case "3":
 				System.exit(0);
@@ -63,37 +47,30 @@ public class Pages {
 				// back to main menu
 				mainMenu();
 			}
-
 		} catch (IOException ioe) {
 			// System.out.println("[LOG] - Error while reading from console");
 			// e.printStackTrace();
 			mainMenu();
 		}
-
 	}
 
-	public void register() {
+	public void registrationPage() {
 
 		// Strings to store user input for User object
 		String firstName, lastName, username, password, email;
 
 		System.out.println("\n-----------REGISTRATION------------");
-
 		try {
 
 			// get user input to make User object
 			System.out.print("First name: ");
 			firstName = br.readLine();
-
 			System.out.print("Last name: ");
 			lastName = br.readLine();
-
 			System.out.print("Username: ");
 			username = br.readLine();
-
 			System.out.print("Password: ");
 			password = br.readLine();
-
 			System.out.print("Email Address: ");
 			email = br.readLine();
 
@@ -107,24 +84,24 @@ public class Pages {
 
 			// check username availability
 			if (Validate.usernameAndEmailAvailable(user)) {
-				// username available, create new user
+				// username available, create new user and 
 
-				//create new user in database
+				// create new user in database
 				UsersDAO usersDAO = new UsersDAOImpl();
-				//use the accounts pk as the new users account fk
 				User u = usersDAO.addUser(user);
 
-				//call the addAccount() method from the AccountDAO to add an account to the database and return the account object
+				//add account record to database for user
 				AccountDAO accountDAO = new AccountDAOImpl();
 				Account account = new Account();
+				// set the users pk as the accounts fk
 				account.setUserID(u.getUserID());
 				Account accountObj = accountDAO.addAccount(account);
 
-				//go back to main menu
+				// go back to main menu
 				mainMenu();
 			} else {
 				System.out.println("Username is not available. Please try again...");
-				register();
+				registrationPage();
 			}
 
 		} catch (IOException ioe) {
@@ -132,27 +109,25 @@ public class Pages {
 			// e.printStackTrace();
 			mainMenu();
 		}
-
 	}
 
-	public void login() {
+	public void loginPage() {
 
 		String username, password;
 
 		System.out.println("\n---------------LOGIN---------------");
-
 		try {
 
 			System.out.print("Username: ");
 			username = br.readLine();
-
 			System.out.print("Password: ");
 			password = br.readLine();
 
 			if (Validate.credentialsValid(username, password)) {
 				// login successful
-				System.out.println("Login Successful!");	
-				// set the class scoped static user object username so it's available after login
+				System.out.println("Login Successful!");
+				// set the class scoped static user object username so it's available after
+				// login
 				user = new User();
 				user.setUsername(username);
 				// go to home page after successful login
@@ -161,10 +136,9 @@ public class Pages {
 				return;
 			} else {
 				System.out.println("Login failed!\n");
-				//back to main menu after failed login
+				// back to main menu after failed login
 				mainMenu();
 			}
-
 		} catch (IOException ioe) {
 			// System.out.println("[LOG] - Error while reading from console");
 			// e.printStackTrace();
@@ -178,7 +152,6 @@ public class Pages {
 		String userInput;
 
 		System.out.println("\n-------------HOME PAGE-------------");
-
 		System.out.println("[1] - Deposit");
 		System.out.println("[2] - Withdraw");
 		System.out.println("[3] - View Balance");
@@ -193,19 +166,19 @@ public class Pages {
 
 			switch (userInput) {
 			case "1":
-				deposit();
+				depositPage();
 				break;
 			case "2":
-				withdraw();
+				withdrawPage();
 				break;
 			case "3":
-				viewBalance();
+				viewBalancePage();
 				break;
 			case "4":
-				transferFunds();
+				transferFundsPage();
 				break;
 			case "5":
-				createNewAccount();
+				createAccountsPage();
 				break;
 			case "6":
 				logout();
@@ -215,27 +188,25 @@ public class Pages {
 				// back to home page
 				homePage();
 			}
-
 		} catch (IOException ioe) {
 			System.out.println("An error occured with your selection");
 			// e.printStackTrace();
 			homePage();
 		}
-
 	}
 
-	public void deposit() {
+	public void depositPage() {
 
-		//update the user object with all user and account info from the database
-		user = updateUserObject(user);
+		// update the user object with all user and account info from the database
+		user = Helpers.updateUserObject(user);
 
 		double amountToDeposit = 0d;
 		String userInput = "";
-		//variable to set which account the user chose to deposit to
+		// variable to set which account the user chose to deposit to
 		String accountChosen = "";
 
 		System.out.println("\n--------------DEPOSIT--------------");
-		System.out.println("Which account would you like to Deposit to?");		
+		System.out.println("Which account would you like to Deposit to?");
 		System.out.println("[1] - Checking");
 		System.out.println("[2] - Savings");
 		System.out.println("[3] - Joint");
@@ -244,31 +215,31 @@ public class Pages {
 			// get user input from which account to deposit to
 			userInput = br.readLine();
 
-			//make sure the user actually has the type of account they're trying to deposit to
+			// make sure the user actually has the type of account they're trying to deposit
+			// to
 			switch (userInput) {
 			case "1":
-				if(user.getHasCheckingAccount()) {
+				if (user.getHasCheckingAccount()) {
 					accountChosen = "Checking";
-				}
-				else {
+				} else {
 					System.out.println("You don't have a Checking account!  Please try again");
-					deposit();
+					depositPage();
 				}
 				break;
 			case "2":
 				if (user.getHasSavingsAccount()) {
 					accountChosen = "Savings";
-				}else {
+				} else {
 					System.out.println("You don't have a Savings account!  Please try again");
-					deposit();
+					depositPage();
 				}
 				break;
 			case "3":
-				if(user.getHasJointAccount()) {
+				if (user.getHasJointAccount()) {
 					accountChosen = "Joint";
-				}else {
+				} else {
 					System.out.println("You don't have a Joint account!  Please try again");
-					deposit();
+					depositPage();
 				}
 				break;
 			case "4":
@@ -277,9 +248,8 @@ public class Pages {
 			default:
 				System.out.println("Invalid selection, please try again!\n");
 				// back to home page
-				deposit();
+				depositPage();
 			}
-
 		} catch (IOException ioe) {
 			System.out.println("An error occured with your selection");
 			// e.printStackTrace();
@@ -293,10 +263,10 @@ public class Pages {
 			amountToDeposit = Double.parseDouble(br.readLine());
 			if (amountToDeposit < 0) {
 				System.out.println("Please enter a valid number\n");
-				deposit();
+				depositPage();
 			}
-			
-			//make sure user can only input 2 decimal places
+
+			// make sure user can only input 2 decimal places
 			DecimalFormat df = new DecimalFormat(".##");
 			amountToDeposit = Double.parseDouble(df.format(amountToDeposit));
 			// check if the user is sure they want to deposit
@@ -312,76 +282,52 @@ public class Pages {
 
 				switch (userDepositInput) {
 				case "1":
-					// user wants to deposit, break switch
+					// user wants to deposit
+					//deposit and return user object
+					user = UserActions.deposit(accountChosen, amountToDeposit, user);
+
+					// method that calls DAO implementation methods to update the database
+					Helpers.updateAccountsInDatabase(accountChosen, user);
+
+					//back to home after deposit complete
+					homePage();
 					break;
 				case "2":
-					// user doesnt want to deposit, return to home
-					homePage();
+					// user doesn't want to deposit, return to depositPage()
+					depositPage();
 					break;
 				default:
 					System.out.println("Invalid selection, please try again!\n");
 					// back to deposit
-					deposit();
+					depositPage();
 				}
-
 			} catch (IOException ioe) {
 				System.out.println("Invalid selection, please try again!\n");
 				// e.printStackTrace();
-				deposit();
+				depositPage();
 			}
-
-			// add the amount of deposit to the users current balance
-			if(accountChosen == "Checking") {
-				user.setCheckingBalance(user.getCheckingBalance() + amountToDeposit);
-			}else if(accountChosen == "Savings"){
-				user.setSavingsBalance(user.getSavingsBalance() + amountToDeposit);
-			}else {
-				user.setJointBalance(user.getJointBalance() + amountToDeposit);
-			}
-
-			if((accountChosen == "Checking") || (accountChosen == "Savings"))
-			{
-				//fill an account object to update the database
-				Account a = new Account();
-				a.setAccountID(user.getAccountID());
-				a.setUserID(user.getUserID());
-				a.setCheckingBalance(user.getCheckingBalance());
-				a.setSavingsBalance(user.getSavingsBalance());
-				AccountDAO accountDAO = new AccountDAOImpl();
-				accountDAO.updateAccount(a);
-			}else {
-				//update the joint balance in the database
-				int jointID = user.getJointID();
-				double newBalance = user.getJointBalance();		
-				JointAccountDAO jointDAO = new JointAccountDAOImpl();
-				jointDAO.updateJointBalanceByJointID(jointID, newBalance);
-			}
-
-			System.out.println("Deposit successful!  You deposited $" + amountToDeposit + " into your " + accountChosen + " account!" );
-			homePage();
-
 		} catch (NumberFormatException nfe) {
 			System.out.println("Please enter a valid number");
-			deposit();
+			depositPage();
 			// nfe.printStackTrace();
 		} catch (IOException ie) {
 			System.out.println("Please enter a valid number");
-			deposit();
+			depositPage();
 			// ie.printStackTrace();
 		}
 	}
 
-	public void withdraw() {
+	public void withdrawPage() {
 
-		//update the user object with all user and account info from the database
-		user = updateUserObject(user);
+		// update the user object with all user and account info from the database
+		user = Helpers.updateUserObject(user);
 
 		double amountToWithdraw = 0d;
 		String userInput = "";
 		String accountChosen = "";
 
 		System.out.println("\n-------------Withdraw--------------");
-		System.out.println("Which account would you like to Withdraw from?");		
+		System.out.println("Which account would you like to Withdraw from?");
 		System.out.println("[1] - Checking");
 		System.out.println("[2] - Savings");
 		System.out.println("[3] - Joint");
@@ -391,31 +337,31 @@ public class Pages {
 			// get user input from which account to withdraw from
 			userInput = br.readLine();
 
-			//make sure the user actually has the type of account they're trying to withdraw from
+			// make sure the user actually has the type of account they're trying to
+			// withdraw from
 			switch (userInput) {
 			case "1":
-				if(user.getHasCheckingAccount()) {
+				if (user.getHasCheckingAccount()) {
 					accountChosen = "Checking";
-				}
-				else {
+				} else {
 					System.out.println("You don't have a Checking account!  Please try again");
-					withdraw();
+					withdrawPage();
 				}
 				break;
 			case "2":
 				if (user.getHasSavingsAccount()) {
 					accountChosen = "Savings";
-				}else {
+				} else {
 					System.out.println("You don't have a Savings account!  Please try again");
-					withdraw();
+					withdrawPage();
 				}
 				break;
 			case "3":
-				if(user.getHasJointAccount()) {
+				if (user.getHasJointAccount()) {
 					accountChosen = "Joint";
-				}else {
+				} else {
 					System.out.println("You don't have a Joint account!  Please try again");
-					withdraw();
+					withdrawPage();
 				}
 				break;
 			case "4":
@@ -424,7 +370,7 @@ public class Pages {
 			default:
 				System.out.println("Invalid selection, please try again!\n");
 				// back to home page
-				withdraw();
+				withdrawPage();
 			}
 
 		} catch (IOException ioe) {
@@ -436,22 +382,22 @@ public class Pages {
 		System.out.print("How much would you like to Withdraw? ");
 		try {
 
-
 			// put the users input into the amount to withdraw
 			amountToWithdraw = Double.parseDouble(br.readLine());
 			if (amountToWithdraw <= 0) {
 				System.out.println("Please enter a valid number\n");
-				withdraw();
+				withdrawPage();
 			}
-			
-			//make sure user can only input 2 decimal places
+
+			// make sure user can only input 2 decimal places
 			DecimalFormat df = new DecimalFormat(".##");
 			amountToWithdraw = Double.parseDouble(df.format(amountToWithdraw));
-			
+
 			// check if the user is sure they want to withdraw
 			String userWithdrawalInput = "";
 
-			System.out.println("Are you sure you want to withdraw " + amountToWithdraw + " from your " + accountChosen + " account?");
+			System.out.println("Are you sure you want to withdraw " + amountToWithdraw + " from your " + accountChosen
+					+ " account?");
 			System.out.println("[1] - Yes");
 			System.out.println("[2] - No");
 			System.out.print("Selection: ");
@@ -461,121 +407,98 @@ public class Pages {
 
 				switch (userWithdrawalInput) {
 				case "1":
-					// user wants to withdraw, break switch
+					// user wants to withdraw
+					
+					//don't allow a withdrawal to go into negatives
+					if (Helpers.balanceTooLow(accountChosen, amountToWithdraw, user)) {
+						System.out.println("Your balance is too low to withdraw " + amountToWithdraw + ", please try again");
+						withdrawPage();
+					}
+										
+					//withdraw the amount from the user
+					user = UserActions.withdraw(accountChosen, amountToWithdraw, user);
+
+					// method that calls DAO implementation methods to update the database
+					Helpers.updateAccountsInDatabase(accountChosen, user);
+
+					//back to home after withdrawal complete
+					homePage();
+
 					break;
 				case "2":
-					// user doesnt want to withdraw, return to home
-					homePage();
+
+					// user doesnt want to withdraw, return to withdrawPage()
+					withdrawPage();
+
 					break;
 				default:
 					System.out.println("Invalid selection, please try again!\n");
 					// back to withdraw
-					withdraw();
+					withdrawPage();
 				}
-
 			} catch (IOException ioe) {
 				System.out.println("Invalid selection, please try again!\n");
 				// e.printStackTrace();
-				withdraw();
+				withdrawPage();
 			}
-
-
-			// subtract the amount of withdrawal from the users current balance
-			if(accountChosen == "Checking") {
-				//withdraw the money as long as it doesn't take the account into the negatives
-				if ((user.getCheckingBalance() - amountToWithdraw) >= 0) {
-					user.setCheckingBalance(user.getCheckingBalance() - amountToWithdraw);
-				} else {
-					// cant withdraw that much
-					System.out.println("Your balance is too low to withdraw " + amountToWithdraw + ", please try again");
-					withdraw();
-				}
-
-			}else if(accountChosen == "Savings"){
-
-				//withdraw the money as long as it doesn't take the account into the negatives
-				if ((user.getSavingsBalance() - amountToWithdraw) >= 0) {
-					user.setSavingsBalance(user.getSavingsBalance() - amountToWithdraw);
-				} else {
-					// cant withdraw that much
-					System.out.println("Your balance is too low to withdraw " + amountToWithdraw + ", please try again");
-					withdraw();
-				}
-
-			}else {//account chosen == "Joint"
-
-				//withdraw the money as long as it doesn't take the account into the negatives
-				if ((user.getJointBalance() - amountToWithdraw) >= 0) {
-					user.setJointBalance(user.getJointBalance() - amountToWithdraw);
-				} else {
-					// cant withdraw that much
-					System.out.println("Your balance is too low to withdraw " + amountToWithdraw + ", please try again");
-					withdraw();
-				}
-
-			}
-
-			if((accountChosen == "Checking") || (accountChosen == "Savings"))
-			{
-				//fill an account object to update the database
-				Account a = new Account();
-				a.setAccountID(user.getAccountID());
-				a.setUserID(user.getUserID());
-				a.setCheckingBalance(user.getCheckingBalance());
-				a.setSavingsBalance(user.getSavingsBalance());
-				AccountDAO accountDAO = new AccountDAOImpl();
-				accountDAO.updateAccount(a);
-			}else {
-				//update the joint balance in the database
-				int jointID = user.getJointID();
-				double newBalance = user.getJointBalance();		
-				JointAccountDAO jointDAO = new JointAccountDAOImpl();
-				jointDAO.updateJointBalanceByJointID(jointID, newBalance);
-			}
-
-			System.out.println("Withdrawal successful!  You withdrew $" + amountToWithdraw + " from your " + accountChosen + " account!");
-			homePage();
-
 		} catch (NumberFormatException nfe) {
 			System.out.println("Please enter a valid number");
-			withdraw();
+			withdrawPage();
 			// nfe.printStackTrace();
 		} catch (IOException ie) {
 			System.out.println("Please enter a valid number");
-			withdraw();
-			//ie.printStackTrace();
+			withdrawPage();
+			// ie.printStackTrace();
 		}
 	}
 
-	public void transferFunds() {
+	public void transferFundsPage() {
 
 		System.out.println("This feature is not yet available, please try again later.");
 		homePage();
 	}
 
-	public void viewBalance() {
+	public void viewBalancePage() {
 
-		//update the user object with all user and account info from the database
-		user = updateUserObject(user);
+		// update the user object with all user and account info from the database
+		user = Helpers.updateUserObject(user);
+
+		String accountChosen = "";
+
+		System.out.println("\n-----------VIEW BALANCE------------");
+		System.out.println("Which account would you like to view?");
+		System.out.println("[1] - Checking");
+		System.out.println("[2] - Savings");
+		System.out.println("[3] - Joint");
+		System.out.println("[4] - Back to Home Page");
+		try {
+			// get user input from view balance
+			accountChosen = br.readLine();
+			
+			if (accountChosen.equals("4")){
+				homePage();
+			}
+			
+		} catch (IOException ioe) {
+			System.out.println("An error occured with your selection");
+			// e.printStackTrace();
+			homePage();
+		}
+
+		//check if account exists or if input is invalid
+		if(!Helpers.accountExists(accountChosen, user)){			
+			viewBalancePage();
+		}
+		
+		//view balance by printing to screen and returning the balance shown as a double 
+		UserActions.viewBalance(accountChosen, user);
 
 		String userInput;
 
-		System.out.println("\n-----------VIEW BALANCE------------");
-		if (user.getHasCheckingAccount()) {
-			System.out.println("Your current Checking Account balance is: " + user.getCheckingBalance());
-		}
-		if (user.getHasSavingsAccount()) {
-			System.out.println("Your current Savings Account balance is: " + user.getSavingsBalance());
-		}
-		if (user.getHasJointAccount()) {
-			System.out.println("Your current Joint Account balance is: " + user.getJointBalance());
-		}	
-		if(user.getHasCheckingAccount() == false && user.getHasSavingsAccount() == false && user.getHasJointAccount() == false) {
-			System.out.println("Please open an account to view your balance!");
-		}
 		System.out.println("-----------------------------------");
-		System.out.println("[1] - Back to Home Page");
-		System.out.println("[2] - Logout");
+		System.out.println("[1] - Back to Account Balances");
+		System.out.println("[2] - Back to Home Page");
+		System.out.println("[3] - Logout");
 		System.out.print("Selection: ");
 
 		try {
@@ -584,15 +507,18 @@ public class Pages {
 
 			switch (userInput) {
 			case "1":
-				homePage();
+				viewBalancePage();
 				break;
 			case "2":
+				homePage();
+				break;
+			case "3":
 				logout();
 				break;
 			default:
 				System.out.println("Invalid selection, please try again!\n");
 				// back to view balance
-				viewBalance();
+				viewBalancePage();
 
 			}
 
@@ -603,10 +529,10 @@ public class Pages {
 		}
 	}
 
-	public void createNewAccount() {
+	public void createAccountsPage() {
 
-		//update the user object with all user and account info
-		user = updateUserObject(user);
+		// update the user object with all user and account info
+		user = Helpers.updateUserObject(user);
 
 		// string to store user input
 		String userInput;
@@ -625,40 +551,37 @@ public class Pages {
 
 			switch (userInput) {
 			case "1":
-				if(!user.getHasCheckingAccount()) {
+				if (!user.getHasCheckingAccount()) {
 					accountType = "Checking";
-				}
-				else {
+				} else {
 					System.out.println("You already have a Checking account!  Please try again");
-					createNewAccount();
+					createAccountsPage();
 				}
 				break;
 			case "2":
-				if(!user.getHasSavingsAccount()) {
+				if (!user.getHasSavingsAccount()) {
 					accountType = "Savings";
-				}
-				else {
+				} else {
 					System.out.println("You already have a Savings account!  Please try again");
-					createNewAccount();
+					createAccountsPage();
 				}
 				break;
 			case "3":
-				if(!user.getHasJointAccount()) {
+				if (!user.getHasJointAccount()) {
 					accountType = "Joint";
-				}
-				else {
+				} else {
 					System.out.println("You already have a Joint account!  Please try again");
-					createNewAccount();
+					createAccountsPage();
 				}
 				break;
 			case "4":
-				//back to home
+				// back to home
 				homePage();
 				break;
 			default:
 				System.out.println("Invalid selection, please try again!\n");
 				// back to home page
-				createNewAccount();
+				createAccountsPage();
 			}
 
 		} catch (IOException ioe) {
@@ -666,7 +589,6 @@ public class Pages {
 			// e.printStackTrace();
 			homePage();
 		}
-
 
 		// check if the user is sure they want to open a new account
 		String userConfirmationInput = "";
@@ -685,21 +607,21 @@ public class Pages {
 				break;
 			case "2":
 				// user doesnt want to create account, return to create account screen
-				createNewAccount();
+				createAccountsPage();
 				break;
 			default:
 				System.out.println("Invalid selection, please try again!\n");
 				// back to create account
-				createNewAccount();
+				createAccountsPage();
 			}
 
 		} catch (IOException ioe) {
 			System.out.println("Invalid selection, please try again!\n");
 			// e.printStackTrace();
-			createNewAccount();
+			createAccountsPage();
 		}
 
-		//update account object info before you pass it to update the database
+		// update account object info before you pass it to update the database
 		AccountDAO accountDAO = new AccountDAOImpl();
 		Account a = new Account();
 		a.setAccountID(user.getAccountID());
@@ -707,26 +629,27 @@ public class Pages {
 		a.setCheckingBalance(user.getCheckingBalance());
 		a.setSavingsBalance(user.getSavingsBalance());
 
-		//create a checking or savings account by changing the balance from -999999999 to 0 in the database
-		if(accountType == "Checking"){
-			//create checking account
+		// create a checking or savings account by changing the balance from -999999999
+		// to 0 in the database
+		if (accountType == "Checking") {
+			// create checking account
 			user.setHasCheckingAccount(true);
 			a.setCheckingBalance(0);
 			accountDAO.updateAccount(a);
 			System.out.println("Checking Account successfully created!");
-			//back to home page after account creation
+			// back to home page after account creation
 			homePage();
-		}else if(accountType == "Savings"){
-			//create savings account
+		} else if (accountType == "Savings") {
+			// create savings account
 			user.setHasSavingsAccount(true);
 			a.setSavingsBalance(0);
 			accountDAO.updateAccount(a);
 			System.out.println("Savings Account successfully created!");
-			//back to home page after account creation
+			// back to home page after account creation
 			homePage();
-		}else {		
-			//create joint account
-			//get joint user info
+		} else {
+			// create joint account
+			// get joint user info
 			try {
 
 				// get user input to fill in joint users username to lookup their id
@@ -735,37 +658,38 @@ public class Pages {
 				System.out.print("What is the Username of the other member on the Joint Account? ");
 				username = br.readLine();
 
-				//get second member of joint accounts userid from their username
+				// get second member of joint accounts userid from their username
 				UsersDAO usersDAO = new UsersDAOImpl();
 				int user2ID = usersDAO.getUserIDByUsername(username);
 				int user1ID = user.getUserID();
 
-				//make sure the username actually exists
+				// make sure the username actually exists
 				if (user2ID == 0) {
 					System.out.println("This username does not exist, please try again!");
-					createNewAccount();
+					createAccountsPage();
 				}
 
-				//check to make sure user2 doesnt already have a joint account with someone else
+				// check to make sure user2 doesnt already have a joint account with someone
+				// else
 				JointAccountDAO jointAccountDAO = new JointAccountDAOImpl();
 				JointAccount j = jointAccountDAO.getJointAccountByUserID(user2ID);
 				if (j.getJointID() != 0) {
 
-					//if the jointid is not 0, then a joint account already exists for this user
+					// if the jointid is not 0, then a joint account already exists for this user
 					System.out.println("This person already has a Joint Account with somebody else");
-					//return to main
-					homePage();		
-				}	
+					// return to main
+					homePage();
+				}
 
-				//create joint account using both of the users userid
+				// create joint account using both of the users userid
 				JointAccount newJointAccount = new JointAccount();
 				newJointAccount.setUser1ID(user1ID);
 				newJointAccount.setUser2ID(user2ID);
-				newJointAccount.setJointBalance(0);				
-				newJointAccount = jointAccountDAO.addJointAccount(newJointAccount);			
+				newJointAccount.setJointBalance(0);
+				newJointAccount = jointAccountDAO.addJointAccount(newJointAccount);
 				user.setHasJointAccount(true);
 
-				//go back to home after account successfully created
+				// go back to home after account successfully created
 				homePage();
 			} catch (IOException ioe) {
 				// System.out.println("[LOG] - Error while reading from console");
@@ -791,8 +715,9 @@ public class Pages {
 
 			switch (userInput) {
 			case "1":
-				// re serialization here before logout to store the user object back in the file			
-				Serialize.serializeUser(user);
+				// set user object to null before logging out
+				user = null;
+				// back to main menu
 				mainMenu();
 				break;
 			case "2":
@@ -810,61 +735,6 @@ public class Pages {
 			homePage();
 		}
 
-	}
-
-	public User updateUserObject(User user) {
-
-		//get user, account, and joint account data to fill in the user object with updated data
-		//getUserByUsername(), getAccountByUserID(), and getJointAccountByUserID() methods to fill in the user object 
-		UsersDAO usersDAO = new UsersDAOImpl();
-		user = usersDAO.getUserByUsername(user);
-
-		AccountDAO accountDAO = new AccountDAOImpl();
-		Account account = new Account();
-		account.setUserID(user.getUserID());
-		Account a = accountDAO.getAccountByUserID(account);
-
-		//set user objects account info
-		user.setAccountID(a.getAccountID());
-		user.setCheckingBalance(a.getCheckingBalance());
-		user.setSavingsBalance(a.getSavingsBalance());
-
-		if (a.getCheckingBalance() == -999999999) {
-			user.setHasCheckingAccount(false);
-		}else {
-			user.setHasCheckingAccount(true);		
-		}
-
-		if (a.getSavingsBalance() == -999999999) {
-			//set users hasSavingsAccount to false
-			user.setHasSavingsAccount(false);		
-		}else {
-			//set users hasSavingsAccount to true
-			user.setHasSavingsAccount(true);		
-		}
-
-		//getJointAccountByUserID() to get the joint account matching the user id if a joint account exists, checks both user1id and user2id for a match		
-		JointAccountDAO jointAccountDAO = new JointAccountDAOImpl();
-		int userID = user.getUserID();
-		JointAccount j = jointAccountDAO.getJointAccountByUserID(userID);
-
-		//set user objects joint info
-		user.setJointID(j.getJointID());
-		user.setJointBalance(j.getJointBalance());
-
-		if (j.getJointID() == 0) {
-
-			//if the jointid IS 0, then hasJointAccount is false because no account exists
-			user.setHasJointAccount(false);
-
-		}else {
-
-			//if the jointid is not 0, then hasJointAccount is true because an account already exists
-			//set user objects joint account info
-			user.setHasJointAccount(true);
-		}	
-
-		return user;
 	}
 
 }

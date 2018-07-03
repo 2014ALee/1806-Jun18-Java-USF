@@ -40,7 +40,6 @@ public class JointAccountDAOImpl implements JointAccountDAO {
 		return ja;
 	}
 
-
 	@Override
 	public JointAccount addJointAccount(JointAccount newJointAccount) {
 

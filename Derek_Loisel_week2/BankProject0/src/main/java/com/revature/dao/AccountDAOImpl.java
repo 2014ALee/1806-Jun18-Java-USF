@@ -99,7 +99,6 @@ public class AccountDAOImpl implements AccountDAO {
 
 	}
 
-
 	@Override
 	public boolean updateAccount(Account updatedAccount) {
 
@@ -124,7 +123,5 @@ public class AccountDAOImpl implements AccountDAO {
 
 		return false;
 	}
-
-
 
 }

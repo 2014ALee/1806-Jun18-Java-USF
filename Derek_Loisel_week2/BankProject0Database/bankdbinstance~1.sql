@@ -36,10 +36,6 @@ CREATE TABLE jointaccount(
         REFERENCES users (userid)
 );
 
-INSERT INTO jointaccount (user1id, user2id, jointbalance) VALUES (42, 26, 50);
-DELETE
-FROM jointaccount
-WHERE jointid = 3;
 SELECT *
 FROM account;
 

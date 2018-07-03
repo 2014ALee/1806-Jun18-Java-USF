@@ -1,7 +1,8 @@
 package com.revature.models;
 
 public class JointAccount {
-
+	//JointAccount POJO
+	
 	private int jointID;
 	private int user1ID;
 	private int user2ID;
@@ -88,6 +89,4 @@ public class JointAccount {
 				+ jointBalance + "]";
 	}
 
-	
-	
 }

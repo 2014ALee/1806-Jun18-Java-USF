@@ -1,6 +1,7 @@
 package com.revature.models;
 
 public class User {
+	//User POJO
 	
 	private int userID;
 	private int accountID;

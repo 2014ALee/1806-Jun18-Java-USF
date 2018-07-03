@@ -1,7 +1,8 @@
 package com.revature.models;
 
 public class Account {
-
+	//Account POJO
+	
 	private int accountID;
 	private int userID;
 	private double checkingBalance;
@@ -88,7 +89,5 @@ public class Account {
 		return "Account [accountID=" + accountID + ", userID=" + userID + ", checkingBalance=" + checkingBalance
 				+ ", savingsBalance=" + savingsBalance + "]";
 	};
-
-
 
 }

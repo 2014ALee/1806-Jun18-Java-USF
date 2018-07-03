@@ -2,7 +2,7 @@ package com.revature;
 
 import com.revature.models.Pages;
 
-public class BankDriver {
+public class BankDriver{
 	
 		public static void main(String[] args) {
 			
@@ -11,8 +11,9 @@ public class BankDriver {
 	
 		private static void startApp() {
 			
-			//go to main menu
-			Pages.page.mainMenu();
+			//go to main menu page
+			Pages page = new Pages();
+			page.mainMenu();
 		}
 		
 		
