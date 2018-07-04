@@ -7,7 +7,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
-import com.revature.models.Account;
 import com.revature.models.CheckingAccount;
 import com.revature.models.User;
 import com.revature.util.ConnectionFactory;
@@ -15,9 +14,10 @@ import com.revature.util.ConnectionFactory;
 public class CheckingDAOImpl implements CheckingAccountDAO{
 
 	AccountsDAO accountsDAO = new AccountsDAOImpl();
+	TransactionDAO transactionDAO = new TransactionDAOImpl();
 	
 	@Override
-	public double getCheckingBalance(User currentUser) {
+	public double getCheckingBalanceByUser(User currentUser) {
 		
 		int userCheckingId = accountsDAO.getUserCheckingId(currentUser.getUserId());
 		
@@ -42,13 +42,40 @@ public class CheckingDAOImpl implements CheckingAccountDAO{
 		}
 		return 0;
 	}
+	
+	@Override
+	public double getCheckingBalanceByAccountId(int accountId) {
+		
+		try(Connection conn = ConnectionFactory.getInstance().getConnection();){
+			
+			String sql = "SELECT balance FROM checkingAccounts WHERE accountId = ("
+					+ "SELECT checkingId FROM accounts WHERE accountId = ?)";
+			
+			PreparedStatement pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setInt(1, accountId);
+			
+			ResultSet rs = pstmt.executeQuery();
+			
+			if (rs.next()) {
+				return rs.getDouble(1);
+			}else {
+				System.out.println("unable to get checking balance");
+				return 0.0;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return 0;
+	}
 
 	@Override
-	public boolean depositChecking(User currentUser, int targetAccountId, double newAmount) {
+	public boolean depositChecking(User currentUser, int targetAccountId, double amount) {
 		// can deposit into any account you have access to 
 		
 		// check if user has access to target account
 		// in menu, check if amount is positive before calling this method
+		// also verify format
 		
 		ArrayList<User> authorizedUsers = accountsDAO.getAllAccountUsers(targetAccountId);
 		
@@ -62,18 +89,24 @@ public class CheckingDAOImpl implements CheckingAccountDAO{
 			}
 		}
 		
+		double newAmount = 0.0;
+		
 		if(userAuthorized) {
+			
+			newAmount = getCheckingBalanceByAccountId(targetAccountId) + amount;
+			
 			try(Connection conn = ConnectionFactory.getInstance().getConnection();){
 
-				String sql = "UPDATE checkingAccounts SET balance = ? WHERE accountId = ?";
+				String sql = "UPDATE checkingAccounts SET balance = ? WHERE accountId = ("
+						+ "Select checkingId FROM accounts WHERE accountId = ?)";
 
 				PreparedStatement pstmt = conn.prepareStatement(sql);
 
 				pstmt.setDouble(1, newAmount);
 				pstmt.setInt(2, targetAccountId);
-
+				System.out.println("Depositing $" + amount + " into checking account " + targetAccountId);
 				if(pstmt.executeUpdate() != 0) {
-					System.out.println("deposit succesful\n");
+					System.out.println("deposit successful\n");
 					return true;
 				}else {
 					System.out.println("deposit failed\n");
@@ -83,14 +116,56 @@ public class CheckingDAOImpl implements CheckingAccountDAO{
 				e.printStackTrace();
 			}
 		}
-		
-		
 		return false;
 	}
 
 	@Override
 	public boolean withdrawChecking(User currentUser, int targetAccountId, double amount) {
-		// TODO Auto-generated method stub
+		// can withdraw from any account you have access to 
+		
+		// check if user has access to target account
+		// in menu, check if amount is positive before calling this method
+		// also verify format
+		
+		ArrayList<User> authorizedUsers = accountsDAO.getAllAccountUsers(targetAccountId);
+		
+		boolean userAuthorized = false;
+		
+		for (User authorizedUser : authorizedUsers) {
+			if(authorizedUser.getUserId() == currentUser.getUserId()) {
+				System.out.println("User " + currentUser.getUserId() + " is authorized to withdraw");
+				userAuthorized = true;
+				break;
+			}
+		}
+		
+		double newAmount = 0.0;
+		
+		if(userAuthorized) {
+			
+			newAmount = getCheckingBalanceByAccountId(targetAccountId) - amount;
+			
+			try(Connection conn = ConnectionFactory.getInstance().getConnection();){
+
+				String sql = "UPDATE checkingAccounts SET balance = ? WHERE accountId = ("
+						+ "Select checkingId FROM accounts WHERE accountId = ?)";
+
+				PreparedStatement pstmt = conn.prepareStatement(sql);
+
+				pstmt.setDouble(1, newAmount);
+				pstmt.setInt(2, targetAccountId);
+				System.out.println("Withdrawing $" + amount + " from checking account " + targetAccountId);
+				if(pstmt.executeUpdate() != 0) {
+					System.out.println("withdraw successful\n");
+					return true;
+				}else {
+					System.out.println("withdraw failed\n");
+					return false;
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
 		return false;
 	}
 

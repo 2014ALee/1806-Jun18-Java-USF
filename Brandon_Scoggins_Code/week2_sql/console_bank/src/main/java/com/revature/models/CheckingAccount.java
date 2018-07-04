@@ -60,7 +60,7 @@ public class CheckingAccount {
 
 	@Override
 	public String toString() {
-		return "CheckingAccount [checkingId=" + checkingId + ", checkingBalance=" + checkingBalance + "]";
+		return "CheckingAccount [checkingId=" + checkingId + ", checkingBalance=" + String.format("%.2f", (Double)checkingBalance) + "]";
 	}
 	
 }

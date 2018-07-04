@@ -7,7 +7,9 @@ import com.revature.models.User;
 
 public interface CheckingAccountDAO {
 
-	public double getCheckingBalance(User currentUser);
+	public double getCheckingBalanceByUser(User currentUser);
+	
+	public double getCheckingBalanceByAccountId(int accountId);
 	
 	public boolean depositChecking(User currentUser, int targetAccountId, double amount);
 	

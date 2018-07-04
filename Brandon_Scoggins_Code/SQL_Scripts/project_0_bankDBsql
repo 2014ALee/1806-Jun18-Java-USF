@@ -31,67 +31,57 @@ CREATE TABLE checkingAccounts (
     accountId       NUMBER(10)      PRIMARY KEY,
     balance         NUMBER(10)      DEFAULT 0.00
 );
+ALTER TABLE checkingAccounts
+    MODIFY balance NUMBER(10,2);
 -- Create savingsAccounts table (tracks savings accounts and their balances)
 CREATE TABLE savingsAccounts (
     accountId       NUMBER(10)      PRIMARY KEY,
     balance         NUMBER(10)      DEFAULT 0.00
 );
--- Create transfers table (a junction table that links checkings and savings accounts
--- for tracking of money transfers. A null value represents a deposit or withdrawal from
--- the paired account)
-CREATE TABLE transfers (
-    transferId      NUMBER(10)      PRIMARY KEY,
-    checkingId      NUMBER(10),
-    savingsId       NUMBER(10),
-    
-    CONSTRAINT fk_checking_account_id FOREIGN KEY (checkingId) 
-                                        REFERENCES checkingAccounts(accountId),
-    CONSTRAINT fk_savings_account_id FOREIGN KEY (savingsId) 
-                                        REFERENCES savingsAccounts(accountId)
-);
-ALTER TABLE transfers
-DROP CONSTRAINT fk_checking_account_id; 
-
-ALTER TABLE transfers
-DROP CONSTRAINT fk_savings_account_id;
-
-ALTER TABLE transfers
-ADD CONSTRAINT fk_checking_account_id FOREIGN KEY (checkingId) 
-                                        REFERENCES checkingAccounts(accountId)
-                                        ON DELETE CASCADE;
-ALTER TABLE transfers
-ADD CONSTRAINT fk_savings_account_id FOREIGN KEY (savingsId) 
-                                        REFERENCES savingsAccounts(accountId)
-                                        ON DELETE CASCADE;
+ALTER TABLE savingsAccounts
+    MODIFY balance NUMBER(10,2);
 -- Create transactions table (create an Id for each transaction and records the active user,
 -- the transferId, the amount of money transfered, and the date and time of the transaction)
 CREATE TABLE transactions(
     transactionId   NUMBER(10)      PRIMARY KEY,
     userId          NUMBER(10),
-    transferId      NUMBER(10),
     amount          NUMBER(10)      DEFAULT 0.00,
     dateOf          DATE            NOT NULL,
     
     CONSTRAINT fk_user FOREIGN KEY (userId) 
-                        REFERENCES users(userId),
-    CONSTRAINT fk_transfer FOREIGN KEY (transferId)
-                        REFERENCES transfers(transferId)
+                        REFERENCES users(userId)
 );
 
 ALTER TABLE transactions
 DROP CONSTRAINT fk_user; 
 
 ALTER TABLE transactions
-DROP CONSTRAINT fk_transfer;
-
-ALTER TABLE transactions
 ADD CONSTRAINT fk_user FOREIGN KEY (userId) 
                         REFERENCES users(userId)
                         ON DELETE CASCADE;
+                        
 ALTER TABLE transactions
-ADD CONSTRAINT fk_transfer FOREIGN KEY (transferId)
-                        REFERENCES transfers(transferId)
-                        ON DELETE CASCADE;
+ADD originAccountId NUMBER(10);
+
+ALTER TABLE transactions
+ADD CONSTRAINT fk_origin_account FOREIGN KEY (originAccountId)
+                                    REFERENCES accounts(accountId)
+                                    ON DELETE CASCADE;
+ALTER TABLE transactions
+ADD originAccountType VARCHAR2(20);
+
+ALTER TABLE transactions
+ADD targetAccountId NUMBER(10);
+
+ALTER TABLE transactions
+ADD CONSTRAINT fk_target_account FOREIGN KEY (targetAccountId)
+                                    REFERENCES accounts(accountId)
+                                    ON DELETE CASCADE;
+ALTER TABLE transactions
+ADD targetAccountType VARCHAR2(20);
+
+ALTER TABLE transactions
+    MODIFY amount NUMBER(10,2);
 -- Create accounts table (records the account holder and which checking, savings, or both
 -- accounts they have)
 CREATE TABLE accounts(

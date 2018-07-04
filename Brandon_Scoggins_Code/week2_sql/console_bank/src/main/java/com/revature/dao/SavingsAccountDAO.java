@@ -6,16 +6,20 @@ import com.revature.models.SavingsAccount;
 import com.revature.models.User;
 
 public interface SavingsAccountDAO {
+
+	public double getSavingsBalanceByUser(User currentUser);
 	
-	public double getSavingsBalance(User currentUser);
+	public double getSavingsBalanceByAccountId(int accountId);
 	
-	public void depositSavings(User currentUser, double amount);
+	public boolean depositSavings(User currentUser, int targetAccountId, double amount);
 	
-	public void withdrawSavings(User currentUser, double amount);
+	public boolean withdrawSavings(User currentUser, int targetAccountId, double amount);
 	
-	public void createSavings(User currentUser);
+	public boolean createSavings(User currentUser);
 	
-	public void deleteSavings(User currentUser);
+	public boolean pairSavingsToAccount(User currentUser);
 	
-	public ArrayList<SavingsAccount> getAllSavingsAccounts();
+	public boolean deleteSavings(User currentUser);
+	
+	public ArrayList<SavingsAccount> getAllSavingsAccounts();	
 }

@@ -4,20 +4,27 @@ public class Transaction {
 
 	private int transactionId;
 	private int userId;
-	private int transferId;
 	private double amount;
+	private int originAccountID;
+	private String originType;
+	private int targetAccountId;
+	private String targetType;
 	private String dateOf;
 	
 	public Transaction() {
 		
 	}
 
-	public Transaction(int transactionId, int userId, int transferId, double amount, String dateOf) {
+	public Transaction(int transactionId, int userId, double amount, int originAccountID, String originType,
+			int targetAccountId, String targetType, String dateOf) {
 		super();
 		this.transactionId = transactionId;
 		this.userId = userId;
-		this.transferId = transferId;
 		this.amount = amount;
+		this.originAccountID = originAccountID;
+		this.originType = originType;
+		this.targetAccountId = targetAccountId;
+		this.targetType = targetType;
 		this.dateOf = dateOf;
 	}
 
@@ -37,20 +44,44 @@ public class Transaction {
 		this.userId = userId;
 	}
 
-	public int getTransferId() {
-		return transferId;
-	}
-
-	public void setTransferId(int transferId) {
-		this.transferId = transferId;
-	}
-
 	public double getAmount() {
 		return amount;
 	}
 
 	public void setAmount(double amount) {
 		this.amount = amount;
+	}
+
+	public int getOriginAccountID() {
+		return originAccountID;
+	}
+
+	public void setOriginAccountID(int originAccountID) {
+		this.originAccountID = originAccountID;
+	}
+
+	public String getOriginType() {
+		return originType;
+	}
+
+	public void setOriginType(String originType) {
+		this.originType = originType;
+	}
+
+	public int getTargetAccountId() {
+		return targetAccountId;
+	}
+
+	public void setTargetAccountId(int targetAccountId) {
+		this.targetAccountId = targetAccountId;
+	}
+
+	public String getTargetType() {
+		return targetType;
+	}
+
+	public void setTargetType(String targetType) {
+		this.targetType = targetType;
 	}
 
 	public String getDateOf() {
@@ -69,8 +100,11 @@ public class Transaction {
 		temp = Double.doubleToLongBits(amount);
 		result = prime * result + (int) (temp ^ (temp >>> 32));
 		result = prime * result + ((dateOf == null) ? 0 : dateOf.hashCode());
+		result = prime * result + originAccountID;
+		result = prime * result + ((originType == null) ? 0 : originType.hashCode());
+		result = prime * result + targetAccountId;
+		result = prime * result + ((targetType == null) ? 0 : targetType.hashCode());
 		result = prime * result + transactionId;
-		result = prime * result + transferId;
 		result = prime * result + userId;
 		return result;
 	}
@@ -91,9 +125,21 @@ public class Transaction {
 				return false;
 		} else if (!dateOf.equals(other.dateOf))
 			return false;
-		if (transactionId != other.transactionId)
+		if (originAccountID != other.originAccountID)
 			return false;
-		if (transferId != other.transferId)
+		if (originType == null) {
+			if (other.originType != null)
+				return false;
+		} else if (!originType.equals(other.originType))
+			return false;
+		if (targetAccountId != other.targetAccountId)
+			return false;
+		if (targetType == null) {
+			if (other.targetType != null)
+				return false;
+		} else if (!targetType.equals(other.targetType))
+			return false;
+		if (transactionId != other.transactionId)
 			return false;
 		if (userId != other.userId)
 			return false;
@@ -102,8 +148,9 @@ public class Transaction {
 
 	@Override
 	public String toString() {
-		return "Transaction [transactionId=" + transactionId + ", userId=" + userId + ", transferId=" + transferId
-				+ ", amount=" + amount + ", dateOf=" + dateOf + "]";
+		return "Transaction [transactionId=" + transactionId + ", userId=" + userId + ", amount=" + amount
+				+ ", originAccountID=" + originAccountID + ", originType=" + originType + ", targetAccountId="
+				+ targetAccountId + ", targetType=" + targetType + ", dateOf=" + dateOf + "]";
 	}
 	
 }

@@ -17,7 +17,11 @@ public interface AccountsDAO {
 	
 	public int getUserCheckingId(int userId);
 	
-	public int getUserSavingsId(int userId);
+	public int getUserSavingsId(int Id);
+
+	public int getAccountCheckingId(int accountId);
+	
+	public int getAccountSavingsId(int accountId);
 	
 	public boolean createAccount(User accountHolder);
 	
