@@ -10,12 +10,19 @@ import java.io.ObjectOutputStream;
 import java.text.DecimalFormat;
 import java.util.Scanner;
 
+import bank.run.dao.AccountDAOImpl;
+import bank.run.dao.JointAccDAOImpl;
+import bank.run.dao.UserDAOImpl;
+import bank.run.util.Account;
 import bank.run.util.User;
 
 public class Register {
 	
 	private static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 	private static Scanner sc = new Scanner(System.in);  
+	private static UserDAOImpl userImpl = new UserDAOImpl();
+	private static AccountDAOImpl accountImpl = new AccountDAOImpl();
+	private static JointAccDAOImpl jointImpl = new JointAccDAOImpl();
 
 	public static void register() {
 		String firstName, lastName, username, password, email;
@@ -33,20 +40,26 @@ public class Register {
 
 			System.out.println("Username: ");
 			username = br.readLine();
-			if(!(isFilenameValid(username))) {
+			
+			if(!(username.matches("[A-Za-z0-9+_-]+"))) {
 				for(int i =0;i > -1;i++) {
-					System.out.println("Invalid username:" + username +"  re-register");
-					System.out.println("Username: ");
+					System.out.println("Invalid username:" + username +"  re-register...");
+					System.out.println("username: ");
 					username = br.readLine();
-					if(!(isFilenameValid(username))) {
+					if(!(username.matches("[A-Za-z0-9+_.-]+@.+"))) {
 						continue;
-					}else if(i >= 5) {
+					}else if(i >= 7) {
 						System.out.println("To many attempts...");
 						Menu.mainMenu(0);
-					}else if (isFilenameValid(username))
-						i = -1;
+					}else {
+						if(!(available(1, username))) {
+							System.out.println("username: " + username + " unavailable re-register...");
+						}else
+							i = -1;
+					}
 				}
 			}
+			
 			System.out.println("Password: ");
 			password = br.readLine();
 
@@ -54,18 +67,23 @@ public class Register {
 			email = br.readLine();
 			if(!(email.matches("[A-Za-z0-9+_.-]+@.+"))) {
 				for(int i =0;i > -1;i++) {
-					System.out.println("Invalid email:" + email +"  re-register");
+					System.out.println("Invalid email:" + email +"  re-register...");
 					System.out.println("Email: ");
 					email = br.readLine();
 					if(!(email.matches("[A-Za-z0-9+_.-]+@.+"))) {
 						continue;
-					}else if(i >= 5) {
+					}else if(i >= 7) {
 						System.out.println("To many attempts...");
 						Menu.mainMenu(0);
-					}else
-						i = -1;
+					}else {
+						if(!(available(1, email))) {
+							System.out.println("Email: " + email + " unavailable re-register...");
+						}else
+							i = -1;
+					}
 				}
 			}
+			
 			DecimalFormat df = new DecimalFormat("###.##");
 			
 			for(int i = 0; i <=3; i++) {
@@ -95,16 +113,20 @@ public class Register {
 					sc.next();
 				}
 			}
-			User user = new User(firstName, lastName, username, password, email, savings, checking);
-			System.out.println("Checking username availability...");
-
-			if(usernameAvailable(user)) {
-				System.out.println("Username avaiable!");
-				System.out.println("Creating new user, " + user.getUsername() + "...\n");
-				serializeUser(user);
-			}else {
-				System.out.println("Username is not available. Please try again...");
-				register();
+			User user = new User(1,firstName, lastName, username, password, email);
+			System.out.println("Creating new user, " + user.getUsername() + "...\n");
+			if(userImpl.insertUser(user))
+				System.out.println("User Created!");
+			else {
+				System.out.println("Error creating user try again...");
+				Menu.mainMenu(0);
+			}
+			Account acc = new Account(1,user.getUserID(),checking,savings);
+			if(accountImpl.insertAccount(acc))
+				System.out.println("Account Created!");
+			else {
+				System.out.println("Error creating account try again...");
+				Menu.mainMenu(0);
 			}
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -112,13 +134,12 @@ public class Register {
 		}
 		Menu.mainMenu(0);
 	}
-	private static boolean usernameAvailable(User u) {
-
-		String fileName = u.getUsername() + ".ser";
-		File file = new File(fileName);
-		if(file.exists())
-			return false;
-		return true;
+	private static boolean available(int i, Object... arg) {
+		if( i == 1)
+			return userImpl.getAllUsernames().contains(arg[0]);
+		else if(i == 2)
+			return userImpl.getAllEmails().contains(arg[0]);
+		return false;
 	}
 
 	private static void serializeUser(User u) {

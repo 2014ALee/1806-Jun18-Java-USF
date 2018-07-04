@@ -16,24 +16,24 @@ public class ChinookDriver {
 		ArtistDAO artistDao = new ArtistDAOImpl();
 		
 		//Get all artists
-//		ArrayList<Artist> artists = artistDao.getAllArtists();
-//	
-//		for(Artist art : artists) {
-//			System.out.println(art);
-//			System.out.println("-------------------------------------------------------------------");
-//		}
-//		
-//		//Get artist by ID
-//		Artist art = artistDao.getArtistById(274);
-//		System.out.println(art);
-//		
-//		//Add artist
-//		Artist myArtist = new Artist();
-//		myArtist.setName("A Day to Remember");
-//		myArtist = artistDao.addArtist(myArtist);
-//		System.out.println(myArtist);
-//		
-//		// Get artist albums
+		ArrayList<Artist> artists = artistDao.getAllArtists();
+	
+		for(Artist art : artists) {
+			System.out.println(art);
+			System.out.println("-------------------------------------------------------------------");
+		}
+		
+		//Get artist by ID
+		Artist art = artistDao.getArtistById(274);
+		System.out.println(art);
+		
+		//Add artist
+		Artist myArtist = new Artist();
+		myArtist.setName("A Day to Remember");
+		myArtist = artistDao.addArtist(myArtist);
+		System.out.println(myArtist);
+		
+		// Get artist albums
 
 		Artist thisArtist = artistDao.getArtistById(1);
 

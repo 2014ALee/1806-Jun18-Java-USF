@@ -6,27 +6,31 @@ public class User implements Serializable{
 
 	private static final long serialVersionUID = 1L;
 
-	private transient String firstName;
+	private int userID;
+	private String firstName;
 	private String lastName;
 	private String username;
 	private String password;
 	private String email;
-	private double savings;
-	private double checking;
 
-	public User() {
-	}
+	public User() {}
 
-	public User(String firstName, String lastName, String username, String password, String email, double savings,
-			double checking) {
+	public User(int userID, String firstName, String lastName, String username, String password, String email) {
 		super();
+		this.userID = userID;
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.username = username;
 		this.password = password;
 		this.email = email;
-		this.savings = savings;
-		this.checking = checking;
+	}
+
+	public int getUserID() {
+		return userID;
+	}
+
+	public void setUserID(int userID) {
+		this.userID = userID;
 	}
 
 	public String getFirstName() {
@@ -69,22 +73,6 @@ public class User implements Serializable{
 		this.email = email;
 	}
 
-	public double getSavings() {
-		return savings;
-	}
-
-	public void setSavings(double savings) {
-		this.savings = savings;
-	}
-
-	public double getChecking() {
-		return checking;
-	}
-
-	public void setChecking(double checking) {
-		this.checking = checking;
-	}
-
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
@@ -93,14 +81,11 @@ public class User implements Serializable{
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		long temp;
-		temp = Double.doubleToLongBits(checking);
-		result = prime * result + (int) (temp ^ (temp >>> 32));
 		result = prime * result + ((email == null) ? 0 : email.hashCode());
+		result = prime * result + ((firstName == null) ? 0 : firstName.hashCode());
 		result = prime * result + ((lastName == null) ? 0 : lastName.hashCode());
 		result = prime * result + ((password == null) ? 0 : password.hashCode());
-		temp = Double.doubleToLongBits(savings);
-		result = prime * result + (int) (temp ^ (temp >>> 32));
+		result = prime * result + userID;
 		result = prime * result + ((username == null) ? 0 : username.hashCode());
 		return result;
 	}
@@ -114,12 +99,15 @@ public class User implements Serializable{
 		if (getClass() != obj.getClass())
 			return false;
 		User other = (User) obj;
-		if (Double.doubleToLongBits(checking) != Double.doubleToLongBits(other.checking))
-			return false;
 		if (email == null) {
 			if (other.email != null)
 				return false;
 		} else if (!email.equals(other.email))
+			return false;
+		if (firstName == null) {
+			if (other.firstName != null)
+				return false;
+		} else if (!firstName.equals(other.firstName))
 			return false;
 		if (lastName == null) {
 			if (other.lastName != null)
@@ -131,7 +119,7 @@ public class User implements Serializable{
 				return false;
 		} else if (!password.equals(other.password))
 			return false;
-		if (Double.doubleToLongBits(savings) != Double.doubleToLongBits(other.savings))
+		if (userID != other.userID)
 			return false;
 		if (username == null) {
 			if (other.username != null)
@@ -143,8 +131,7 @@ public class User implements Serializable{
 
 	@Override
 	public String toString() {
-		return "User [lastName=" + lastName + ", username=" + username + ", password=" + password + ", email=" + email
-				+ ", savings=" + savings + ", checking=" + checking + "]";
+		return "User [userID=" + userID + ", firstName=" + firstName + ", lastName=" + lastName + ", username="
+				+ username + ", password=" + password + ", email=" + email + "]";
 	}
-	
 }

@@ -77,7 +77,6 @@ public class ArtistDAOImpl implements ArtistDAO{
 			
 			conn.setAutoCommit(false);
 			
-			
 			String sql = "INSERT INTO Artist (name) VALUES (?)";
 			
 			String[] keys = new String[1];

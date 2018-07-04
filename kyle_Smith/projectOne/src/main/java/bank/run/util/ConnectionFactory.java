@@ -22,21 +22,24 @@ public class ConnectionFactory {
 	}
 	
 	public Connection getConnection() {
-		
-
 		Connection conn = null;
-		String driver = "oracle.jdbc.driver.OracleDriver";
-		String url = "jdbc:oracle:thin:@chinook.c23yhxn6b1ak.us-east-1.rds.amazonaws.com:1521:ORCL";
-		String usr = "chinook";
-		String pw = "password";
+		Properties prop = new Properties();
+		
 		
 		try {
-			Class.forName(driver);
+			prop.load(new FileReader("D:\\revature\\project-repos\\javaUSF\\kyle_Smith\\projectOne\\src\\main\\resources\\application.properties"));
+			Class.forName(prop.getProperty("driver"));
 			
-			conn = DriverManager.getConnection(url, usr, pw);
+			conn = DriverManager.getConnection(prop.getProperty("url"), prop.getProperty("usr"), prop.getProperty("pw"));
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		

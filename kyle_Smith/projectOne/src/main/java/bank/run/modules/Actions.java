@@ -2,12 +2,20 @@ package bank.run.modules;
 
 import java.text.DecimalFormat;
 
-public class Actions extends Validate{
+import bank.run.dao.AccountDAOImpl;
+import bank.run.dao.JointAccDAOImpl;
+import bank.run.dao.UserDAOImpl;
+import bank.run.util.Account;
 
+public class Actions extends Validate{
+	private static UserDAOImpl userImpl = new UserDAOImpl();
+	private static AccountDAOImpl accountImpl = new AccountDAOImpl();
+	private static JointAccDAOImpl jointImpl = new JointAccDAOImpl();
+	
 	public static void deposit() {
 		double deposit = 0;
 		System.out.println("Deposit to Checking or Savings?");
-		System.out.println("[1] Checking: $" + user.getChecking());
+		System.out.println("[1] Checking: $" + Account.getChecking());
 		System.out.println("[2] Savings: $" + user.getSavings());
 		System.out.println("[3] Cancel");
 		int read = 0;
