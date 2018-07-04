@@ -52,21 +52,25 @@ public class ImplementCustomerInt implements CustomerInterface {
 			CallableStatement call = conn.prepareCall(sql);
 			call.setString(1, username);
 			call.registerOutParameter(2, OracleTypes.CURSOR);
-			
-			boolean bool = call.execute();
+			call.execute();
+			boolean bool = false;
 			
 			ResultSet results = (ResultSet) call.getObject(2);
 			
 			while(results.next()) {
+				 bool = true;
 				 gotCustomer.setUserName(results.getString(1));
 				 gotCustomer.setPassword(results.getString(2));
 				 gotCustomer.setBalance(results.getFloat(3));
 			}
+			
+			if (bool) {return gotCustomer;}
+			else {return null;}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return gotCustomer;
+		return null;
 	}
 
 	@Override
@@ -125,6 +129,32 @@ public class ImplementCustomerInt implements CustomerInterface {
 		}
 
 		return allCustomers;
+	}
+
+	@Override
+	public int getTotal() {
+		int count = 0;
+		
+		MakeConnection mkconnection = MakeConnection.getConnectionInstance();
+		Connection conn = mkconnection.createConnection();
+
+		String sql = "CALL getTotal()";
+		
+		try {
+			CallableStatement call = conn.prepareCall(sql);
+			
+			ResultSet total = call.executeQuery();
+			
+			while(total.next()) {
+				count = total.getInt(1);
+			}
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return count;
 	}
 
 }

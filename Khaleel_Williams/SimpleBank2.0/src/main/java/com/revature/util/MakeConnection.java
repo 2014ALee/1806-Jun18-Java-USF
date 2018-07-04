@@ -33,7 +33,7 @@ public class MakeConnection {
 			
 			Class.forName(prop.getProperty("driver"));//CLASS not found EXCEPTION
 																						//adminUsr                  adminPw
-			conn = DriverManager.getConnection(prop.getProperty("url"), prop.getProperty("adminUsr"), prop.getProperty("adminPw"));//SQL EXCEPTION
+			conn = DriverManager.getConnection(prop.getProperty("url"), prop.getProperty("usr"), prop.getProperty("pw"));//SQL EXCEPTION
 			
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block

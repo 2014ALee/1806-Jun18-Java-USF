@@ -9,16 +9,20 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.ArrayList;
+import java.util.InputMismatchException;
 import java.util.Scanner;
+
+import com.revature.dao.ImplementCustomerInt;
 
 public class Bank {
 
 	private int numOfCustomers = 0;
 	static BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-
+	static ImplementCustomerInt db = new ImplementCustomerInt();
 
 	public Bank() {}
- 
+
 	public Bank(int numOfCustomers) {
 		super();
 		this.numOfCustomers = numOfCustomers;
@@ -32,14 +36,17 @@ public class Bank {
 		this.numOfCustomers = numOfCustomers;
 	}
 
+	//MAINMENU
 	public static void mainMenu() {
 		String userInput;
 
-		System.out.println("		MAIN MENU		");
+		System.out.println("                      ---------");
+		System.out.println("                      MAIN MENU");
+		System.out.println("                      ---------");
 
 		System.out.println("\r\n[1] - Login");
 		System.out.println("[2] - Register");
-		System.out.println("[3] - Cancle");
+		System.out.println("[3] - Exit");
 
 		System.out.print("Selection: ");
 
@@ -48,16 +55,20 @@ public class Bank {
 
 			switch(userInput) {
 			case "1":
+				wipeScreen();
 				login();
 				break;
 			case "2":
+				wipeScreen();
 				register();
 				break;
 			case "3":
-				System.out.println("Exiting bank program");
+				wipeScreen();
+				System.out.println("Exiting bank app...");
 				break;
-			default:
-				System.out.println("Incorrect Inuput - Please Enter 1 or 2");
+			default: 
+				wipeScreen();
+				System.out.println("       Incorrect Inuput - Please Enter 1, 2 or 3\n");
 				mainMenu();
 			}
 
@@ -66,14 +77,13 @@ public class Bank {
 			e.printStackTrace();
 		}
 
-
-
-
-
 	}
 
+	//LOGIN
 	public static void login() {
-		System.out.println("		LOGIN		");
+		System.out.println("                    ---------");
+		System.out.println("                      LOGIN");
+		System.out.println("                    ---------");
 
 		try {
 
@@ -87,9 +97,16 @@ public class Bank {
 			Customers cus = checkCredentials(username, password);
 
 			if(cus != null) {
-				action(cus);
+
+				if (cus.getUserName().equals("admin")) {
+					adminView();
+				} else {
+					wipeScreen();
+					action(cus);
+				}
 			}else {
-				System.out.println("Username or Password is Incorrect");
+				wipeScreen();
+				System.out.println("Username or Password is Incorrect\n");
 				mainMenu();
 			}
 
@@ -100,9 +117,11 @@ public class Bank {
 		}
 	}
 
+					//REGISTER
 	public static void register() {
-
-		System.out.println("		REGISTER		");
+		System.out.println("                      --------");
+		System.out.println("                      REGISTER");
+		System.out.println("                      --------\n");
 		System.out.println("Choose Username and Password");
 
 
@@ -116,13 +135,15 @@ public class Bank {
 
 			if(isUsernameAvailable(username)) {
 				Customers cus = new Customers(username, password);
-				serializeUser(cus);
-				System.out.println("Congradulations! Your Account was created successfully.");
+				db.addCustomer(cus);
+				wipeScreen();
+				System.out.println("Congradulations! Your Account was created successfully.\n");
 				mainMenu();
 
 			}else {
-				System.out.println("....Username is NOT available....");
-				register();
+				wipeScreen();
+				System.out.println("....Username is NOT available....\n");
+				mainMenu();
 			}
 
 
@@ -132,8 +153,11 @@ public class Bank {
 		}
 	}
 
+					//ACTION CUSTOMERS CAN DO
 	public static void action(Customers cus) {
-		System.out.println("You are now logged in.");
+		//System.out.println("                      -------");
+		System.out.println("                      WELCOME "+ cus.getUserName());
+		//System.out.println("                      -------");
 
 		System.out.println("[1] - Deposit");
 		System.out.println("[2] - Withdraw");
@@ -145,19 +169,26 @@ public class Bank {
 
 			switch(userInput) {
 			case "1":
+				wipeScreen();
 				deposite(cus);
 				break;
 			case "2":
+				wipeScreen();
 				withdraw(cus);
 				break;
 			case "3":
-				System.out.println("Current Balance = " + cus.getBalance());
+				wipeScreen();
+				System.out.println("Current Balance = $" + cus.getBalance() + "\n");
+
 				action(cus);
 				break;
 			case "4":
+				wipeScreen();
 				mainMenu();
+				break;
 			default:
-				System.out.println("Incorrect Input: ");
+				System.out.println("\r\nChoose from numbers 1-4: \n");
+				action(cus);
 
 			}
 		} catch (IOException e) {
@@ -167,131 +198,132 @@ public class Bank {
 
 
 	}
+					//DEPOSITE CASH
 	public static void deposite(Customers cus) {
 		System.out.println("How much would you like to Deposite?");
 		System.out.print("Enter amount: ");
 
 		Scanner scan = new Scanner(System.in);
-		int userInput = scan.nextInt();
 
-		if (userInput >= 0) {
+		//check for inputMismatch
+		try {
+			float userInput = scan.nextFloat();
+
+			userInput = Math.abs(userInput);
 			cus.setBalance((cus.getBalance()  + userInput));
-			System.out.println("You just added " + userInput + " to your account");
-			serializeUser(cus);
+			System.out.println("You just added " + userInput + " to your account\n");
+			db.updateBalance(cus);
 			action(cus);
 
+		} catch (InputMismatchException i) {
+			System.out.println("Enter a valid number\n");
+		} 
 
-		}else {
-			System.out.println("Incorrect Input /n Enter 0 or a positive number.");
-			deposite(cus);
-			
-		}
-
-		
 
 	}
 
+						//WITHDRAW
 	public static void withdraw(Customers cus) {
 		System.out.println("How much would you like to Withdraw?");
 		System.out.print("Enter amount: ");
 
 
 		Scanner scan = new Scanner(System.in);
-		int userInput = scan.nextInt();
 
-		if (userInput >= 0) {
+		float userInput = Math.abs(scan.nextFloat());
+
+
+		if(userInput > cus.getBalance()) {
+			System.out.println("\r\nYou don't have enough funds to withdraw: $" + userInput +"\n");
+			action(cus);
+		} else {
 			cus.setBalance(cus.getBalance()  - userInput);
-		}else if(userInput > cus.getBalance()) {
-			System.out.println("You don't have enough funds to withdraw: " + userInput);
-			withdraw(cus);
-
-		}else {
-			System.out.println("Incorrect Input /n Enter 0 or a positive number.");
-			withdraw(cus);
+			System.out.println("\r\nYou just withdrew $" + userInput + " from your account\n");
+			db.updateBalance(cus);
+			action(cus);
 		}
-
-		serializeUser(cus);
-		action(cus);
 
 	}
 
+						//CHECK IF USERNAME IS AVAILABLE
 	public static boolean isUsernameAvailable(String username) {
 
-		String fileName = username + ".acct";
-		File file = new File(fileName);
-
-		if(file.exists()) {
-			return false;
-		}else {
+		if(db.getCustomerByUsername(username) == null) {
 			return true;
-		}
+		} else {return false;}
 
 	}
 
+						//CHECK IF USERNAME AND PASSWORD MATCH
 	public static Customers checkCredentials(String username, String password) {
 
-		String fileName = username + ".acct";
+		Customers cus = new Customers();
 
-		ObjectInputStream inputStream;
+		if((cus = db.getCustomerByUsername(username)) != null) {
+			if ((cus.getUserName().equals(username)) && (cus.getPassword().equals(password)) ){
+
+				return cus;
+			} else {return null;}
+		} else {return null;}
+
+
+	}
+	
+				//ADMINISTRATOR VIEW
+	private static void adminView() {
+		int counter = 0;
+		ArrayList<Customers> allCustomers = db.getAllCustomers();
+		
+		wipeScreen();
+		System.out.println("                      WELCOME ADMINISTRATOR");
+		
 		try {
-			inputStream = new ObjectInputStream(new FileInputStream(fileName));
-			Customers cus = (Customers) inputStream.readObject();
-
-			if (cus != null) {
-
-				if(username.equals(cus.getUserName()) & password.equals(cus.getPassword())) {
-					inputStream.close();
-					return cus;
-				}else {
-					inputStream.close();
-					return null;
-				}
+			System.out.println("[1] - Total Customers");
+			System.out.println("[2] - Display All Customers");
+			System.out.println("[3] - Log Out");
+			System.out.print("Selection: ");
+			String input = reader.readLine();
+			
+			switch(input) {
+				case "1":
+					wipeScreen();
+					for (Customers cus : allCustomers) {
+						if (cus.getUserName().equals("admin")) continue;
+						counter++;
+					}
+					System.out.println("There are "+counter+" customers register to this bank.\n");
+					adminView();	
+					break;
+				case "2":
+					wipeScreen();
+					System.out.println("Customers List: ");
+					for (Customers cus : allCustomers) {
+						if (cus.getUserName().equals("admin")) continue;
+						System.out.println("				"+cus.getUserName());		
+					}
+					adminView();
+					break;
+				case "3":
+					wipeScreen();
+					mainMenu();
+					break;
+				default:
+					System.out.println("Choose numbers between 1-3\n");
+					adminView();
+					
 			}
-
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			System.out.println("Incorrect username or password");
-			mainMenu();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
-			System.out.println("Incorrect username or password");
-			mainMenu();
-		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
-			System.out.println("Incorrect username or password");
-			mainMenu();
-		}
-
-		return null;
-	}
-
-	private static void serializeUser(Customers cus) {
-
-		String fileName = cus.getUserName() + ".acct";
-
-		try (FileOutputStream fos = new FileOutputStream(fileName);
-				ObjectOutputStream oos = new ObjectOutputStream(fos);) {
-
-			//oos.flush();
-			oos.writeObject(cus);
-			oos.close();
-
-
-		} catch (FileNotFoundException e) {
-			System.out.println("[LOG] - An error occurred while accessing the file");
-			e.printStackTrace();
-		} catch (IOException e) {
-			System.out.println("[LOG] - An error occurred while writing the file");
 			e.printStackTrace();
 		}
 	}
 
+	public static void wipeScreen() {
+		for (int i = 0; i < 4; i++) {
+			System.out.println();
+		}
 
-
-
-
-
-
+	}
 
 	@Override
 	public int hashCode() {

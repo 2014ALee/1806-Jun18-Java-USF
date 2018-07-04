@@ -10,8 +10,7 @@ public interface CustomerInterface {
 	public Customers getCustomerByUsername(String username);
 	public boolean updateBalance(Customers updatedCustomer);
 	public ArrayList<Customers> getAllCustomers();
+	public int getTotal();
 	
-	
-	//public boolean removeCustomer(Customers customerForRemoval);---implement maybe
 	
 }
