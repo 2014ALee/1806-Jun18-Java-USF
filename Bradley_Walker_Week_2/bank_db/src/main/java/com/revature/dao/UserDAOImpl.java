@@ -231,4 +231,31 @@ public class UserDAOImpl implements UserDAO {
 		return false;
 	}
 
+	public boolean deleteUser(User user) {
+		try(Connection conn = ConnectionFactory.getInstance().getConnection()){
+			String sql = "DELETE FROM UserHasAccount WHERE user_id = ?";
+			PreparedStatement ps = conn.prepareStatement(sql);
+			
+			ps.setInt(1, user.getUserID());
+			
+			int rowsAffected = ps.executeUpdate();
+			
+			if(rowsAffected != 0) {
+				sql = "DELETE FROM Users WHERE user_id = ?";
+				
+				ps = conn.prepareStatement(sql);
+				ps.setInt(1, user.getUserID());
+				
+				rowsAffected = ps.executeUpdate();
+				
+				if(rowsAffected != 0) {
+					return true;
+				}
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return false;
+	}
 }

@@ -158,4 +158,23 @@ public class AccountDAOImpl implements AccountDAO {
 		return account;
 	}
 
+	public boolean deleteAccount(Account account) {
+		try(Connection conn = ConnectionFactory.getInstance().getConnection()){
+			String sql = "DELETE FROM Accounts WHERE account_id = ?";
+			
+			PreparedStatement ps = conn.prepareStatement(sql);
+			
+			ps.setInt(1, account.getAccountID());
+			
+			int rowsAffected = ps.executeUpdate();
+			
+			if(rowsAffected != 0) {
+				return true;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return false;
+	}
 }

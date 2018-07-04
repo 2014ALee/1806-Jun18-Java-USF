@@ -339,9 +339,7 @@ public class BankDriver {
 
 				User u = users.get(i-1);
 
-				u.setFrozen(freezing);
-
-				if(userDAO.updateUser(u)){
+				if(doFreeze(u, freezing)){
 					System.out.println("User has been " + ((freezing) ? "frozen" : "unfrozen"));
 					userMenu();
 				} else
@@ -355,6 +353,11 @@ public class BankDriver {
 		}
 	}
 
+	public static boolean doFreeze(User u, boolean freezing) {
+		u.setFrozen(freezing);
+		return userDAO.updateUser(u);
+	}
+	
 	private static void listUsers() {
 		System.out.println("Current Users");
 		ArrayList<User> users = userDAO.getAllUsers();
@@ -472,6 +475,11 @@ public class BankDriver {
 				e.printStackTrace();
 			}
 		}
+	}
+	
+	public static boolean doCreateAccount(int userID, Account account) {
+		account = accountDAO.addAccount(userID, account);
+		return account == null;
 	}
 
 	private static void manageAccounts() {
@@ -628,6 +636,14 @@ public class BankDriver {
 			}
 		}
 	}
+	
+	public static boolean doTransfer(Account from, Account to, double amount) {
+		from.setBalance(from.getBalance() - amount);
+		to.setBalance(to.getBalance() + amount);
+		
+		return accountDAO.updateAccount(from) && accountDAO.updateAccount(to);
+	}
+	
 
 	private static void transferToUser(Account account) {
 		ArrayList<User> users = new ArrayList<>();
@@ -754,6 +770,17 @@ public class BankDriver {
 			}
 		}
 	}
+	
+	public static boolean doWithdraw(Account from, double amount) {
+		from.setBalance(from.getBalance() - amount);
+		return accountDAO.updateAccount(from);
+	}
+	
+	public static boolean doDeposit(Account to, double amount) {
+		to.setBalance(to.getBalance() + amount);
+		return accountDAO.updateAccount(to);
+	}
+	
 
 	private static void deposit(Account account) {
 		String input = "";
@@ -811,7 +838,7 @@ public class BankDriver {
 		System.out.printf("\nCurrent amount available: $%.2f\n", account.getBalance());
 	}
 
-	private static String hashPassword(String password, String salt) {
+	public static String hashPassword(String password, String salt) {
 		try {
 			MessageDigest digest = MessageDigest.getInstance("SHA-256");
 
