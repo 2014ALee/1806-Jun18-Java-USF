@@ -8,10 +8,11 @@ public class User {
 	private String pwSalt;
 	private String email;
 	private String phone;
+	private boolean frozen;
 	
 	public User() {}
 
-	public User(int userID, String username, String pwHash, String pwSalt, String email, String phone) {
+	public User(int userID, String username, String pwHash, String pwSalt, String email, String phone, boolean frozen) {
 		super();
 		this.userID = userID;
 		this.username = username;
@@ -19,6 +20,7 @@ public class User {
 		this.pwSalt = pwSalt;
 		this.email = email;
 		this.phone = phone;
+		this.frozen = frozen;
 	}
 
 	public int getUserID() {
@@ -69,11 +71,20 @@ public class User {
 		this.phone = phone;
 	}
 
+	public boolean isFrozen() {
+		return frozen;
+	}
+
+	public void setFrozen(boolean frozen) {
+		this.frozen = frozen;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((email == null) ? 0 : email.hashCode());
+		result = prime * result + (frozen ? 1231 : 1237);
 		result = prime * result + ((phone == null) ? 0 : phone.hashCode());
 		result = prime * result + ((pwHash == null) ? 0 : pwHash.hashCode());
 		result = prime * result + ((pwSalt == null) ? 0 : pwSalt.hashCode());
@@ -95,6 +106,8 @@ public class User {
 			if (other.email != null)
 				return false;
 		} else if (!email.equals(other.email))
+			return false;
+		if (frozen != other.frozen)
 			return false;
 		if (phone == null) {
 			if (other.phone != null)
@@ -124,9 +137,7 @@ public class User {
 	@Override
 	public String toString() {
 		return "User [userID=" + userID + ", username=" + username + ", pwHash=" + pwHash + ", pwSalt=" + pwSalt
-				+ ", email=" + email + ", phone=" + phone + "]";
+				+ ", email=" + email + ", phone=" + phone + ", frozen=" + frozen + "]";
 	}
-	
-	
 
 }

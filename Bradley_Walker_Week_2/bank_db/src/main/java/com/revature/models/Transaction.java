@@ -3,7 +3,7 @@ package com.revature.models;
 import java.sql.Timestamp;
 import java.time.ZonedDateTime;
 
-public class Transaction {
+public class Transaction implements Timestamped{
 	
 	private int transactionID;
 	private int userID;
@@ -54,6 +54,7 @@ public class Transaction {
 		this.amount = amount;
 	}
 
+	@Override
 	public Timestamp getTimestamp() {
 		return timestamp;
 	}
@@ -103,10 +104,7 @@ public class Transaction {
 
 	@Override
 	public String toString() {
-		return "Transaction [transactionID=" + transactionID + ", userID=" + userID + ", accountID=" + accountID
-				+ ", amount=" + amount + ", timestamp=" + timestamp + "]";
+		return String.format("User #%d %s $%.2f on %tc", userID, (amount > 0) ? "deposited" : "withdrew", Math.abs(amount), timestamp);
 	}
-
-	
 
 }

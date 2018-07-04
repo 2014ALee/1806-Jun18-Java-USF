@@ -1,12 +1,12 @@
 package com.revature.models;
 
 import java.sql.Timestamp;
-import java.time.ZonedDateTime;
 
-public class Transfer {
+public class Transfer implements Timestamped{
 	
 	private int transferID;
-	private int userID;
+	private int fromUserID;
+	private int toUserID;
 	private int fromAccountID;
 	private int toAccountID;
 	private double amount;
@@ -14,11 +14,12 @@ public class Transfer {
 	
 	public Transfer() {}
 
-	public Transfer(int transferID, int userID, int fromAccountID, int toAccountID, double amount,
+	public Transfer(int transferID, int fromUserID, int toUserID, int fromAccountID, int toAccountID, double amount,
 			Timestamp timestamp) {
 		super();
 		this.transferID = transferID;
-		this.userID = userID;
+		this.fromUserID = fromUserID;
+		this.toUserID = toUserID;
 		this.fromAccountID = fromAccountID;
 		this.toAccountID = toAccountID;
 		this.amount = amount;
@@ -33,12 +34,20 @@ public class Transfer {
 		this.transferID = transferID;
 	}
 
-	public int getUserID() {
-		return userID;
+	public int getFromUserID() {
+		return fromUserID;
 	}
 
-	public void setUserID(int userID) {
-		this.userID = userID;
+	public void setFromUserID(int fromUserID) {
+		this.fromUserID = fromUserID;
+	}
+
+	public int getToUserID() {
+		return toUserID;
+	}
+
+	public void setToUserID(int toUserID) {
+		this.toUserID = toUserID;
 	}
 
 	public int getFromAccountID() {
@@ -81,10 +90,11 @@ public class Transfer {
 		temp = Double.doubleToLongBits(amount);
 		result = prime * result + (int) (temp ^ (temp >>> 32));
 		result = prime * result + fromAccountID;
+		result = prime * result + fromUserID;
 		result = prime * result + ((timestamp == null) ? 0 : timestamp.hashCode());
 		result = prime * result + toAccountID;
+		result = prime * result + toUserID;
 		result = prime * result + transferID;
-		result = prime * result + userID;
 		return result;
 	}
 
@@ -101,6 +111,8 @@ public class Transfer {
 			return false;
 		if (fromAccountID != other.fromAccountID)
 			return false;
+		if (fromUserID != other.fromUserID)
+			return false;
 		if (timestamp == null) {
 			if (other.timestamp != null)
 				return false;
@@ -108,18 +120,15 @@ public class Transfer {
 			return false;
 		if (toAccountID != other.toAccountID)
 			return false;
-		if (transferID != other.transferID)
+		if (toUserID != other.toUserID)
 			return false;
-		if (userID != other.userID)
+		if (transferID != other.transferID)
 			return false;
 		return true;
 	}
 
 	@Override
 	public String toString() {
-		return "Transfer [transferID=" + transferID + ", userID=" + userID + ", fromAccountID=" + fromAccountID
-				+ ", toAccountID=" + toAccountID + ", amount=" + amount + ", timestamp=" + timestamp + "]";
+		return String.format("User #%d transferred $%.2f to User #%d on %tc", fromUserID, amount, toUserID, timestamp);
 	}
-
-	
 }

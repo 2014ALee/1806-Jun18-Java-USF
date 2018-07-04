@@ -14,8 +14,13 @@ import java.util.Random;
 import java.util.regex.Pattern;
 
 import com.revature.dao.AccountDAOImpl;
+import com.revature.dao.TransactionDAOImpl;
+import com.revature.dao.TransferDAOImpl;
 import com.revature.dao.UserDAOImpl;
 import com.revature.models.Account;
+import com.revature.models.Timestamped;
+import com.revature.models.Transaction;
+import com.revature.models.Transfer;
 import com.revature.models.User;
 
 public class BankDriver {
@@ -24,6 +29,8 @@ public class BankDriver {
 	private static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 	private static UserDAOImpl userDAO = new UserDAOImpl();
 	private static AccountDAOImpl accountDAO = new AccountDAOImpl();
+	private static TransactionDAOImpl transactionDAO = new TransactionDAOImpl();
+	private static TransferDAOImpl transferDAO = new TransferDAOImpl();
 
 	public static void main(String[] args) {
 		mainMenu();
@@ -60,7 +67,6 @@ public class BankDriver {
 			e.printStackTrace();
 		}
 	}
-
 
 	private static void register() {
 		user = new User();
@@ -183,7 +189,7 @@ public class BankDriver {
 			e.printStackTrace();
 		}
 	}
-
+	
 	private static void login() {
 		String username = "", password = "";
 
@@ -220,10 +226,15 @@ public class BankDriver {
 				String salt = u.getPwSalt();
 
 				if(u.getPwHash().equals(hashPassword(password, salt))){
-					// Successful login
-					System.out.println("Login successful");
-					user = u;
-					userMenu();
+					// The user gave the correct username and password. But if they have been frozen, they still can't access their accounts
+					if(!u.isFrozen()) {
+						System.out.println("Login successful");
+						user = u;
+						userMenu();
+					} else {
+						System.out.println("Your account has been frozen.");
+						mainMenu();
+					}
 				} else {
 					System.out.println("Invald login credentials.");
 					mainMenu();
@@ -242,40 +253,116 @@ public class BankDriver {
 
 		System.out.println("-------------------------- USER MENU --------------------------");
 
-		System.out.println("[1] - Manage Accounts");
-		System.out.println("[2] - Create Account");
-		System.out.println("[3] - Create Joint Account");
-		System.out.println("[4] - Apply For A Loan");
-		System.out.println("[5] - Logout");
+		if(user.getUsername().equals("admin")) {
+			System.out.println("[1] - List Users");
+			System.out.println("[2] - Freeze User Accounts");
+			System.out.println("[3] - Unfreeze User Accounts");
+			System.out.println("[4] - Logout");
+		} else {
+			System.out.println("[1] - Manage Accounts");
+			System.out.println("[2] - Create Account");
+			System.out.println("[3] - Create Joint Account");
+			System.out.println("[4] - Logout");
+		}
 
 		System.out.print(":> ");
 
 		try {
 			input = br.readLine();
 
-			switch(input) {
-			case "1":
-				manageAccounts();
-				break;
-			case "2":
-				createAccount();
-				break;
-			case "3":
-				createJointAccount();
-				break;
-			case "4":
-				applyForLoan();
-				break;
-			case "5":
-				logout();
-				break;
-			default:
-				invalidInput();
-				userMenu();
+			if(user.getUsername().equals("admin")) {
+				switch(input) {
+				case "1":
+					listUsers();
+					break;
+				case "2":
+					toggleFreeze(true);
+					break;
+				case "3":
+					toggleFreeze(false);
+					break;
+				case "4":
+					logout();
+					break;
+				default:
+					invalidInput();
+					userMenu();
+				}
+			} else {
+				switch(input) {
+				case "1":
+					manageAccounts();
+					break;
+				case "2":
+					createAccount();
+					break;
+				case "3":
+					createJointAccount();
+					break;
+				case "4":
+					logout();
+					break;
+				default:
+					invalidInput();
+					userMenu();
+				}
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+
+	private static void toggleFreeze(boolean freezing) {
+		System.out.print("-------------------------- ");
+		System.out.print(((freezing) ? "FREEZE" : "UNFREEZE") + " USER ACCOUNTS");
+		System.out.println(" --------------------------");
+
+		ArrayList<User> users = userDAO.getAllUsersExcept(user.getUserID());
+		
+		if(users.size() == 0) {
+			System.out.println("There are no other users.");
+			userMenu();
+			return;
+		}
+		
+		String input;
+
+		while(true) {
+			System.out.println("\nSelect user to " + ((freezing) ? "freeze" : "unfreeze") + "\n");
+			for(int i = 0; i < users.size(); i++)
+				System.out.println("[" + (i+1) + "] - " + users.get(i).getUsername());
+			System.out.println(":> ");
+
+			try {
+				input = br.readLine();
+				int i = Integer.parseInt(input);
+
+				User u = users.get(i-1);
+
+				u.setFrozen(freezing);
+
+				if(userDAO.updateUser(u)){
+					System.out.println("User has been " + ((freezing) ? "frozen" : "unfrozen"));
+					userMenu();
+				} else
+					System.out.println("Failed to update the database.");
+				break;
+			} catch (IOException e) {
+				e.printStackTrace();
+			} catch (IndexOutOfBoundsException e) {
+				invalidInput();
+			}
+		}
+	}
+
+	private static void listUsers() {
+		System.out.println("Current Users");
+		ArrayList<User> users = userDAO.getAllUsers();
+
+		for(User u : users)
+			System.out.println(u.getUsername());
+
+		userMenu();
 	}
 
 	private static void logout() {
@@ -283,52 +370,144 @@ public class BankDriver {
 		mainMenu();
 	}
 
-	private static void applyForLoan() {
-		// TODO Auto-generated method stub
-
-	}
+	
 
 	private static void createJointAccount() {
-		// TODO Auto-generated method stub
+		ArrayList<User> users = new ArrayList<>();
+		String input = "";
+		String accountName = "";
 
+		// Get a list of users except for the current user
+		users = userDAO.getAllUsersExcept(user.getUserID());
+		
+		if(users.size() == 0) {
+			System.out.println("There are no other users.");
+			userMenu();
+			return;
+		}
+
+		System.out.println("\nSelect the user to create an account with\n");
+
+		for(int i = 0; i < users.size(); i++)
+			System.out.println("[" + (i+1) + "] - " + users.get(i).getUsername());
+		System.out.print(":> ");
+
+		try {
+			input = br.readLine();
+			int i = Integer.parseInt(input);
+
+			User u = users.get(i-1);
+			
+			// If the other user has been frozen, stop here.
+			if(u.isFrozen()) {
+				System.out.println("That user has been frozen. No activity is allowed on their account.");
+				userMenu();
+				return;
+			}
+
+			while(true) {
+				System.out.print("Enter the name of the new account:> ");
+				try {
+					accountName = br.readLine();
+
+					if(!accountName.equals("")) {
+						Account account = new Account();
+						account.setAccountName(accountName);
+						account.setBalance(0);
+						account.setFrozen(false);
+						account = accountDAO.addJointAccount(user.getUserID(), u.getUserID(), account);
+
+						if(account != null) {
+							System.out.println("Account crerated");
+							accountMenu(account);
+						} else {
+							System.out.println("Failed to create account in database.");
+							userMenu();
+						}
+						break;
+					} else {
+						invalidInput();
+					}
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (IndexOutOfBoundsException e) {
+			invalidInput();
+			createJointAccount();
+		} catch (NumberFormatException e) {
+			invalidInput();
+			createJointAccount();
+		}
 	}
 
 	private static void createAccount() {
-		// TODO Auto-generated method stub
+		String accountName = "";
 
+		while(true) {
+			System.out.print("Enter the name of the new account:> ");
+			try {
+				accountName = br.readLine();
+
+				if(!accountName.equals("")) {
+					Account account = new Account();
+					account.setAccountName(accountName);
+					account.setBalance(0);
+					account.setFrozen(false);
+					account = accountDAO.addAccount(user.getUserID(), account);
+
+					if(account != null) {
+						System.out.println("Account crerated");
+						accountMenu(account);
+					} else {
+						System.out.println("Faailed to create account in database");
+					}
+					break;
+				} else {
+					invalidInput();
+				}
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 
 	private static void manageAccounts() {
 		ArrayList<Account> accounts = userDAO.getUserAccounts(user);
 		String input = "";
 
-		System.out.println("\nSelect account to view details\n");
+		while(true) {
 
-		for(int i = 0; i < accounts.size(); i++)
-			System.out.println("[" + (i+1) + "] - " + accounts.get(i).getAccountName());
+			System.out.println("\nSelect account to view details\n");
 
-		System.out.println(":> ");
+			for(int i = 0; i < accounts.size(); i++)
+				System.out.println("[" + (i+1) + "] - " + accounts.get(i).getAccountName());
 
-		try {
-			input = br.readLine();
+			System.out.println(":> ");
 
-			int i = Integer.parseInt(input);
+			try {
+				input = br.readLine();
 
-			if(i > 0 && i <= accounts.size()) {
-				Account account = accounts.get(i-1);
-				accountMenu(account);
-			} else {
+				int i = Integer.parseInt(input);
+
+				if(i > 0 && i <= accounts.size()) {
+					Account account = accounts.get(i-1);
+					accountMenu(account);
+					break;
+				} else {
+					invalidInput();
+				}
+			} catch (IOException e) {
+				e.printStackTrace();
+			} catch (IndexOutOfBoundsException e) {
+				invalidInput();
+				manageAccounts();
+			} catch(NumberFormatException e) {
 				invalidInput();
 				manageAccounts();
 			}
-		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (IndexOutOfBoundsException e) {
-			invalidInput();
-			manageAccounts();
-		} catch(NumberFormatException e) {
-			invalidInput();
-			manageAccounts();
 		}
 	}
 
@@ -337,12 +516,14 @@ public class BankDriver {
 
 		System.out.println("-------------------------- ACCOUNT MENU --------------------------");
 
+		System.out.println(account.getAccountName() + "\n");
 		System.out.println("[1] - View Balance");
 		System.out.println("[2] - View Transaction History");
 		System.out.println("[3] - Deposit");
 		System.out.println("[4] - Withdraw");
-		System.out.println("[5] - Transfer");
-		System.out.println("[6] - Back");
+		System.out.println("[5] - Transfer to another user");
+		System.out.println("[6] - Transfer to another account");
+		System.out.println("[7] - Back");
 
 		System.out.print(":> ");
 
@@ -352,6 +533,7 @@ public class BankDriver {
 			switch(input) {
 			case "1":
 				viewBalance(account);
+				accountMenu(account);
 				break;
 			case "2":
 				viewTransactionHistory(account);
@@ -363,9 +545,12 @@ public class BankDriver {
 				withdraw(account);
 				break;
 			case "5":
-				transfer(account);
+				transferToUser(account);
 				break;
 			case "6":
+				transferToAccount(account);
+				break;
+			case "7":
 				userMenu();
 				break;
 			default:
@@ -379,38 +564,25 @@ public class BankDriver {
 
 	// Transfer money to another user
 
-	private static void transfer(Account account) {
-		ArrayList<User> users = new ArrayList<>();
-		ArrayList<Account> accounts = new ArrayList<>();
+	private static void transferToAccount(Account account) {
+		ArrayList<Account> accounts;
 		String input = "";
 
-		// Get a list of users except for the current user
-		users = userDAO.getAllUsersExcept(user.getUserID());
+		accounts = userDAO.getUserAccounts(user);
 
-		System.out.println("\nSelect user to transfer to\n");
-		for(int i = 0; i < users.size(); i++)
-			System.out.println("[" + (i+1) + "] - " + users.get(i).getUsername());
-		System.out.print(":> ");
-
-		try {
-			input = br.readLine();
-			int i = Integer.parseInt(input);
-
-			User u = users.get(i-1);
-
-			accounts = userDAO.getUserAccounts(u);
-
+		while(true) {
 			System.out.println("\nSelect account to transfer to\n");
-			for(int j = 0; j < accounts.size(); j++)
+
+			for(int i = 0; i < accounts.size(); i++)
 				System.out.println("[" + (i+1) + "] - " + accounts.get(i).getAccountName());
 			System.out.print(":> ");
 
-			input = br.readLine();
-			i = Integer.parseInt(input);
+			try {
+				input = br.readLine();
+				int i = Integer.parseInt(input);
 
-			Account to_account = accounts.get(i-1);
+				Account to_account = accounts.get(i-1);
 
-			while(true) {
 				viewBalance(account);
 				System.out.print("Amount to transfer :> ");
 
@@ -424,38 +596,155 @@ public class BankDriver {
 					accountDAO.updateAccount(account);
 					accountDAO.updateAccount(to_account);
 
-					System.out.println("Transfer complete");
+					// Create a deposit and withdrawal record for the appropriate accounts
+					Transaction deposit = new Transaction();
+					deposit.setUserID(user.getUserID());
+					deposit.setAccountID(to_account.getAccountID());
+					deposit.setAmount(amount);
+
+					Transaction withdrawal = new Transaction();
+					withdrawal.setUserID(user.getUserID());
+					withdrawal.setAccountID(account.getAccountID());
+					withdrawal.setAmount(-amount);
+
+					if(transactionDAO.addTransaction(withdrawal) && transactionDAO.addTransaction(deposit)) {
+						System.out.println("Transfer successful");
+					} else {
+						System.out.println("Failed to create necessary records in the database.");
+					}
+
 					accountMenu(account);
 					break;
 				} else
 					System.out.println("Invalid amount. Please try again.");
+			} catch (IOException e) {
+				e.printStackTrace();
+			} catch (IndexOutOfBoundsException e) {
+				invalidInput();
+				transferToUser(account);
+			} catch (NumberFormatException e) {
+				invalidInput();
+				transferToUser(account);
 			}
-		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (IndexOutOfBoundsException e) {
-			invalidInput();
-			transfer(account);
-		} catch (NumberFormatException e) {
-			invalidInput();
-			transfer(account);
+		}
+	}
+
+	private static void transferToUser(Account account) {
+		ArrayList<User> users = new ArrayList<>();
+		ArrayList<Account> accounts = new ArrayList<>();
+		String input = "";
+
+		// Get a list of users except for the current user
+		users = userDAO.getAllUsersExcept(user.getUserID());
+		
+		if(users.size() == 0) {
+			System.out.println("There are no other users.");
+			accountMenu(account);
+			return;
+		}
+
+		while(true) {
+			System.out.println("\nSelect user to transfer to\n");
+			for(int i = 0; i < users.size(); i++)
+				System.out.println("[" + (i+1) + "] - " + users.get(i).getUsername());
+			System.out.print(":> ");
+
+			try {
+				input = br.readLine();
+				int i = Integer.parseInt(input);
+
+				User u = users.get(i-1);
+				
+				// No activity allowed on frozen accounts
+				if(u.isFrozen()) {
+					System.out.println("That user has been frozen. No activity is allowed on their account.");
+					accountMenu(account);
+					return;
+				}
+
+				accounts = userDAO.getUserAccounts(u);
+
+				System.out.println("\nSelect account to transfer to\n");
+				for(int j = 0; j < accounts.size(); j++)
+					System.out.println("[" + (j+1) + "] - " + accounts.get(j).getAccountName());
+				System.out.print(":> ");
+
+				input = br.readLine();
+				i = Integer.parseInt(input);
+
+				Account to_account = accounts.get(i-1);
+
+				viewBalance(account);
+				System.out.print("Amount to transfer :> ");
+
+				input = br.readLine();
+				double amount = Double.parseDouble(input);
+
+				if(amount >= 0 && amount <= account.getBalance()) {
+					account.setBalance(account.getBalance() - amount);
+					to_account.setBalance(to_account.getBalance() + amount);
+
+					accountDAO.updateAccount(account);
+					accountDAO.updateAccount(to_account);
+
+					// Create and store the transfer record
+					Transfer t = new Transfer();
+					t.setFromUserID(user.getUserID());
+					t.setToUserID(u.getUserID());
+					t.setFromAccountID(account.getAccountID());
+					t.setToAccountID(to_account.getAccountID());
+					t.setAmount(amount);
+
+					if(transferDAO.addTransfer(t)) {
+						System.out.println("Transfer complete");
+					} else {
+						System.out.println("Failed to create transfer record in the database.");
+					}
+
+					accountMenu(account);
+					break;
+				} else
+					System.out.println("Invalid amount. Please try again.");
+			} catch (IOException e) {
+				e.printStackTrace();
+			} catch (IndexOutOfBoundsException e) {
+				invalidInput();
+				transferToUser(account);
+			} catch (NumberFormatException e) {
+				invalidInput();
+				transferToUser(account);
+			}
 		}
 	}
 
 	private static void withdraw(Account account) {
 		String input = "";
-		
+
 		while(true) {
 			try {
 				viewBalance(account);
 				System.out.print("Amount to withdraw :> ");
 				input = br.readLine();
 				double amount = Double.parseDouble(input);
-				
+
 				if(amount >= 0 && amount <= account.getBalance()) {
 					account.setBalance(account.getBalance() - amount);
 					accountDAO.updateAccount(account);
-					System.out.println("Withdrawal complete");
+
+					// Create and store the transaction record
+					Transaction t = new Transaction();
+					t.setUserID(user.getUserID());
+					t.setAccountID(account.getAccountID());
+					t.setAmount(-amount);
+
+					if(transactionDAO.addTransaction(t)) {
+						System.out.println("Withdrawal complete");
+					} else {
+						System.out.println("Failed to create the transaction record in the database.");
+					}
+
 					accountMenu(account);
+					break;
 				} else
 					System.out.println("Invalid amount. Please try again.");
 			} catch (IOException e) {
@@ -474,12 +763,25 @@ public class BankDriver {
 				System.out.print("Amount to deposit :> ");
 				input = br.readLine();
 				double amount = Double.parseDouble(input);
-				
+
 				if(amount >= 0) {
 					account.setBalance(account.getBalance() + amount);
 					accountDAO.updateAccount(account);
-					System.out.println("Deposit complete");
+
+					// Create and store the transaction record
+					Transaction t = new Transaction();
+					t.setUserID(user.getUserID());
+					t.setAccountID(account.getAccountID());
+					t.setAmount(amount);
+
+					if(transactionDAO.addTransaction(t)) {
+						System.out.println("Deposit complete");
+					} else {
+						System.out.println("Failed to create the transaction record in the database.");
+					}
+
 					accountMenu(account);
+					break;
 				} else
 					System.out.println("Invalid amount. Please try again.");
 			} catch (IOException e) {
@@ -491,12 +793,22 @@ public class BankDriver {
 	}
 
 	private static void viewTransactionHistory(Account account) {
-		// TODO Auto-generated method stub
+		// The history ArrayList stores a record of all transactions and transfers
+		ArrayList<Timestamped> history = new ArrayList<>();
+		history.addAll(transactionDAO.getTransactionsForAccount(account.getAccountID()));
+		history.addAll(transferDAO.getTransfersForAccount(account.getAccountID()));
 
+		// Sort the records by timestamp
+		history.sort((h1, h2) -> h1.getTimestamp().compareTo(h2.getTimestamp()));
+
+		for(Timestamped t : history)
+			System.out.println(t);
+
+		accountMenu(account);
 	}
 
 	private static void viewBalance(Account account) {
-		System.out.printf("\nCurrent amount available: $%.2d\n", account.getBalance());
+		System.out.printf("\nCurrent amount available: $%.2f\n", account.getBalance());
 	}
 
 	private static String hashPassword(String password, String salt) {
@@ -508,11 +820,11 @@ public class BankDriver {
 			return null;
 		}
 	}
-	
+
 	private static void invalidInput() {
 		System.out.println("Invalid input. Please try again.");
 	}
-	
+
 
 	// Source: https://stackoverflow.com/questions/9655181/how-to-convert-a-byte-array-to-a-hex-string-in-java
 

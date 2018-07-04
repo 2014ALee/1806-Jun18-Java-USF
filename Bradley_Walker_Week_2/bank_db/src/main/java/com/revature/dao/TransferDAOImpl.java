@@ -15,14 +15,15 @@ public class TransferDAOImpl implements TransferDAO {
 	@Override
 	public boolean addTransfer(Transfer transfer) {
 		try(Connection conn = ConnectionFactory.getInstance().getConnection()){
-			String sql = "INSERT INTO Transfers (user_id, from_account_id, to_account_id, amount) VALUES (?, ?, ?, ?)";
+			String sql = "INSERT INTO Transfers (from_user_id, to_user_id, from_account_id, to_account_id, amount) VALUES (?, ?, ?, ?, ?)";
 			
 			PreparedStatement ps = conn.prepareStatement(sql);
 			
-			ps.setInt(1, transfer.getUserID());
-			ps.setInt(2, transfer.getFromAccountID());
-			ps.setInt(3, transfer.getToAccountID());
-			ps.setDouble(4, transfer.getAmount());
+			ps.setInt(1, transfer.getFromUserID());
+			ps.setInt(2, transfer.getToUserID());
+			ps.setInt(3, transfer.getFromAccountID());
+			ps.setInt(4, transfer.getToAccountID());
+			ps.setDouble(5, transfer.getAmount());
 			
 			int rowsAffected = ps.executeUpdate();
 			
@@ -41,7 +42,7 @@ public class TransferDAOImpl implements TransferDAO {
 		ArrayList<Transfer> transfers = new ArrayList<>();
 		
 		try(Connection conn = ConnectionFactory.getInstance().getConnection()){
-			String sql = "SELECT * FROM Transfers WHERE user_id = ?";
+			String sql = "SELECT * FROM Transfers WHERE from_user_id = ?";
 			
 			PreparedStatement ps = conn.prepareStatement(sql);
 			
@@ -51,7 +52,8 @@ public class TransferDAOImpl implements TransferDAO {
 			
 			while(rs.next()) {
 				Transfer temp = new Transfer(rs.getInt("transfer_id"),
-											rs.getInt("user_id"),
+											rs.getInt("from_user_id"),
+											rs.getInt("to_user_id"),
 											rs.getInt("from_account_id"),
 											rs.getInt("to_account_id"),
 											rs.getDouble("amount"),
@@ -82,7 +84,8 @@ public class TransferDAOImpl implements TransferDAO {
 			
 			while(rs.next()) {
 				Transfer temp = new Transfer(rs.getInt("transfer_id"),
-											rs.getInt("user_id"),
+											rs.getInt("from_user_id"),
+											rs.getInt("to_user_id"),
 											rs.getInt("from_account_id"),
 											rs.getInt("to_account_id"),
 											rs.getDouble("amount"),

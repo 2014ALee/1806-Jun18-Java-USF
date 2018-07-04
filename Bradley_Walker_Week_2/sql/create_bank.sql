@@ -22,6 +22,7 @@ CREATE TABLE Users(
     pw_salt     VARCHAR2(16)    NOT NULL,
     email       VARCHAR2(255)   NOT NULL,
     phone       VARCHAR(20)     NOT NULL,
+    frozen      NUMBER(1)       DEFAULT 0,
     
     CONSTRAINT pk_users
         PRIMARY KEY(user_id)
@@ -33,7 +34,6 @@ CREATE TABLE Accounts(
     account_id      NUMBER(8),
     account_name    VARCHAR2(50)    NOT NULL,
     balance         NUMBER(10,2)    DEFAULT 0.00,
-    frozen          NUMBER(1)       DEFAULT 0,
     
     CONSTRAINT pk_accounts
         PRIMARY KEY(account_id)
@@ -82,7 +82,8 @@ CREATE TABLE Transactions(
 --Transfers
 CREATE TABLE Transfers(
     transfer_id         NUMBER(8),
-    user_id             NUMBER(8)       NOT NULL,
+    from_user_id        NUMBER(8)       NOT NULL,
+    to_user_id          NUMBER(8)       NOT NULL,
     from_account_id     NUMBER(8)       NOT NULL,
     to_account_id       NUMBER(8)       NOT NULL,
     amount              NUMBER(10,2)    NOT NULL,
@@ -91,9 +92,13 @@ CREATE TABLE Transfers(
     CONSTRAINT pk_transfers
         PRIMARY KEY(transfer_id),
     
-    CONSTRAINT fk_transfers_users
-        FOREIGN KEY(user_id)
+    CONSTRAINT fk_transfers_users_from
+        FOREIGN KEY(from_user_id)
         REFERENCES Users (user_id),
+    
+    CONSTRAINT fk_transfers_users_to
+        FOREIGN KEY(to_user_id)
+        REFERENCES Users (user_id),    
     
     CONSTRAINT fk_from_account
         FOREIGN KEY(from_account_id)
@@ -188,5 +193,17 @@ END;
 --INSERT INTO Accounts (account_name, balance) VALUES ('Savings', 100);
 --INSERT INTO Transactions (transaction_id, user_id, account_id, amount) VALUES(1, 21, 1, 10);
 
+
+CREATE OR REPLACE PROCEDURE get_all_users_except(
+userID IN NUMBER,
+my_cursor OUT SYS_REFCURSOR)
+AS
+BEGIN
+    OPEN my_cursor FOR
+    SELECT *
+    FROM Users
+    WHERE user_id != userID AND username != 'admin';
+END;
+/
 
 COMMIT;

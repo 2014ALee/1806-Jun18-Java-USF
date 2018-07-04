@@ -1,5 +1,6 @@
 package com.revature.dao;
 
+import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -8,11 +9,10 @@ import java.sql.Statement;
 import java.util.ArrayList;
 
 import com.revature.models.Account;
-import com.revature.models.Loan;
-import com.revature.models.Transaction;
-import com.revature.models.Transfer;
 import com.revature.models.User;
 import com.revature.util.ConnectionFactory;
+
+import oracle.jdbc.internal.OracleTypes;
 
 public class UserDAOImpl implements UserDAO {
 
@@ -59,12 +59,14 @@ public class UserDAOImpl implements UserDAO {
 			ResultSet rs = s.executeQuery(sql);
 
 			while(rs.next()) {
-				User temp = new User(rs.getInt("user_id"),
-						rs.getString("username"),
-						rs.getString("pw_hash"),
-						rs.getString("pw_salt"),
-						rs.getString("email"),
-						rs.getString("phone"));
+				User temp = new User();
+				temp.setUserID(rs.getInt("user_id"));
+				temp.setUsername(rs.getString("username"));
+				temp.setPwHash(rs.getString("pw_hash"));
+				temp.setPwSalt(rs.getString("pw_salt"));
+				temp.setEmail(rs.getString("email"));
+				temp.setPhone(rs.getString("phone"));
+				temp.setFrozen(rs.getInt("frozen") == 1);
 
 				users.add(temp);
 			}
@@ -80,21 +82,25 @@ public class UserDAOImpl implements UserDAO {
 		ArrayList<User> users = new ArrayList<>();
 
 		try(Connection conn = ConnectionFactory.getInstance().getConnection()){
-			String sql = "SELECT * FROM Users WHERE user_id != ?";
-
-			PreparedStatement ps = conn.prepareStatement(sql);
+			String sql = "{CALL get_all_users_except(?, ?)}";
+			CallableStatement cs = conn.prepareCall(sql);
 			
-			ps.setInt(1, id);
+			cs.setInt(1, id);
+			
+			cs.registerOutParameter(2, OracleTypes.CURSOR);
 
-			ResultSet rs = ps.executeQuery();
+			cs.execute();
+			ResultSet rs = (ResultSet) cs.getObject(2);
 
 			while(rs.next()) {
-				User temp = new User(rs.getInt("user_id"),
-						rs.getString("username"),
-						rs.getString("pw_hash"),
-						rs.getString("pw_salt"),
-						rs.getString("email"),
-						rs.getString("phone"));
+				User temp = new User();
+				temp.setUserID(rs.getInt("user_id"));
+				temp.setUsername(rs.getString("username"));
+				temp.setPwHash(rs.getString("pw_hash"));
+				temp.setPwSalt(rs.getString("pw_salt"));
+				temp.setEmail(rs.getString("email"));
+				temp.setPhone(rs.getString("phone"));
+				temp.setFrozen(rs.getInt("frozen") == 1);
 
 				users.add(temp);
 			}
@@ -126,6 +132,7 @@ public class UserDAOImpl implements UserDAO {
 				user.setPwSalt(rs.getString("pw_salt"));
 				user.setEmail(rs.getString("email"));
 				user.setPhone(rs.getString("phone"));
+				user.setFrozen(rs.getInt("frozen") == 1);
 			} else {
 				return null;
 			}
@@ -157,6 +164,7 @@ public class UserDAOImpl implements UserDAO {
 				user.setPwSalt(rs.getString("pw_salt"));
 				user.setEmail(rs.getString("email"));
 				user.setPhone(rs.getString("phone"));
+				user.setFrozen(rs.getInt("frozen") == 1);
 			} else {
 				return null;
 			}
@@ -198,7 +206,7 @@ public class UserDAOImpl implements UserDAO {
 	public boolean updateUser(User user) {
 		try(Connection conn = ConnectionFactory.getInstance().getConnection()){
 			String sql = "UPDATE Users "
-					+ "SET username = ?, pw_hash = ?, pw_salt = ?, email = ?, phone = ? "
+					+ "SET username = ?, pw_hash = ?, pw_salt = ?, email = ?, phone = ?, frozen = ? "
 					+ "WHERE user_id = ?";
 
 			PreparedStatement ps = conn.prepareStatement(sql);
@@ -208,7 +216,8 @@ public class UserDAOImpl implements UserDAO {
 			ps.setString(3, user.getPwSalt());
 			ps.setString(4, user.getEmail());
 			ps.setString(5, user.getPhone());
-			ps.setInt(6, user.getUserID());
+			ps.setInt(6, (user.isFrozen()) ? 1 : 0);
+			ps.setInt(7, user.getUserID());
 
 			int rowsAffected = ps.executeUpdate();
 

@@ -1,0 +1,9 @@
+body {
+    margin: 0px 400px 0px 400px;
+    background-color: lightgrey;
+}
+
+h1 {
+    color: blue;
+    font-family: Times;
+}

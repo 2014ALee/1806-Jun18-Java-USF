@@ -15,7 +15,7 @@ public class TransactionDAOImpl implements TransactionDAO {
 	@Override
 	public boolean addTransaction(Transaction transaction) {
 		try(Connection conn = ConnectionFactory.getInstance().getConnection()){
-			String sql = "INSERT INTO Transaction (user_id, account_id, amount) VALUES(?, ?, ?)";
+			String sql = "INSERT INTO Transactions (user_id, account_id, amount) VALUES(?, ?, ?)";
 			
 			PreparedStatement ps = conn.prepareStatement(sql);
 			
@@ -69,7 +69,7 @@ public class TransactionDAOImpl implements TransactionDAO {
 		ArrayList<Transaction> transactions = new ArrayList<>();
 		
 		try(Connection conn = ConnectionFactory.getInstance().getConnection()){
-			String sql = "SELECT * FROM Transactions WHERE account_id = ?";
+			String sql = "SELECT * FROM Transactions WHERE account_id = ? ORDER BY timestamp";
 			
 			PreparedStatement ps = conn.prepareStatement(sql);
 			
