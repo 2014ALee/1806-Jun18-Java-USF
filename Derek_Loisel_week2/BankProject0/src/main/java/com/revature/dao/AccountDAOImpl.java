@@ -55,15 +55,13 @@ public class AccountDAOImpl implements AccountDAO {
 
 		try(Connection conn = ConnectionFactory.getInstance().getConnection();){
 
-			//conn.setAutoCommit(false);
-
 			String sql = "INSERT INTO account (userid, checkingbalance, savingsbalance) VALUES (?, ?, ?)";
 
-			//an array of string objects that will take IN the primary keys that's generated when you put the account in
+			//an array of string objects that will take in the primary keys that's generated when you put the account in
 			String[] keys = new String[1];// the 1 IS how many columns we're keeping track of keys for, here its only 1
-			keys[0] = "accountid";  //you could then set keys[1] = "column" if there was another column you were keeping track of
+			keys[0] = "accountid";  
 
-			PreparedStatement pstmt = conn.prepareStatement(sql, keys); //pass in the sql statement as well as the keys you want to get back because you want to keep track of the key for the artist
+			PreparedStatement pstmt = conn.prepareStatement(sql, keys); //pass in the sql statement as well as the keys you want to get back 
 			pstmt.setInt(1, newAccount.getUserID());
 			pstmt.setDouble(2, -999999999);
 			pstmt.setDouble(3, -999999999);
@@ -82,14 +80,8 @@ public class AccountDAOImpl implements AccountDAO {
 				account.setUserID(newAccount.getUserID());
 				account.setCheckingBalance(-999999999);
 				account.setSavingsBalance(-999999999);
-				//commit
-				//conn.commit();
 
-			}//else {
-			//				//if it didnt update anything then roll it back
-			//				conn.rollback();
-			//			}
-
+			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

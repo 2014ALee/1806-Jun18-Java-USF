@@ -14,4 +14,6 @@ public interface UsersDAO {
 	
 	public User addUser(User newUser);
 	
+	public boolean deleteUserByUsername(String deletedUsername);
+	
 }

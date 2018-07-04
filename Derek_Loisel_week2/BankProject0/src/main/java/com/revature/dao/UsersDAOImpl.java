@@ -89,15 +89,13 @@ public class UsersDAOImpl implements UsersDAO {
 
 		try(Connection conn = ConnectionFactory.getInstance().getConnection();){
 
-			//conn.setAutoCommit(false);
-
 			String sql = "INSERT INTO users (username, pass, firstname, lastname, email) VALUES (?, ?, ?, ?, ?)";
 
 			//an array of string objects that will take IN the primary keys that's generated WHEN you put the user in
 			String[] keys = new String[1];// the 1 IS how many columns we're keeping track of keys for, here its only 1 
 			keys[0] = "userid";  //you could then set keys[1] = "column" if there was another column you were keeping track of
 
-			PreparedStatement pstmt = conn.prepareStatement(sql, keys); //pass in the sql statement as well as the keys you want to get back because you want to keep track of the key for the artist			
+			PreparedStatement pstmt = conn.prepareStatement(sql, keys); //pass in the sql statement as well as the keys you want to get back 			
 			pstmt.setString(1, newUser.getUsername());
 			pstmt.setString(2, newUser.getPassword());
 			pstmt.setString(3, newUser.getFirstName());
@@ -121,19 +119,10 @@ public class UsersDAOImpl implements UsersDAO {
 				u.setLastName(newUser.getLastName());
 				u.setEmail(newUser.getEmail());
 
-				//commit
-				//conn.commit();
-
-			}//else {
-			//				//if it didnt update anything then roll it back
-			//				conn.rollback();
-			//			}
-
+			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-
-
 		return u;
 	}
 
@@ -162,4 +151,23 @@ public class UsersDAOImpl implements UsersDAO {
 		return id;
 	}
 
+	
+	@Override
+	public boolean deleteUserByUsername(String deletedUsername) {
+		
+		try(Connection conn = ConnectionFactory.getInstance().getConnection();){
+
+			String sql = "DELETE FROM users WHERE username = ?";
+
+			PreparedStatement pstmt = conn.prepareStatement(sql); //pass in the sql statement as well as the keys you want to get back 			
+			pstmt.setString(1, deletedUsername);
+
+			pstmt.executeUpdate(); //this isnt a query, its an update
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return false;
+	}
 }
