@@ -315,6 +315,9 @@ public class Driver {
 				System.out.println("[LOG] - Error while reading from file.");
 				e.printStackTrace();
 			}
+		} else {
+			ArrayList<Account> accounts = accountDAO.getAllUserAccounts(user.getUserID());
+			return accounts.size();
 		}
 		return account.getAccountId();
 	}

@@ -381,6 +381,26 @@ var elementalLengths_2 = elements.map(element => {
 
 console.log(elementalLengths_2);
 
+var abc;
+let xyz;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

@@ -26,7 +26,7 @@ public class DriverTest {
 		driver.setUser(new User(1, "cdefaria", "cdefaria@gmail.com", "password"));
 		driver.setAccount(new Account(true, 1, 100));
 		int result = Driver.accountsMenu("0");
-		assertEquals(result, Driver.account.getAccountId());
+		assertEquals(result, 2);
 	}
 	
 	@Test
@@ -37,5 +37,10 @@ public class DriverTest {
 	@Test
 	public void testLoginEmail() {
 		assertEquals(Driver.login("cdefaria@gmail.com", "password"), new User(1, "cdefaria", "cdefaria@gmail.com", "password"));
+	}
+	
+	@Test
+	public void testLoginBad() {
+		assertEquals(Driver.login("cdefaria", ""), null);
 	}
 }
