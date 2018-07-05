@@ -1,13 +1,13 @@
 package com.revature.stages;
 
-import com.revature.integrated.functions.DepositIntegrator;
-import com.revature.integrated.functions.WithdrawIntegrator;
+import com.revature.integrations.Deposit;
+import com.revature.integrations.Withdraw;
 import com.revature.models.BankAccount;
 import com.revature.utils.ConsoleHandler;
 import com.revature.utils.StringHandler;
 
-public class SecondStage {
-	public static void handleSession(BankAccount ba) {
+public class SessionStage {
+	public static void session(BankAccount ba) {
 		boolean notFinished = true; // Loop repeats until logout
 		while (notFinished) {
 			String userInput = ConsoleHandler.promptUser(
@@ -24,12 +24,12 @@ public class SecondStage {
 				case "deposit":
 					double amount = ConsoleHandler.promptNumber(
 							"Enter the amount to deposit: ");
-					DepositIntegrator.deposit(ba, amount);
+					Deposit.deposit(ba, amount);
 					break;
 				case "withdraw":
 					double amount2 = ConsoleHandler.promptNumber(
 							"Enter the amount to withdraw: ");
-					WithdrawIntegrator.withdraw(ba, amount2);
+					Withdraw.withdraw(ba, amount2);
 					break;
 				case "check balance":
 					System.out.println("The balance is: " + ba.getBalance());

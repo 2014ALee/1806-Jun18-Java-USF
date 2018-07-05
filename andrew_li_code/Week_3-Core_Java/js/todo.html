@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>My To-Do List</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+    
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB"
+        crossorigin="anonymous">
+    
+    <script src="js/todo.js"></script>
+    
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+        crossorigin="anonymous"></script>
+    
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T"
+        crossorigin="anonymous"></script>
+</head>
+<body>
+    <div class="jumbotron">
+        <input type="text" id="newItem" class="form-control" placeholder="New Item..."/>
+        <br/>
+        <button id="add" class="btn btn-primary">Add Item</button>
+        <div class="row">
+            <div class="col">
+                <br/>
+                <h3>To Buy</h3>
+                <br/>
+
+                <ul id="toBuy">
+                    <li id="one" class="test">Veggies</li>
+                    <li id="two" class="test">Fruits</li>
+                    <li id="three" class="test">Wine</li>
+                </ul>
+
+                <div class="col">
+                    <h3>Purchased</h3>
+                    <ul id="bought"></ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/todo.js"></script>
+</body>
+</html>

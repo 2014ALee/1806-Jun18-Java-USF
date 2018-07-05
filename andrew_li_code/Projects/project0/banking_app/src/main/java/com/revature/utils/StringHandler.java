@@ -72,4 +72,31 @@ public class StringHandler {
 		}
 		return false;
 	}
+	
+	/*
+	 * Format any double in the right format.
+	 * We don't want scientific notation or extra
+	 * decimal places showing.
+	 */
+	public static String amountToString(double amount) {
+		long longAmount = Math.round(amount * 100);
+		String output = "";
+		if (longAmount < 10) {
+			output = "0.0" + longAmount;
+		} else if (longAmount < 100) {
+			output = "0." + longAmount;
+		}
+		else {
+			output += (longAmount / 100);
+			int afterDec = (int) (longAmount % 100);
+			if (afterDec < 10) {
+				output += ".0";
+			}
+			else {
+				output += ".";
+			}
+			output += afterDec;
+		}
+		return output;
+	}
 }

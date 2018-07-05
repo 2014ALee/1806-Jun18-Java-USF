@@ -13,7 +13,7 @@ public interface ArtistDAO {
 	
 	public abstract Artist addArtist(Artist newArtist);
 	
-	public boolean updateArtist(Artist updatedArtist);
+	public abstract boolean updateArtist(Artist updatedArtist);
 	
 	public abstract boolean removeArtistById(Artist artistForRemoval);
 	public abstract boolean removeArtistById(int id);
