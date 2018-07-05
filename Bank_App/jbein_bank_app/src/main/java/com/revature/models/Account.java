@@ -10,9 +10,9 @@ public class Account {
 	
 	public Account() {}
 
-	public Account(int user_id, int accountNumber, double balance, String accountType) {
+	public Account(int cust_id, int accountNumber, double balance, String accountType) {
 		super();
-		this.cust_id = user_id;
+		this.cust_id = cust_id;
 		this.accountNumber = accountNumber;
 		this.balance = balance;
 		this.accountType = accountType;
@@ -30,7 +30,7 @@ public class Account {
 		return cust_id;
 	}
 
-	public void setCust_id(int user_id) {
+	public void setCust_id(int cust_id) {
 		this.cust_id = cust_id;
 	}
 
@@ -96,8 +96,7 @@ public class Account {
 
 	@Override
 	public String toString() {
-		return "Account [user_id=" + cust_id + ", accountNumber=" + accountNumber + ", balance=" + balance
-				+ ", accountType=" + accountType + "]";
+		return "Account " + " [Account Number = " + accountNumber +  ", Account Type = " + accountType + "]";
 	}
 	
 	

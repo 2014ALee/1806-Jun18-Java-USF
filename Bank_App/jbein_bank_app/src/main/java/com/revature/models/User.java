@@ -6,20 +6,15 @@ public class User implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	private int userid;
-	private String firstName;
-	private String lastName;
-	private String email;
 	private String userName;
 	private String password;
+	private String email;
 	
 	public User() {}
 	
-	public User(int userid, String firstName, String lastName, String userName, String password, 
-			String email) {
+	public User(int userid, String userName, String password, String email) {
 		super();
 		this.userid = userid;
-		this.firstName = firstName;
-		this.lastName = lastName;
 		this.userName = userName;
 		this.password = password;
 		this.email = email;
@@ -31,22 +26,6 @@ public class User implements Serializable {
 
 	public void setUserid(int userid) {
 		this.userid = userid;
-	}
-
-	public String getFirstName() {
-		return firstName;
-	}
-
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
-	}
-
-	public String getLastName() {
-		return lastName;
-	}
-
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
 	}
 
 	public String getUserName() {
@@ -78,8 +57,6 @@ public class User implements Serializable {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((email == null) ? 0 : email.hashCode());
-		result = prime * result + ((firstName == null) ? 0 : firstName.hashCode());
-		result = prime * result + ((lastName == null) ? 0 : lastName.hashCode());
 		result = prime * result + ((password == null) ? 0 : password.hashCode());
 		result = prime * result + ((userName == null) ? 0 : userName.hashCode());
 		return result;
@@ -99,16 +76,6 @@ public class User implements Serializable {
 				return false;
 		} else if (!email.equals(other.email))
 			return false;
-		if (firstName == null) {
-			if (other.firstName != null)
-				return false;
-		} else if (!firstName.equals(other.firstName))
-			return false;
-		if (lastName == null) {
-			if (other.lastName != null)
-				return false;
-		} else if (!lastName.equals(other.lastName))
-			return false;
 		if (password == null) {
 			if (other.password != null)
 				return false;
@@ -124,7 +91,7 @@ public class User implements Serializable {
 
 	@Override
 	public String toString() {
-		return "User [firstName=" + firstName + ", lastName=" + lastName + ", userName=" + userName + ", password="
+		return "User [userName=" + userName + ", password="
 				+ password + ", email=" + email + "]";
 	}
 	

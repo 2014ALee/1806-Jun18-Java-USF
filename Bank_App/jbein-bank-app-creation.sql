@@ -46,18 +46,28 @@ BEGIN
 END;
 /
 
-CREATE SEQUENCE account_seq
+CREATE SEQUENCE BankAccount_seq
 MINVALUE 1
 MAXVALUE 999999999
 INCREMENT BY 1
 START WITH 4;
 
-CREATE OR REPLACE TRIGGER account_trig
-BEFORE INSERT ON "account"
+CREATE OR REPLACE TRIGGER BankAccount1
+BEFORE INSERT ON BankAccount
 FOR EACH ROW
 BEGIN
     SELECT account_seq.NEXTVAL
     INTO :new.account_id
+    FROM dual; 
+END;
+/
+
+CREATE OR REPLACE TRIGGER BankAccount
+BEFORE INSERT ON BankAccount
+FOR EACH ROW
+BEGIN
+    SELECT BankAccount_seq.NEXTVAL
+    INTO :new.account_num
     FROM dual; 
 END;
 /
@@ -68,3 +78,25 @@ ALTER TABLE BankAccount
 RENAME COLUMN user_id to cust_id;
 
 commit;
+
+DELETE 
+FROM CUSTOMER
+WHERE username = "1";
+
+CREATE OR REPLACE PROCEDURE get_user_accounts(
+    custid IN BANKACCOUNT.CUST_ID%TYPE,
+    my_cursor OUT SYS_REFCURSOR)
+AS
+BEGIN
+    OPEN my_cursor FOR
+    SELECT * 
+    FROM BankAccount
+    WHERE BankAccount.cust_id = custid;
+END;
+/
+
+
+
+
+
+

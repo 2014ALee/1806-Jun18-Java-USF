@@ -1,25 +1,15 @@
 package com.revature;
 
 import java.io.BufferedReader;
-
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.sql.SQLException;
-import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.InputMismatchException;
 import java.util.Scanner;
-
-import org.omg.Messaging.SyncScopeHelper;
 
 import com.revature.dao.AccountDao;
 import com.revature.dao.AccountDaoImpl;
 import com.revature.dao.UserDao;
-
 import com.revature.dao.UserDaoImpl;
 import com.revature.models.Account;
 import com.revature.models.User;
@@ -43,19 +33,19 @@ public class BankAppDriver {
 
 	public static void mainMenu() {
 		String userInput;
-		System.out.println("---------Welcome to the main menu!-----------");
+		System.out.println("\t \t \t \t---------Welcome to the main menu!-----------");
 
 		System.out.println("[1] - Login");
 		System.out.println("[2] - Register");
 		System.out.println("[3] - Exit");
-		System.out.print("You selected: ");
+		System.out.print("\nYou selected: ");
 
 		try {
 			userInput = br.readLine();
 
 			switch(userInput) {
 			case "1":
-				System.out.println("\n Please enter your credentials:");
+				System.out.println("\n Please enter your credentials: \n");
 				login();
 				break;
 			case "2":
@@ -66,7 +56,7 @@ public class BankAppDriver {
 				System.out.println("Thank you! Goodbye!");
 				System.exit(0);
 			default:
-				System.out.println("Invalid selection. Please try again. \n");
+				System.out.println("\nInvalid selection. Please try again. \n");
 				mainMenu();
 			}
 
@@ -86,13 +76,16 @@ public class BankAppDriver {
 
 			System.out.println("Password: ");
 			password = br.readLine();
-
+			
+			user = new User(0, username, password, "");
+			
 			if(credentialsValid(username, password)) {
 				System.out.println("\nLogin successful!\n");
+				System.out.println("\t \t \t \t---------Welcome to the login menu!-----------\n");
 				loginMenu();
 
 			}else {
-				System.out.println("Login unsuccessful! Please try again.\n");
+				System.out.println("\nLogin unsuccessful! Please try again.\n");
 				mainMenu();
 			}
 
@@ -104,14 +97,31 @@ public class BankAppDriver {
 
 	private static void loginMenu() {
 		
+		User currentUser = userDao.GetUser(user);
+		ArrayList<Account> account = new ArrayList<>();
 		String loginMenuInput;
+		Account currentAccount = new Account();
 
-		System.out.println("Welcome to the login menu! Please enter the account "
-				+ "number of the account you wish to view.");
-		int accountnum = input.nextInt();
-		account = accountDao.GetAccount(accountnum);
-		System.out.println(" Please select what you would like to do from here.");
-
+		System.out.println("Here are your available accounts:\n");
+	
+		account = accountDao.GetAccounts(currentUser);
+		System.out.println(account);
+		System.out.println("\nPlease enter the account "
+				+ "number of the account you wish to view or press [4] to logout:");
+		
+		try {
+				int accountnum = input.nextInt();
+				if(accountnum == 4) {
+					System.out.println("You have successfully logged out!");
+					mainMenu();
+				}
+				else {
+				currentAccount = accountDao.GetAccount(accountnum);
+				}
+		}catch (InputMismatchException e) {
+			System.out.println("\nAccount number must be an integer.");
+		}
+		System.out.println(" \nPlease select what you would like to do from here:");
 		System.out.println("[1] Deposit");
 		System.out.println("[2] Withdraw");
 		System.out.println("[3] View Balance");
@@ -120,24 +130,22 @@ public class BankAppDriver {
 
 		try {
 			loginMenuInput = br.readLine();
-			double account_balance = account.getBalance();
 			switch(loginMenuInput) {
 			case "1":
 				System.out.println("How much would you like to deposit?");
 				double depositAmount = (input.nextDouble());
-				accountDao.Deposit(account, depositAmount);
+				accountDao.Deposit(currentAccount, depositAmount);
 				System.out.println("You successfully deposited: " + depositAmount + " dollars! \n");
 				loginMenu();
 				break;
 			case "2":
 				System.out.println("How much would you like to withdraw?");
 				double withdrawalAmount = input.nextDouble();
-				if((account.getBalance()) - (withdrawalAmount) >= 0) {
-					account.setBalance((account.getBalance() - withdrawalAmount));
-					accountDao.Withdraw(account, withdrawalAmount);
+				if((accountDao.GetBalance(currentAccount)) - (withdrawalAmount) >= 0) {
+					accountDao.Withdraw(currentAccount, withdrawalAmount);
 					System.out.println("You successfully withdrew " + withdrawalAmount + " dollars! \n");
 				} else {
-					System.out.println("You may not overdraft! Please check your balance before withdrawing.\n");
+					System.out.println("You may not overdraft. Please check your balance before withdrawing.\n");
 					loginMenu();
 					break;
 				}
@@ -146,7 +154,8 @@ public class BankAppDriver {
 				break;
 			case "3":
 				System.out.println("\n Balance: ");
-				System.out.println(account.getBalance() + "\n");
+				double acct_balance = accountDao.GetBalance(currentAccount);
+				System.out.println(acct_balance + "\n");
 				loginMenu();
 				break;
 			case "4":
@@ -166,25 +175,20 @@ public class BankAppDriver {
 				loginMenu();
 			}
 		}catch (IOException e) {
-			System.out.println("[Log] - Error while reading from console.");
+			System.out.println("You must enter an acceptable money value.");
 			e.printStackTrace();
 		}
-
-	}
+			
+		}
+	
 
 	public static void register() {
-		String firstName, lastName, username, password, email;
-		int userid = 0;
+		String username, password, email;
 
-		System.out.println("+-------REGISTER-------+");
+		System.out.println("\t \t \t \t \t+-------REGISTER-------+");
 
 
 		try {
-			System.out.print("First Name: ");
-			firstName = br.readLine();
-
-			System.out.print("Last Name: ");
-			lastName = br.readLine();
 
 			System.out.print("Username: ");
 			username = br.readLine();
@@ -196,7 +200,7 @@ public class BankAppDriver {
 			email = br.readLine();
 
 
-			user = new User(userid, firstName, lastName, username, password, email);
+			user = new User(0, username, password, email);
 			System.out.println("Checking username availability... \n");
 
 
@@ -204,84 +208,33 @@ public class BankAppDriver {
 				System.out.println("Username Available!\n");
 				System.out.println("Creating new user, " + user.getUserName() + "...\n");
 				userDao.AddUser(user);
-				createAccount();
+				System.out.println("Would you like to create a checking or savings account?\n"
+						+ "[1] - Checking\n"
+						+ "[2] - Savings");
+				String accountType = br.readLine();
+				if (accountType.equals("1")) {
+					accountType = "Checking";
+					accountDao.createAccount(user, accountType );
+					System.out.println("Checking account created!");
+					loginMenu();
+				}else {
+					accountType = "Savings";
+					accountDao.createAccount(user, accountType);
+					System.out.println("Savings account created!");
+					loginMenu();
+				}
 			} else {
 				System.out.println("Username is not available. Please try again...");
 				register();
 			}
-
-
 		} catch (IOException e) {
 			System.out.println("[Log] - Error while reading from console.");
 			e.printStackTrace();
 		}	
 	}
 	
-	
-	public static void createAccount() {
-		String menuInput;
-		System.out.println("+-------Create Account-------+");
+	public static boolean usernameAvailable(User u) {
 		
-		System.out.println("Please select the kind of account you would like to create.");
-
-		System.out.println("[1] Checking");
-		System.out.println("[2] Savings");
-		System.out.println("Option: ");
-		
-		try {
-			menuInput = br.readLine();
-			switch(menuInput) {
-			case "1":
-				createCheckingAccount();
-				break;
-			case "2":
-				createSavingsAccount();
-				break;
-			default:
-				System.out.println("Invalid selection. Please try again. \n");
-				createAccount();
-				
-			}
-			
-		}catch (IOException e) {
-			System.out.println("[Log] - Error while reading from console.");
-			e.printStackTrace();}
-	}
-	
-	public static void createCheckingAccount() {
-System.out.println("+-------Create Checking Account-------+");
-		
-		System.out.println("Please enter account information below.");
-
-		System.out.println("[1] Checking");
-		System.out.println("[2] Savings");
-		System.out.println("Option: ");
-		
-		try {
-				System.out.print("First Name: ");
-				firstName = br.readLine();
-
-				System.out.print("Last Name: ");
-				lastName = br.readLine();
-
-				System.out.print("Username: ");
-				username = br.readLine();
-
-				System.out.print("Password: ");
-				password = br.readLine();
-
-				System.out.print("Email Address: ");
-				email = br.readLine();
-
-
-				user = new User(userid, firstName, lastName, username, password, email);
-				System.out.println("Checking username availability... \n");
-		}catch (IOException e) {
-			System.out.println("[Log] - Error while reading from console.");
-			e.printStackTrace();}
-	}
-
-	private static boolean usernameAvailable(User u) {
 		User newUser = userDao.GetUser(u);
 
 		if(newUser.getUserName() != null) {
@@ -291,13 +244,14 @@ System.out.println("+-------Create Checking Account-------+");
 		}
 	}
 
-	public static boolean credentialsValid(String username, String password) {	
-
+	public static boolean credentialsValid(String username, String password) {
+		
+		User newUser = userDao.GetUser(user);
 		if(user != null) {
-			if(username.equals(user.getUserName()) && password.equals(user.getPassword())) {
-				return true;
+			if(username.equals(newUser.getUserName()) && password.equals(newUser.getPassword())) {
+				return true;		
 			}
-		} else {
+		} else{
 			System.out.println("Invalid credentials..."); 
 			login();
 		}
