@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>CSS Intro</title>
+    <!--
+        Including a link tag with the path to a stylesheet we would like to us
+        allows us to use the styling of the EXERNAL stylesheet
+    -->
+    <link rel="stylesheet" type="text/css" media="screen" href="css/css-intro.css" />
+
+    <style>
+        body {
+            /* margin-left: 400px;
+            margin-right: 400px; */
+            margin: 0px 400px 0px 400px; /* top, right, bottom, left*/
+            background-color: lightgrey;
+        }
+
+        h1 {
+            color: blue;
+            font-family: Times;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+    <div class="main-header">
+        <h1>Introducation to CSS</h1>
+        <p><em>A little styling goes a long way...</em></p>
+    </div>
+    <br />
+    <div class="css-def">
+        <h2>What is CSS?</h2>
+        <p><abbr title="Cascading Stylesheets">CSS</abbr> allows you to create rules that
+        specify how the conetn of an element should appear. For example. you can specify
+        that the background of a page is a light grey, all the paragraphs should appear in
+        dark grey and use teh Arial typeface, or that all level one headings should be in
+        blue, italic, and Times typeface.</p>
+    </div>
+
+    <br />
+
+    <div class="understanding-css">
+        <h2>Understanding CSS: Thinking <em>inside</em> the box</h2>
+        <p> The key to understanding how CSS works is to imagine that there is an invisible
+            box around every HTML element. Css allows us to create rules taht control the way
+            that each individual box (and its contenst) is presnted.
+        </p>
+    </div>
+
+    <a href="http://www.w3schools.com">W3Schools</a>
+
+    <div id="inheritance">
+        <h2>CSS Inheritance</h2>
+        <a href="http://www.google.com/" target="blank">Google It</a>
+    </div>
+</body>
+</html>
