@@ -96,10 +96,7 @@ public class ArtistDAOImpl implements ArtistDAO {
 			
 			String sql = "INSERT INTO artist (name) VALUES (?)";
 			
-			String[] keys = new String[1];
-			keys[0] = "artistId";
-			
-			PreparedStatement pstat = conn.prepareStatement(sql, keys);
+			PreparedStatement pstat = conn.prepareStatement(sql);
 
 			pstat.setString(1, newArtist.getName());
 			

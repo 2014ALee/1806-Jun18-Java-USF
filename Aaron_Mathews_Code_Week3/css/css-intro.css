@@ -1,0 +1,35 @@
+/*
+    Comments in CSS are like this
+*/
+
+/*
+    CSS selectors
+
+    * {}        Universal selector
+    p {}        Type selector
+    .classname  Class selector
+    #idvalue{}  Id selector
+    h1, h2, h3  Multi-type selector
+    li > a {}   Child selector (Anchors that are children of li)
+    p a {}      Descendant selector
+    h1 + p {}   Sibling selector
+*/
+
+div {
+    border: 1px solid;
+    padding: 5px;
+    background-color: white;
+}
+
+p {
+    font-family: Arial;
+     color: darkgrey;
+}
+
+#inheritance {
+    color: red;
+}
+
+.main-header {
+
+}

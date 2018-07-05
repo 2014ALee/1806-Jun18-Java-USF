@@ -1,6 +1,5 @@
 package com.revature.models;
 
-
 public class User {
 	
 	private int userId;
@@ -8,12 +7,11 @@ public class User {
 	private String firstname;
 	private String lastname;
 	private String email;
-	private int balance;
 	private String password;
 	
 	public User() { }
 
-	public User(int userId, String username, String firstname, String lastname, String email, int balance,
+	public User(int userId, String username, String firstname, String lastname, String email,
 			String password) {
 		super();
 		this.userId = userId;
@@ -21,7 +19,6 @@ public class User {
 		this.firstname = firstname;
 		this.lastname = lastname;
 		this.email = email;
-		this.balance = balance;
 		this.password = password;
 	}
 
@@ -65,14 +62,6 @@ public class User {
 		this.email = email;
 	}
 
-	public int getBalance() {
-		return balance;
-	}
-
-	public void setBalance(int balance) {
-		this.balance = balance;
-	}
-
 	public String getPassword() {
 		return password;
 	}
@@ -85,7 +74,6 @@ public class User {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + balance;
 		result = prime * result + ((email == null) ? 0 : email.hashCode());
 		result = prime * result + ((firstname == null) ? 0 : firstname.hashCode());
 		result = prime * result + ((lastname == null) ? 0 : lastname.hashCode());
@@ -104,8 +92,6 @@ public class User {
 		if (getClass() != obj.getClass())
 			return false;
 		User other = (User) obj;
-		if (balance != other.balance)
-			return false;
 		if (email == null) {
 			if (other.email != null)
 				return false;
@@ -139,7 +125,7 @@ public class User {
 	@Override
 	public String toString() {
 		return "User [userId=" + userId + ", username=" + username + ", firstname=" + firstname + ", lastname="
-				+ lastname + ", email=" + email + ", balance=" + balance + "]";
+				+ lastname + ", email=" + email + "]";
 	}
 	
 	
