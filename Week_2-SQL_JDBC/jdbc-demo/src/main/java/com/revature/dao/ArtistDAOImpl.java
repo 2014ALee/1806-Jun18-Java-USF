@@ -23,7 +23,7 @@ public class ArtistDAOImpl implements ArtistDAO {
 
 		try (Connection conn = ConnectionFactory.getInstance().getConnection();) {
 			
-			String sql = "SELECT * FROM artist ORDER BY artistid";
+			String sql = "SELECT * FROM artist WHERE artistid = " + id;
 			
 			Statement stmt = conn.createStatement();
 			ResultSet rs = stmt.executeQuery(sql);
