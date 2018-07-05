@@ -7,7 +7,7 @@ import com.revature.models.User;
 public interface UserDAO {
 
 	public boolean userExist(String userNameOrEmail);	
-	// create an account - give option of creating checking or savings
+	
 	public boolean createUser(User newUser);		
 				
 	public boolean deleteUser(User deleteUser);	

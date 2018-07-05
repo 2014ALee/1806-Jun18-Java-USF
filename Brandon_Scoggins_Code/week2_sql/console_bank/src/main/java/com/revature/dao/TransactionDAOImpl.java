@@ -14,25 +14,25 @@ public class TransactionDAOImpl implements TransactionDAO{
 	UserDAO userDAO = new UserDAOImpl();
 	AccountsDAO accountsDAO = new AccountsDAOImpl();
 
-	@Override		// see transactions on your account by a specific user
+	@Override		
 	public ArrayList<Transaction> getTransactionsByUserId(User currentUser, int userId) {
-		
-		System.out.println("getting all transactions on " + currentUser.getFirstName() + "'s account by user id: " + userId);
-		
+
+		System.out.println("Displaying transactions by user " + userId + ".\n");
+
 		int userAccountId = accountsDAO.getAccountIdByUser(currentUser);
 		ArrayList<Transaction> accountTransactions = new ArrayList<>();
-		
+
 		try(Connection conn = ConnectionFactory.getInstance().getConnection();){
-			
+
 			String sql = "SELECT * FROM transactions WHERE (originAccountId = ? "
 					+ "OR targetAccountId = ?) AND userId = ? ORDER BY transactionId";
-			
+
 			PreparedStatement pstmt = conn.prepareStatement(sql);
-			
+
 			pstmt.setInt(1, userAccountId);
 			pstmt.setInt(2, userAccountId);
 			pstmt.setInt(3, userId);
-			
+
 			ResultSet rs = pstmt.executeQuery();
 
 			while(rs.next()) {
@@ -48,28 +48,28 @@ public class TransactionDAOImpl implements TransactionDAO{
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		System.out.println("retrieved all account transactions by user: " + userId);
 		return accountTransactions;
 	}
 
-	@Override			// only account owner can see account wide transactions
+	@Override		
 	public ArrayList<Transaction> getAccountTransactions(User currentUser) {
-		
-		System.out.println("getting all account transactions for user " + currentUser.getFirstName());
-		
+
 		int userAccountId = accountsDAO.getAccountIdByUser(currentUser);
+
+		System.out.println("Displaying all account transactions for account " + userAccountId + ".\n");
+
 		ArrayList<Transaction> accountTransactions = new ArrayList<>();
-		
+
 		try(Connection conn = ConnectionFactory.getInstance().getConnection();){
-			
+
 			String sql = "SELECT * FROM transactions WHERE originAccountId = ? "
 					+ "OR targetAccountId = ? ORDER BY transactionId";
-			
+
 			PreparedStatement pstmt = conn.prepareStatement(sql);
-			
+
 			pstmt.setInt(1, userAccountId);
 			pstmt.setInt(2, userAccountId);
-			
+
 			ResultSet rs = pstmt.executeQuery();
 
 			while(rs.next()) {
@@ -85,7 +85,6 @@ public class TransactionDAOImpl implements TransactionDAO{
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		System.out.println("retrieved all account transactions");
 		return accountTransactions;
 	}
 
@@ -94,8 +93,8 @@ public class TransactionDAOImpl implements TransactionDAO{
 
 		int originAccountId = originAccount;
 
-		System.out.println("Creating a transaction from account: " + originAccountId + " (" + originType + ") "
-				+ "to account: " + targetAccount + " (" + targetType + ") of $" + amount + "...");
+		System.out.println("\nLogging the transaction from account: " + originAccountId + " (" + originType + ") "
+				+ "to account: " + targetAccount + " (" + targetType + ") of amount: $" + amount + "...");
 
 		try(Connection conn = ConnectionFactory.getInstance().getConnection();){
 
@@ -125,7 +124,6 @@ public class TransactionDAOImpl implements TransactionDAO{
 				pstmt.setDouble(2, amount);
 				pstmt.setInt(3, targetAccount);
 				pstmt.setString(4, targetType);
-				
 
 				if(pstmt.executeUpdate() != 0) {
 					System.out.println("Deposit successful!");
@@ -146,7 +144,6 @@ public class TransactionDAOImpl implements TransactionDAO{
 				pstmt.setInt(5, targetAccount);
 				pstmt.setString(6, targetType);
 
-
 				if(pstmt.executeUpdate() != 0) {
 					System.out.println("Transfer successful!");
 					return true;
@@ -155,16 +152,9 @@ public class TransactionDAOImpl implements TransactionDAO{
 					return false;
 				}
 			}
-			
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		return false;
-	}
-
-	@Override
-	public ArrayList<Transaction> getAllTransactions() {
-		// WILL REMOVE GET ALL METHODS. 
-		return null;
 	}
 }

@@ -8,7 +8,7 @@ import com.revature.models.User;
 public interface AccountsDAO {
 
 	public ArrayList<Account> getAllAccounts();
-	// check if active user is accountHolder
+	
 	public ArrayList<User> getAllAccountUsers(User activeUser);
 	
 	public ArrayList<User> getAllAccountUsers(int accountId);

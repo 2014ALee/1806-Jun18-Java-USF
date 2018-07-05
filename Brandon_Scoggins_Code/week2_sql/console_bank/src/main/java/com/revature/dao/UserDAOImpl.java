@@ -18,20 +18,20 @@ public class UserDAOImpl implements UserDAO{
 	@Override
 	public boolean userExist(String userNameOrEmail) {
 		int numOfUsers = 0;
-		
+
 		try(Connection conn = ConnectionFactory.getInstance().getConnection();){
 			String sql = "SELECT * FROM users WHERE userName = ? OR email = ?";
-			
+
 			PreparedStatement pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, userNameOrEmail);
 			pstmt.setString(2, userNameOrEmail);
-			
+
 			numOfUsers = pstmt.executeUpdate();
-			
+
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		
+
 		if(numOfUsers == 0) {
 			return false;
 		}else {
@@ -41,9 +41,9 @@ public class UserDAOImpl implements UserDAO{
 
 	@Override			
 	public boolean createUser(User newUser) {
-		
+
 		if(!userExist(newUser.getUserName()) && !userExist(newUser.getEmail())) {
-			System.out.println("User available. Creating..");
+			System.out.println("User credentials available. Creating..\n");
 			try(Connection conn = ConnectionFactory.getInstance().getConnection();){
 
 				String sql = "INSERT INTO users (firstName, lastName, userName, passWord, email) VALUES (?, ?, ?, ?, ?)";
@@ -71,14 +71,14 @@ public class UserDAOImpl implements UserDAO{
 
 	@Override
 	public boolean deleteUser(User deleteUser) {
-		// can only delete the active user. 'logs out' the user after deletion attempt
+
 		try(Connection conn = ConnectionFactory.getInstance().getConnection();){
-			
+
 			String sql = "DELETE FROM users WHERE userName = ?";
-			
+
 			PreparedStatement pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, deleteUser.getUserName());
-			
+
 			if (pstmt.executeUpdate() != 0) {
 				System.out.println(deleteUser.getUserName() + " successfully deleted.");
 				return true;
@@ -86,7 +86,7 @@ public class UserDAOImpl implements UserDAO{
 				System.out.println("User not deleted.");
 				return false;
 			}
-			
+
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -95,24 +95,24 @@ public class UserDAOImpl implements UserDAO{
 
 	@Override
 	public User logInUser(String userNameOrEmail, String passWord) {
-		
+
 		User loggedInUser = new User();
-		
+
 		try(Connection conn = ConnectionFactory.getInstance().getConnection();){
-			
+
 			String sql = "{CALL log_in_user(?, ?, ?)}";
-			
+
 			CallableStatement cstmt = conn.prepareCall(sql);
-			
+
 			cstmt.setString(1, userNameOrEmail);
 			cstmt.setString(2, passWord);
-			
+
 			cstmt.registerOutParameter(3, OracleTypes.CURSOR);
-			
+
 			cstmt.execute();
-			
+
 			ResultSet rs = (ResultSet) cstmt.getObject(3);
-			
+
 			if(rs.next()) {
 				loggedInUser.setUserId(rs.getInt(1));
 				loggedInUser.setFirstName(rs.getString(2));
@@ -129,28 +129,28 @@ public class UserDAOImpl implements UserDAO{
 
 	@Override
 	public boolean updateUser(User updatedUser) {
-		// can change username, password, or email, but must keep same userId
+
 		try(Connection conn = ConnectionFactory.getInstance().getConnection();){
-			
+
 			String sql = "UPDATE users SET firstName = ?,"
 					+ " lastName = ?, userName = ?,"
 					+ " passWord = ?, email = ?"
 					+ " WHERE userId = ?";
-			
+
 			PreparedStatement pstmt = conn.prepareStatement(sql);
-			
+
 			pstmt.setString(1, updatedUser.getFirstName());
 			pstmt.setString(2, updatedUser.getLastName());
 			pstmt.setString(3, updatedUser.getUserName());
 			pstmt.setString(4, updatedUser.getPassWord());
 			pstmt.setString(5, updatedUser.getEmail());
 			pstmt.setInt(6, updatedUser.getUserId());
-			
+
 			if(pstmt.executeUpdate() != 0) {
-				System.out.println("update succesful\n");
+				System.out.println("\nUpdate succesful!\n");
 				return true;
 			}else {
-				System.out.println("update failed\n");
+				System.out.println("\nUpdate failed.\n");
 				return false;
 			}
 		} catch (SQLException e) {
@@ -161,16 +161,16 @@ public class UserDAOImpl implements UserDAO{
 
 	@Override
 	public ArrayList<User> getAllUsers() {
-		
+
 		ArrayList<User> allUsers = new ArrayList<>();
-		
+
 		try(Connection conn = ConnectionFactory.getInstance().getConnection();){
-			
+
 			String sql = "SELECT * FROM users ORDER BY userId";
-			
+
 			Statement stmt = conn.createStatement();
 			ResultSet rs = stmt.executeQuery(sql);
-			
+
 			while(rs.next()) {
 				allUsers.add(new User(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getString(6)));
 			}
@@ -184,8 +184,6 @@ public class UserDAOImpl implements UserDAO{
 	public int getUserId(User myUser) {
 
 		int myUserId = 0;
-
-		System.out.println("Getting user id for " + myUser.getUserName() + "...");
 
 		try(Connection conn = ConnectionFactory.getInstance().getConnection();){
 			String sql = "SELECT userId FROM users WHERE userName = ?";
@@ -201,8 +199,6 @@ public class UserDAOImpl implements UserDAO{
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-
 		return myUserId;
 	}
-
 }

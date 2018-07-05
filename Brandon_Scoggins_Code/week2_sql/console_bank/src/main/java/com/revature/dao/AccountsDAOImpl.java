@@ -36,7 +36,7 @@ public class AccountsDAOImpl implements AccountsDAO{
 		return allAccounts;
 	}
 
-	@Override		// returns an ArrayList of users authorized on one account (the account of the active user)
+	@Override		
 	public ArrayList<User> getAllAccountUsers(User activeUser) {
 
 		ArrayList<User> allAccountUsers = new ArrayList<>();
@@ -70,13 +70,13 @@ public class AccountsDAOImpl implements AccountsDAO{
 		}
 		return allAccountUsers;
 	}
-	// gets the users authorized on an account by the account id
+
 	public ArrayList<User> getAllAccountUsers(int accountId) {
 
 		ArrayList<User> allAccountUsers = new ArrayList<>();
 
 		boolean accountIdExist = true;
-		// verifies that the account id exist
+
 		try(Connection conn = ConnectionFactory.getInstance().getConnection();){
 
 			String sql = "SELECT accountId FROM accounts WHERE accountId = ?";
@@ -88,13 +88,11 @@ public class AccountsDAOImpl implements AccountsDAO{
 			ResultSet rs = pstmt.executeQuery();
 
 			if (!rs.next()) {
-				System.out.println("No account was found for that id.");
 				accountIdExist = false;
 			}
 		} catch (SQLException e1) {
 			e1.printStackTrace();
 		}
-		// gets the user id's authorized on the account id
 		if(accountIdExist) {
 			try(Connection conn = ConnectionFactory.getInstance().getConnection();){
 
@@ -122,7 +120,6 @@ public class AccountsDAOImpl implements AccountsDAO{
 				e.printStackTrace();
 			}
 		}
-
 		return allAccountUsers;
 	}
 
@@ -156,7 +153,6 @@ public class AccountsDAOImpl implements AccountsDAO{
 		int checkingId = 0;
 
 		try(Connection conn = ConnectionFactory.getInstance().getConnection();){
-			System.out.println("getting user checking id");
 			String sql = "SELECT checkingId FROM accounts WHERE accountHolderId = ?";
 
 			PreparedStatement pstmt = conn.prepareStatement(sql);
@@ -167,20 +163,18 @@ public class AccountsDAOImpl implements AccountsDAO{
 
 			rs.next();
 			checkingId = rs.getInt(1);
-			System.out.println("the checking id is " + checkingId);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		return checkingId;
 	}
-	
+
 	@Override
 	public int getAccountCheckingId(int accountId) {
 
 		int checkingId = 0;
 
 		try(Connection conn = ConnectionFactory.getInstance().getConnection();){
-			System.out.println("getting user checking id");
 			String sql = "SELECT checkingId FROM accounts WHERE accountId = ?";
 
 			PreparedStatement pstmt = conn.prepareStatement(sql);
@@ -191,7 +185,6 @@ public class AccountsDAOImpl implements AccountsDAO{
 
 			if(rs.next()) {
 				checkingId = rs.getInt(1);
-				System.out.println("the checking id is " + checkingId);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -222,14 +215,13 @@ public class AccountsDAOImpl implements AccountsDAO{
 		}
 		return savingsId;
 	}
-	
+
 	@Override
 	public int getAccountSavingsId(int accountId) {
 
 		int savingsId = 0;
 
 		try(Connection conn = ConnectionFactory.getInstance().getConnection();){
-			System.out.println("getting user savings id");
 			String sql = "SELECT savingsId FROM accounts WHERE accountId = ?";
 
 			PreparedStatement pstmt = conn.prepareStatement(sql);
@@ -240,7 +232,6 @@ public class AccountsDAOImpl implements AccountsDAO{
 
 			if(rs.next()) {
 				savingsId = rs.getInt(1);
-				System.out.println("the savings id is " + savingsId);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -248,7 +239,7 @@ public class AccountsDAOImpl implements AccountsDAO{
 		return savingsId;
 	}
 
-	@Override		// this should be called when a user is created and this should call authorize user to initially authorize the new account holder
+	@Override		
 	public boolean createAccount(User accountHolder) {
 
 		boolean success = false;
@@ -274,10 +265,10 @@ public class AccountsDAOImpl implements AccountsDAO{
 		}
 
 		if(success) {
-			System.out.println("Account created for " + accountHolder.getUserName());
+			System.out.println("Account created for " + accountHolder.getUserName() + "!");
 			return true;
 		}else {
-			System.out.println("Failed to create account for " + accountHolder.getUserName());
+			System.out.println("Failed to create account for " + accountHolder.getUserName() + ".");
 			return false;
 		}
 	}
@@ -287,21 +278,19 @@ public class AccountsDAOImpl implements AccountsDAO{
 
 		int accountId = getAccountIdByUser(accountHolder);
 
-		// check if user is already authorized
-
 		ArrayList<User> authorizedUsers = getAllAccountUsers(accountHolder);
 
 		boolean userAlreadyAuthorized = false;
 
 		for (User authorizedUser : authorizedUsers) {
 			if(authorizedUser.getUserId() == newUserId) {
-				System.out.println("User " + newUserId + " is already authorized");
+				System.out.println("User " + newUserId + " is already authorized.\n");
 				userAlreadyAuthorized = true;
 			}
 		}
 
 		if(!userAlreadyAuthorized) {
-			System.out.println("Authorizing user " + newUserId + " to account " + accountId + "...");
+			System.out.println("Authorizing user " + newUserId + "...");
 
 			try(Connection conn = ConnectionFactory.getInstance().getConnection();){
 
@@ -312,10 +301,8 @@ public class AccountsDAOImpl implements AccountsDAO{
 				pstmt.setInt(2, accountId);
 
 				if(pstmt.executeUpdate() != 0) {
-					System.out.println("authorization given to user " + newUserId);
 					return true;
 				}else {
-					System.out.println("Failed to authorize user " + newUserId);
 					return false;
 				}
 			} catch (SQLException e) {
@@ -329,7 +316,7 @@ public class AccountsDAOImpl implements AccountsDAO{
 	public boolean deAuthorizeUser(User accountHolder, int oldUserId) {
 
 		if(accountHolder.getUserId() == oldUserId) {
-			System.out.println("Cannot deauthorized the account holder.");
+			System.out.println("Cannot deauthorize the account holder.\n");
 			return false;
 		}
 
@@ -346,10 +333,8 @@ public class AccountsDAOImpl implements AccountsDAO{
 			pstmt.setInt(2, accountId);
 
 			if(pstmt.executeUpdate() != 0) {
-				System.out.println("deauthorized user " + oldUserId);
 				return true;
 			}else {
-				System.out.println("Failed to deauthorize user " + oldUserId);
 				return false;
 			}
 		} catch (SQLException e) {
@@ -383,5 +368,4 @@ public class AccountsDAOImpl implements AccountsDAO{
 		}
 		return accountId;
 	}
-
 }
