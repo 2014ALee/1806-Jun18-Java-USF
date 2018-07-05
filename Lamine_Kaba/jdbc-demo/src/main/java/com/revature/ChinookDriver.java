@@ -14,6 +14,8 @@ public class ChinookDriver {
 		
 		System.out.println("Spining out the application");
 		
+		System.out.println("========================================== Get Artist by id =============================================");
+		
 		ArtistDAO artistDAO = new ArtistDAOImpl();
 		
 		ArrayList<Artist> artists = artistDAO.getAllArtists();
@@ -22,7 +24,7 @@ public class ChinookDriver {
 			System.out.println(art);
 		}
 		
-		System.out.println("========================================== Get Artist by id =============================================");
+		System.out.println("==========================================Get =============================================");
 		
 		Artist artId = artistDAO.getArtistById(274); 
 		System.out.println(artId);

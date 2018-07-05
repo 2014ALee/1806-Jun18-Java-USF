@@ -1,8 +1,23 @@
 package test;
 
-public class Test2 {
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Stack;
 
-	public static void main(String[] args) {
+public class Test2 {
+	
+	
+	
+	
+	
+
+
+ 
+	
+	
+	
+
+	public static void main(String[] args) throws Exception {
 		
 		
 		StringBuilder b1 = new StringBuilder("snorkler");
@@ -18,28 +33,41 @@ public class Test2 {
 		//System.out.println(b1);
 		//System.out.println(b2);
 		
+//		
+//		            int a = Integer.MIN_VALUE;
+//		            int b = -a;
+//		            System.out.println( a+ "   "+b);
+		
+		
 		
 
-		
-		            int a = Integer.MIN_VALUE;
-		            int b = -a;
-		            System.out.println( a+ "   "+b);
+
+
+//   int i = 1, j = 10;
+//   do {
+//      if (i++ > --j) continue;
+//   } while (i < 5);
+//   System.out.println("i=" + i + " j=" + j);
+//   
+   
+  
+
+
 	
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
+
+
+
+
+
+
+
+  
 		
 		
 
 	}
+	
+
+	
+	
 }
