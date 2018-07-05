@@ -233,7 +233,7 @@ public class Driver {
 	}
 
 	public static double balance(String data) {
-		clearScreen();
+//		clearScreen();
 		System.out.println("\n+--------------" + user.getUsername() + "'s Balance--------------+");
 		System.out.println("Your available balance is: " + account.getBalance() + "\n\n");
 		
@@ -323,7 +323,7 @@ public class Driver {
 	}
 
 	public static double withdrawl(String data) {
-		clearScreen();
+//		clearScreen();
 		System.out.println("\n+--------------" + user.getUsername() + "'s Balance--------------+");
 		System.out.println("Your available balance is: " + account.getBalance() + "\n\n");
 		
@@ -383,7 +383,7 @@ public class Driver {
 	}
 
 	public static double deposit(String data) {
-		clearScreen();
+//		clearScreen();
 		System.out.println("\n+--------------" + user.getUsername() + "'s Balance--------------+");
 		System.out.println("Your available balance is: " + account.getBalance() + "\n\n");
 		
