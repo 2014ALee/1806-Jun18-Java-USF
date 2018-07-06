@@ -9,6 +9,7 @@ function leapYear(date){
 	return false;
 }
 
+console.log("Question 1)");
 console.log(leapYear(new Date()));
 console.log(leapYear(new Date('December 17, 2008 03:24:00')));
 
@@ -27,6 +28,7 @@ function isEmail(string){
 	}
 }
 
+console.log("Question 2)");
 console.log(isEmail('test_test-test.test@tset.test.com'));
 
 /* 3. Remove Character */
@@ -37,6 +39,7 @@ function removeChar(string, position){
 
 }
 
+console.log("Question 3)");
 console.log(removeChar('Hello, World!', 5));
 
 /* 4. Remove "Script" */
@@ -47,6 +50,7 @@ function removeScript(string){
 	return string.replace('Script', '');
 }
 
+console.log("Question 4)");
 console.log(removeScript('part1 JavaScript file'));
 
 /* 5. Letter Shift */
@@ -60,6 +64,7 @@ function letterShift(string){
 	return result;
 }
 
+console.log("Question 5)");
 console.log(letterShift('abc'));
 
 /* 6. Vowel Count */
@@ -74,6 +79,7 @@ function vowelCount(string){
 	return count;
 }
 
+console.log("Question 6)");
 console.log(vowelCount('abcdefghijklmnopqrstuvwxyz'));
 
 /* 7. Reverse Array */
@@ -84,6 +90,7 @@ function reverseArr(array){
 	console.log('After: ' + array);
 }
 
+console.log("Question 7)");
 reverseArr([1,2,3,4]);
 
 /* 8. Add Array */
@@ -115,6 +122,7 @@ function addArr(array1, array2){
 	return newArr;
 }
 
+console.log("Question 8)");
 console.log(addArr([1,2,3],[3,2,1]));
 console.log(addArr([1,2,3,4,5],[1,2,3]));
 
@@ -131,6 +139,7 @@ function longestStr(array){
 	return longStr;
 }
 
+console.log("Question 9)");
 console.log(longestStr(['Hello', 'Good-bye', 'Testing']));
 
 /* 10. Area of a Triangle */
@@ -174,6 +183,7 @@ function area(side1, side2, side3){
 	return (side3 * (side1*Math.sin(Math.acos(side3/(2*side1)))))/2;
 }
 
+console.log("Question 10)");
 console.log(area(3,3,3));
 console.log(area(3,3,4));
 console.log(area(3,4,5));
@@ -190,11 +200,14 @@ function areSimilar(array1, array2){
 	for(let i = 0; i < array1.length; i++) {
 		if(array1[i] != (array2[i]*ratio)) {
 			return false;
+		} else if(Math.atan(array1[i]/array1[(i+1)%len])!=Math.atan(array2[i]/array2[(i+1)%len])) {
+			return false;
 		}
 	}
 	return true;
 }
 
+console.log("Question 11)");
 console.log("[3,4,5] is similar to [6,8,10]: " + areSimilar([3,4,5], [6,8,10]));
 console.log("[7.3,7.6,10,10] is similar to [8, 8, 12, 12]: " + areSimilar([7.3,7.6,10,10], [8, 8, 12, 12]));
 
@@ -212,8 +225,6 @@ function equivArr(array1, array2){
 		for(let i = 0; i < array1.length; i++) {
 			if(array1[i] !== array2[i]) {
 				return false;
-			} else if(Math.atan(array1[i]/array1[(i+1)%len])!=Math.atan(array2[i]/array2[(i+1)%len])) {
-				return false;
 			}
 		}
 		return true;
@@ -222,6 +233,7 @@ function equivArr(array1, array2){
 
 }
 
+console.log("Question 12)");
 console.log(equivArr([4,2,8,4,7],[7,4,4,2,8]));
 console.log(equivArr([4,2,8,4,7],[7,5,4,2,8]));
 console.log(equivArr([4,2,8,4],[7,5,4,2,8]));
@@ -350,6 +362,7 @@ function tictactoe(array){
 	}
 }
 
+console.log("Question 13)");
 tictactoe([['X', 'X', 'X'],['O', 'O', 'O'],['X', 'O', 'X']]);
 tictactoe([['X', 'X', 'X'],['X', 'X', 'X'],['X', 'O', 'X']]);
 tictactoe([['X', 'O', 'X'],['O', 'X', 'O'],['X', 'O', 'X']]);
