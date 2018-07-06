@@ -1,0 +1,297 @@
+-- First step is to print all the entities in Employees. 2.1
+
+
+select * from employee;
+
+-- Once printed showed all the different columns within the table. 2.2
+
+
+-- Here we select a specific name King to be made into his own table. 2.2
+
+select * 
+from employee
+where lastname = 'King';
+
+
+-- 3.4 
+CREATE OR REPLACE FUNCTION  get_max_id 
+    RETURN NUMBER 
+AS
+    max_id NUMBER;
+BEGIN 
+    SELECT MAX(artistid)
+    INTO max_id
+    FROM artist;
+    
+    RETURN max_id;
+END; 
+/
+
+DECLARE 
+max_id NUMBER;
+BEGIN 
+    max_id := get_max_id();
+    DBMS_OUTPUT.PUT_LINE('the max id in the artist tableis:' || max_id);
+    END;
+    /
+CREATE OR REPLACE FUNCTION after_1968
+    RETURN SYS_REFCURSOR;
+    IS
+        my_cursor SYS_REFCURSOR;
+        
+    BEGIN 
+        OPEN my_cursor FOR
+        SELECT firstname, lastname, birthdate
+        FROM employee
+        WHERE birthdate > DATE ' 1968-12-31';
+        
+        RETURN my_cursor;
+    END;
+    /
+    
+    create or replace procedure get_all_artists(
+        my_cursor OUT SYS_REFCURSOR)
+        IS BEGIN
+        OPEN my_cursor FOR SELECT * FROM artist;
+        end;
+        /
+-- problem 2.3 where we add the reporto of the problem to null.
+select * 
+from employee
+where firstname = 'Andrew'
+and Reportsto is null;
+
+-- i sort my albums in descding order by the albumid and did the same in ascending order.
+SELECT *
+FROM album 
+order by albumid desc;
+
+SELECT *
+FROM album 
+order by albumid;
+
+-- add punk rock and hippy hop into the list of genre.
+
+INSERT INTO genre VALUES (26, 'Punk rock');
+INSERT INTO genre VALUES (27, 'Hippy Hop');
+
+-- added two employees to the table jim jacob and bobby brown-smith.
+
+INSERT INTO employee VALUES (9,'jacob','jim','KCOLMENA','515.127.4566','10-AUG-07','10-AUG-07','PU_CLER','2500','null','sndjgsdfn','jdsnfdks');
+INSERT INTO employee VALUES (10,'brown-smith','bobby','KCOLMENA','515.127.4566','10-AUG-07','10-AUG-07','PU_CLER','2500','null','dsjknjdsfknd','dfnjkgfdj');
+
+-- added two customers to the customer table. 
+
+INSERT INTO customer VALUES (60, 'Billy', 'Bob', 'Rev', 'jfdsnksdf', 'day', 'tona', 'usa', '05690','1234567890', '0987654321', 'jdssdnksa@email.com', 9383);
+INSERT INTO customer VALUES (61, 'lil', 'jon', 'jkjk', 'snksdf', 'dy', 'tna', 'sa', '00690','1204567890', '0927654321', 'jdssdnldfksa@email.com', 93803);
+
+-- Update Aaron Mitchell in Customer table to Robert Walter
+UPDATE NAME('Aaron Mitchell') in customerid with name('Robert Walker');
+
+--Update name of artist “Creedence Clearwater Revival” to “CCR”
+UPDATE ARTIST SET(NAME('Creedence Clearwater') = name('CCR'));
+
+--Select all invoices with a billing address like “T”
+
+SELECT * FROM billingaddress like name('t');
+
+--Select all invoices that have a total between 15 and 50
+
+select * from invoice
+where total
+between 15 and 50;
+
+--Select all employees hired between 1st of June 2003 and 1st of March 2004
+
+select * from employee
+where hiredate
+between DATE '03-MAY-31' AND DATE '04-MAR-01';
+
+--***********Delete a record in Customer table where the name is Robert Walter (There may be constraints that rely on this, find out how to resolve them).
+-- RECIEVED HELP WITH THIS ONE.
+DELETE FROM invoiceline
+WHERE invoiceid IN (
+SELECT invoiceid
+FROM invoice
+WHERE customerid = (
+SELECT customerid
+FROM customer
+WHERE firstname = 'Robert'
+AND lastname = 'Walter')
+);
+DELETE FROM customer
+WHERE firstname = 'Robert'
+AND lastname = 'Walter';
+
+--Create a function that returns the current time.
+-- REFERENCE FROM SLACK
+TEMPTIMEs varchar2(20);
+Messages Varchar2(20) := ' The Current Time is :' ;
+CREATE FUNCTION TIME_CURRENTs IS
+BEGIN
+SELECT to_char(sysdate_1, 'HH24:MI:SS') AS "CURRENT TIMEs"
+INTO TEMPTIMEs
+FROM duals;
+dbms_output.put_line(Messages || ' '|| TEMPTIMEs);
+END;
+/
+
+-- ******************create a function that returns the length of a mediatype from the mediatype table
+
+CREATE FUNCTION name_length
+    return number
+as
+    name_length number;
+begin
+select (length(name))
+from mediatype;
+end
+    RETURN name;
+/
+
+--****Create a function that returns the average total of all invoices
+
+CREATE FUNCTION get_aver_id
+    RETURN NUMBER
+AS
+    aver_id NUMBER;
+BEGIN
+    SELECT MAX(invoiceid) 
+    INTO aver_id
+    FROM invoices;
+    RETURN aver_id;
+END;
+/
+
+--Create a function that returns the most expensive track
+
+CREATE FUNCTION get_aver_id
+    RETURN NUMBER
+AS
+    aver_id NUMBER;
+BEGIN
+    SELECT MAX(invoiceid) 
+    INTO aver_id
+    FROM invoices;
+    RETURN aver_id;
+END;
+/
+
+--Create a function that returns the average price of invoiceline items in the invoiceline table
+CREATE OR REPLACE FUNCTION get_average_id
+    RETURN NUMBER
+AS
+    average_id NUMBER;
+BEGIN
+    SELECT MAX(invoicelineid) 
+    INTO average_id
+    FROM invoiceline;
+    RETURN aver_id;
+END;
+/
+--Create a function that returns all employees who are born after 1968.
+CREATE OR REPLACE FUNCTION after_1968
+    RETURN SYS_REFCURSOR
+IS
+    my_cursor SYS_REFCURSOR;
+BEGIN
+    OPEN my_cursor FOR  -- The result set returned by the query below is stored in our declared cursor
+    SELECT firstname, lastname, birthdate
+    FROM employee
+    WHERE birthdate > DATE '1968-12-31';
+    RETURN my_cursor;    -- This function returns a SYS_REFCURSOR, so return our declared cursor
+END;
+/
+
+--In this section you will be working with combining various tables through the use of joins. You will work with outer, inner, right, left, cross, and self joins.
+
+--Create a stored procedure that selects the first and last names of all the employees.
+CREATE OR REPLACE PROCEDURE all_employees(
+my_cursor   OUT SYS_REFCURSOR)
+IS BEGIN
+OPEN my_cursor 
+FOR 
+SELECT FIRSTNAME, LASTNAME
+FROM employee;
+END;
+/
+
+--Create a stored procedure that returns the managers of an employee.
+CREATE OR REPLACE PROCEDURE up_employee(
+employ_id      IN  EMPLOYEE.EMPLOYEEID%TYPE,
+manage_id     OUT EMPLOYEE.REPORTSTO%TYPE)
+IS
+BEGIN
+SELECT reportsto
+INTO manage_id
+FROM employee
+WHERE employeeid = employ_id;
+END;
+/
+
+-- creating a stored procedure
+CREATE OR REPLACE PROCEDURE get_customer(
+customer_id IN  CUSTOMER.CUSTOMERID%TYPE,
+firstn       OUT CUSTOMER.FIRSTNAME%TYPE,
+lastn        OUT CUSTOMER.LASTNAME%TYPE,
+company2     OUT CUSTOMER.COMPANY%TYPE)
+IS
+BEGIN
+SELECT firstname, lastname, company
+INTO firstn, lastn, company2
+FROM customer
+WHERE customerid = customer_id;
+END;
+/
+
+-- Create an inner join that joins customers and orders and specifies the name of the customer and the invoiceId.
+SELECT c.firstname, c.lastname, i.invoiceid
+FROM customer c
+JOIN invoice i 
+ON c.customerid = i.customerid;
+
+-- Create an outer join that joins the customer and invoice table, specifying the CustomerId, firstname, lastname, invoiceId, and total.
+
+SELECT c.firstname, c.lastname, i.invoiceid, c.customerid, i.total
+FROM customer c
+OUTER JOIN invoice i 
+ON c.customerid = i.customerid
+where
+c.customerid 
+is null
+or
+i.customerid 
+is null;
+
+--Create a right join that joins album and artist specifying artist name and title.
+
+SELECT art.name, al.title
+FROM album al
+RIGHT JOIN artist art
+on art.artistid = al.artistid;
+
+--Create a cross join that joins album and artist and sorts by artist name in ascending order.
+
+SELECT *
+FROM album
+CROSS JOIN artist art
+ORDER BY art.name;
+
+-- Perform a self-join on the employee table, joining on the reports to column.
+
+SELECT DISTINCT e.employee_id, e.first_name, e.last_name, e.salary
+FROM employees e
+JOIN employees em
+ON e.manager_id = em.employee_id
+ORDER BY employee_id;
+
+-- Create an index on of table of your choice
+
+CREATE INDEX invoicelineid_index 
+ON invoicelineid (invoiceid, trackid, quantity);
+-- Create sequence that will be used to increment primary keys in the artist table
+CREATE SEQUENCE art_seq
+MINVALUE 1
+MAXVALUE 9999999999
+INCREMENT BY 1
+START WITH 276;
