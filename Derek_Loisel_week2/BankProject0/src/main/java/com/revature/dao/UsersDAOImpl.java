@@ -150,7 +150,6 @@ public class UsersDAOImpl implements UsersDAO {
 
 		return id;
 	}
-
 	
 	@Override
 	public boolean deleteUserByUsername(String deletedUsername) {

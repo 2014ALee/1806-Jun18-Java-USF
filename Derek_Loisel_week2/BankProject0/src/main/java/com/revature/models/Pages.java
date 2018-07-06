@@ -74,6 +74,16 @@ public class Pages{
 			System.out.print("Email Address: ");
 			email = br.readLine();
 
+			//check that the email is valid input type			
+           String regExString = "^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\])|(([a-zA-Z\\-0-9]+\\.)+[a-zA-Z]{2,}))$";
+           java.util.regex.Pattern p = java.util.regex.Pattern.compile(regExString);
+           java.util.regex.Matcher m = p.matcher(email);
+           boolean emailIsValid =m.matches();
+           if(!emailIsValid) {
+        	   System.out.println("Please enter a valid email");
+        	   registrationPage();
+           }
+           
 			// fill in user object
 			User user = new User();
 			user.setFirstName(firstName);
@@ -100,7 +110,7 @@ public class Pages{
 				// go back to main menu
 				mainMenu();
 			} else {
-				System.out.println("Username is not available. Please try again...");
+				System.out.println("Username/email is not available. Please try again...");
 				registrationPage();
 			}
 
@@ -155,9 +165,8 @@ public class Pages{
 		System.out.println("[1] - Deposit");
 		System.out.println("[2] - Withdraw");
 		System.out.println("[3] - View Balance");
-		System.out.println("[4] - Transfer Funds");
-		System.out.println("[5] - Create New Account");
-		System.out.println("[6] - Logout");
+		System.out.println("[4] - Create New Account");
+		System.out.println("[5] - Logout");
 		System.out.print("Selection: ");
 
 		try {
@@ -175,12 +184,9 @@ public class Pages{
 				viewBalancePage();
 				break;
 			case "4":
-				transferFundsPage();
-				break;
-			case "5":
 				createAccountsPage();
 				break;
-			case "6":
+			case "5":
 				logout();
 				break;
 			default:
@@ -450,12 +456,6 @@ public class Pages{
 			withdrawPage();
 			// ie.printStackTrace();
 		}
-	}
-
-	public void transferFundsPage() {
-
-		System.out.println("This feature is not yet available, please try again later.");
-		homePage();
 	}
 
 	public void viewBalancePage() {
