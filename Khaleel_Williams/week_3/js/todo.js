@@ -17,8 +17,12 @@ window.onload = function() {
    
    // The ES6 way of attachingg events to an HTML element
    //submitButton.addEventListener('click', showResults);//do not call the function
-   document.getElementById('one').addEventListener('click', MoveToPurchased);
+   document.getElementById('toBuy').addEventListener('click', function(e)
+
+     )
    }
+
+
 
    
   

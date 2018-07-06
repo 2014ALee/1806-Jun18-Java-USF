@@ -4,57 +4,53 @@ import java.math.BigInteger;
 import java.util.HashSet;
 import java.util.concurrent.ThreadLocalRandom;
 
-/*
- * most efficient way to test for prime numbers is: 
- * 
- * If y = y^x % x, then x is PROBABLY prime
- */ 
 public class PrimeDriver {
-	
-	public static void main(String[] args ) {
-		
-		BigInteger testNum = BigInteger.valueOf(13);
+
+	public static void main(String[] args) {
+		// Working with BigInteger when working with massive numbers (larger than what long allows for)
+		BigInteger testNum = BigInteger.valueOf(561); // 561 is the first Carmichael number (composite number that passes primality tests)
 		System.out.println(isPrime(testNum));
 	}
-	
-	public static boolean isPrime(BigInteger candidate) {
-		
+
+	public static boolean isPrime(BigInteger number) {
+
 		boolean isPrime = false;
+		HashSet<BigInteger> testSet = populateSet(number);
 		
-		HashSet<BigInteger> testSet = populateSet(candidate);
-		
-		System.out.println("Prime candidate: " + candidate);
-		
+		System.out.println("Prime candidate: " + number);
+
 		/*
-		 * Test the candiddate for primality using fermat's little theorem
+		 * Tests number for primality using Fermat Little Theorem
 		 * 
-		 * Prim candidate: x, where x > 1
+		 * Prime candidate: x, where x > 1
 		 * Test element: y, where y < x && y > 1
 		 * 
-		 * If y = y^x % x, then x is PROBABLY prime. Otherwise, it is composite.
+		 * If y = y^x % x, then x is prime. Otherwise, x is composite.
 		 */
 		for (BigInteger testElement : testSet) {
 			System.out.println("Test element: " + testElement);
 			
-			BigInteger result = testElement.pow(candidate.intValue()).mod(candidate);
-			
-			if (result.equals(testElement)) {
-				
+			BigInteger testResult = testElement.pow(number.intValue()).mod(number);
+
+			if(testResult.equals(testElement)) {
+				isPrime = true;
+			} else {
+				return false;
 			}
 		}
-		
 		return isPrime;
 	}
 
-	public static HashSet<BigInteger> populateSet(BigInteger candidate) {
-		
-		HashSet<BigInteger>populatedSet = new HashSet<>();
-		
-		for(int i = 0; i < 25; i++) {
-			
-			long val = ThreadLocalRandom.current().nextInt(2, candidate.intValue());
-			BigInteger randomValue = BigInteger.valueOf(val);
-			populatedSet.add(randomValue);
+	/*
+	 * For this probablistic primality test to work, we need to collect a random set of numbers smaller than the
+	 * candidate number, but larger than 1. In this case, we are grabbing 25 random values to use in the primality
+	 * test.
+	 */
+	public static HashSet<BigInteger> populateSet(BigInteger number) {
+		HashSet<BigInteger> populatedSet = new HashSet<>();
+		for (int i = 0; i < 25; i++) {
+			BigInteger randValue = BigInteger.valueOf(ThreadLocalRandom.current().nextInt(2, number.intValue()));
+			populatedSet.add(randValue);
 		}
 		return populatedSet;
 	}

@@ -68,7 +68,7 @@ public class Bank {
 				break;
 			default: 
 				wipeScreen();
-				System.out.println("       Incorrect Inuput - Please Enter 1, 2 or 3\n");
+				System.out.println("       Incorrect Input - Please Enter 1, 2 or 3\n");
 				mainMenu();
 			}
 
@@ -208,8 +208,10 @@ public class Bank {
 		//check for inputMismatch
 		try {
 			float userInput = scan.nextFloat();
-
+			
 			userInput = Math.abs(userInput);
+			
+			if(userInput > 1000000000) {System.out.println("Cannot deposit more than 1 billion at a time.\n"); action(cus);}
 			cus.setBalance((cus.getBalance()  + userInput));
 			System.out.println("You just added " + userInput + " to your account\n");
 			db.updateBalance(cus);
@@ -232,7 +234,7 @@ public class Bank {
 
 		float userInput = Math.abs(scan.nextFloat());
 
-
+		if(userInput > 1000000000) {System.out.println("Cannot withdraw more than 1 billion at a time.\n"); action(cus);}
 		if(userInput > cus.getBalance()) {
 			System.out.println("\r\nYou don't have enough funds to withdraw: $" + userInput +"\n");
 			action(cus);
