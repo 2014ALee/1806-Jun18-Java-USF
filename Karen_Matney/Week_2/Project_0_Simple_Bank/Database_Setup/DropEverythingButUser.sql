@@ -1,0 +1,10 @@
+DROP INDEX user_account;
+DROP PROCEDURE link_client_account;
+DROP TRIGGER client_trigger;
+DROP TRIGGER account_trigger;
+DROP SEQUENCE client_seq;
+DROP SEQUENCE account_seq;
+DROP TABLE clientaccounts;
+DROP TABLE accounts;
+DROP TABLE clients;
+COMMIT;
