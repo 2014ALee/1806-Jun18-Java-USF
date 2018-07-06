@@ -196,11 +196,12 @@ function areSimilar(array1, array2){
 	if(array1.length != array2.length) {
 		return false;
 	}
+	let len  = array1.length;
 	let ratio = array1[0]/array2[0];
-	for(let i = 0; i < array1.length; i++) {
+	for(let i = 0; i < len; i++) {
 		if(array1[i] != (array2[i]*ratio)) {
 			return false;
-		} else if(Math.atan(array1[i]/array1[(i+1)%len])!=Math.atan(array2[i]/array2[(i+1)%len])) {
+		} else if(Math.atan(array1[i]/array1[(i+1)%len]) != Math.atan(array2[i]/array2[(i+1)%len])) {
 			return false;
 		}
 	}
@@ -218,7 +219,6 @@ console.log("[7.3,7.6,10,10] is similar to [8, 8, 12, 12]: " + areSimilar([7.3,7
 // equivArr([4,2,8,4,7],[7,5,4,2,8]) = false
 // equivArr([4,2,8,4],[7,5,4,2,8]) = false
 function equivArr(array1, array2){
-	let len  = array1.length;
 	if(array1.length === array2.length) {
 		array1.sort();
 		array2.sort();
