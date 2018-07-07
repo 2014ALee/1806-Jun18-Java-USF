@@ -16,10 +16,12 @@ let javadocsLink = document.getElementsByName('javadocs');
 javadocsLink[0].innerHTML = 'JavaDocs';
 javadocsLink[0].href = 'http://www.javadocs.com/';
 
+
 //QUESTION 2: Disable the Pluto Planet of Residency option.
 
 let planetSelect = document.getElementById('planet');
 planetSelect.options[3].disabled = true;
+
 
 //QUESTION 3: Define a function alienText() which shows the hidden element displaying an alien message. When any planet other than Earth is selected, execute this function.
 let hiddenTag = document.getElementById('alienmessage');
@@ -33,6 +35,7 @@ let alienText = function(){
 }
 
 planetSelect.addEventListener('change', alienText);
+
 
 //QUESTION 4: When the submit button is pressed, get the values from all of the input into a new row in the table below.  
 //Make sure no input is empty, check that first and last name are at least two letters each. 
@@ -179,6 +182,203 @@ let addRow = function(){
         }
     }
 }
-
 let submitButton = document.getElementById('form-sub');
 submitButton.addEventListener('click', addRow);
+
+
+//QUESTION 5:	Create a function openDetails() which opens the details element. Invoke this function when the details’ summary is moused over. 
+//The details should be hidden when the mouse is removed from the summary.
+
+let detailsTag = document.getElementById('detail');
+
+let openDetails = function(){   
+    detailsTag.open = true;
+}
+let closeDetails = function(){
+    detailsTag.open = false;
+}
+detailsTag.addEventListener('mouseover', openDetails);
+detailsTag.addEventListener('mouseout', closeDetails);
+
+
+//QUESTION 6: Create a function that concatenates the inner HTML of all of the span elements and prints the results to the console.
+
+let spans = document.getElementsByTagName('span');
+let str = '';
+
+for (let i = 0; i < spans.length; i++){
+    str += spans[i].innerHTML;
+}
+str += '..lol';
+console.log(str);
+
+
+//QUESTION 7: Create a function that displays the current time on earth in the span with id “earth_time”. Invoke this function when “Earth time” button is clicked. 
+earthDate = new Date();
+let earthTimeButton = document.getElementById('earth_time_check');
+let earthTimeHeader = document.getElementById('earth_time');
+
+let displayEarthTime = function(){
+    //toggle the earth time when button is clicked
+    if(earthTimeHeader.innerHTML == ''){
+    earthTimeHeader.innerHTML = earthDate;
+    }else{
+        earthTimeHeader.innerHTML = '';
+    }
+}
+earthTimeButton.addEventListener('click', displayEarthTime);
+
+
+//QUESTION 8: Create two other functions which calculates and displays the time passed on Mars and Alpha Centauri b if the onset of January 1st, 1970 occured at the same time. Invoke the respective functions when their time buttons are clicked. An orbital period for Mars is 687 Earth days. Using an external api to get the orbital period for Alpha Centauri b. (try 15.	http15.	://15.	www15.	.15.	astropical15.	.15.	space15.	/15.	astrodb15.	/15.	apiref15.	.15.	php) Provide an implementation for getting this value using both AJAX and the fetch API.
+
+
+//QUESTION 9:	Three seconds after a user clicks on the “Intergalactic Directory” heading, the background color should change to a random color. 
+//Make sure this color is never black so we can still read our black text! 
+//(there are other dark colors it could change to where we also couldn’t see the text but it’s enough to just accomodate for a black background)
+let mainHeading = document.getElementsByTagName('h1');
+
+let randomColor = function() {
+    //create a random rgb color string to change background color
+    var x = Math.floor(Math.random() * 256);
+    var y = Math.floor(Math.random() * 256);
+    var z = Math.floor(Math.random() * 256);
+    var bgColor = "rgb(" + x + "," + y + "," + z + ")";
+    //make sure the color isn't black
+    if(bgColor != 'rgb(0,0,0)'){
+        document.body.style.background = bgColor;
+    }else{
+        //get new color if black was chosen
+        randomColor();
+    }
+}
+
+let changeBackground = function(){
+    //set a 3 second timer before calling the random color function to change background
+    setTimeout ( randomColor, 3000 );
+}
+
+mainHeading[0].addEventListener('click', changeBackground);
+
+
+//QUESTION 10: When inputs with id n1 and n2 have valid numerical input, perform the operation specified in the select. Display the result in the element with id result.
+
+//when the mouse moves out of either numerical input field, or a new option is chosen, perform the calculation specified in the select, as long as they have valid numerical inputs
+let calculationSelect = document.getElementById('operation');
+let inputOne = document.getElementById('n1');
+let inputTwo = document.getElementById('n2');
+let calculationResult = document.getElementById('result');
+
+let calculate = function(){
+
+    if(calculationSelect.options[ calculationSelect.selectedIndex ].innerHTML == 'Add'){
+        //make sure both inputs have a value
+        if(inputOne.value !== '' && inputTwo.value !== ''){
+        calculationResult.innerHTML = parseInt(inputOne.value) + parseInt(inputTwo.value);
+        }
+        
+    }
+    if(calculationSelect.options[ calculationSelect.selectedIndex ].innerHTML == 'Subtract'){
+        //make sure both inputs have a value
+        if(inputOne.value !== '' && inputTwo.value !== ''){
+            calculationResult.innerHTML = parseInt(inputOne.value) - parseInt(inputTwo.value);
+        }
+    }
+    if(calculationSelect.options[ calculationSelect.selectedIndex ].innerHTML == 'Multiply'){
+        //make sure both inputs have a value
+        if(inputOne.value !== '' && inputTwo.value !== ''){
+            calculationResult.innerHTML = parseInt(inputOne.value) * parseInt(inputTwo.value);
+        }
+    }
+    if(calculationSelect.options[ calculationSelect.selectedIndex ].innerHTML == 'Divide'){
+        //make sure both inputs have a value
+        if(inputOne.value !== '' && inputTwo.value !== ''){
+            calculationResult.innerHTML = parseInt(inputOne.value) / parseInt(inputTwo.value);
+        }
+    }
+    //validate that the input has numbers
+    if (inputOne.value !== '' && inputTwo.value !== ''){
+        if(calculationResult.innerHTML == 'NaN'){
+            inputOne.value = '';
+            inputTwo.value = '';
+            alert('Please enter a valid number');
+        }
+    } 
+}
+
+calculationSelect.addEventListener('mouseout', calculate);
+inputOne.addEventListener('mouseout', calculate);
+inputTwo.addEventListener('mouseout', calculate);
+
+
+//QUESTION 11: Define function walkTheDom(node, func)
+//This function should traverse every node in the DOM. 
+//Use recursion. On each node, calle func(node).
+
+//Code Credit to Douglas Crockford - https://www.youtube.com/watch?v=Y2Y0U-2qJMs&feature=youtu.be&t=
+//commented by myself from his explanation
+//example usage extended by myself
+
+//we pass in the node that we want to start walking at, and a function to call on every node
+function walkTheDOM(node, func) {
+    //we start by calling our function on the first node
+    func(node);
+    //then we look to see if the node has a first child
+    node = node.firstChild;
+    //if it does, then we call walk the dom on that node
+    while (node) {
+        walkTheDOM(node, func);
+        //then we look to see if we have a next sibling, and we keep doing this until 
+        //it has gone through them all and we have called the function on all the nodes.
+        node = node.nextSibling;
+    }
+}
+
+// Ex:  log all the node types on the page to the console
+//      log each element-type node's tag name, and log each text-type node's text
+walkTheDOM(document.body, function (node) {
+
+    nodeType = node.nodeType;
+    
+    if (nodeType == 1){
+        nodeTagName = node.tagName;
+        console.log('This is an Element node, tag name: ' + nodeTagName);
+    }
+    if (nodeType == 2){
+        console.log('This is an Attr node');
+    }
+    if (nodeType == 3){
+        nodeInfo = node.data.trim();
+        if(nodeInfo.length > 0){
+            console.log('This is Text node with text: ' + nodeInfo);
+        }else{
+            console.log('This is Text node without any text');
+        }       
+    }
+    if (nodeType == 4){
+        console.log('This is a CDATASection node');
+    }
+    if (nodeType == 5){
+        console.log('This is an EntityReference node');
+    }
+    if (nodeType == 6){
+        console.log('This is an Entity node');
+    }
+    if (nodeType == 7){
+        console.log('This is a ProcessingInstruction node');
+    }
+    if (nodeType == 8){
+        console.log('This is a Comment node');
+    }
+    if (nodeType == 9){
+        console.log('This is a Document node');
+    }
+    if (nodeType == 10){
+        console.log('This is a DocumentType node');
+    }
+    if (nodeType == 11){
+        console.log('This is a DocumentFragment node');
+    }
+    if (nodeType == 12){
+        console.log('This is a Notation node');
+    }
+});
