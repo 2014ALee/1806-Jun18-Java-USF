@@ -245,5 +245,4 @@ function walk(node, func) {
     }
 }
 
-// Example usage: Process all Text nodes on the page
 walk(document.body, (node) => console.log(node.tagName));
