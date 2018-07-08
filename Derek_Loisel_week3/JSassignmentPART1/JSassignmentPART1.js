@@ -219,8 +219,9 @@ function equivArr(array1, array2){
         return false;
     }
     //sort the arrays so the values will be at corresponding indexes if both arrays hold equal values
-    let ar1 = array1.sort();
-    let ar2 = array2.sort();
+    let ar1 = array1.sort((a,b) => {return a-b});
+    let ar2 = array2.sort((a,b) => {return a-b});
+    console.log(ar1);
     //loop through the length of the arrays to see if each index is equal, return false if one isn't
     for (let i = 0; i < ar1.length; i++){
         if (ar1[i] !== ar2[i]){
@@ -230,7 +231,7 @@ function equivArr(array1, array2){
     //return true if all the elements were equal
     return true;
 }
-let arr11 = [3,1,3,9];
+let arr11 = [1,100,12,10];
 let arr22 = [3,3,9,1];
 console.log(equivArr(arr11,arr22));
 
