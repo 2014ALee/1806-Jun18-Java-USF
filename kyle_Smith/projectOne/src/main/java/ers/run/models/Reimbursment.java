@@ -4,7 +4,7 @@ import java.sql.Blob;
 import java.sql.Date;
 
 public class Reimbursment {
-	private int ReimbursmentId;
+	private int reimbursmentId;
 	private double amount;
 	private Date submitted;
 	private Date resolved;
@@ -22,7 +22,7 @@ public class Reimbursment {
 	public Reimbursment(int reimbursmentId, double amount, Date submitted, Date resolved, String description,
 			Blob receipt, int author, int resolver, int statusId, int typeId, String reimStatus, String reimType) {
 		super();
-		ReimbursmentId = reimbursmentId;
+		this.reimbursmentId = reimbursmentId;
 		this.amount = amount;
 		this.submitted = submitted;
 		this.resolved = resolved;
@@ -37,11 +37,11 @@ public class Reimbursment {
 	}
 
 	public int getReimbursmentId() {
-		return ReimbursmentId;
+		return reimbursmentId;
 	}
 
 	public void setReimbursmentId(int reimbursmentId) {
-		ReimbursmentId = reimbursmentId;
+		this.reimbursmentId = reimbursmentId;
 	}
 
 	public double getAmount() {
@@ -136,7 +136,7 @@ public class Reimbursment {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ReimbursmentId;
+		result = prime * result + reimbursmentId;
 		long temp;
 		temp = Double.doubleToLongBits(amount);
 		result = prime * result + (int) (temp ^ (temp >>> 32));
@@ -162,7 +162,7 @@ public class Reimbursment {
 		if (getClass() != obj.getClass())
 			return false;
 		Reimbursment other = (Reimbursment) obj;
-		if (ReimbursmentId != other.ReimbursmentId)
+		if (reimbursmentId != other.reimbursmentId)
 			return false;
 		if (Double.doubleToLongBits(amount) != Double.doubleToLongBits(other.amount))
 			return false;
@@ -209,7 +209,7 @@ public class Reimbursment {
 
 	@Override
 	public String toString() {
-		return "Reimbursment [ReimbursmentId=" + ReimbursmentId + ", amount=" + amount + ", submitted=" + submitted
+		return "Reimbursment [reimbursmentId=" + reimbursmentId + ", amount=" + amount + ", submitted=" + submitted
 				+ ", resolved=" + resolved + ", description=" + description + ", receipt=" + receipt + ", author="
 				+ author + ", resolver=" + resolver + ", statusId=" + statusId + ", typeId=" + typeId + ", reimStatus="
 				+ reimStatus + ", reimType=" + reimType + "]";

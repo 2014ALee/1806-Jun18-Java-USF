@@ -148,6 +148,7 @@ equivArr([4,2,8,4],[7,5,4,2,8]) = false
 function equivArr(array1, array2){
     if(array1.length != array2.length)
         return false;
+    array1.sort()
     array1.sort((a, b) => {return a - b});
     array2.sort((a, b) => {return a - b});
     return array1.every((a,i) => a === array2[i]);
@@ -166,7 +167,7 @@ Should have a result for a tie, each winner, or an invalid game.
 function tictactoe(array){
     let countX = countO = countEmpty = countWinX = countWinO = 0;
     let str = 'No Winner Yet';    
-
+    array.map()
     array.map((a,i) => a.map((a2,i2)=>  {
         if(a2 == 'X') {
             countX+=1;

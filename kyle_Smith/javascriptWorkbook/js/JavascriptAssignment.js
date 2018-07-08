@@ -30,7 +30,7 @@ document.getElementById('planet').addEventListener('change', alienText);
 //Validate for valid phone number and email structure. This should continue to work for multiple entries and rows.
 function isEmail(string){
     var VAL = string;
-    let regularExpression = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+    let regularExpression = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     if (regularExpression.test(VAL)) {
         return true;
     }else{
@@ -129,7 +129,8 @@ function earthTime(){
       hours = currentDate.getHours(),
       minutes = currentDate.getMinutes(),
       seconds = currentDate.getSeconds();
-    document.getElementById('earth_time_check').innerHTML = (hours + ':' + minutes + '.' + seconds)
+
+    document.getElementById('earth_time').innerHTML = (hours + ':' + minutes + '.' + seconds)
 }
 
 
@@ -139,9 +140,62 @@ function earthTime(){
 //An orbital period for Mars is 687 Earth days. Using an external api to get the orbital period for Alpha Centauri b. 
 //(try http://www.astropical.space/astrodb/apiref.php) Provide an implementation for getting this value using both 
 //AJAX and the fetch API.
+$('#mars_time_check').click(marsTime);
 
+function marsTime(){
+    let currentDate = new Date(),
+        year = currentDate.getFullYear(),
+        month = currentDate.getMonth(),
+        day = currentDate.getDate(),
+        yearsFromStartToNow = ((year - 1970) + ((month + 1)/12) + (day/365)),
+        orbit = 687,
+        marsYears = (orbit/365) * yearsFromStartToNow,
+        dateDecimal =  (1970 + marsYears),
+        marsDate = new Date(),
+        marsYear = dateDecimal.toPrecision(4),
+        marsDays = (dateDecimal - dateDecimal.toPrecision(4)) * 365,
+        marsMonth = Math.floor(marsDays/30),
+        marsDay = Math.floor(( (marsDays/30) - marsMonth ) * 30);
+    console.log(currentDate.getTime())
+    
+    marsDate.setFullYear(dateDecimal.toPrecision(4))
+    marsDate.setFullYear(marsYear, marsMonth-1, marsDay);
+    document.getElementById('mars_time').innerHTML = (marsDate);
+}
 
+$('#acb_time_check').click(alphaCentauriBTime);
+function alphaCentauriBTime() {
+    let url = 'http://www.astropical.space/astrodb/api-exo.php?which=name&limit=alf%20Cen%20B&format=json';
+    sendAjaxRequest(url, displayTime);
+}
+let xhr = new XMLHttpRequest();
+function sendAjaxRequest(url, funct) {
+    xhr.onreadystatechange = function() {
+        if(xhr.readyState == 4 && xhr.status == 200) {
+            funct(xhr);
+        }
+    }
+    xhr.open('GET', url, true);
+    xhr.send();
+}
+function displayTime() {
+    let alphCenB = JSON.parse(xhr.response),
+        currentDate = new Date(),
+        time = currentDate.getTime(),
+        aplaCentauriConversion = (alphCenB['exoplanets'][0]['per']) * time;
+        
+    currentDate.setTime(aplaCentauriConversion);
+    document.getElementById('acb_time').innerHTML = currentDate;
+    fetchInfo();
+}
 
+function fetchInfo(){
+    fetch('http://www.astropical.space/astrodb/api-exo.php?which=name&limit=alf%20Cen%20B&format=json').then((resp) => {    
+        resp.json().then((data) => {
+            alert('Using Fetch API ALpha Centauri period is: '+ data['exoplanets'][0]['per']);
+            }).catch()
+    });
+}
 
 
 
@@ -179,12 +233,17 @@ function operations(){
     document.getElementById('result').innerText = result;
 }
 
-
-
-
-
-
-
 // Define function walkTheDom(node, func)
 // 	This function should traverse every node in the DOM. 
 // 	Use recursion. On each node, calle func(node).
+function walk(node, func) {
+    func(node);
+    node = node.firstChild;
+    while (node) {
+        walk(node, func);
+        node = node.nextSibling;
+    }
+}
+
+// Example usage: Process all Text nodes on the page
+walk(document.body, (node) => console.log(node.tagName));

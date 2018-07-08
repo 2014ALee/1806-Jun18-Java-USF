@@ -19,33 +19,20 @@ public class UserDAOImpl implements UserDAO{
 		
 		try(Connection conn = ConnectionFactory.getInstance().getConnection();){
 			
-			String sql = "SELECT * FROM Users";
+			String sql = "SELECT * FROM ERS_USERS";
 			
 			Statement stmt = conn.prepareStatement(sql);
 			ResultSet rs = stmt.executeQuery(sql);
-//			int userId;
-//			String username;
-//			String password;
-//			String firstName;
-//			String lastName;
-//			String email;
-//			int roleId;
-//			String userRole;
-//			ERS_USERS_ID        NUMBER PRIMARY KEY,
-//			ERS_USERNAME        VARCHAR2(50) UNIQUE,
-//			ERS_PASSWORD        VARCHAR2(50),
-//			USER_FIRST_NAME     VARCHAR2(100),
-//			USER_LAST_NAME      VARCHAR2(100),
-//			USER_EMAIL          VARCHAR2(150) UNIQUE,
-//			USER_ROLE_ID        NUMBER,
+			
 			while(rs.next()) {
 				User temp = new User();
 				temp.setUserId(rs.getInt("ERS_USERS_ID"));
-				temp.setUsername(rs.getString("username"));
-				temp.setPassword(rs.getString("password"));
-				temp.setFirstName(rs.getString("firstName"));
-				temp.setLastName(rs.getString("lastName"));
-				temp.setEmail(rs.getString("email"));
+				temp.setUsername(rs.getString("ERS_USERNAME"));
+				temp.setPassword(rs.getString("ERS_PASSWORD"));
+				temp.setFirstName(rs.getString("USER_FIRST_NAME"));
+				temp.setLastName(rs.getString("USER_LAST_NAME"));
+				temp.setEmail(rs.getString("USER_EMAIL"));
+				temp.setRoleId(rs.getInt("USER_ROLE_ID"));
 				users.add(temp);
 			}
 		} catch (SQLException e) {
@@ -60,16 +47,15 @@ public class UserDAOImpl implements UserDAO{
 		
 		try(Connection conn = ConnectionFactory.getInstance().getConnection();){
 			
-			String sql = "SELECT username FROM Users";
+			String sql = "SELECT ERS_USERNAME FROM ERS_USERS";
 			
 			String[] keys = new String[1];
-			
+			keys[0] = "ERS_USERS_ID";
 			PreparedStatement pstmt = conn.prepareStatement(sql, keys);
-			//pstmt.setString(1, "username");
 			ResultSet rs = pstmt.executeQuery();
 			
 			while(rs.next()) {
-				usernames.add(rs.getString("username"));
+				usernames.add(rs.getString("ERS_USERNAME"));
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -83,7 +69,7 @@ public class UserDAOImpl implements UserDAO{
 		
 		try(Connection conn = ConnectionFactory.getInstance().getConnection();){
 			
-			String sql = "SELECT email FROM Users";
+			String sql = "SELECT USER_EMAIL FROM ERS_USERS";
 			
 			String[] keys = new String[1];
 			
@@ -92,7 +78,7 @@ public class UserDAOImpl implements UserDAO{
 			ResultSet rs = pstmt.executeQuery();
 			
 			while(rs.next()) {
-				emails.add(rs.getString("email"));
+				emails.add(rs.getString("USER_EMAIL"));
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -106,22 +92,23 @@ public class UserDAOImpl implements UserDAO{
 		
 		try(Connection conn = ConnectionFactory.getInstance().getConnection();){
 			
-			String sql = "SELECT * FROM Users WHERE username = ?";
+			String sql = "SELECT * FROM ERS_USERS WHERE ERS_USERNAME = ?";
 			
 			String[] keys = new String[1];
-			keys[0] = "userId";
+			keys[0] = "ERS_USERS_ID";
 			
 			PreparedStatement pstmt = conn.prepareStatement(sql, keys);
 			pstmt.setString(1, username);
 			ResultSet rs = pstmt.executeQuery();
 			
 			while(rs.next()) {
-				user.setUserId(rs.getInt("userId"));
-				user.setFirstName(rs.getString("firstName"));
-				user.setLastName(rs.getString("lastName"));
-				user.setUsername(rs.getString("username"));
-				user.setEmail(rs.getString("email"));
-				user.setPassword(rs.getString("password"));
+				user.setUserId(rs.getInt("ERS_USERS_ID"));
+				user.setUsername(rs.getString("ERS_USERNAME"));
+				user.setPassword(rs.getString("ERS_PASSWORD"));
+				user.setFirstName(rs.getString("USER_FIRST_NAME"));
+				user.setLastName(rs.getString("USER_LAST_NAME"));
+				user.setEmail(rs.getString("USER_EMAIL"));
+				user.setRoleId(rs.getInt("USER_ROLE_ID"));
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -135,22 +122,23 @@ public class UserDAOImpl implements UserDAO{
 		
 		try(Connection conn = ConnectionFactory.getInstance().getConnection();){
 			
-			String sql = "SELECT * FROM Users WHERE email = ?";
+			String sql = "SELECT * FROM ERS_USERS WHERE USER_EMAIL = ?";
 			
 			String[] keys = new String[1];
-			keys[0] = "userId";
+			keys[0] = "ERS_USERS_ID";
 			
 			PreparedStatement pstmt = conn.prepareStatement(sql, keys);
 			pstmt.setString(1, userEmail);
 			ResultSet rs = pstmt.executeQuery();
 			
 			while(rs.next()) {
-				user.setUserId(rs.getInt("userId"));
-				user.setFirstName(rs.getString("firstName"));
-				user.setLastName(rs.getString("lastName"));
-				user.setUsername(rs.getString("username"));
-				user.setEmail(rs.getString("email"));
-				user.setPassword(rs.getString("password"));
+				user.setUserId(rs.getInt("ERS_USERS_ID"));
+				user.setUsername(rs.getString("ERS_USERNAME"));
+				user.setPassword(rs.getString("ERS_PASSWORD"));
+				user.setFirstName(rs.getString("USER_FIRST_NAME"));
+				user.setLastName(rs.getString("USER_LAST_NAME"));
+				user.setEmail(rs.getString("USER_EMAIL"));
+				user.setRoleId(rs.getInt("USER_ROLE_ID"));
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -172,18 +160,19 @@ public class UserDAOImpl implements UserDAO{
 			conn.setAutoCommit(false);
 			
 			
-			String sql = "INSERT INTO Users (userId,firstname,lastname,username,email,password) VALUES (?,?,?,?,?,?)";
+			String sql = "INSERT INTO ERS_USERS (ERS_USERS_ID,ERS_USERNAME,ERS_PASSWORD,USER_FIRST_NAME,USER_LAST_NAME,USER_EMAIL,USER_ROLE_ID) VALUES (?,?,?,?,?,?,?)";
 			
 			String[] keys = new String[1];
 			keys[0] = "userId";
 					
 			PreparedStatement pstmt = conn.prepareStatement(sql, keys);
 			pstmt.setInt(1, newUser.getUserId());
-			pstmt.setString(2, newUser.getFirstName());
-			pstmt.setString(3, newUser.getLastName());
-			pstmt.setString(4, newUser.getUsername());
-			pstmt.setString(5, newUser.getEmail());
-			pstmt.setString(6, newUser.getPassword());
+			pstmt.setString(2, newUser.getUsername());
+			pstmt.setString(3, newUser.getPassword());
+			pstmt.setString(4, newUser.getFirstName());
+			pstmt.setString(5, newUser.getLastName());
+			pstmt.setString(6, newUser.getEmail());
+			pstmt.setInt(7, newUser.getRoleId());
 			int rowsUpdated = pstmt.executeUpdate();
 			
 			ResultSet rs = pstmt.getGeneratedKeys();
@@ -212,9 +201,9 @@ public class UserDAOImpl implements UserDAO{
 	public boolean deleteUser(User user) {
 		try(Connection conn = ConnectionFactory.getInstance().getConnection();){
 			//String sql = "UPDATE Account SET userId = ?, jointAccId = ?, Checking = ?, Savings = ? WHERE AccountId = ?";
-			String sql = "DELETE FROM Users WHERE UserId = ?";
+			String sql = "DELETE FROM ERS_USERS WHERE ERS_USERS_ID = ?";
 			String[] keys = new String[1];
-			keys[0] = "UserId";
+			keys[0] = "ERS_USERS_ID";
 			conn.setAutoCommit(false);
 			PreparedStatement pstmt = conn.prepareStatement(sql, keys);
 			pstmt.setInt(1, user.getUserId());
