@@ -39,17 +39,24 @@ public class Actions{
 					System.out.print("Enter Amount to Deposit: ");
 					if(sc.hasNextDouble()) {
 						deposit = sc.nextDouble();
+						
 						if(read == 1) {
-							acc.setChecking(acc.getChecking() + Double.valueOf(df.format(Math.abs(deposit))));
-							System.out.println("Deposited $" + Double.valueOf(df.format(Math.abs(deposit))) + " successfully.");
-							System.out.println("New Balance: $" + acc.getChecking());
+							if(String.valueOf(deposit).length() + String.valueOf(acc.getChecking()).length() < 32) {
+								acc.setChecking(acc.getChecking() + Double.valueOf(df.format(Math.abs(deposit))));
+								System.out.println("Deposited $" + Double.valueOf(df.format(Math.abs(deposit))) + " successfully.");
+								System.out.println("New Balance: $" + acc.getChecking());
+							}
 							break;
+							
 						}else if (read == 2) {
+							if(String.valueOf(deposit).length() + String.valueOf(acc.getSavings()).length() < 32) {
 							acc.setSavings(acc.getSavings() + Double.valueOf(df.format(Math.abs(deposit))));
 							System.out.println("Deposited $" + Double.valueOf(df.format(Math.abs(deposit))) + " successfully.");
 							System.out.println("New Balance: $" + acc.getSavings());
+							}
 							break;
 						}
+						
 					}else if(i == 3) {
 						System.out.println("To many atempts please try again");
 						deposit(args);
@@ -139,6 +146,12 @@ public class Actions{
 		acc = accountImpl.totalBankSum();
 		System.out.println("Checking Total Sum: $" + df.format(acc.getChecking()));
 		System.out.println("Savings Total Sum: $" + df.format(acc.getSavings()));
+	}
+	
+	public static void adminGetAllUsers (Object...args) {
+		DecimalFormat df = new DecimalFormat("###.##");
+		Account acc = new Account();
+		userImpl.getAllUsers().forEach(x -> System.out.println(x));
 	}
 	
 	public static void transferFunds(Object...args) {

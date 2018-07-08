@@ -1,52 +1,36 @@
-package bank.run.util;
+package ers.run.models;
 
-import java.io.Serializable;
-
-public class User implements Serializable{
-
-	private static final long serialVersionUID = 1L;
-
-	private int userID;
-	private String firstName;
-	private String lastName;
+public class User {
+	private int userId;
 	private String username;
 	private String password;
+	private String firstName;
+	private String lastName;
 	private String email;
-
+	private int roleId;
+	private String userRole;
+	
 	public User() {}
 
-	public User(int userID, String firstName, String lastName, String username, String password, String email) {
+	public User(int userId, String username, String password, String firstName, String lastName, String email,
+			int roleId, String userRole) {
 		super();
-		this.userID = userID;
-		this.firstName = firstName;
-		this.lastName = lastName;
+		this.userId = userId;
 		this.username = username;
 		this.password = password;
-		this.email = email;
-	}
-
-	public int getUserID() {
-		return userID;
-	}
-
-	public void setUserID(int userID) {
-		this.userID = userID;
-	}
-
-	public String getFirstName() {
-		return firstName;
-	}
-
-	public void setFirstName(String firstName) {
 		this.firstName = firstName;
-	}
-
-	public String getLastName() {
-		return lastName;
-	}
-
-	public void setLastName(String lastName) {
 		this.lastName = lastName;
+		this.email = email;
+		this.roleId = roleId;
+		this.userRole = userRole;
+	}
+
+	public int getUserId() {
+		return userId;
+	}
+
+	public void setUserId(int userId) {
+		this.userId = userId;
 	}
 
 	public String getUsername() {
@@ -65,6 +49,22 @@ public class User implements Serializable{
 		this.password = password;
 	}
 
+	public String getFirstName() {
+		return firstName;
+	}
+
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
+
+	public String getLastName() {
+		return lastName;
+	}
+
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+	}
+
 	public String getEmail() {
 		return email;
 	}
@@ -73,8 +73,20 @@ public class User implements Serializable{
 		this.email = email;
 	}
 
-	public static long getSerialversionuid() {
-		return serialVersionUID;
+	public int getRoleId() {
+		return roleId;
+	}
+
+	public void setRoleId(int roleId) {
+		this.roleId = roleId;
+	}
+
+	public String getUserRole() {
+		return userRole;
+	}
+
+	public void setUserRole(String userRole) {
+		this.userRole = userRole;
 	}
 
 	@Override
@@ -85,7 +97,9 @@ public class User implements Serializable{
 		result = prime * result + ((firstName == null) ? 0 : firstName.hashCode());
 		result = prime * result + ((lastName == null) ? 0 : lastName.hashCode());
 		result = prime * result + ((password == null) ? 0 : password.hashCode());
-		result = prime * result + userID;
+		result = prime * result + roleId;
+		result = prime * result + userId;
+		result = prime * result + ((userRole == null) ? 0 : userRole.hashCode());
 		result = prime * result + ((username == null) ? 0 : username.hashCode());
 		return result;
 	}
@@ -119,7 +133,14 @@ public class User implements Serializable{
 				return false;
 		} else if (!password.equals(other.password))
 			return false;
-		if (userID != other.userID)
+		if (roleId != other.roleId)
+			return false;
+		if (userId != other.userId)
+			return false;
+		if (userRole == null) {
+			if (other.userRole != null)
+				return false;
+		} else if (!userRole.equals(other.userRole))
 			return false;
 		if (username == null) {
 			if (other.username != null)
@@ -131,7 +152,8 @@ public class User implements Serializable{
 
 	@Override
 	public String toString() {
-		return "User [userID=" + userID + ", firstName=" + firstName + ", lastName=" + lastName + ", username="
-				+ username + ", password=" + password + ", email=" + email + "]";
+		return "User [userId=" + userId + ", username=" + username + ", password=" + password + ", firstName="
+				+ firstName + ", lastName=" + lastName + ", email=" + email + ", roleId=" + roleId + ", userRole="
+				+ userRole + "]";
 	}
 }

@@ -1,8 +1,7 @@
-package bank.run.dao;
+package ers.run.dao;
 
 import java.util.ArrayList;
-
-import bank.run.util.User;
+import ers.run.models.User;
 
 public interface UserDAO {
 	
@@ -16,4 +15,5 @@ public interface UserDAO {
     
     boolean insertUser(User user);
     boolean updateUser(User user);
+    boolean deleteUser(User user);
 }

@@ -111,22 +111,16 @@ public class AccountDAOImpl implements AccountDAO{
 			String[] keys = new String[1];
 			keys[0] = "AccountID";
 			CallableStatement cstmt = conn.prepareCall(sql);
-			// Setting parameters is the same as we would if we were working with a PreparedStatement
-			//define the index of our second parameter, and its type
 			cstmt.registerOutParameter(1, OracleTypes.NUMBER);
 			
-			// execute our callable statement
 			cstmt.execute();
 			acc.setChecking(cstmt.getDouble(1));
 			
 			sql = "{CALL get_total_savings_proc(?)}";
 
 			cstmt = conn.prepareCall(sql);
-			// Setting parameters is the same as we would if we were working with a PreparedStatement
-			//define the index of our second parameter, and its type
 			cstmt.registerOutParameter(1, OracleTypes.NUMBER);
 			
-			// execute our callable statement
 			cstmt.execute();
 			acc.setSavings(cstmt.getDouble(1));
 		} catch (SQLException e) {

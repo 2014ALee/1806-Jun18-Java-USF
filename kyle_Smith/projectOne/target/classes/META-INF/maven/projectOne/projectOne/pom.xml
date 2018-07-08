@@ -4,10 +4,9 @@
   <artifactId>projectOne</artifactId>
   <version>0.0.1-SNAPSHOT</version>
   <name>projectOne</name>
-  <description>projectOne refactors projectNegOne to work with jdbc</description>
+  <description>projectOne fullstack</description>
   
-  
-    <properties>
+  <properties>
   	<java.version>1.8</java.version>
   	<maven.comiler.source>1.8</maven.comiler.source>
   	<maven.comiler.target>1.8</maven.comiler.target>

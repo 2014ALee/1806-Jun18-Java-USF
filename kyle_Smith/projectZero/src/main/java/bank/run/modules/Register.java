@@ -60,26 +60,26 @@ public class Register {
 				}
 			}
 			
-			System.out.println("Password: ");
+			System.out.print("Password: ");
 			password = br.readLine();
 
-			System.out.println("Email: ");
+			System.out.print("Email: ");
 			email = br.readLine();
 			if(!(email.matches("[A-Za-z0-9+_.-]+@.+"))) {
 				for(int i =0;i > -1;i++) {
 					System.out.println("Invalid email:" + email +"  re-register...");
-					System.out.println("Email: ");
+					System.out.print("Email: ");
 					email = br.readLine();
 					if(!(email.matches("[A-Za-z0-9+_.-]+@.+"))) {
 						continue;
 					}else if(i >= 7) {
 						System.out.println("To many attempts...");
 						Menu.mainMenu(0);
-					}else {
-						if(!(available(1, email))) {
+					}else if((email.matches("[A-Za-z0-9+_.-]+@.+"))) {
+						if(!(available(2, email))) {
 							System.out.println("Email: " + email + " unavailable re-register...");
 						}else
-							i = -1;
+							break;
 					}
 				}
 			}
@@ -135,10 +135,16 @@ public class Register {
 		Menu.mainMenu(0);
 	}
 	private static boolean available(int i, Object... arg) {
-		if( i == 1)
-			return userImpl.getAllUsernames().contains(arg[0]);
+		if( i == 1) 
+			if(userImpl.getAllUsernames().contains(arg[0]))
+				return false;
+			else
+				return true;
 		else if(i == 2)
-			return userImpl.getAllEmails().contains(arg[0]);
+			if (userImpl.getAllEmails().contains(arg[0]))
+				return false;
+			else
+				return true;
 		return false;
 	}
 

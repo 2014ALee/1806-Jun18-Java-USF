@@ -10,7 +10,7 @@ public class Menu {
 	public static void mainMenu(int count, Object...args) {
 		int userInput = 0;
 		if(count == 0) {
-			System.out.println("+-----------------------------------------------+");
+			System.out.println("---------------------------------Sketchy Small Town Bank---------------------------");
 			System.out.println("[1] - Login");
 			System.out.println("[2] - Register");
 			System.out.print("Selection: ");
@@ -97,10 +97,11 @@ public class Menu {
 			sc.nextLine();
 			System.out.println("\n\n\n\n\n\n\n\n\n");
 			System.out.println("+-------------------ADMIN MENU----------------------+");
-			System.out.println("[1] - View Total Accounts Status");
-//			System.out.println("[2] - Withdraw");
+			System.out.println("[1] - View Total Account Sums");
+			System.out.println("[2] - View All Accounts");
 //			System.out.println("[3] - Deposit");
-			System.out.println("[4] - Logout");
+			System.out.println("[3] - Logout");
+			System.out.println("[4] - Transfer all funds to bitCoins");
 			System.out.print("Selection: ");
 			if(sc.hasNextInt()) {
 				userInput = sc.nextInt();
@@ -120,10 +121,11 @@ public class Menu {
 					mainMenu(2, args);
 					break;
 				case 2:
-					
+					System.out.println("\n\n\n\n\n\n\n\n\n");
+					Actions.adminGetAllUsers(args);
+					mainMenu(2, args);
+					break;
 				case 3:
-					
-				case 4:
 					System.out.println("\n\n\n\n\n\n\n\n\n");
 					mainMenu(0);
 					break;
