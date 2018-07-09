@@ -183,38 +183,64 @@ document.getElementById('earth_time_check').addEventListener('click', earthTime)
 function marsTime() {
 	let mars_time = document.getElementById('mars_time');
 	const time = new Date();
-	let mHour = (time.getTime()/(1000*60*60*687*(time.getFullYear()-1970)));
-	let mMin = (time.getTime()/(1000*60*24*687*(time.getFullYear()-1970)));
-	console.log(Math.floor(mHour));
-	console.log(Math.floor(mMin));
-	if(mHour < 10) {
-		mars_time.innerText = '0' + Math.floor(mHour) + ':';
+	let mars_time_now = new Date(time.getTime()/((time.getFullYear()-1970)*687));
+	if(mars_time_now.getHours() < 10) {
+		mars_time.innerText = '0' + mars_time_now.getHours() + ':';
 	} else {
-		mars_time.innerText = Math.floor(mHour) + ':';
+		mars_time.innerText = mars_time_now.getHours() + ':';
 	}
-	if(mMin < 10) {
-		mars_time.innerText += '0' +  Math.floor(mMin);
+	if(mars_time_now.getMinutes() < 10) {
+		mars_time.innerText += '0' +  mars_time_now.getMinutes() + ':';
 	} else {
-		mars_time.innerText +=  Math.floor(mMin);
+		mars_time.innerText +=  mars_time_now.getMinutes() + ':';
+	}
+	if(mars_time_now.getSeconds() < 10) {
+		mars_time.innerText += '0' + mars_time_now.getSeconds();
+	} else {
+		mars_time.innerText += mars_time_now.getSeconds();
 	}
 }
 
+const baseUrl = 'http://www.astropical.space/astrodb/api-exo.php?which=name&limit=alf%20Cen%20B%20b&format=json'
+
 function alphaTime() {
+	sentAjaxRequest(baseUrl, alphaTimeUpdate);
+}
+
+function sentAjaxRequest(url, funct) {
+	let xhr = new XMLHttpRequest() || new ActiveXObject('Microsoft.HTTPRequest');
+
+	xhr.onreadystatechange = function() {
+		if(xhr.readyState == 4 && xhr.status == 200) {
+			funct(xhr);
+		}
+	}
+
+	xhr.open('GET', url, true);
+
+	xhr.send();
+}
+
+function alphaTimeUpdate(xhr) {
+	let acb_response = JSON.parse(xhr.response)['exoplanets'];
+	let period = Number(acb_response[0]['per']);
+	console.log('Period: ' + period);
 	let acb_time = document.getElementById('acb_time');
 	const time = new Date();
-	if(time.getHours() < 10) {
-		acb_time.innerText = '0' + time.getHours() + ':';
+	let alpha_time = new Date(time.getTime()/((time.getFullYear()-1970)*period));
+	if(alpha_time.getHours() < 10) {
+		acb_time.innerText = '0' + alpha_time.getHours() + ':';
 	} else {
-		acb_time.innerText = time.getHours() + ':';
+		acb_time.innerText = alpha_time.getHours() + ':';
 	}
-	if(time.getMinutes() < 10) {
-		acb_time.innerText += '0' + time.getMinutes() + ':'
+	if(alpha_time.getMinutes() < 10) {
+		acb_time.innerText += '0' + alpha_time.getMinutes() + ':'
 	} else {
-		acb_time.innerText += time.getMinutes() + ':';
-	} if(time.getSeconds()<10) {
-		acb_time.innerText += '0' + time.getSeconds();
+		acb_time.innerText += alpha_time.getMinutes() + ':';
+	} if(alpha_time.getSeconds()<10) {
+		acb_time.innerText += '0' + alpha_time.getSeconds();
 	} else {
-		acb_time.innerText += time.getSeconds();
+		acb_time.innerText += alpha_time.getSeconds();
 	}
 }
 
