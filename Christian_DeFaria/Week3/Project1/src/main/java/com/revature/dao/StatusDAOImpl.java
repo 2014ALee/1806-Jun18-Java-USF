@@ -8,7 +8,6 @@ import java.sql.Statement;
 import java.util.ArrayList;
 
 import com.revature.models.Status;
-import com.revature.models.Type;
 import com.revature.util.ConnectionFactory;
 
 public class StatusDAOImpl implements StatusDAO {
@@ -83,7 +82,33 @@ public class StatusDAOImpl implements StatusDAO {
 
 	@Override
 	public Status addStatus(Status s) {
-		return s;
+		Status stat = new Status();
+		try (Connection conn = ConnectionFactory.getInstance().getConnection()) {
+			
+			String sql = "INSERT INTO ers_reimbursement_status (reimb_status) VALUES (?)";
+			
+			String[] keys = new String[1];
+			keys[0] = "reimb_status_id";
+			
+			PreparedStatement pstmt = conn.prepareStatement(sql, keys);
+			pstmt.setString(1, s.getStatus());
+			
+			int rowsUpdated = pstmt.executeUpdate();
+			
+			ResultSet rs = pstmt.getGeneratedKeys();
+			
+			if(rowsUpdated != 0) {
+				while(rs.next()) {
+					stat.setStatus_id(rs.getInt(1));
+					stat.setStatus(s.getStatus());
+					return stat;
+				}
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 }

@@ -84,7 +84,33 @@ public class TypeDAOImpl implements TypeDAO {
 
 	@Override
 	public Type addType(Type t) {
-		return t;
+		Type type = new Type();
+		try (Connection conn = ConnectionFactory.getInstance().getConnection()) {
+			
+			String sql = "INSERT INTO ers_reimbursement_type (reimb_type) VALUES (?)";
+			
+			String[] keys = new String[1];
+			keys[0] = "reimb_type_id";
+			
+			PreparedStatement pstmt = conn.prepareStatement(sql, keys);
+			pstmt.setString(1, t.getType());
+			
+			int rowsUpdated = pstmt.executeUpdate();
+			
+			ResultSet rs = pstmt.getGeneratedKeys();
+			
+			if(rowsUpdated != 0) {
+				while(rs.next()) {
+					type.setType_id(rs.getInt(1));
+					type.setType(t.getType());
+					return type;
+				}
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 }

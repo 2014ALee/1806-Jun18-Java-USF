@@ -8,7 +8,6 @@ import java.sql.Statement;
 import java.util.ArrayList;
 
 import com.revature.models.Role;
-import com.revature.models.Type;
 import com.revature.util.ConnectionFactory;
 
 public class RoleDAOImpl implements RoleDAO {
@@ -83,7 +82,33 @@ public class RoleDAOImpl implements RoleDAO {
 
 	@Override
 	public Role addRole(Role r) {
-		return r;
+		Role role = new Role();
+		try (Connection conn = ConnectionFactory.getInstance().getConnection()) {
+			
+			String sql = "INSERT INTO ers_user_roles (user_role) VALUES (?)";
+			
+			String[] keys = new String[1];
+			keys[0] = "ers_user_role_id";
+			
+			PreparedStatement pstmt = conn.prepareStatement(sql, keys);
+			pstmt.setString(1, r.getRole());
+			
+			int rowsUpdated = pstmt.executeUpdate();
+			
+			ResultSet rs = pstmt.getGeneratedKeys();
+			
+			if(rowsUpdated != 0) {
+				while(rs.next()) {
+					role.setRole_id(rs.getInt(1));
+					role.setRole(r.getRole());
+					return role;
+				}
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 }
