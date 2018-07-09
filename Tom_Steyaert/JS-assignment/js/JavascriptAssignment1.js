@@ -208,7 +208,9 @@ return true;
 //equivArr([4,2,8,4],[7,5,4,2,8]) = false
 
 function sameArrays(arr1, arr2){
-arr1 = arr1.soro
+arr1.sort(function(a,b){
+    return b - a;
+})
 
 if(arr1.length!=arr2.length){
     return false;
