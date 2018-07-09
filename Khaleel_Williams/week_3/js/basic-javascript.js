@@ -17,13 +17,17 @@ function isLeapYear(year) {
 /*
     2. Create a function that checks for a valid email format.
 */
-let email = "john@gmail.com";
+let email = "john@gmailcom";
 function checkEmailForm(email){
+    let reg = /.@\w+\.\w+/;
+    if(reg.test(email)){
+        return true;
+    } else {
+        return false
+    }
     
-    
-    return (email);
 }
-
+console.log(checkEmailForm(email));
 
 /*
     3.  Write a JavaScript function to remove a character at the specified position
@@ -261,4 +265,4 @@ function equivArr(array, array2){
 function tictactoe(array){
 
 }
-console.log(tictactoe([["X", "X", "X"],["O", "O", "O"],["X", "O", "X"]]));
+//console.log(tictactoe([["X", "X", "X"],["O", "O", "O"],["X", "O", "X"]]));
