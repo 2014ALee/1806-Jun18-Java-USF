@@ -1,6 +1,5 @@
 package com.revature.util;
 
-
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
@@ -34,7 +33,7 @@ public class ConnectionFactory {
 
 		try {
 
-			prop.load(new FileReader("C:\\Users\\Tom Steyaert\\1806-Jun18-Java-USF\\EmployeeReimbursementSystem"));
+			prop.load(new FileReader("C:\\Users\\Tom Steyaert\\1806-Jun18-Java-USF\\Bank_Project\\src\\main\\resources\\bank_application.properties"));
 			Class.forName(prop.getProperty("driver"));
 
 			con = DriverManager.getConnection(
