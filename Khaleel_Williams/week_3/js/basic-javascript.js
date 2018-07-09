@@ -27,7 +27,7 @@ function checkEmailForm(email){
     }
     
 }
-console.log(checkEmailForm(email));
+//console.log(checkEmailForm(email));
 
 /*
     3.  Write a JavaScript function to remove a character at the specified position
@@ -263,6 +263,60 @@ function equivArr(array, array2){
 */
 
 function tictactoe(array){
+ let ThreeInARow = 0;
 
+ let top = Array(array[0]);
+ let middle = Array(array[1]);
+ let bottom = Array(array[2]);
+
+ let left = [array[0][0], array[1][0], array [2][0]];
+ let vmiddle = [array[0][1], array[1][1], array [2][1]];
+ let right = [array[0][2], array[1][2], array [2][2]];
+
+ let diagonalLeftDown = [array[0][0], array[1][1], array [2][2]];
+ let diagonalRigthDown = [array[0][2], array[1][1], array [2][0]];
+
+ let possibleWins = [top, middle, bottom, left, vmiddle, right, diagonalRigthDown, diagonalLeftDown];
+
+ for(let i = 0; i < possibleWins.length ; i++){
+     let X = possibleWins[i].filter(checkForX);
+     let O = possibleWins[i].filter(checkForO);
+    
+    if (X.length == '3'){
+        ThreeInARow++;
+    } else if (O.length == '3'){
+        ThreeInARow++;
+        }
+    console.log(ThreeInARow);
+ }
+
+//  for (let Array (wins) in possibleWins){
+//      let X = wins.filter(checkForX);
+//      let O = wins.filter(checkForO);
+//      if (X.length === 3){
+//         ThreeInARow++;
+//      } else if (O.length === 3){
+//          ThreeInARow++;
+//      }
+//      console.log(ThreeInARow);
+//  }
+
+ let topFilteredForX = top.filter(checkForX);
+ let topFilteredForO = top.filter(checkForO);
+
+ let middleFilteredForX = top.filter(checkForX);
+ let middleFilteredForO = top.filter(checkForO);
+
+ let bottomFilteredForX = top.filter(checkForX);
+ let bottomFilteredForO = top.filter(checkForO);
 }
-//console.log(tictactoe([["X", "X", "X"],["O", "O", "O"],["X", "O", "X"]]));
+console.log(tictactoe([["X", "X", "X"],["O", "O", "O"],["X", "O", "X"]]));
+
+
+function checkForX(checkMe){
+    return checkMe === "X";
+}
+
+function checkForO(checkMe){
+    return checkMe === "O";
+}
