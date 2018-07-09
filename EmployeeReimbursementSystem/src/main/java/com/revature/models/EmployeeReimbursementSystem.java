@@ -1,7 +1,5 @@
 package com.revature.models;
 
-import java.util.Date;
-
 import com.revature.models.interfaces.EmployeeReimbursementSystemInterface;
 
 public class EmployeeReimbursementSystem implements EmployeeReimbursementSystemInterface {

@@ -1,6 +1,5 @@
 package com.revature.DAO;
 
-import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -16,6 +15,7 @@ import com.revature.util.ConnectionFactory;
 public class UserDAOImpl implements UserDAO{
 
 	//we do this upon account creation
+	//it only needs to be accessed from within this class, so it's private
 	private boolean addToRoleTable(User newUser) {
 
 		try(Connection con = ConnectionFactory.getInstance().getConnection();){
