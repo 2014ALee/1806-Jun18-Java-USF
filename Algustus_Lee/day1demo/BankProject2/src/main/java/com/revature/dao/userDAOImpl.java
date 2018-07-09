@@ -17,9 +17,9 @@ public class userDAOImpl implements userDAO {
 
 	@Override
 	public userData createUser(userData user) {
-		userData newUser = new userData(); 
+		userData newUser = user; 
 		try(Connection conn = ConnectionFactory.getInstanceMethod().getConnection()){
-			String sql = "{CALL register_user(?,?,?,?,?)}";// 1:firstname 2:lastname 3:username 4:password 5:email
+			String sql = "{CALL register_user(?,?,?,?,?)}";
 			CallableStatement cstmt = conn.prepareCall(sql);
 
 			cstmt.setString(1, user.getFirstName());
@@ -38,17 +38,15 @@ public class userDAOImpl implements userDAO {
 
 	@Override
 	public boolean checkForUser(userData user) {
-		userData newUser = new userData();
 		try(Connection conn = ConnectionFactory.getInstanceMethod().getConnection()){
 			String sql = "{CALL check_username(?,?)}"; 
 			CallableStatement cstmt = conn.prepareCall(sql);
 
-			cstmt.setString(1, newUser.getUserName());
+			cstmt.setString(1, user.getUserName());
 			cstmt.registerOutParameter(2, OracleTypes.INTEGER);
 			cstmt.executeQuery();
 			ResultSet rs = cstmt.executeQuery();
-			System.out.println("output is: "+ (Integer) cstmt.getObject(2));
-			System.out.println((Integer) cstmt.getObject(2)== (Integer) 0);
+			System.out.println("Validating Username...");
 			if((Integer)cstmt.getObject(2)== (Integer)0) {
 				return true; //There should be no selection when the usernames are alike. therefore the resultset
 				//should be 0
@@ -62,17 +60,15 @@ public class userDAOImpl implements userDAO {
 
 	@Override
 	public boolean checkForEmails(userData user) {
-		userData newUser = new userData();
 		try(Connection conn = ConnectionFactory.getInstanceMethod().getConnection()){
 			String sql = "{CALL check_email(?,?)}"; 
 			CallableStatement cstmt = conn.prepareCall(sql);
 
-			cstmt.setString(1, newUser.getEmail());
+			cstmt.setString(1, user.getEmail());
 			cstmt.registerOutParameter(2, OracleTypes.INTEGER);
 			cstmt.executeQuery();
 			ResultSet rs = cstmt.executeQuery();
-			System.out.println("output is: "+ (Integer) cstmt.getObject(2));
-			System.out.println((Integer) cstmt.getObject(2)== (Integer) 0);
+			System.out.println("Validating E-mail...");
 			if((Integer)cstmt.getObject(2)== (Integer)0) {
 				return true; //There should be no selection when the emails are alike. therefore the resultset
 				//should be 0
@@ -111,6 +107,7 @@ public class userDAOImpl implements userDAO {
 	@Override
 	public double withdraw(userData theUser, double withdrawAmount) {
 		double initAmount = theUser.getBalance();
+		if(withdrawAmount >= 0) {
 		if((initAmount - withdrawAmount) > 0) {
 			theUser.setBalance(initAmount-withdrawAmount);
 			System.out.println("==========$"+withdrawAmount+"====WITHDRAWN.========");
@@ -124,9 +121,6 @@ public class userDAOImpl implements userDAO {
 				int RowsUpdated = pstmt.executeUpdate();
 				ResultSet rs = pstmt.executeQuery();
 				if(RowsUpdated != 0) {
-//					while(rs.next()) {
-//						theUser
-//					}
 					conn.commit();
 				}
 
@@ -138,6 +132,9 @@ public class userDAOImpl implements userDAO {
 		}
 		else {
 			System.out.println("===============================Insufficient Funds===============================");;
+		}
+		}else {
+			System.out.println("==========================Invalid Input===========================");
 		}
 		return theUser.getBalance();
 	}
@@ -158,9 +155,6 @@ public class userDAOImpl implements userDAO {
 				int RowsUpdated = pstmt.executeUpdate();
 				ResultSet rs = pstmt.executeQuery();
 				if(RowsUpdated != 0) {
-					//					while(rs.next()) {
-					//						theUser.setBalance(rs);
-					//					}
 					conn.commit();
 				}
 
@@ -176,5 +170,46 @@ public class userDAOImpl implements userDAO {
 		}
 	}
 
+	@Override
+	public boolean validLogin(String userName, String password) {
+		System.out.println("=======================Establishing Connection=======================");
+		try(Connection conn = ConnectionFactory.getInstanceMethod().getConnection()){
+			String sql = "SELECT * FROM ALL_USERS WHERE username = ? AND pass_word = ?";
+			PreparedStatement pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, userName);
+			pstmt.setString(2, password);
+			ResultSet rs = pstmt.executeQuery();
+			int rowCount = 0;
+			while(rs.next()) {
+				rowCount++;
+			}
+			if(rowCount != 1){
+				return false;
+			}
+			else {
+				System.out.println("==================Connected==================");
+				return true;
+			}
+		} catch (SQLException e) {
+			System.out.println("exception "+e+" was seen here");
+			e.printStackTrace();
+		}
+		System.out.println("everything was ignored.");
+		return false;
+	}
+
+	@Override
+	public userData clearUser(userData user) {
+		user = null;
+		try(Connection conn = ConnectionFactory.getInstanceMethod().getConnection()){
+			String sql = "DELETE FROM ALL_USERS WHERE username = 'TEST' AND pass_word = 'TEST' AND first_name = 'APP' AND last_name = 'TESTER' AND email = 'Popquiz@testmail.org'";
+			Statement stmt = conn.createStatement();
+			ResultSet rs = stmt.executeQuery(sql);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return user;
+	}
 
 }

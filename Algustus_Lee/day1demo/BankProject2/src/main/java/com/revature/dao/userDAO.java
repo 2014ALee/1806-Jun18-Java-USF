@@ -9,5 +9,7 @@ public interface userDAO {
 	public userData setUser(String username, userData user);
 	public double withdraw(userData theUser, double withdrawAmount);
 	public double deposit(userData theUser, double depositAmount);
+	public boolean validLogin(String userName, String password);
+	public userData clearUser(userData user);
 
 }
