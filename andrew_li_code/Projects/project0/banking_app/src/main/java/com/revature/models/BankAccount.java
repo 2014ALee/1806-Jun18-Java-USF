@@ -105,6 +105,10 @@ public class BankAccount {
 		if (amount < 0) {
 			throw new NegativeAmountException();
 		}
+		long newBalance = this.pennies + Math.round(100 * amount);
+		if (newBalance < 0) {
+			return false;
+		}
 		else {
 			this.pennies += Math.round(100 * amount);
 			return true;

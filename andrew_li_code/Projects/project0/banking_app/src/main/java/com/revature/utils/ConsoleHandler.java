@@ -24,7 +24,12 @@ public class ConsoleHandler {
 			 */
 			try {
 				output = br.readLine();
-				needValidInput = false;
+				if (output.trim().length() > 0) {
+					needValidInput = false;
+				}
+				else {
+					System.out.println("Invalid input! Input must have characters other than spaces!");
+				}
 				System.out.println("");
 			} catch (IOException e) {
 				System.out.println("");
@@ -67,11 +72,19 @@ public class ConsoleHandler {
 			String userInput = null;
 			try {
 				userInput = br.readLine();
+				if (userInput.trim().length() == 0) {
+					System.out.println("Invalid input! Input must have characters other than spaces!");
+					continue;
+				}
 				output = Double.parseDouble(userInput);
 				if (StringHandler.threeDot(userInput)) {
 					System.out.println("\nPlease include no "
 							+ "more than two digits after a "
 							+ "dot.");
+				}
+				else if (output >= Long.MAX_VALUE) {
+					System.out.println("The amount ("
+							+ userInput + ") exceeds the maximum value.");
 				}
 				else {
 					needValidInput = false;
