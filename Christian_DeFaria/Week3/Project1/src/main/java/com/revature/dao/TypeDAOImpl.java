@@ -84,8 +84,7 @@ public class TypeDAOImpl implements TypeDAO {
 
 	@Override
 	public Type addType(Type t) {
-		Type type = new Type(t.getType());
-		return type;
+		return t;
 	}
 
 }
