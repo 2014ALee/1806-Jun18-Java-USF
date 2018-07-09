@@ -44,7 +44,7 @@ public class ImplementUsers implements UserInterface {
 	@Override
 	public Users getUserByUsername(String username) {
 		
-		Users gotUser = null;
+		Users gotUser = new Users();
 		
 		try(Connection conn = MakeConnection.getConnectionInstance().createConnection()){
 

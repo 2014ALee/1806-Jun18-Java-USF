@@ -1,5 +1,7 @@
 package com.revature.dao;
 
-public class ImplementReimbursement {
+public class ImplementReimbursement implements ReimbursementInterface {
+	
+	
 
 }
