@@ -495,4 +495,4 @@ let xyz = 10;
     URL.
 */
 //var location = 'http://www.google.com';
-let location = 'http://www.google.com';
+//let location = 'http://www.google.com';

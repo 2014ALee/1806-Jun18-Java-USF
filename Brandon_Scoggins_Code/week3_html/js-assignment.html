@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>JS - Assignment</title>
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" 
+    integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" 
+    integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" 
+    crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" 
+    integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" 
+    crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" 
+    integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T" 
+    crossorigin="anonymous"></script>
+
+    <link rel="stylesheet" href="css/js-assignment.css">
+</head>
+<body>
+    <div class="jumbotron container">
+        <h1><div class="row">
+            <div class="col-md-4">JS Assignment</div>
+            <div class="col-md-4"></div>
+            <div class="col-md-4">Brandon Scoggins</div>
+            </div>
+        </h1>
+        <hr>
+        <div>
+            <h3>Problem 1: Leap Year Identifier</h3>
+            <input type="number" id="leapYearInput" class="form-control" placeholder="Enter a year..">
+            <br>
+            <button id="checkIsLeapYear" class="btn btn-primary">Check if leap year!</button>
+            <br>
+            <br>
+            <h4><b>Answer = <span id="leapYearDisplay"></span></b></h4>
+        </div>
+        <br>
+        <hr>
+        <br>
+        <div>
+            <h3>Problem 2: Valid Email Format Checker</h3>
+            <input type="email" id="emailInput" class="form-control" placeholder="Enter an email..">
+            <br>
+            <button id="checkIsValidEmail" class="btn btn-primary">Check if valid!</button>
+            <br>
+            <br>
+            <h4><b>Answer = <span id="validEmailDisplay"></span></b></h4>
+        </div>
+        <br>
+        <hr>
+        <br>
+        <div>
+            <h3>Problem 3: Remove Character From String At Given Position</h3>
+            <input type="text" id="stringInput" class="form-control" placeholder="Enter some text..">
+            <br>
+            <div class="row">
+                <div class="col-md-3">
+                    <input type="number" id="position" class="form-control" placeholder="Index to remove..">
+                </div>
+            </div>
+            <br>
+            <button id="removeCharacter" class="btn btn-primary">Remove that character!</button>
+            <br>
+            <br>
+            <h4><b>Answer = <span id="newStringDisplay"></span></b></h4>
+        </div>
+        <br>
+        <hr>
+        <br>
+        <div>
+            <h3>Problem 4: Remove 'Script' From A String</h3>
+            <input type="text" id="scriptInput" class="form-control" placeholder="Enter some text..">
+            <br>
+            <button id="checkForScript" class="btn btn-primary">Remove 'Script'!</button>
+            <br>
+            <br>
+            <h4><b>Answer = <span id="scriptDisplay"></span></b></h4>
+        </div>
+        <br>
+        <hr>
+        <br>
+        <div>
+            <h3>Problem 5: Shifting Alphabet</h3>
+            <input type="text" id="stringAlphabetInput" class="form-control" placeholder="Enter some text..">
+            <br>
+            <button id="shiftAlphabet" class="btn btn-primary">Shift The Letters!</button>
+            <br>
+            <br>
+            <h4><b>Answer = <span id="shiftAlphabetDisplay"></span></b></h4>
+        </div>
+        <br>
+        <hr>
+        <br>
+        <div>
+            <h3>Problem 6: Vowel Counting</h3>
+            <input type="text" id="vowelCountingInput" class="form-control" placeholder="Enter some text..">
+            <br>
+            <button id="countVowels" class="btn btn-primary">Count the vowels!</button>
+            <br>
+            <br>
+            <h4><b>Answer = <span id="vowelCountDisplay"></span></b></h4>
+        </div>
+        <br>
+        <hr>
+        <br>
+        <div>
+            <h3>Problem 7: Reverse Array</h3>
+            <br>
+            <h4><b>Original Array = <span id="originalArray"></span></b></h4>
+            <br>
+            <button id="reverseArray" class="btn btn-primary">Reverse it!</button>
+            <br>
+            <br>
+            <h4><b>Reversed Array = <span id="reversedArrayDisplay"></span></b></h4>
+        </div>
+        <br>
+        <hr>
+        <br>
+        <div>
+            <h3>Problem 8: Add Arrays</h3>
+            <br>
+            <h4><b>First Array = <span id="firstArray"></span></b></h4>
+            <br>
+            <h4><b>Second Array = <span id="secondArray"></span></b></h4>
+            <br>
+            <button id="addArrays" class="btn btn-primary">Add em up!</button>
+            <br>
+            <br>
+            <h4><b>Summed Array = <span id="summedArrayDisplay"></span></b></h4>
+        </div>
+        <br>
+        <hr>
+        <br>
+        <div>
+            <h3>Problem 9: Longest String in an Array</h3>
+            <br>
+            <h4><b>String Array = <span id="stringArray"></span></b></h4>
+            <br>
+            <button id="findLongestStringArray" class="btn btn-primary">Find the longest string!</button>
+            <br>
+            <br>
+            <h4><b>Longest String = <span id="longestStringDisplay"></span></b></h4>
+        </div>
+        <br>
+        <hr>
+        <br>
+        <div>
+            <h3>Problem 10: Area Of A Triangle From Its Sides</h3>
+            <br>
+            <div class="row">
+                <div class="col-md-2">
+                    <input type="number" id="side1" class="form-control" placeholder="Side 1..">
+                </div>
+                <div class="col-md-2">
+                    <input type="number" id="side2" class="form-control" placeholder="Side 2..">
+                </div>
+                <div class="col-md-2">
+                    <input type="number" id="side3" class="form-control" placeholder="Side 3.."> 
+                </div>
+            </div>
+            <br>
+            <button id="findArea" class="btn btn-primary">Calculate Area!</button>
+            <br>
+            <br>
+            <h4><b>Answer = <span id="areaDisplay"></span></b></h4>
+        </div>
+        <br>
+        <hr>
+        <br>
+        <div>
+            <h3>Problem 11: Similar Polygons</h3>
+            <br>
+            <h4><b>First Array Of Side Lengths = <span id="firstPolygonArray"></span></b></h4>
+            <br>
+            <h4><b>Second Array Of Side Lengths = <span id="secondPolygonArray"></span></b></h4>
+            <br>
+            <button id="checkSimilarPolygons" class="btn btn-primary">Are they similar?!</button>
+            <br>
+            <br>
+            <h4><b>Answer = <span id="polygonAnswerDisplay"></span></b></h4>
+        </div>
+        <br>
+        <hr>
+        <br>
+        <div>
+            <h3>Problem 12: Same Array Contents</h3>
+            <br>
+            <h4><b>First Array = <span id="firstArrayContents"></span></b></h4>
+            <br>
+            <h4><b>Second Array = <span id="secondArrayContents"></span></b></h4>
+            <br>
+            <button id="checkArrayContents" class="btn btn-primary">Check those contents!</button>
+            <br>
+            <br>
+            <h4><b>Answer = <span id="arrayContentsDisplay"></span></b></h4>
+        </div>
+        <br>
+        <hr>
+        <br>
+        <div>
+            <h3>Problem 13: Tic-Tac-Toe</h3>
+            <br>
+            <div class="row">
+                <div class="col-md-3">
+                    <h4><b>Board State  = </b></h4>
+                </div>
+                <div class="col-md-3">
+                    <h4><b><span id="firstRow"></span></b></h4>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-3">
+                    <h4><b></b></h4>
+                </div>
+                <div class="col-md-3">
+                    <h4><b><span id="secondRow"></span></b></h4>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-3">
+                    <h4><b></b></h4>
+                </div>
+                <div class="col-md-3">
+                    <h4><b><span id="thirdRow"></span></b></h4>
+                </div>
+            </div>
+            <br>
+            <br>
+            <button id="evaluateBoard" class="btn btn-primary">Evaluate Game!</button>
+            <br>
+            <br>
+            <h4><b>Winner = <span id="winnerDisplay"></span></b></h4>
+        </div>
+        
+    </div>
+
+    <script src="js/js-assignment.js"></script>
+</body>
+</html>

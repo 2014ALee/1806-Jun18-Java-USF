@@ -693,8 +693,15 @@ public class BankUserInterfaceDriver {
 
 	private static void updateEmail(User activeUser, int activeAccountId) {
 
-		System.out.println("Enter your new email.");
-		String input = getStringInput();
+		do {
+			System.out.println("Enter your new email.");
+			input = getStringInput();
+			
+			if(input.length() > 255) {
+				System.out.println("\nMax character length exceeded. Please try again.\n");
+			}
+		}while(input.length() > 255);
+		
 		boolean emailAvailable = true;
 
 		System.out.println("Confirm your new email.");
@@ -724,8 +731,14 @@ public class BankUserInterfaceDriver {
 
 	private static void updatePassWord(User activeUser, int activeAccountId) {
 
-		System.out.println("Enter your new password.");
-		String input = getStringInput();
+		do {
+			System.out.println("Enter your new password.");
+			input = getStringInput();
+			
+			if(input.length() > 20) {
+				System.out.println("\nMax character length exceeded. Please try again.\n");
+			}
+		}while(input.length() > 20);
 
 		System.out.println("Confirm your new password.");
 		if(!input.equals(getStringInput())) {
@@ -740,8 +753,15 @@ public class BankUserInterfaceDriver {
 
 	private static void updateUserName(User activeUser, int activeAccountId) {
 
-		System.out.println("Enter your new username.");
-		String input = getStringInput();
+		do {
+			System.out.println("Enter your new username.");
+			input = getStringInput();
+			
+			if(input.length() > 20) {
+				System.out.println("\nMax character length exceeded. Please try again.\n");
+			}
+		}while(input.length() > 20);
+		
 		boolean userNameAvailable = true;
 
 		System.out.println("Confirm your new username.");
@@ -771,8 +791,14 @@ public class BankUserInterfaceDriver {
 
 	private static void updateLastName(User activeUser, int activeAccountId) {
 
-		System.out.println("Enter your new last name.");
-		String input = getStringInput();
+		do {
+			System.out.println("Enter your new last name.");
+			input = getStringInput();
+			
+			if(input.length() > 20) {
+				System.out.println("\nMax character length exceeded. Please try again.\n");
+			}
+		}while(input.length() > 20);
 
 		System.out.println("Confirm your new last name.");
 		if(!input.equals(getStringInput())) {
@@ -787,8 +813,14 @@ public class BankUserInterfaceDriver {
 
 	private static void updateFirstName(User activeUser, int activeAccountId) {
 
-		System.out.println("Enter your new first name.");
-		String input = getStringInput();
+		do {
+			System.out.println("Enter your new first name.");
+			input = getStringInput();
+			
+			if(input.length() > 20) {
+				System.out.println("\nMax character length exceeded. Please try again.\n");
+			}
+		}while(input.length() > 20);
 
 		System.out.println("Confirm your new first name.");
 		if(!input.equals(getStringInput())) {
@@ -1056,8 +1088,14 @@ public class BankUserInterfaceDriver {
 
 		System.out.println("To register a new user, please enter a username, email address and password\n");
 
-		System.out.println("Username: ");
-		userName = getStringInput();
+		do {
+			System.out.println("Username: ");
+			userName = getStringInput();
+			
+			if(userName.length() > 20) {
+				System.out.println("\nMax character length exceeded. Please try again.\n");
+			}
+		}while(userName.length() > 20);
 
 		if (userDAO.userExist(userName)) {
 			System.out.println("\nThat username already exist. Please try again.\n");	 		
@@ -1069,8 +1107,14 @@ public class BankUserInterfaceDriver {
 		if(!isUnique)
 			displayUnLoggedInMenu();
 
-		System.out.println("Email: ");
-		email = getStringInput();
+		do {
+			System.out.println("Email: ");
+			email = getStringInput();
+			
+			if(email.length() > 255) {
+				System.out.println("\nMax character length exceeded. Please try again.\n");
+			}
+		}while(email.length() > 255);
 
 		if (userDAO.userExist(email)) {
 			System.out.println("\nThat email already exist. Please try again.\n");	 		
