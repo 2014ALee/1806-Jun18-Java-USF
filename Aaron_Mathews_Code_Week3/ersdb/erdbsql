@@ -1,0 +1,48 @@
+CREATE TABLE roles (
+ers_user_role_id NUMBER PRIMARY KEY,
+user_role VARCHAR2(10) NOT NULL
+)
+
+CREATE TABLE ers_users (
+ers_users_id NUMBER PRIMARY KEY,
+ers_username VARCHAR2(50) UNIQUE,
+ers_password VARCHAR2(50) NOT NULL,
+user_first_name VARCHAR2(100) NOT NULL,
+user_last_name VARCHAR2(100) NOT NULL,
+user_email VARCHAR2(150) UNIQUE,
+user_role_id NUMBER NOT NULL,
+CONSTRAINT FK_UserRole FOREIGN KEY (user_role_id) REFERENCES 
+roles(ers_user_role_id)
+ON DELETE CASCADE
+)
+
+CREATE TABLE ers_reimbursement_type (
+reimb_type_id NUMBER PRIMARY KEY,
+reimb_type VARCHAR2(10) NOT NULL
+)
+
+CREATE TABLE ers_reimbursement_status (
+reimb_status_id NUMBER PRIMARY KEY,
+reimb_status VARCHAR2(10) NOT NULL
+)
+
+CREATE TABLE ers_reimbursement (
+reimb_id NUMBER PRIMARY KEY,
+reimb_amount NUMBER NOT NULL,
+reimb_submitted TIMESTAMP NOT NULL,
+reimb_resolved TIMESTAMP,
+reimb_description VARCHAR2(250) NOT NULL,
+reimb_receipt BLOB,
+reimb_author NUMBER NOT NULL,
+reimb_resolver NUMBER,
+reimb_status_id NUMBER NOT NULL,
+reimb_type_id NUMBER NOT NULL,
+CONSTRAINT FK_AuthorId  FOREIGN KEY (reimb_author) REFERENCES ers_users(ers_users_id)
+ON DELETE CASCADE,
+CONSTRAINT FK_ResolverId  FOREIGN KEY (reimb_resolver) REFERENCES ers_users(ers_users_id)
+ON DELETE CASCADE,
+CONSTRAINT FK_StatusId  FOREIGN KEY (reimb_status_id) REFERENCES ers_reimbursement_status(reimb_status_id)
+ON DELETE CASCADE,
+CONSTRAINT FK_TypeId  FOREIGN KEY (reimb_type_id) REFERENCES ers_reimbursement_type(reimb_type_id)
+ON DELETE CASCADE
+)
