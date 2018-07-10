@@ -263,11 +263,12 @@ function equivArr(array, array2){
 */
 
 function tictactoe(array){
- let ThreeInARow = 0;
+ let threeInARow = 0;
+ let whoWon; 
 
- let top = Array(array[0]);
- let middle = Array(array[1]);
- let bottom = Array(array[2]);
+ let top = array[0];
+ let middle = array[1];
+ let bottom = array[2];
 
  let left = [array[0][0], array[1][0], array [2][0]];
  let vmiddle = [array[0][1], array[1][1], array [2][1]];
@@ -282,35 +283,26 @@ function tictactoe(array){
      let X = possibleWins[i].filter(checkForX);
      let O = possibleWins[i].filter(checkForO);
     
-    if (X.length == '3'){
-        ThreeInARow++;
-    } else if (O.length == '3'){
-        ThreeInARow++;
-        }
-    console.log(ThreeInARow);
+    if (X.length === 3){
+        threeInARow += 1;
+        whoWon = 'X'
+    } else if (O.length === 3){
+        threeInARow += 1;
+        whoWon = 'O'
+    }
+  
  }
 
-//  for (let Array (wins) in possibleWins){
-//      let X = wins.filter(checkForX);
-//      let O = wins.filter(checkForO);
-//      if (X.length === 3){
-//         ThreeInARow++;
-//      } else if (O.length === 3){
-//          ThreeInARow++;
-//      }
-//      console.log(ThreeInARow);
-//  }
+ if (threeInARow == 0){
+     console.log("The game ended in a tie")
+ } else if (threeInARow == 1){
+     console.log(whoWon + " is the winner")
+ } else {
+     console.log("Invalid game")
+ }
 
- let topFilteredForX = top.filter(checkForX);
- let topFilteredForO = top.filter(checkForO);
-
- let middleFilteredForX = top.filter(checkForX);
- let middleFilteredForO = top.filter(checkForO);
-
- let bottomFilteredForX = top.filter(checkForX);
- let bottomFilteredForO = top.filter(checkForO);
 }
-console.log(tictactoe([["X", "X", "X"],["O", "O", "O"],["X", "O", "X"]]));
+tictactoe([["X", "X", "O"],["O", "O", "O"],["X", "O", "X"]]);
 
 
 function checkForX(checkMe){
