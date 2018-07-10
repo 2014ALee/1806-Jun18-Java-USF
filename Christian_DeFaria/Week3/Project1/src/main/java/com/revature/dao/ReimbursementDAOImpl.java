@@ -4,9 +4,11 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 
 import com.revature.models.Reimbursement;
+import com.revature.models.Role;
 import com.revature.models.Users;
 import com.revature.util.ConnectionFactory;
 
@@ -172,6 +174,68 @@ public class ReimbursementDAOImpl implements ReimbursementDAO {
 			e.printStackTrace();
 		}
 		return null;
+	}
+
+	@Override
+	public ArrayList<Reimbursement> getAllReimbursements() {
+		ArrayList<Reimbursement> reimbs = new ArrayList<>();
+		try (Connection conn = ConnectionFactory.getInstance().getConnection()) {
+			
+			String sql = "SELECT * FROM ers_reimbursement";
+			
+			Statement stmt = conn.createStatement();
+			ResultSet rs = stmt.executeQuery(sql);
+			
+			while(rs.next()) {
+				Reimbursement temp = new Reimbursement();
+				temp.setReimbursement_id(rs.getInt(1));
+				temp.setAmount(rs.getInt(2));
+				temp.setSubmitted(rs.getDate(3));
+				temp.setResolved(rs.getDate(4));
+				temp.setDescription(rs.getString(5));
+				temp.setReceipt(rs.getBlob(6));
+				temp.setAuthor(rs.getInt(7));
+				temp.setResolver(rs.getInt(8));
+				temp.setStatus_id(rs.getInt(9));
+				temp.setType_id(rs.getInt(10));
+				reimbs.add(temp);
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return reimbs;
+	}
+	
+	public ArrayList<Reimbursement> getReimbsByStatus(int stat) {
+		ArrayList<Reimbursement> reimbs = new ArrayList<>();
+		try (Connection conn = ConnectionFactory.getInstance().getConnection()) {
+			
+			String sql = "SELECT * FROM ers_reimbursement WHERE reimb_status_id = ?";
+			
+			PreparedStatement pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, stat);
+			
+			ResultSet rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				Reimbursement r = new Reimbursement();
+				r.setAmount(rs.getInt(2));
+				r.setSubmitted(rs.getDate(3));
+				r.setResolved(rs.getDate(4));
+				r.setDescription(rs.getString(5));
+				r.setReceipt(rs.getBlob(6));
+				r.setAuthor(rs.getInt(7));
+				r.setResolver(rs.getInt(8));
+				r.setStatus_id(rs.getInt(9));
+				r.setType_id(rs.getInt(10));
+				reimbs.add(r);
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return reimbs;
 	}
 
 }

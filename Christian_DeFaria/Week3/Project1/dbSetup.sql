@@ -156,10 +156,17 @@ BEGIN
 END;
 /
 
+INSERT INTO ers_reimbursement_type (reimb_type) VALUES ('LODGING');
+INSERT INTO ers_reimbursement_type (reimb_type) VALUES ('TRAVEL');
+INSERT INTO ers_reimbursement_type (reimb_type) VALUES ('FOOD');
+INSERT INTO ers_reimbursement_type (reimb_type) VALUES ('OTHER');
 
+INSERT INTO ers_user_roles (user_role) VALUES ('MANAGER');
+INSERT INTO ers_user_roles (user_role) VALUES ('REGULAR');
 
+INSERT INTO ers_reimbursement_status (reimb_status) VALUES ('PENDING');
+INSERT INTO ers_reimbursement_status (reimb_status) VALUES ('DENIED');
+INSERT INTO ers_reimbursement_status (reimb_status) VALUES ('APPROVED');
 
-
-
-
+COMMIT;
 
