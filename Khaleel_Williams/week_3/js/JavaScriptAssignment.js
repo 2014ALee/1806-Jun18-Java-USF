@@ -15,9 +15,10 @@ function setHref(){
 */
 function removePluto(){
     let list = document.getElementById('planet');
-    list.remove(3);
+    list[3].setAttribute('disabled', 'disabled')
+    //list.remove(3);
 }
-//removePluto();
+removePluto();
 
 
 /*
@@ -190,5 +191,5 @@ function doMath(){
 */
 
 function walkTheDom(){
-    
+    let root = document.getElementsByTagName('html')
 }
