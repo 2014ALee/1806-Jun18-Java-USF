@@ -46,3 +46,99 @@ ON DELETE CASCADE,
 CONSTRAINT FK_TypeId  FOREIGN KEY (reimb_type_id) REFERENCES ers_reimbursement_type(reimb_type_id)
 ON DELETE CASCADE
 )
+
+commit;
+
+
+CREATE SEQUENCE ers_user_seq
+MINVALUE 1
+MAXVALUE 9999999999
+INCREMENT BY 1
+START WITH 1;
+
+-- Create a trigger that will use art_seq whenever a new row is inserted
+CREATE OR REPLACE TRIGGER ers_user_trigger
+BEFORE INSERT ON ers_users         -- the logic of this trigger will execute BEFORE any insert on the artist table
+FOR EACH ROW                    -- it will do the logic for each row inserted
+
+BEGIN
+    SELECT ers_user_seq.NEXTVAL      -- get the next value from our sequence
+    INTO :new.ers_users_id          -- put that value into the artistid field of the row being inserted
+    FROM dual;                  -- need to use dual because we are not getting the value from any table
+END;
+/
+
+
+CREATE SEQUENCE reimb_seq
+MINVALUE 1
+MAXVALUE 9999999999
+INCREMENT BY 1
+START WITH 1;
+
+-- Create a trigger that will use art_seq whenever a new row is inserted
+CREATE OR REPLACE TRIGGER reimb_trigger
+BEFORE INSERT ON ers_reimbursement         -- the logic of this trigger will execute BEFORE any insert on the artist table
+FOR EACH ROW                    -- it will do the logic for each row inserted
+
+BEGIN
+    SELECT reimb_seq.NEXTVAL      -- get the next value from our sequence
+    INTO :new.reimb_id          -- put that value into the artistid field of the row being inserted
+    FROM dual;                  -- need to use dual because we are not getting the value from any table
+END;
+/
+
+
+CREATE SEQUENCE status_seq
+MINVALUE 1
+MAXVALUE 9999999999
+INCREMENT BY 1
+START WITH 1;
+
+-- Create a trigger that will use art_seq whenever a new row is inserted
+CREATE OR REPLACE TRIGGER status_trigger
+BEFORE INSERT ON ers_reimbursement_status         -- the logic of this trigger will execute BEFORE any insert on the artist table
+FOR EACH ROW                    -- it will do the logic for each row inserted
+
+BEGIN
+    SELECT status_seq.NEXTVAL      -- get the next value from our sequence
+    INTO :new.reimb_status_id          -- put that value into the artistid field of the row being inserted
+    FROM dual;                  -- need to use dual because we are not getting the value from any table
+END;
+/
+
+
+CREATE SEQUENCE type_seq
+MINVALUE 1
+MAXVALUE 9999999999
+INCREMENT BY 1
+START WITH 1;
+
+-- Create a trigger that will use art_seq whenever a new row is inserted
+CREATE OR REPLACE TRIGGER type_trigger
+BEFORE INSERT ON ers_reimbursement_type         -- the logic of this trigger will execute BEFORE any insert on the artist table
+FOR EACH ROW                    -- it will do the logic for each row inserted
+
+BEGIN
+    SELECT type_seq.NEXTVAL      -- get the next value from our sequence
+    INTO :new.reimb_type_id          -- put that value into the artistid field of the row being inserted
+    FROM dual;                  -- need to use dual because we are not getting the value from any table
+END;
+/
+
+INSERT INTO ers_reimbursement_status (reimb_status) VALUES ('Pending');
+
+INSERT INTO ers_reimbursement_status (reimb_status) VALUES ('Approved');
+
+INSERT INTO ers_reimbursement_status (reimb_status) VALUES ('Denied');
+
+commit;
+
+INSERT INTO ers_reimbursement_type (reimb_type) VALUES ('Lodging');
+INSERT INTO ers_reimbursement_type (reimb_type) VALUES ('Travel');
+INSERT INTO ers_reimbursement_type (reimb_type) VALUES ('Food');
+INSERT INTO ers_reimbursement_type (reimb_type) VALUES ('Other');
+
+ALTER TABLE ers_reimbursement
+MODIFY reimb_amount NUMBER (10,2);
+
+commit;
