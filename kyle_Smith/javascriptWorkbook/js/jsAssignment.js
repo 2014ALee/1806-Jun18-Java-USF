@@ -167,7 +167,6 @@ Should have a result for a tie, each winner, or an invalid game.
 function tictactoe(array){
     let countX = countO = countEmpty = countWinX = countWinO = 0;
     let str = 'No Winner Yet';    
-    array.map()
     array.map((a,i) => a.map((a2,i2)=>  {
         if(a2 == 'X') {
             countX+=1;

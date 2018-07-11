@@ -200,14 +200,12 @@ public class UserDAOImpl implements UserDAO{
 	@Override
 	public boolean deleteUser(User user) {
 		try(Connection conn = ConnectionFactory.getInstance().getConnection();){
-			//String sql = "UPDATE Account SET userId = ?, jointAccId = ?, Checking = ?, Savings = ? WHERE AccountId = ?";
 			String sql = "DELETE FROM ERS_USERS WHERE ERS_USERS_ID = ?";
 			String[] keys = new String[1];
 			keys[0] = "ERS_USERS_ID";
 			conn.setAutoCommit(false);
 			PreparedStatement pstmt = conn.prepareStatement(sql, keys);
 			pstmt.setInt(1, user.getUserId());
-			//pstmt.setInt(2, acc.getJointId());
 			int rowsUpdated = pstmt.executeUpdate();
 
 			if(rowsUpdated != 0) {
@@ -220,5 +218,4 @@ public class UserDAOImpl implements UserDAO{
 		}
 		return false;
 	}
-
 }
