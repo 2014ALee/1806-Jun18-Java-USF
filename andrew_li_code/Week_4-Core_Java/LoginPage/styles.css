@@ -1,0 +1,35 @@
+.header {
+	position: fixed;
+	left: 0px;
+	top: 0px;
+	min-height: 170px;
+	min-width: 400px;
+	height: 16%;
+	width: 100%;
+	background-color: #CCCCCC;
+	color: #3333CC;
+	font-family: Arial Black;
+	text-align: center;
+}
+.navbar {
+	position: fixed;
+	left: 0px;
+	top: 16%;
+	height: 84%;
+	width: 16%;
+	min-height: 267px;
+	min-width: 180px;
+	background-color: #555555;
+	color: #AAAAAA;
+}
+.main {
+	position: fixed;
+	left: 16%;
+	top: 16%;
+	height: 84%;
+	width: 84%;
+	min-height: 267px;
+	min-width: 320px;
+	background-color:#AAAAEE;
+	color: #553333;
+}

@@ -13,14 +13,17 @@ public class Tester {
 		ERSUserDAO usrDAO = new ERSUserDAOImplementation();
 		ERSUser andrew = usrDAO.getERSUserByUsername("Andrew");
 		System.out.println(andrew);
-		System.out.println("Requests");
+		System.out.println("Looking for pending requests (should be empty in the beginning...");
 		for (ReimbursementRequest r : reimDAO.getPendingRequests()) {
 			System.out.println(r);
 		}
+		System.out.println("Reimbursement ticket from Andrew.");
 		reimDAO.makeRequest(andrew, 100000000, "Jewelery", 4);
+		System.out.println("Reimbursement ticket from Andrew.");
 		reimDAO.makeRequest(andrew, 100000000, "Jewelery", 4);
+		System.out.println("Reimbursement ticket from Andrew.");
 		reimDAO.makeRequest(andrew, 100000000, "Jewelery", 4);
-		System.out.println("Check requests again.");
+		System.out.println("Looking for pending requests again (this time there should be three)...");
 		ArrayList<ReimbursementRequest> pendings = reimDAO.getPendingRequests();
 		for (ReimbursementRequest r : pendings) {
 			System.out.println(r);
