@@ -172,3 +172,14 @@ function performOperation() {
 
     $("#result").text(result);
 }
+
+// Part 11
+$(document).ready(
+    nodeList = document.querySelectorAll('body'),
+    walkTheDom(nodeList)
+);
+function walkTheDom(nodeList, walkTheDom) {
+    for(i = 0; i < nodeList.length; i++){
+        console.log(nodeList[i]);
+    }
+}
