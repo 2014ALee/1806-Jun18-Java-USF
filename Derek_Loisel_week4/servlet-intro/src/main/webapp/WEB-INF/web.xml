@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
+  <display-name>servlet-intro</display-name>
+ <!-- this is for startup it will look for the files in order if one isnt found -->
+  <welcome-file-list>
+    <welcome-file>index.html</welcome-file>
+    <welcome-file>index.htm</welcome-file>
+    <welcome-file>index.jsp</welcome-file>
+    <welcome-file>default.html</welcome-file>
+    <welcome-file>default.htm</welcome-file>
+    <welcome-file>default.jsp</welcome-file>
+  </welcome-file-list>
+
+
+
+<!-- tell tomcat which servlets exist -->
+
+<servlet><!-- the servlet element container the declarative data of a servlet -->
+	<servlet-name>HelloWorldServlet</servlet-name> <!-- this is what you refer to it as elsewhere in the document -->
+	<servlet-class>com.revature.servlets.HelloWorldServlet</servlet-class> <!-- the fully qualified class name of the servlet in the project -->
+</servlet>
+
+<!--  specifies the mapping of a servlet to a url pattern -->
+<servlet-mapping>
+	<servlet-name>HelloWorldServlet</servlet-name>
+	<!-- describes a pattern used to resolve urs.  the portion of the url after "http://host:port/project-name/path... we map the path, tomcat knows everything before that -->
+	<!-- will be used to map requests to the appropriate servlet -->
+	<url-pattern>/hello</url-pattern>
+</servlet-mapping>
+
+
+
+<!-- calculator page -->
+<servlet>
+<servlet-name>CalculatorServlet</servlet-name>
+<servlet-class>com.revature.servlets.CalculatorServlet</servlet-class>
+</servlet>
+
+<servlet-mapping>
+<servlet-name>CalculatorServlet</servlet-name>
+<url-pattern>/calculator</url-pattern>
+</servlet-mapping>
+
+<!-- answer page -->
+<servlet>
+<servlet-name>AnswerServlet</servlet-name>
+<servlet-class>com.revature.servlets.AnswerServlet</servlet-class>
+</servlet>
+
+<servlet-mapping>
+<servlet-name>AnswerServlet</servlet-name>
+<url-pattern>/answer</url-pattern>
+</servlet-mapping>
+</web-app>

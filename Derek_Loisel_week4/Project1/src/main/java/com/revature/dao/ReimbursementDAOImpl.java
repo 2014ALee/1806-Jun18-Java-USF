@@ -4,11 +4,90 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import com.revature.models.Reimbursement;
+import com.revature.models.User;
 import com.revature.util.ConnectionFactory;
 
 public class ReimbursementDAOImpl implements ReimbursementDAO{
+	
+	public ArrayList<User> getAllReimbursements(){
+		
+		ArrayList<User> ul = new ArrayList<>();
+		return ul;
+	}
 
+	@Override
+	public ArrayList<Reimbursement> getReimbursementsByStatusID(int  statusID) {
+
+		ArrayList<Reimbursement> rl = new ArrayList<Reimbursement>();
+ 
+		try(Connection conn = ConnectionFactory.getInstance().getConnection();){
+
+			String sql = "SELECT * FROM ers_reimbursement WHERE reimb_status_id = ?";
+
+			PreparedStatement pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, statusID); 
+
+			ResultSet rs = pstmt.executeQuery();
+
+			while(rs.next()) {
+				Reimbursement r = new Reimbursement();
+				r.setReimbursementID(rs.getInt("reimb_id"));
+				r.setReimbursementAmount(rs.getDouble("reimb_amount"));
+				r.setReimbursementSubmitted(rs.getDate("reimb_submitted"));
+				r.setReimbursementResolved(rs.getDate("reimb_resolved"));
+				r.setReimbursementDescription(rs.getString("reimb_description"));
+				r.setReimbursementReceipt(rs.getBlob("reimb_receipt"));
+				r.setReimbursementAuthor(rs.getInt("reimb_author"));
+				r.setReimbursementResolver(rs.getInt("reimb_resolver"));
+				r.setReimbursementStatusID(rs.getInt("reimb_status_id"));
+				r.setReimbursementTypeID(rs.getInt("reimb_type_id"));
+				rl.add(r);
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return rl;
+	}
+	
+	public ArrayList<Reimbursement> getReimbursementsByUserID(int userID){
+	
+		ArrayList<Reimbursement> rl = new ArrayList<Reimbursement>();
+		 
+		try(Connection conn = ConnectionFactory.getInstance().getConnection();){
+
+			String sql = "SELECT * FROM ers_reimbursement WHERE reimb_author = ?";
+
+			PreparedStatement pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, userID); 
+
+			ResultSet rs = pstmt.executeQuery();
+
+			while(rs.next()) {
+				Reimbursement r = new Reimbursement();
+				r.setReimbursementID(rs.getInt("reimb_id"));
+				r.setReimbursementAmount(rs.getDouble("reimb_amount"));
+				r.setReimbursementSubmitted(rs.getDate("reimb_submitted"));
+				r.setReimbursementResolved(rs.getDate("reimb_resolved"));
+				r.setReimbursementDescription(rs.getString("reimb_description"));
+				r.setReimbursementReceipt(rs.getBlob("reimb_receipt"));
+				r.setReimbursementAuthor(rs.getInt("reimb_author"));
+				r.setReimbursementResolver(rs.getInt("reimb_resolver"));
+				r.setReimbursementStatusID(rs.getInt("reimb_status_id"));
+				r.setReimbursementTypeID(rs.getInt("reimb_type_id"));
+				rl.add(r);
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return rl;
+	}
+	
 	@Override
 	public Reimbursement addReimbursement(Reimbursement newReimbursement) {
 		
@@ -66,14 +145,18 @@ public class ReimbursementDAOImpl implements ReimbursementDAO{
 
 		try(Connection conn = ConnectionFactory.getInstance().getConnection();){
 
-			String sql = "UPDATE ers_reimbursement SET reimb_resolved = ?, reimb_resolver = ?, reimb_receipt = ? WHERE reimb_id = ?";
+			String sql = "UPDATE ers_reimbursement SET reimb_amount = ?, reimb_submitted = ?, reimb_resolved = ?, reimb_description = ?, reimb_resolver = ?, reimb_receipt = ?, reimb_status_id = ?, reimb_type_id = ?, WHERE reimb_id = ?";
 
 			PreparedStatement pstmt = conn.prepareStatement(sql);
-			
-			pstmt.setDate(1,  updatedReimbursement.getReimbursementResolved());
-			pstmt.setDouble(2,  updatedReimbursement.getReimbursementResolver());
-			pstmt.setBlob(3,  updatedReimbursement.getReimbursementReceipt());
-			pstmt.setInt(4,  updatedReimbursement.getReimbursementID());
+			pstmt.setDouble(1,  updatedReimbursement.getReimbursementAmount());
+			pstmt.setDate(2,  updatedReimbursement.getReimbursementSubmitted());
+			pstmt.setDate(3,  updatedReimbursement.getReimbursementResolved());
+			pstmt.setString(4,  updatedReimbursement.getReimbursementDescription());
+			pstmt.setDouble(5,  updatedReimbursement.getReimbursementResolver());
+			pstmt.setBlob(6,  updatedReimbursement.getReimbursementReceipt());
+			pstmt.setInt(7, updatedReimbursement.getReimbursementStatusID());
+			pstmt.setInt(8, updatedReimbursement.getReimbursementTypeID());
+			pstmt.setInt(9,  updatedReimbursement.getReimbursementID());
 			
 			int rowsUpdated = pstmt.executeUpdate();
 
@@ -87,6 +170,11 @@ public class ReimbursementDAOImpl implements ReimbursementDAO{
 
 		return false;
 	}
+
 	
 
+	
+//	 public ArrayList<Reimbursement> getReimbursementsByType(){
+//	return null;
+//	}
 }

@@ -231,6 +231,111 @@ earthTimeButton.addEventListener('click', displayEarthTime);
 
 //QUESTION 8: Create two other functions which calculates and displays the time passed on Mars and Alpha Centauri b if the onset of January 1st, 1970 occured at the same time. Invoke the respective functions when their time buttons are clicked. An orbital period for Mars is 687 Earth days. Using an external api to get the orbital period for Alpha Centauri b. (try 15.	http15.	://15.	www15.	.15.	astropical15.	.15.	space15.	/15.	astrodb15.	/15.	apiref15.	.15.	php) Provide an implementation for getting this value using both AJAX and the fetch API.
 
+let currentDate = new Date();
+let currentYear = currentDate.getFullYear();
+let currentMonth = currentDate.getMonth();
+let currentDay = currentDate.getDate();
+
+let startYear = 1970;
+let startMonth = 0;
+let startDay = 0;
+//get the amount of time since jan 1970 to now
+let yearsFromStartToNow = (currentYear - startYear)+ ((currentMonth + 1)/12) + (currentDay/365);
+
+//set the date on mars
+let martsTimeHeader = document.getElementById('mars_time');
+
+let marsDate = function(){
+    //(365/orbital period) * time passed from now till jan 1 1970 --- mars = 91 years and 4 months --- jan 1970 + 91 years and 4 months = april 2061
+    let orbitalPeriod = 687;
+    let marsYearsFromStart = (365/orbitalperiod) * yearsFromStartToNow;
+    
+    //convert the full years decimal into years, months, and days (gross, could have just used getTime and setTime to get miliseconds and convert back to date)
+    let yearsDecimalAsString = (1970 + marsYearsFromStart).toString();
+    let dateSplit = yearsDecimalAsString.split('.');
+    let marsYear = dateSplit[0];
+
+    let daysOutOfYear = ("." + dateSplit[1]) * 365;
+    let monthsDecimal = (daysOutOfYear / 30).toString().split('.');
+    let marsMonth = monthsDecimal[0];
+    let marsDay = ('.' +monthsDecimal[1]) * 30;
+
+    let fullMarsDate = new Date();
+    fullMarsDate.setFullYear(marsYear, marsMonth-1, marsDay);
+
+    if(martsTimeHeader.innerHTML == ''){
+        martsTimeHeader.innerHTML = fullMarsDate;
+    }else{
+        martsTimeHeader.innerHTML = '';
+    }
+}
+document.getElementById('mars_time_check').addEventListener('click', marsDate);
+
+
+//AJAX
+let acbTimeHeader = document.getElementById('acb_time');
+
+let getAcbOrbitalPeriod = function(){
+
+    const acbUrl = 'http://www.astropical.space/astrodb/api-exo.php?which=name&limit=alf%20Cen%20B&format=json'; 
+    sendAjaxRequest(acbUrl, displayAlphaCentauribTime);
+}
+
+let xhr = new XMLHttpRequest() || new ActiveXObject('Microsoft.HTTPRequest');
+
+let sendAjaxRequest = function(url, funct){
+
+    xhr.onreadystatechange = function() {
+        if(xhr.readyState == 4 && xhr.status == 200) {
+            funct(xhr);
+        }
+    }
+
+    xhr.open('GET', url, true);
+    xhr.send();
+
+}
+
+let displayAlphaCentauribTime = function(){
+
+    let acb = JSON.parse(xhr.response);
+
+    let date = new Date();
+    let time = date.getTime();
+
+    //calculate date
+    let acbOrbitalPeriod = (acb['exoplanets'][0]['per']);
+    let acbTimeCalculation = acbOrbitalPeriod * time; 
+    date.setTime(acbTimeCalculation);
+    
+    //display date
+    if(acbTimeHeader.innerHTML == ''){
+        acbTimeHeader.innerHTML = date;//insert date here
+    }else{
+        acbTimeHeader.innerHTML = '';
+    }
+}
+
+let acbButton = document.getElementById('acb_time_check');
+acbButton.addEventListener('click', getAcbOrbitalPeriod);
+
+//Fetch //HELPED BY KYLE
+let acbDateFromFetch = function(){
+    
+    fetch('http://www.astropical.space/astrodb/api-exo.php?which=name&limit=alf%20Cen%20B&format=json').then((resp) => {      
+            resp.json().then((planet) => {
+                
+                let date = new Date();
+                let time = date.getTime();
+
+                let acbPeriod = (planet['exoplanets'][0]['per']);
+                let acbTimeCalculation = acbPeriod * time;
+                date.setTime(acbTimeCalculation);
+                alert('The Alpha Centauri b time from Fetch is: ' + date);
+            })       
+    }).catch();
+}
+acbButton.addEventListener('click', acbDateFromFetch);
 
 //QUESTION 9:	Three seconds after a user clicks on the “Intergalactic Directory” heading, the background color should change to a random color. 
 //Make sure this color is never black so we can still read our black text! 

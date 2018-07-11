@@ -1,14 +1,16 @@
 package com.revature.dao;
 
+import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-
 import com.revature.models.User;
 import com.revature.util.ConnectionFactory;
+
+import oracle.jdbc.internal.OracleTypes;
 
 public class UserDAOImpl implements UserDAO{
 
@@ -53,7 +55,7 @@ public class UserDAOImpl implements UserDAO{
 	}
 
 	@Override
-	public User getUserByUsername(User newUser) {
+	public User getUserByUsername(User user) {
 		User u = new User();
 
 		try(Connection conn = ConnectionFactory.getInstance().getConnection();){
@@ -61,7 +63,7 @@ public class UserDAOImpl implements UserDAO{
 			String sql = "SELECT * FROM ers_users WHERE ers_username = ?";
 
 			PreparedStatement pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, newUser.getUsername()); 
+			pstmt.setString(1, user.getUsername()); 
 
 			ResultSet rs = pstmt.executeQuery();
 
@@ -84,6 +86,42 @@ public class UserDAOImpl implements UserDAO{
 	}
 
 	@Override
+	public User getUserByUsernameCallable(User user) {
+		User u = new User();
+
+		try(Connection conn = ConnectionFactory.getInstance().getConnection();){
+
+			String sql = "{CALL get_user_by_username(?,?)}";
+			CallableStatement cstmt = conn.prepareCall(sql);
+
+			//setting params is same as prepared statement
+			cstmt.setString(1, user.getUsername());
+
+			//define the index of our second param and its type which is curosr
+			cstmt.registerOutParameter(2, OracleTypes.CURSOR);
+
+			cstmt.execute()	; //returns boolean could catch this boolean if we wanted to 
+
+			ResultSet rs = (ResultSet) cstmt.getObject(2); //we are expecting to get the cursor back which is the second param
+
+			while(rs.next()) {
+
+				u.setUserID(rs.getInt(1));
+				u.setUsername(rs.getString("ers_username"));
+				u.setPassword(rs.getString("ers_password"));
+				u.setFirstname(rs.getString("user_firstname"));
+				u.setLastname(rs.getString("user_lastname"));
+				u.setEmail(rs.getString("user_email"));
+				u.setUserRoleID(rs.getInt("user_role_id"));				
+			}	
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return u;
+	}
+	
+	@Override
 	public User addUser(User newUser) {
 		User u = new User();
 
@@ -102,7 +140,7 @@ public class UserDAOImpl implements UserDAO{
 			pstmt.setString(4, newUser.getLastname());
 			pstmt.setString(5, newUser.getEmail());
 			pstmt.setInt(6, newUser.getUserRoleID());
-			
+
 			int rowsUpdated = pstmt.executeUpdate(); //this isnt a query, its an update.  it also returns a value that tells you how many rows were updated
 
 			ResultSet rs = pstmt.getGeneratedKeys(); //this is only going to have the keys in the result set
@@ -127,4 +165,5 @@ public class UserDAOImpl implements UserDAO{
 		}
 		return u;
 	}
+
 }

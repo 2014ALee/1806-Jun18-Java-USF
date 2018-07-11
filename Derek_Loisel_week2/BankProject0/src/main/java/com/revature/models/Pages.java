@@ -105,7 +105,7 @@ public class Pages{
 				Account account = new Account();
 				// set the users pk as the accounts fk
 				account.setUserID(u.getUserID());
-				Account accountObj = accountDAO.addAccount(account);
+				accountDAO.addAccount(account);
 
 				// go back to main menu
 				mainMenu();

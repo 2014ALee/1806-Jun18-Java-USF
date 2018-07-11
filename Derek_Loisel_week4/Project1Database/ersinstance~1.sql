@@ -78,28 +78,29 @@ MINVALUE 1
 MAXVALUE 9999999999
 INCREMENT BY 1
 START WITH 2;
-
+/*
+--This sequence not currently active
 -- Create sequence that will be used to increment primary keys in the ers_reimbursement_status table
 CREATE SEQUENCE reimbursement_status_sequence
 MINVALUE 1
 MAXVALUE 9999999999
 INCREMENT BY 1
 START WITH 2;
-
+--This sequence not currently active
 -- Create sequence that will be used to increment primary keys in the ers_reimbursement_type table
 CREATE SEQUENCE reimbursement_type_sequence
 MINVALUE 1
 MAXVALUE 9999999999
 INCREMENT BY 1
 START WITH 2;
-
+--This sequence not currently active
 -- Create sequence that will be used to increment primary keys in the ers_user_roles table
 CREATE SEQUENCE ers_user_roles_sequence
 MINVALUE 1
 MAXVALUE 9999999999
 INCREMENT BY 1
 START WITH 2;
-
+*/
 -- Create a trigger that will use ers_users_sequence whenever a new row is inserted
 CREATE OR REPLACE TRIGGER ers_users_trigger
 BEFORE INSERT ON ers_users      -- the logic of this trigger will execute BEFORE any insert on the table
@@ -123,7 +124,8 @@ BEGIN
     FROM dual;                  
 END;
 /
-
+/*
+--This trigger not currently active
 -- Create a trigger that will use reimbursement_status_sequence whenever a new row is inserted
 CREATE OR REPLACE TRIGGER reimbursement_status_trigger
 BEFORE INSERT ON ers_reimbursement_status  
@@ -136,6 +138,7 @@ BEGIN
 END;
 /
 
+--This trigger not currently active
 -- Create a trigger that will use reimbursement_type_sequence whenever a new row is inserted
 CREATE OR REPLACE TRIGGER reimbursement_type_trigger
 BEFORE INSERT ON ers_reimbursement_type  
@@ -148,6 +151,7 @@ BEGIN
 END;
 /
 
+--This trigger not currently active
 -- Create a trigger that will use ers_user_roles_sequence whenever a new row is inserted
 CREATE OR REPLACE TRIGGER ers_user_roles_trigger
 BEFORE INSERT ON ers_user_roles  
@@ -158,4 +162,16 @@ BEGIN
     INTO :new.ers_user_role_id   
     FROM dual;                 
 END;
+/
+*/
+CREATE OR REPLACE PROCEDURE get_user_by_username(
+username IN VARCHAR2, my_cursor OUT SYS_REFCURSOR)
+AS
+BEGIN
+    OPEN my_cursor FOR 
+    SELECT *
+    FROM ers_users
+    WHERE ers_username = username;
+    
+END get_user_by_username;
 /
