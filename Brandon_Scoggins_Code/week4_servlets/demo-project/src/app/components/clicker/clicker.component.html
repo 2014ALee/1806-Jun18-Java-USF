@@ -1,0 +1,6 @@
+<p [ngClass]="{'blue': clicks % 5 === 0}"><b>Click: {{ clicks }}</b></p>
+<button class="btn btn-primary" [ngClass]="{'red': clicks % 3 === 0}" (click)="increment(1)" (wheel)="increment(15)">Increment</button>
+
+<button class="btn btn-primary" (click)="increment(5)" *ngIf="clicks >= 100">Increment by 5</button>
+<app-first></app-first>
+<p>5 times 2 = {{5 * 2}}</p>

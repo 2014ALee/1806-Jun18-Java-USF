@@ -1,0 +1,18 @@
+<div>
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">Amount</th>
+                <th scope="col">Type</th>
+                <th scope="col">Owner</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let account of accounts">
+                <td>{{account.amount}}</td>
+                <td>{{account.type}}</td>
+                <td>{{account.owner}}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>

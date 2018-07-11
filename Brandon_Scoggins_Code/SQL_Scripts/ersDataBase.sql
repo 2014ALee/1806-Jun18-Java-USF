@@ -29,6 +29,14 @@ CREATE TABLE ersUsers(
     CONSTRAINT fk_user_role_id FOREIGN KEY (userRoleId) 
                                 REFERENCES ersUserRoles (userRoleId)
 );
+
+ALTER TABLE ersUsers
+DROP CONSTRAINT fk_user_role_id; 
+
+ALTER TABLE ersUsers
+ADD CONSTRAINT fk_user_role_id FOREIGN KEY (userRoleId) 
+                                REFERENCES ersUserRoles (userRoleId)
+                                ON DELETE CASCADE;
 -- Create table to hold user role information
 CREATE TABLE ersUserRoles (
     userRoleId      NUMBER          PRIMARY KEY,
@@ -65,135 +73,66 @@ CREATE TABLE ersReimbursement(
     CONSTRAINT fk_type FOREIGN KEY (reimTypeId) 
                             REFERENCES ersReimbursementType(reimTypeId)                        
 );
--- Create some sequences and triggers to increment the primary keys properly
--- User Id's
-CREATE SEQUENCE user_id_seq
-MINVALUE 1
-MAXVALUE 9999999999
-INCREMENT BY 1
-START WITH 1;
 
-CREATE OR REPLACE TRIGGER user_id_trigger
-BEFORE INSERT ON users
-FOR EACH ROW
+ALTER TABLE ersReimbursement
+DROP CONSTRAINT fk_author; 
 
-BEGIN
-    SELECT user_id_seq.NEXTVAL
-    INTO :new.userId
-    FROM dual;
-END;
-/
--- Transfer Id's
-CREATE SEQUENCE transfer_id_seq
-MINVALUE 1
-MAXVALUE 9999999999
-INCREMENT BY 1
-START WITH 1;
+ALTER TABLE ersReimbursement
+DROP CONSTRAINT fk_resolver; 
 
-CREATE OR REPLACE TRIGGER transfer_id_trigger
-BEFORE INSERT ON transfers
-FOR EACH ROW
+ALTER TABLE ersReimbursement
+DROP CONSTRAINT fk_status; 
 
-BEGIN
-    SELECT transfer_id_seq.NEXTVAL
-    INTO :new.transferId
-    FROM dual;
-END;
-/
--- Transaction Id's
-CREATE SEQUENCE transaction_id_seq
-MINVALUE 1
-MAXVALUE 9999999999
-INCREMENT BY 1
-START WITH 1;
+ALTER TABLE ersReimbursement
+DROP CONSTRAINT fk_type; 
 
-CREATE OR REPLACE TRIGGER transaction_id_trigger
-BEFORE INSERT ON transactions
-FOR EACH ROW
+ALTER TABLE ersReimbursement
+ADD CONSTRAINT fk_author FOREIGN KEY (reimAuthor) 
+                            REFERENCES ersUsers(userId)
+                            ON DELETE CASCADE;
+ALTER TABLE ersReimbursement
+ADD CONSTRAINT fk_resolver FOREIGN KEY (reimResolver) 
+                            REFERENCES ersUsers(userId)
+                            ON DELETE CASCADE;
+ALTER TABLE ersReimbursement
+ADD CONSTRAINT fk_status FOREIGN KEY (reimStatusId) 
+                            REFERENCES ersReimbursementStatus(reimStatusId)
+                            ON DELETE CASCADE;        
+ALTER TABLE ersReimbursement
+ADD CONSTRAINT fk_type FOREIGN KEY (reimTypeId) 
+                            REFERENCES ersReimbursementType(reimTypeId)
+                            ON DELETE CASCADE;      
+ALTER TABLE ersReimbursement
+MODIFY reimResolved DEFAULT null; 
 
-BEGIN
-    SELECT transaction_id_seq.NEXTVAL
-    INTO :new.transactionId
-    FROM dual;
-END;
-/
--- Savings Account Id's
-CREATE SEQUENCE savings_id_seq
-MINVALUE 1
-MAXVALUE 9999999999
-INCREMENT BY 1
-START WITH 1;
+ALTER TABLE ersReimbursement
+MODIFY reimResolver DEFAULT null; 
+-- Insert static values into type, status, and role tables
+INSERT INTO ersReimbursementStatus VALUES(1, 'New');
+INSERT INTO ersReimbursementStatus VALUES(2, 'Viewed');
+INSERT INTO ersReimbursementStatus VALUES(3, 'Approved');
+INSERT INTO ersReimbursementStatus VALUES(4, 'Denied');
+INSERT INTO ersReimbursementStatus VALUES(5, 'Complete');
+INSERT INTO ersReimbursementStatus VALUES(6, 'Canceled');
 
-CREATE OR REPLACE TRIGGER savings_id_trigger
-BEFORE INSERT ON savingsAccounts
-FOR EACH ROW
+INSERT INTO ersReimbursementType VALUES(1, 'Lodging');
+INSERT INTO ersReimbursementType VALUES(2, 'Travel');
+INSERT INTO ersReimbursementType VALUES(3, 'Food');
+INSERT INTO ersReimbursementType VALUES(4, 'Other');
 
-BEGIN
-    SELECT savings_id_seq.NEXTVAL
-    INTO :new.accountId
-    FROM dual;
-END;
-/
--- Checking Account Id's
-CREATE SEQUENCE checking_id_seq
-MINVALUE 1
-MAXVALUE 9999999999
-INCREMENT BY 1
-START WITH 1;
 
-CREATE OR REPLACE TRIGGER checking_id_trigger
-BEFORE INSERT ON checkingAccounts
-FOR EACH ROW
+INSERT INTO ersUserRoles VALUES(1, 'Employee');
+INSERT INTO ersUserRoles VALUES(2, 'Manager');
 
-BEGIN
-    SELECT checking_id_seq.NEXTVAL
-    INTO :new.accountId
-    FROM dual;
-END;
-/
--- Account Id's
-CREATE SEQUENCE account_id_seq
-MINVALUE 1
-MAXVALUE 9999999999
-INCREMENT BY 1
-START WITH 1;
+COMMIT;
 
-CREATE OR REPLACE TRIGGER account_id_trigger
-BEFORE INSERT ON accounts
-FOR EACH ROW
-
-BEGIN
-    SELECT account_id_seq.NEXTVAL
-    INTO :new.accountId
-    FROM dual;
-END;
-/
--- Trigger on transactions to get system date and time
-CREATE OR REPLACE TRIGGER get_date
-BEFORE INSERT ON transactions
+CREATE OR REPLACE TRIGGER get_resolved_date
+BEFORE UPDATE ON ersReimbursement
 FOR EACH ROW
 
 BEGIN
     SELECT CURRENT_TIMESTAMP
-    INTO :new.dateOf
+    INTO :new.reimResolved
     FROM dual;
-END;
-/
-COMMIT;
--- Insert a test user to make sure everything is working
-INSERT INTO users VALUES(3, 'testfirstname', 'testlastname', 'testusername', 'testpassword', 'testemail@email.com');
-SELECT *
-FROM users;
--- Callable Procedure to log in a user and return the user fields
-CREATE OR REPLACE PROCEDURE log_in_user(
-    user_name_or_email IN users.userName%TYPE,
-    pass_word IN users.passWord%TYPE,
-    my_cursor OUT SYS_REFCURSOR)
-AS
-BEGIN
-    OPEN my_cursor FOR
-    SELECT * 
-    FROM users
-    WHERE (userName = user_name_or_email OR email = user_name_or_email) AND passWord = pass_word;
 END;
 /
