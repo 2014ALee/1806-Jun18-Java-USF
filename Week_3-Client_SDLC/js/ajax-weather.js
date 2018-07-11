@@ -3,9 +3,7 @@ function searchWeather() {
     document.getElementById('alert').innerText = '';
     sendAjaxRequest(baseUrl + input, displayWeather);
 }
-let xhr = new XMLHttpRequest();
-function sendAjaxRequest(url, funct) {
-    
+
 
     xhr.onreadystatechange = function() {
         if(xhr.readyState == 4 && xhr.status == 200) {
@@ -16,12 +14,7 @@ function sendAjaxRequest(url, funct) {
     xhr.open('GET', url, true);
     xhr.send();
 }
-function displayWeather() {
-    let weather = JSON.parse(xhr.response);
-    console.log(weather);
-    document.getElementById('location').innerText = 'Weather for ' + weather.location.name;
-    document.getElementById('icon').setAttribute('src', `http://${weather.current.condtion.icon}`);
-    document.getElementById('status').innerText = weather.current.condtion.text;
+
     document.getElementById('temperature').innerText = `${weather.current.temp_f} F (feels like ${weather.current.feelslike_f})`;
 }
 
