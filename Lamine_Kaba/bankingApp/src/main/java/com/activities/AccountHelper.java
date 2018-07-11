@@ -56,11 +56,11 @@ public class AccountHelper {
 				Activity.activities();
 				break;
 			case "2":
-				//System.out.println("For Savings account, minimum deposite is 50.00");
+				//System.out.println("For Savings account, minimum deposit is 50.00");
 				System.out.println("Please enter your deposite amount: ");
 				double savingsDeposite;
 				savingsDeposite = userInput.nextDouble();
-				account.setSaving(savingsDeposite);
+				account.setSaving(-savingsDeposite);
 				if(savingsDeposite <0.00) {
 					System.out.println("You did not deposite the minimum required; please try again");
 					account();

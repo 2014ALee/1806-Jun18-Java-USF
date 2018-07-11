@@ -2,11 +2,9 @@ package com.revature.dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-import com.revature.models.Account;
 import com.revature.models.Account;
 import com.revature.util.ConnectionFactory;
 
@@ -34,44 +32,8 @@ public class AccountDAOImpl implements AccountDAO{
 
 	@Override
 	public Account addAccount(Account newAccount) {
-
-		Account newAccounts = new Account();
-		
-		try(Connection conn = ConnectionFactory.getInstance().getConnection();){
-			
-			String query = "INSERT INTO account(user_id, checking, savings) values(?,?,?)";
-			
-			String[] keys = new String[1];
-			keys[0] = "account_id";
-			
-			PreparedStatement pst = conn.prepareStatement(query);
-
-			pst.setInt(1, newAccount.getUserid());
-			pst.setDouble(2, newAccount.getChecking());
-			pst.setDouble(3, newAccount.getSaving());
-			
-
-			//pst.executeUpdate();
-			
-			int rowUpdated = pst.executeUpdate();
-			
-			ResultSet rs = pst.getGeneratedKeys();
-			
-			if(rowUpdated != 0) {
-				 while(rs.next()) {
-					 newAccounts.setAccountid(rs.getInt(1));
-				 }
-				 }
-				 newAccounts.setUserid(newAccount.getUserid());
-				 newAccounts.setChecking(newAccount.getChecking());
-				 newAccounts.setSaving(newAccount.getSaving());
-			}
-					
-		catch(SQLException e) {
-			e.printStackTrace();
-		}
-		
-		return newAccounts;
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	@Override

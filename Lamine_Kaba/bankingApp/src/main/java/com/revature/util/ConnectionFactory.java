@@ -22,8 +22,8 @@ public class ConnectionFactory {
 		
 		String driver = "oracle.jdbc.driver.OracleDriver";
 		String url ="jdbc:oracle:thin:@bankingapp.cjiupc6li1sl.us-east-2.rds.amazonaws.com:1521:ORCL";
-		String usr = "lkaba";
-		String pw = "kaquev11";
+		String usr = "chinook";
+		String pw = "p4ssw0rd";
 		
 		try {
 			Class.forName(driver);

@@ -17,7 +17,7 @@ import com.revature.util.ConnectionFactory;
 public class HelperMethods {
 
 	static Scanner userInput = new Scanner(System.in);
-	static User user = null;
+	static UserHelper userhelper = null;
 	static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
 	//Logout after logged in
@@ -55,12 +55,12 @@ public class HelperMethods {
 
 	public static String showAmount() {
 
-		return  new DecimalFormat("#.00").format(user.getBalance());
+		return  new DecimalFormat("#.00").format(userhelper.getBalance());
 	}
 
 	// Check user name availability before saving user info to the database
 	
-	public static boolean usernameAvailable(User u) {
+	public static boolean usernameAvailable(User user) {
 
 		ArrayList<String> username = new ArrayList<>();
 		try(Connection conn = ConnectionFactory.getInstance().getConnection();){
@@ -73,7 +73,7 @@ public class HelperMethods {
 				username.add(rs.getString("username"));
 			}
 
-			if(username.contains(u.getUsername()))
+			if(username.contains(user.getUsername()))
 				return false;
 		}
 		catch(SQLException e) {

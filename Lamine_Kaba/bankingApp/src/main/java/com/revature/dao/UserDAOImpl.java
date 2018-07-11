@@ -9,8 +9,6 @@ import java.util.ArrayList;
 
 import com.revature.models.Account;
 import com.revature.models.User;
-import com.revature.models.User;
-import com.revature.models.User;
 import com.revature.util.ConnectionFactory;
 
 
@@ -83,10 +81,6 @@ public class UserDAOImpl implements UserDAO {
 			while(rs.next()) {
 				user.setUsername(name);
 				user.setUserId(rs.getInt(1));
-				user.setFirstName(rs.getString("first_name"));
-				user.setLastName(rs.getString("last_name"));
-				user.setPassword(rs.getString("password"));
-				user.setEmail(rs.getString("email"));
 			}	
 		}
 		catch(SQLException e) {

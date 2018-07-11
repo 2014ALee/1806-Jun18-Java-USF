@@ -12,13 +12,12 @@ import java.util.Scanner;
 import com.revature.dao.AccountDAO;
 import com.revature.dao.AccountDAOImpl;
 import com.revature.models.Account;
-import com.revature.models.User;
 import com.revature.util.ConnectionFactory;
 
 public class Deposit {
 
 	static Scanner userInput = new Scanner(System.in);
-	static User user = null;
+	static UserHelper userhelper = null;
 	static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 	static AccountDAOImpl acc = new AccountDAOImpl();
 
@@ -63,7 +62,7 @@ public class Deposit {
 					
 					
 					
-					user.setBalance(user.getBalance() + HelperMethods.trimedUserInput(depoAmount));
+					userhelper.setBalance(userhelper.getBalance() + HelperMethods.trimedUserInput(depoAmount));
 					
 					System.out.println("Deposit successful...");
 					System.out.println("Do you want to check you balance?\nPress 'y' to make another transaction or any key to Logout");
@@ -129,8 +128,8 @@ public class Deposit {
 			deposit();
 		}
 		else {
-			user.setBalance(user.getBalance() + HelperMethods.trimedUserInput(depoAmount));
-			//serializeUser(user);
+			userhelper.setBalance(userhelper.getBalance() + HelperMethods.trimedUserInput(depoAmount));
+			//serializeUser(userhelper);
 			System.out.println("Deposit successful...");
 			System.out.println("Do you want to check you balance?\nPress 'y' to make another transaction or any key to Logout");
 		}

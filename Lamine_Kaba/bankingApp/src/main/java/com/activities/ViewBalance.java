@@ -27,7 +27,7 @@ public class ViewBalance {
 		if(withdAmount < 0) {
 			System.out.println("Error! you can't withdraw a negative value");
 			System.out.println("Please try again");
-			Activity.activities();;
+			Withdraw.withdraw();
 		}
 		else if(withdAmount > 0) {
 			//System.out.println("No sufficient found for the requested amount");

@@ -24,7 +24,6 @@ public class Main {
 
 		System.out.println("[1] - Login");
 		System.out.println("[2] - Register");
-		System.out.println("[3] - Exit");
 		System.out.print("Selection: ");
 
 		try {
@@ -38,9 +37,6 @@ public class Main {
 			case "2":
 				System.out.println("Navigating to Registration Menu...");
 				Register.register();
-				break;
-			case "3":
-				HelperMethods.exitProgram();
 				break;
 			default:
 				System.out.println("Invalid selection, please try again.\n");

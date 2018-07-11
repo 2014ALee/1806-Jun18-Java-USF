@@ -33,7 +33,6 @@ public class Login {
 			if(HelperMethods.credentialsValidation(username, password)) {
 				
 				System.out.println("Login successful!");
-				user = new User();
 				user.setUsername(username);
 				Activity.activities();
 			} else {

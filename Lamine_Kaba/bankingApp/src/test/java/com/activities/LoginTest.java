@@ -8,9 +8,7 @@ public class LoginTest {
 
 	@Test
 	public void test() {
-		Login login = new Login();
 		
-		login.login();
 	}
 
 }

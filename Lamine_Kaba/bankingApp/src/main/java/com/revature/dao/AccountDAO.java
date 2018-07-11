@@ -1,13 +1,8 @@
 package com.revature.dao;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
 import java.util.ArrayList;
 
 import com.revature.models.Account;
-import com.revature.models.User;
-import com.revature.util.ConnectionFactory;
 
 public interface AccountDAO {
 

@@ -8,7 +8,7 @@ public class RegisterTest {
 
 	@Test
 	public void test() {
-		
+		fail("Not yet implemented");
 	}
 
 }

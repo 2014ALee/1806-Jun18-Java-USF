@@ -1,12 +1,5 @@
 package com.revature.models;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-
-import com.revature.util.ConnectionFactory;
-
 public class Account {
 	
 	private int accountid;
@@ -25,25 +18,6 @@ public class Account {
 	}
 
 	public int getAccountid() {
-		
-		Account account = new Account();
-		
-		try(Connection conn = ConnectionFactory.getInstance().getConnection();){
-			
-			String sql = "Select *From account Where account_id = ?";
-			
-			PreparedStatement pstmt = conn.prepareStatement(sql);
-			pstmt.setInt(1, accountid);
-			
-			ResultSet rs = pstmt.executeQuery()	;
-			
-			while(rs.next()) {
-				account.setAccountid(accountid);
-			}	
-		}
-		catch(SQLException e) {
-			e.printStackTrace();
-		}
 		return accountid;
 	}
 

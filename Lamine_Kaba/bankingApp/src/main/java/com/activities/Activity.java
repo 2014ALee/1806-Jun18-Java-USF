@@ -52,7 +52,7 @@ public class Activity {
 				break;
 			case "3":
 				System.out.println("Navigating to Balance...");
-				ViewBalance.viewBalance();;
+				CheckBalance.checkBalance();;
 				break;
 			case "4":
 				System.out.println(" ");

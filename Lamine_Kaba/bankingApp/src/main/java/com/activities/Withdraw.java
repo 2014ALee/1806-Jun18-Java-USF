@@ -31,13 +31,12 @@ public class Withdraw {
 			//System.out.println("Your balance is: " + HelperMethods.showAmount());
 			//System.out.println("Please try again ");
 			System.out.println("withdraw successfull ");
-			Activity.activities();//withdraw();
+			withdraw();
 		}
 		else {
 			//user.setBalance(user.getBalance() - HelperMethods.trimedUserInput(withdAmount));
 			//serializeUser(user);
 			System.out.println("Withdraw successful...");
-			Activity.activities();
 			//System.out.println("Your balance is: " + HelperMethods.showAmount());
 			//System.out.println("Press 'y' to make another transaction or any key to Logout");
 		}
