@@ -18,7 +18,7 @@ function removePluto(){
     list[3].setAttribute('disabled', 'disabled')
     //list.remove(3);
 }
-removePluto();
+//removePluto();
 
 
 /*
@@ -190,6 +190,12 @@ function doMath(){
 
 */
 
-function walkTheDom(){
-    let root = document.getElementsByTagName('html')
+function walkTheDom(node, func){
+    //let root = document.getElementsByTagName('html')
+    let root = document.childNodes;
+    let childOfRoot = root.childNodes;
+    console.log("this is the :" + root.length);
+    console.log(childOfRoot);
 }
+
+walkTheDom();

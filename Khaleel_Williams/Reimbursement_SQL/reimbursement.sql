@@ -18,3 +18,16 @@ GRANT resource to reimbursement;
 GRANT create session TO reimbursement;
 GRANT create table TO reimbursement;
 GRANT create view TO reimbursement;
+
+
+CREATE OR REPLACE PROCEDURE getPastReimbById(
+    userId IN NUMBER,
+    my_cursor OUT SYS_REFCURSOR)
+IS
+BEGIN
+    OPEN my_cursor FOR
+    SELECT *
+    FROM reimbursement
+    WHERE userId = reimb_id;
+END;
+/

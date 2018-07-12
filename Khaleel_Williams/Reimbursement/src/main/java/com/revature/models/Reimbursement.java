@@ -1,13 +1,16 @@
 package com.revature.models;
 
+import java.sql.Blob;
+import java.sql.Timestamp;
+
 public class Reimbursement {
 
 	private int reimbId;
 	private double amount;
-	private String submitted;
-	private String resolved;
+	private Timestamp submitted;
+	private Timestamp resolved;
 	private String description;
-	private double receipt;
+	private Blob receipt;
 	private int author;
 	private int resolver;
 	private int statusId;
@@ -39,23 +42,23 @@ public class Reimbursement {
 	}
 
 
-	public String getSubmitted() {
+	public Timestamp getSubmitted() {
 		return submitted;
 	}
 
 
-	public void setSubmitted(String submitted) {
+	public void setSubmitted(Timestamp submitted) {
 		this.submitted = submitted;
 	}
 
 
-	public String getResolved() {
+	public Timestamp getResolved() {
 		return resolved;
 	}
 
 
-	public void setResolved(String resolved) {
-		this.resolved = resolved;
+	public void setResolved(Timestamp timestamp) {
+		this.resolved = timestamp;
 	}
 
 
@@ -69,13 +72,13 @@ public class Reimbursement {
 	}
 
 
-	public double getReceipt() {
+	public Blob getReceipt() {
 		return receipt;
 	}
 
 
-	public void setReceipt(double receipt) {
-		this.receipt = receipt;
+	public void setReceipt(Blob blob) {
+		this.receipt = blob;
 	}
 
 
@@ -119,6 +122,8 @@ public class Reimbursement {
 	}
 
 
+	
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -128,8 +133,7 @@ public class Reimbursement {
 		result = prime * result + (int) (temp ^ (temp >>> 32));
 		result = prime * result + author;
 		result = prime * result + ((description == null) ? 0 : description.hashCode());
-		temp = Double.doubleToLongBits(receipt);
-		result = prime * result + (int) (temp ^ (temp >>> 32));
+		result = prime * result + ((receipt == null) ? 0 : receipt.hashCode());
 		result = prime * result + reimbId;
 		result = prime * result + ((resolved == null) ? 0 : resolved.hashCode());
 		result = prime * result + resolver;
@@ -158,7 +162,10 @@ public class Reimbursement {
 				return false;
 		} else if (!description.equals(other.description))
 			return false;
-		if (Double.doubleToLongBits(receipt) != Double.doubleToLongBits(other.receipt))
+		if (receipt == null) {
+			if (other.receipt != null)
+				return false;
+		} else if (!receipt.equals(other.receipt))
 			return false;
 		if (reimbId != other.reimbId)
 			return false;
