@@ -37,7 +37,7 @@ public static void main(String[] args) {
                 //System.out.println("Current element: " + associatesNode.getNodeName());
                 
                 if(associatesNode.getNodeType() == Node.ELEMENT_NODE) {
-                    
+     
                     Element associateElement = (Element) associatesNode;
                     
                     System.out.println("Associate ID: " + associateElement.getAttribute("id"));
