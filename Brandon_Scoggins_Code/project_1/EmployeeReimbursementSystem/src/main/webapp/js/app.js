@@ -42,7 +42,7 @@ function login() {
 	let password = $('#login-password').val();
 	
 	let toSend = [username, password];
-	console.log('in login()2');
+	
 	let json = JSON.stringify(toSend);
 	
 	let xhr = new XMLHttpRequest();
@@ -51,11 +51,12 @@ function login() {
 		if(xhr.readyState == 4 && xhr.status == 200){
 			let user = JSON.parse(xhr.responseText);
 			$('#login-message').show();
-			console.log('in login()3');
+			
 			if(user.userId == 0) {
 				$('#login-message').html('Invalid Credentials!');
 			} else {
 				alert('Login Successful!');
+				$('#login-message').hide();
 				//laodHome();
 				console.log(`User id: ${user.userId} login successful!`);
 			}

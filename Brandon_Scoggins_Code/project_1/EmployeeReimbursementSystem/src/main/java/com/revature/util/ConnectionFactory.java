@@ -29,12 +29,12 @@ public class ConnectionFactory {
 		Properties prop = new Properties();
 		
 		try {
-			prop.load(new FileReader("C:\\batch-repos\\1806-Jun18-Java-USF\\Brandon_Scoggins_Code\\week2_sql"
-					+ "\\console_bank\\src\\main\\resources\\application.properties"));
+			prop.load(new FileReader("C:\\batch-repos\\1806-Jun18-Java-USF\\Brandon_Scoggins_Code\\project_1"
+					+ "\\EmployeeReimbursementSystem\\src\\main\\resources\\application.properties"));
 			
 			Class.forName(prop.getProperty("driver"));
 			
-			conn = DriverManager.getConnection(prop.getProperty("url"), prop.getProperty("user"), prop.getProperty("pswd"));
+			conn = DriverManager.getConnection(prop.getProperty("url"), prop.getProperty("user"), prop.getProperty("pw"));
 		} catch (ClassNotFoundException | SQLException e) {
 			e.printStackTrace();
 		} catch (FileNotFoundException e) {
