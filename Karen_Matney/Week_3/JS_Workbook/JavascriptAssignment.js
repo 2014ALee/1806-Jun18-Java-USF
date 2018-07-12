@@ -55,15 +55,15 @@ planets.addEventListener('click',alienText);
 
 /* 4 */
 window.onload = function () {
-//     firstnameField.addEventListener('blur',inputInFields);
-//     lastnameField.addEventListener('blur',inputInFields);
-//     emailField.addEventListener('blur',inputInFields);
-//     phoneField.addEventListener('blur',inputInFields);
-//     birthdayField.addEventListener('blur',inputInFields);
-//     planetSelect.addEventListener('blur',inputInFields);
-//     genderRadio.addEventListener('blur',inputInFields);
+    firstnameField.addEventListener('blur',inputInFields);
+    lastnameField.addEventListener('blur',inputInFields);
+    emailField.addEventListener('blur',inputInFields);
+    phoneField.addEventListener('blur',inputInFields);
+    birthdayField.addEventListener('blur',inputInFields);
+    planetSelect.addEventListener('blur',inputInFields);
+    genderRadio.addEventListener('change',inputInFields);
     
-//     submitButton.setAttribute('disabled',true);
+    submitButton.setAttribute('disabled',true);
 
     // See 5
     details.addEventListener('mouseover',openDetails);
@@ -84,29 +84,31 @@ window.onload = function () {
     operationSelect.addEventListener('blur',calculator);
 }
 
-// function inputInFields()  {
-//     let firstname = firstnameField.value;
-//     let lastname = lastnameField.value;
-//     let email = emailField.value;
-//     let birthday = birthdayField.value;
-//     let planet = planetSelect.value;
-//     let gender = document.querySelectorAll('input[name = "gender"]:checked').value;
-//     console.log(gender);
+function inputInFields()  {
+    let firstname = firstnameField.value;
+    let lastname = lastnameField.value;
+    let email = emailField.value;
+    let birthday = birthdayField.value;
+    let planet = planetSelect.value;
+    let gender = (document.querySelector('input[name=gender]:checked') || {}).value;
+    console.log(gender);
 
-//     if(firstname == '' || lastname == '' || email == '' || birthday == '' || planet == '' || gender == '') {
-//         submitButton.setAttribute('disabled',true);
-//     } else {
-//         submitButton.removeAttribute('disabled');
-//     }
-// }
-// const firstnameField = document.getElementById('firstname');
-// const lastnameField = document.getElementById('lastname');
-// const emailField = document.getElementById('email');
-// const phoneField = document.getElementById('phone');
-// const birthdayField = document.getElementById('bday');
-// const planetSelect = document.getElementById('planet');
-// const genderRadio = document.querySelector('input[name = "gender"]');
-// const submitButton = document.getElementById('form-sub');
+    if(firstname == '' || lastname == '' || email == '' || birthday == '' || planet == '' || gender == '') {
+        submitButton.setAttribute('disabled',true);
+    } else {
+        submitButton.removeAttribute('disabled');
+    }
+}
+
+const formGroup = document.getElementsByClassName('form-group')[0];
+const firstnameField = document.getElementById('firstname');
+const lastnameField = document.getElementById('lastname');
+const emailField = document.getElementById('email');
+const phoneField = document.getElementById('phone');
+const birthdayField = document.getElementById('bday');
+const planetSelect = document.getElementById('planet');
+const genderRadio = formGroup.querySelector('input[name=gender]:checked');
+const submitButton = document.getElementById('form-sub');
 
 /* 5 */
 function openDetails(){ // Added to 4's window.onload
@@ -194,29 +196,26 @@ const headerLocation = document.getElementsByTagName('h1')[0];
 
 /* 10 */
 function calculator() {  // in 4's window.onload
-    // let operation = operationSelect.value;
+    let operation = operationSelect.value;
     let n1 = n1Field.value;
     let n2 = n2Field.value;
     let result = document.getElementById('result');
 
-    //result.innerHTML('goes here');
-
-    if(n1 == '' || n2 == '') {
+    if(n1 != '' && n2 != '') {
         if(validInputs(n1,n2)) {
-            console.log('v' + n1+n2);
+            
             switch(operation) {
-                case 'Add':
-                    //result.innerHTML(n1 + n2);
-                    console.log('Result: ' + (n1+n2));
-                    break;
                 case 'Subtract':
-                    return n1 - n2;
+                    result.innerHTML = Number(n1) - Number(n2);
+                    break;
                 case 'Divide':
-                    return n1/n2;
+                    result.innerHTML = Number(n1) / Number(n2);
+                    break;
                 case 'Multiply':
-                    return n1 * n2;
+                    result.innerHTML = Number(n1) * Number(n2);
+                    break;
                 default:
-                    console.log('Something went wrong');
+                    result.innerHTML = Number(n1) + Number(n2);
                     return;
             }
         }
@@ -224,16 +223,12 @@ function calculator() {  // in 4's window.onload
 }
 
 function validInputs (n1,n2) {
-    let re = new RegExp('\\d*.?\\d*$');
-    let re2 = new RegExp('/d');
+    let re = new RegExp('^\\d*.?\\d*$');
+    let re2 = new RegExp('\\d');
 
-    console.log(n1.match(re));
     if(n1.match(re) && n2.match(re)) {
-        if(n1 == '' || n2 == '') {
-            
-        } else {
-        console.log('here');
-        return true;
+        if(n1.match(re2) && n2.match(re2)){
+            return true;
         }
     }
 
@@ -245,3 +240,16 @@ const n1Field = document.getElementById('n1');
 const n2Field = document.getElementById('n2');
 
 /* 11 */
+function walkTheDom(node,func) {
+    func(node);
+
+    
+    if(node.firstChild != null){
+        walkTheDom(node.firstChild,func);
+    } else if (node.nextSibling != null){
+        walkTheDom(node.nextSibling,func);
+    }
+}
+
+// This was a check to see if it worked.
+// walkTheDom(document,(a) => console.log(a.outerHTML));

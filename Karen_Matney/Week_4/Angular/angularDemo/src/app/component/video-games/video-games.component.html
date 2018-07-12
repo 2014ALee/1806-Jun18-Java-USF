@@ -1,0 +1,6 @@
+<div *ngFor="let game of games" class="card mb-3 video-game-card">
+<img class="card-img-top" [src]="game.image" alt="Card image cap">
+<div class="card-body">
+  <h5 class="card-title">{{ game.title }}</h5>
+  <p class="card-text">{{ game.description }}</p>
+</div>

@@ -1,0 +1,11 @@
+<!--
+    [] - property binding
+    {{ }} - interpolation
+    () - Event binding
+    ngClass - Attribute Directive
+    *ngIf - Structural directive
+-->
+<p [ngClass]="{'blue': clicks % 5 === 0}">click: {{ clicks }}</p>
+<p><button class="btn btn-primary" (click)="increment(1)">Increment by 1</button></p>
+<p><button *ngIf="clicks >= 20" class="btn btn-primary" (click)="increment(5)">Increment by 5</button></p>
+<p>5 times 2 = {{ 5 * 2 }}</p>
