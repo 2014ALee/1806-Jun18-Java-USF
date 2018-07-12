@@ -10,41 +10,134 @@ import java.util.ArrayList;
 
 import com.revature.DAOInterfaces.ReimbDao;
 import com.revature.models.Reimbursement;
-import com.revature.models.ReimbursementStatus;
-import com.revature.models.ReimbursementType;
 import com.revature.models.User;
-import com.revature.models.UserRole;
 import com.revature.util.ConnectionFactory;
 
 public class ReimbDAOImpl implements ReimbDao{
 
 	@Override
-	public ArrayList<Reimbursement> getReimbursements(User newUser) {
+	public ArrayList<Reimbursement> getAllReimbursements() {
+
 		
+		ArrayList<Reimbursement> reimbs = new ArrayList<>();
+		
+		try(Connection con = ConnectionFactory.getInstance().getConnection();){
+
+			String sql = "SELECT REIMB_ID, REIMB_AMOUNT, REIMB_SUBMITTED, REIMB_RESOLVED, REIMB_DESCRIPTION,"
+					+" REIMB_AUTHOR, REIMB_RESOLVER, REIMB_STATUS_ID, REIMB_TYPE_ID"
+					+ " FROM ERS_REIMBURSEMENT";
+
+			Statement statement = con.createStatement();
+			
+			ResultSet rs = statement.executeQuery(sql);
+			
+			while(rs.next()) {
+
+				int REIMB_ID = rs.getInt(1);
+				double REIMB_AMOUNT = rs.getDouble("REIMB_AMOUNT");
+				Timestamp REIMB_SUBMITTED = rs.getTimestamp("REIMB_SUBMITTED");
+				Timestamp REIMB_RESOLVED = rs.getTimestamp("REIMB_RESOLVED");
+				String REIMB_DESCRIPTION = rs.getString("REIMB_DESCRIPTION");
+
+				int REIMB_AUTHOR = rs.getInt("REIMB_AUTHOR");
+				int REIMB_RESOLVER = rs.getInt("REIMB_RESOLVER");
+				
+				int REIMB_STATUS_ID = rs.getInt("REIMB_STATUS_ID");
+				int REIMB_TYPE_ID = rs.getInt("REIMB_TYPE_ID");
+		
+				
+				//we get our actual status and types here and set them to the member objects of the user
+	
+				Reimbursement reimb = new Reimbursement(REIMB_ID,REIMB_AMOUNT,REIMB_SUBMITTED,
+						REIMB_RESOLVED, REIMB_DESCRIPTION, REIMB_AUTHOR, REIMB_RESOLVER,
+						REIMB_STATUS_ID, REIMB_TYPE_ID);
+						
+				reimbs.add(reimb);
+			}
+			
+		return reimbs;
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 		return null;
+
 	}
 
 	@Override
-	public boolean addReimbursement(Reimbursement newReimb) {
+	public boolean addReimbursement(Reimbursement newReimb, User user) {
+		
+		String reimbDescription = newReimb.getDescription();
+		Double reimbAmount = newReimb.getReimbursementAmount();
+		int reimbTypeID = getReimbursementID(newReimb.getTypeName());
+		int reimbStatusID = 1;
+		Timestamp submittedTimeStamp = new Timestamp(System.currentTimeMillis());
+		Timestamp resolvedTimeStamp = null;
+		int reimbAuthor = user.getUserID();
+		int reimbResolver = user.getUserID();
+		
+	try(Connection con = ConnectionFactory.getInstance().getConnection()){
+		
+		String sql = "INSERT INTO ERS_REIMBURSEMENT(REIMB_AMOUNT ,REIMB_SUBMITTED ,REIMB_RESOLVED ,REIMB_DESCRIPTION"
+				+ " ,REIMB_AUTHOR,REIMB_RESOLVER ,REIMB_STATUS_ID,REIMB_TYPE_ID)"
+				+ "VALUES (?,?,?,?,?,?,?,?)";
+		
+		PreparedStatement statement = con.prepareStatement(sql);
+		
+		statement.setDouble(1, reimbAmount);
+		statement.setTimestamp(2, submittedTimeStamp);
+		statement.setTimestamp(3, resolvedTimeStamp);
+		statement.setString(4, reimbDescription);			
+		statement.setInt(5, reimbAuthor);
+		statement.setInt(6, reimbResolver);
+		statement.setInt(7, reimbStatusID);
+		statement.setInt(8, reimbTypeID);
+		
+		statement.executeUpdate();
+		
+	} catch (SQLException e) {
+		e.printStackTrace();
+	}
 		
 		return false;
 	}
 
-	public String getReimbursementStatus(User newUser) {
-		newUser.getUserID();	
+	/*public static boolean validReimbursement(Reimbursement reimb) {
+		String statusName = reimb.getStatusName();
+		if(statusName == "loding") {
+			return true;
+		} else if(statusName == "travel") {
+			return true;
+		} else if(statusName == "food") {
+			return true;
+		} else if(statusName == "")
 		
-		
-		return "";
+		return true;
 	}
 	
-	public String getReimbursementType(User newUser) {
+	*/
+	
+	private static int getReimbursementID(String typeName) {
+	
+		typeName = typeName.toLowerCase();
+		if(typeName == "lodging") {
+			return 1;
+		} else if(typeName == "travel") {
+			return 2;
+		} else if(typeName == "food") {
+			return 3;
+		} else {
+			return 4;
+		}
 		
-		return "";
 	}
 	
+//this gets a user's past tickets	
 	@Override
-	public ArrayList<Reimbursement> getAllReimbursements(User newUser) {
+	public ArrayList<Reimbursement> getReimbursements(User newUser) {
 		int userID = newUser.getUserID();
+		
+		ArrayList<Reimbursement> reimbs = new ArrayList<>();
 		
 		try(Connection con = ConnectionFactory.getInstance().getConnection();){
 
@@ -60,7 +153,7 @@ public class ReimbDAOImpl implements ReimbDao{
 			
 			while(rs.next()) {
 
-				int REIMB_ID = rs.getInt("REIMB_ID");
+				int REIMB_ID = rs.getInt(1);
 				double REIMB_AMOUNT = rs.getDouble("REIMB_AMOUNT");
 				Timestamp REIMB_SUBMITTED = rs.getTimestamp("REIMB_SUBMITTED");
 				Timestamp REIMB_RESOLVED = rs.getTimestamp("REIMB_RESOLVED");
@@ -73,24 +166,22 @@ public class ReimbDAOImpl implements ReimbDao{
 				//respective objects
 				int REIMB_STATUS_ID = rs.getInt("REIMB_STATUS_ID");
 				int REIMB_TYPE_ID = rs.getInt("REIMB_TYPE_ID");
-
-				String reimbStatus = getReimbursementType(REIMB_STATUS_ID);
-				String reimbType = getReimbursementType(REIMB_TYPE_ID);
+		
 				
-				ReimbursementStatus newStatus = new ReimbursementStatus(REIMB_STATUS_ID, reimbStatus);
-				ReimbursementType newType = new ReimbursementType(REIMB_TYPE_ID, reimbType);
-				
-				
-				//we still need to get and create the reimbStatus and reimbType objects and store them into here
-				Reimbursement reimb = new Reimbursement(REIMB_AMOUNT,REIMB_SUBMITTED,
+				//we get our actual status and types here and set them to the member objects of the user
+	
+				Reimbursement reimb = new Reimbursement(REIMB_ID,REIMB_AMOUNT,REIMB_SUBMITTED,
 						REIMB_RESOLVED, REIMB_DESCRIPTION, REIMB_AUTHOR, REIMB_RESOLVER,
-						newStatus, newType);
+						REIMB_STATUS_ID, REIMB_TYPE_ID);
+				//Strint statusName = 
+					//	String typeName = 
+						
+				reimbs.add(reimb);
 			}
 			
-		
+		return reimbs;
 
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return null;
@@ -99,13 +190,31 @@ public class ReimbDAOImpl implements ReimbDao{
 	@Override
 	public ArrayList<Reimbursement> filterReimbByStatus(ArrayList<Reimbursement> reimbursements, String status) {
 		
-		return null;
+		for(int i = 0; i < reimbursements.size(); i++) {
+			if(!reimbursements.get(i).getStatusName().equals(status)) {
+				reimbursements.remove(i);
+			}
+		}
+		
+		return reimbursements;
 	}
 
 	@Override
 	public boolean approveOrDenyReimb(Reimbursement newReimb, String approveOrDeny) {
 		
-		return false;
+		if(approveOrDeny == "denied") {
+			newReimb.setStatusName("denied");
+			newReimb.setStatusID(3);
+			return true;
+			
+		}  else if(approveOrDeny == "approved") {
+			newReimb.setStatusName("approved");
+			newReimb.setStatusID(2);
+			return true;
+		}
+		
+		return false;	
 	}
+
 
 }

@@ -33,7 +33,7 @@ public class ConnectionFactory {
 
 		try {
 
-			prop.load(new FileReader("C:\\Users\\Tom Steyaert\\1806-Jun18-Java-USF\\Bank_Project\\src\\main\\resources\\bank_application.properties"));
+			prop.load(new FileReader("C:\\Users\\Tom Steyaert\\1806-Jun18-Java-USF\\EmployeeReimbursementSystem\\ERS.properties"));
 			Class.forName(prop.getProperty("driver"));
 
 			con = DriverManager.getConnection(

@@ -12,19 +12,22 @@ public class User implements UserInterface {
 	private String firstName;
 	private String lastName;
 	private String email;
-	private UserRole role;
+	private String roleName;
+	private int roleID;
+
 	//this is where they see all past tickets
 	private ArrayList<Reimbursement> ReimbList = new ArrayList<>();
 	
 	public User(String userName, String password, String firstName,
-			String lastName, String email, UserRole role) {
+			String lastName, String email, String roleName) {
 		
 		this.userName = userName;
 		this.password = password;
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.email = email;
-		this.role = role;
+		this.roleName = roleName;
+		this.roleID = roleID;
 	}
 
 	public User() {
@@ -32,6 +35,7 @@ public class User implements UserInterface {
 	}
 	
 	public boolean setUserID(int userID) {
+		this.userID = userID;
 		return true;
 	}
 
@@ -60,10 +64,6 @@ public class User implements UserInterface {
 		return true;
 	}
 
-	public boolean setUserRole(UserRole role) {
-		this.role = role;
-		return true;
-	}
 
 	public int getUserID() {		
 		return this.userID;
@@ -89,8 +89,45 @@ public class User implements UserInterface {
 		return this.email;
 	}
 
-	public UserRole getUserRole() {
-		return this.role;
+	public String getEmail() {
+		return email;
 	}
 
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public String getRoleName() {
+		return roleName;
+	}
+
+	public void setRoleName(String roleName) {
+		this.roleName = roleName;
+	}
+
+	public int getRoleID() {
+		return roleID;
+	}
+
+	public void setRoleID(int roleID) {
+		this.roleID = roleID;
+	}
+
+	public ArrayList<Reimbursement> getReimbList() {
+		return ReimbList;
+	}
+
+	public void setReimbList(ArrayList<Reimbursement> reimbList) {
+		ReimbList = reimbList;
+	}
+
+	@Override
+	public String toString() {
+		return "User [userID=" + userID + ", userName=" + userName + ", password=" + password + ", firstName="
+				+ firstName + ", lastName=" + lastName + ", email=" + email + ", roleName=" + roleName + ", roleID="
+				+ roleID + ", ReimbList=" + ReimbList + "]";
+	}
+
+
+	
 }

@@ -1,7 +1,5 @@
 package com.revature.models.interfaces;
 
-import com.revature.models.UserRole;
-
 public interface UserInterface {
 	
 	public boolean setUserID(int userID);	
@@ -10,7 +8,6 @@ public interface UserInterface {
 	public boolean setFirstName(String firstName);
 	public boolean setLastName(String lastName);
 	public boolean setEmailName(String email);	
-	public boolean setUserRole(UserRole role);
 	
 	public int getUserID();	
 	public String getUserName();
@@ -18,6 +15,5 @@ public interface UserInterface {
 	public String getFirstName();
 	public String getLastName();
 	public String getEmailName();	
-	public UserRole getUserRole();	
 	
 }
