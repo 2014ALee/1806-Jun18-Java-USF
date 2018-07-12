@@ -2,11 +2,13 @@ window.onload = function() {
 	loadLogin();
 	$('#toLogin').on('click', loadLogin);
 	$('#toRegister').on('click', loadRegister);
+	if (event.target == document.getElementById('createForm')) {
+        createForm.style.display = "none";
+    }
 //	$('#toHome').on('click', loadHome);
 //	$('#toProfile').on('click', loadProfile);
 //	$('#toLogout').on('click', logout);	
 }
-
 function loadLogin() {
 	console.log('in loadLogin()');
 	
@@ -34,6 +36,7 @@ function loadLoginInfo() {
 	
 	$('#login-message').hide();
 	$('#login').on('click', login);
+	$('#toReg').on('click', loadRegister);
 }
 
 function login() {
@@ -50,7 +53,7 @@ function login() {
 	xhr.onreadystatechange = function() {
 		if(xhr.readyState == 4 && xhr.status == 200) {
 			let user = JSON.parse(xhr.responseText);
-			$('#login-message').show();
+			
 			
 			if(user == null) {
 				$('#login-message').html('Invalid credentials!');
@@ -66,13 +69,8 @@ function login() {
 	xhr.setRequestHeader('Content-type', 'application/json');
 	xhr.send(json);
 }
-
-
-
-
-
 function loadRegister() {
-	console.log('in loadLogin()');
+	console.log('in loadRegister()');
 	
 	let xhr = new XMLHttpRequest();
 	
@@ -80,12 +78,6 @@ function loadRegister() {
 		if(xhr.readyState == 4 && xhr.status == 200) {
 			$('#view').html(xhr.responseText);
 			loadRegisterInfo();
-			$('#toRegister').show();
-			$('#toLogin').show();
-			
-			$('#toHome').hide();
-			$('#toProfile').hide();
-			$('#toLogout').hide();
 		}
 	}
 	
@@ -96,6 +88,104 @@ function loadRegister() {
 function loadRegisterInfo() {
 	console.log('in loadRegisterInfo()');
 	
-	$('#register-message').hide();
+	$('#reg-message').hide();
+	$('#toLog').on('click', loadLogin);
+	$('#reg-username').blur(validateUsername);
+	$('#email').blur(validateEmail);
+	$('#register').attr('disabled', true);
 	$('#register').on('click', register);
+}
+
+function register() {
+	console.log('in register()');
+	
+	let fn = $('#fn').val();
+	let ln = $('#ln').val();
+	let email = $('#email').val();
+	let username = $('#reg-username').val();
+	let password = $('#reg-password').val();
+	let password2 = $('#reg-password2').val();
+	let user = {
+		userId: 0,
+		firstName: fn,
+		lastName: ln,
+		email: email,
+		username: username,
+		password: password,
+		roleId: 1,
+		userRole: Employee
+	}
+	
+	let userJson = JSON.stringify(user);
+	
+	let xhr = new XMLHttpRequest();
+	
+	xhr.onreadystatechange = function() {
+		if(xhr.readyState == 4 && xhr.status == 200) {
+			$('#message').hide();
+			alert('Enrollment successful! Please login using your credentials.');
+			loadLogin();
+		}
+	}
+	
+	xhr.open('POST', 'register', true);
+	xhr.setRequestHeader('Content-type', 'application/json');
+	xhr.send(userJson);
+}
+
+function validateUsername() {
+	console.log('in validateUsername()');
+	
+	$('#register').attr('disabled', false);
+	$('#reg-message').hide();
+	
+	let username = $('#reg-username').val();
+	let toSend = username;
+	let json = JSON.stringify(toSend);
+	
+	let xhr = new XMLHttpRequest();
+	
+	xhr.onreadystatechange = function() {
+		if(xhr.readyState == 4 && xhr.status == 200) {
+			let user = JSON.parse(xhr.responseText);
+			if(user == null) {
+				$('#reg-message').show();
+				$('#reg-message').html('Username is already in use! Please try another.');
+				$('#register').attr('disabled', true)
+			}
+		}
+	}
+	
+	xhr.open('POST', username.validate, true);
+	xhr.setRequestHeader('Content-type', 'application/json');
+	xhr.send(json);
+	
+}
+
+function validateEmail() {
+	console.log('in validateEmail()');
+	
+	$('#register').attr('disabled', false);
+	$('#reg-message').hide();
+	
+	let email = $('#email').val();
+	let toSend = email;
+	let json = JSON.stringify(toSend);
+	
+	let xhr = new XMLHttpRequest();
+	
+	xhr.onreadystatechange = function() {
+		if(xhr.readyState == 4 && xhr.status == 200) {
+			let user = JSON.parse(xhr.responseText);
+			if(user == null) {
+				$('#reg-message').show();
+				$('#reg-message').html('Email address is already in use! Please try another.');
+				$('#register').attr('disabled', true);
+			}
+		}
+	}
+	
+	xhr.open('POST', email.validate, true);
+	xhr.setRequestHeader('Content-type', 'application/json');
+	xhr.send(json);
 }
