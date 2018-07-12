@@ -87,43 +87,50 @@ BEGIN
 END;
 /
 
+-- Seq and triggers are not needed for status and types
+--CREATE SEQUENCE status_seq
+--MINVALUE 1
+--MAXVALUE 9999999999
+--INCREMENT BY 1
+--START WITH 1;
+--
+---- Create a trigger that will use art_seq whenever a new row is inserted
+--CREATE OR REPLACE TRIGGER status_trigger
+--BEFORE INSERT ON ers_reimbursement_status         -- the logic of this trigger will execute BEFORE any insert on the artist table
+--FOR EACH ROW                    -- it will do the logic for each row inserted
+--
+--BEGIN
+--    SELECT status_seq.NEXTVAL      -- get the next value from our sequence
+--    INTO :new.reimb_status_id          -- put that value into the artistid field of the row being inserted
+--    FROM dual;                  -- need to use dual because we are not getting the value from any table
+--END;
+--/
 
-CREATE SEQUENCE status_seq
-MINVALUE 1
-MAXVALUE 9999999999
-INCREMENT BY 1
-START WITH 1;
 
--- Create a trigger that will use art_seq whenever a new row is inserted
-CREATE OR REPLACE TRIGGER status_trigger
-BEFORE INSERT ON ers_reimbursement_status         -- the logic of this trigger will execute BEFORE any insert on the artist table
-FOR EACH ROW                    -- it will do the logic for each row inserted
+--CREATE SEQUENCE type_seq
+--MINVALUE 1
+--MAXVALUE 9999999999
+--INCREMENT BY 1
+--START WITH 1;
+--
+---- Create a trigger that will use art_seq whenever a new row is inserted
+--CREATE OR REPLACE TRIGGER type_trigger
+--BEFORE INSERT ON ers_reimbursement_type         -- the logic of this trigger will execute BEFORE any insert on the artist table
+--FOR EACH ROW                    -- it will do the logic for each row inserted
+--
+--BEGIN
+--    SELECT type_seq.NEXTVAL      -- get the next value from our sequence
+--    INTO :new.reimb_type_id          -- put that value into the artistid field of the row being inserted
+--    FROM dual;                  -- need to use dual because we are not getting the value from any table
+--END;
+--/
 
-BEGIN
-    SELECT status_seq.NEXTVAL      -- get the next value from our sequence
-    INTO :new.reimb_status_id          -- put that value into the artistid field of the row being inserted
-    FROM dual;                  -- need to use dual because we are not getting the value from any table
-END;
-/
-
-
-CREATE SEQUENCE type_seq
-MINVALUE 1
-MAXVALUE 9999999999
-INCREMENT BY 1
-START WITH 1;
-
--- Create a trigger that will use art_seq whenever a new row is inserted
-CREATE OR REPLACE TRIGGER type_trigger
-BEFORE INSERT ON ers_reimbursement_type         -- the logic of this trigger will execute BEFORE any insert on the artist table
-FOR EACH ROW                    -- it will do the logic for each row inserted
-
-BEGIN
-    SELECT type_seq.NEXTVAL      -- get the next value from our sequence
-    INTO :new.reimb_type_id          -- put that value into the artistid field of the row being inserted
-    FROM dual;                  -- need to use dual because we are not getting the value from any table
-END;
-/
+--Disabled triggers for status and type
+--Delete the current entries in type to reset the id
+DELETE FROM ers_reimbursement_type WHERE reimb_type_id = 21;
+DELETE FROM ers_reimbursement_type WHERE reimb_type_id = 22;
+DELETE FROM ers_reimbursement_type WHERE reimb_type_id = 23;
+DELETE FROM ers_reimbursement_type WHERE reimb_type_id = 24;
 
 INSERT INTO ers_reimbursement_status (reimb_status) VALUES ('Pending');
 
@@ -133,12 +140,16 @@ INSERT INTO ers_reimbursement_status (reimb_status) VALUES ('Denied');
 
 commit;
 
-INSERT INTO ers_reimbursement_type (reimb_type) VALUES ('Lodging');
-INSERT INTO ers_reimbursement_type (reimb_type) VALUES ('Travel');
-INSERT INTO ers_reimbursement_type (reimb_type) VALUES ('Food');
-INSERT INTO ers_reimbursement_type (reimb_type) VALUES ('Other');
+INSERT INTO ers_reimbursement_type (reimb_type_id, reimb_type) VALUES (1, 'Lodging');
+INSERT INTO ers_reimbursement_type (reimb_type_id, reimb_type) VALUES (2, 'Travel');
+INSERT INTO ers_reimbursement_type (reimb_type_id, reimb_type) VALUES (3, 'Food');
+INSERT INTO ers_reimbursement_type (reimb_type_id, reimb_type) VALUES (4, 'Other');
 
 ALTER TABLE ers_reimbursement
 MODIFY reimb_amount NUMBER (10,2);
 
 commit;
+
+INSERT INTO roles (ers_user_role_id, user_role) VALUES (1, 'Admin');
+INSERT INTO roles (ers_user_role_id, user_role) VALUES (2, 'Manager');
+INSERT INTO roles (ers_user_role_id, user_role) VALUES (3, 'User');

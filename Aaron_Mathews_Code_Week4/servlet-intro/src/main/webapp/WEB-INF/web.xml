@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
+  
+  <!-- Java web applications use a deployment descriptor file to determine 
+        how URLs map to servlets, which URLs require authentication, and other information. 
+        This file is named web.xml, and resides in the app's WAR under the WEB-INF/ 
+        directory. web.xml is part of the servlet standard for web applications. -->
+    <!-- A web container (also known as a servlet container) is the component 
+        of a web server that interacts with Java servlets. A web container is responsible 
+        for managing the lifecycle of servlets, mapping a URL to a particular servlet 
+        and ensuring that the URL requester has the correct access-rights. We will 
+        be utilizing Apache Tomcat as our servlet container. Tomcat will process 
+        any HTTP requests it recieves, and map requests to the appropriate servlet 
+        based on the path specified in the request. -->
+    <!-- The optional display-name element specifies the Web application display 
+        name, a short name that can be displayed by GUI tools. -->
+  <display-name>servlet-intro</display-name>
+  
+  <!-- The optional welcome-file-list element contains an ordered list of 
+        welcome-file elements. When the URL request is a directory name, Tomcat 
+        Server serves the first file specified in this element. If that file is not 
+        found, the server then tries the next file in the list. -->
+  <welcome-file-list>
+    <welcome-file>index.html</welcome-file>
+    <welcome-file>index.htm</welcome-file>
+    <welcome-file>index.jsp</welcome-file>
+    <welcome-file>default.html</welcome-file>
+    <welcome-file>default.htm</welcome-file>
+    <welcome-file>default.jsp</welcome-file>
+  </welcome-file-list>
+  
+  <!-- The servlet element contains the declarative data of a servlet -->
+  <servlet>
+  
+    <!--  The name used to reference this servlet elsewhere in the web.xml -->
+    <servlet-name>HelloWorldServlet</servlet-name>
+    
+    <!-- The fully-qualified class name of the servlet in the project -->
+    <servlet-class>com.revature.servlets.HelloWorldServlet</servlet-class>
+  </servlet>
+  
+  <!-- Specifies the mapping of a servlet to a URL pattern -->
+  <servlet-mapping>
+    <servlet-name>HelloWorldServlet</servlet-name>
+    
+    <!-- Describes a pattern sed to resolve URLs. The portion of the URL after 
+        "http://host:port/project-name/path will be used to map requests to the appropriate servlet -->
+    <url-pattern>/hello</url-pattern>
+  </servlet-mapping>
+  
+  <servlet>
+  	<servlet-name>CalculatorServlet</servlet-name>
+  	<servlet-class>com.revature.servlets.CalculatorServlet</servlet-class>
+  </servlet>
+  
+  <servlet-mapping>
+  	<servlet-name>CalculatorServlet</servlet-name>
+  	<url-pattern>/calculator</url-pattern>
+  </servlet-mapping>
+  
+   <servlet>
+  	<servlet-name>AnswerServlet</servlet-name>
+  	<servlet-class>com.revature.servlets.AnswerServlet</servlet-class>
+  </servlet>
+  
+  <servlet-mapping>
+  	<servlet-name>AnswerServlet</servlet-name>
+  	<url-pattern>/answer</url-pattern>
+  </servlet-mapping>
+</web-app>

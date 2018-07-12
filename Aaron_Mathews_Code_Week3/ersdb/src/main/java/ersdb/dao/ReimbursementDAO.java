@@ -3,7 +3,6 @@ package ersdb.dao;
 import java.util.ArrayList;
 
 import ersdb.models.Reimbursement;
-import ersdb.models.User;
 
 public interface ReimbursementDAO {
 	
