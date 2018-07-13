@@ -15,6 +15,9 @@ public class RequestViewHelper {
 			
 		case "/fs-bank-demo/register.view":
 			return "partials/register.html";
+			
+		case "/fs-bank-demo/home.view":
+			return "partials/home.html";
 		
 		default:
 			return null;
