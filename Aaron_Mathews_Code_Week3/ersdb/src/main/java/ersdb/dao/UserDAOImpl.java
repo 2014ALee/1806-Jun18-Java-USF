@@ -201,20 +201,92 @@ public class UserDAOImpl implements UserDAO {
 
 	@Override
 	public User updateEmail(User updatedUser) {
-		// TODO Auto-generated method stub
-		return null;
+		User user = new User();
+		
+		try (Connection conn = ConnectionFactory.getInstance().getConnection();) {
+			
+			String sql = "UPDATE ers_users SET user_email = ? WHERE ers_users_id = ?";
+			
+			PreparedStatement pstat = conn.prepareStatement(sql);
+			
+			pstat.setString(1, updatedUser.getEmail());
+			pstat.setInt(2, updatedUser.getUserid());
+			
+			int success = pstat.executeUpdate();
+			
+			if (success != 0) {
+				user.setEmail(updatedUser.getEmail());
+				user.setFirstname(updatedUser.getFirstname());
+				user.setLastname(updatedUser.getLastname());
+				user.setPassword(updatedUser.getPassword());
+				user.setRoleid(updatedUser.getRoleid());
+				user.setUserid(updatedUser.getUserid());
+				user.setUsername(updatedUser.getUsername());
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return user;
 	}
 
 	@Override
 	public User updatePassword(User updatedUser) {
-		// TODO Auto-generated method stub
-		return null;
+		User user = new User();
+		
+		try (Connection conn = ConnectionFactory.getInstance().getConnection();) {
+			
+			String sql = "UPDATE ers_users SET ers_password = ? WHERE ers_users_id = ?";
+			
+			PreparedStatement pstat = conn.prepareStatement(sql);
+			
+			pstat.setString(1, updatedUser.getPassword());
+			pstat.setInt(2, updatedUser.getUserid());
+			
+			int success = pstat.executeUpdate();
+			
+			if (success != 0) {
+				user.setEmail(updatedUser.getEmail());
+				user.setFirstname(updatedUser.getFirstname());
+				user.setLastname(updatedUser.getLastname());
+				user.setPassword(updatedUser.getPassword());
+				user.setRoleid(updatedUser.getRoleid());
+				user.setUserid(updatedUser.getUserid());
+				user.setUsername(updatedUser.getUsername());
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return user;
 	}
 
 	@Override
-	public User updatedRoleId(User updatedUser) {
-		// TODO Auto-generated method stub
-		return null;
+	public User updateRoleId(User updatedUser) {
+		User user = new User();
+		
+		try (Connection conn = ConnectionFactory.getInstance().getConnection();) {
+			
+			String sql = "UPDATE ers_users SET user_role_id = ? WHERE ers_users_id = ?";
+			
+			PreparedStatement pstat = conn.prepareStatement(sql);
+			
+			pstat.setInt(1, updatedUser.getRoleid());
+			pstat.setInt(2, updatedUser.getUserid());
+			
+			int success = pstat.executeUpdate();
+			
+			if (success != 0) {
+				user.setEmail(updatedUser.getEmail());
+				user.setFirstname(updatedUser.getFirstname());
+				user.setLastname(updatedUser.getLastname());
+				user.setPassword(updatedUser.getPassword());
+				user.setRoleid(updatedUser.getRoleid());
+				user.setUserid(updatedUser.getUserid());
+				user.setUsername(updatedUser.getUsername());
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return user;
 	}
 
 	@Override

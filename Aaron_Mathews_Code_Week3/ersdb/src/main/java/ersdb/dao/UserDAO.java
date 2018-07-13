@@ -14,7 +14,7 @@ public interface UserDAO {
 	
 	public User updatePassword(User updatedUser);
 	
-	public User updatedRoleId(User updatedUser);
+	public User updateRoleId(User updatedUser);
 	
 	public User getUserByUsername(String username);
 	
