@@ -9,7 +9,6 @@ public class User {
 	private String lastname;
 	private String email;
 	private int userRoleID;
-	private String userRole;
 	
 	public User() {}
 
@@ -23,7 +22,7 @@ public class User {
 		this.lastname = lastname;
 		this.email = email;
 		this.userRoleID = userRoleID;
-		this.userRole = userRole;
+
 	}
 
 	public int getUserID() {
@@ -82,14 +81,6 @@ public class User {
 		this.userRoleID = userRoleID;
 	}
 
-	public String getUserRole() {
-		return userRole;
-	}
-
-	public void setUserRole(String userRole) {
-		this.userRole = userRole;
-	}
-
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -99,7 +90,6 @@ public class User {
 		result = prime * result + ((lastname == null) ? 0 : lastname.hashCode());
 		result = prime * result + ((password == null) ? 0 : password.hashCode());
 		result = prime * result + userID;
-		result = prime * result + ((userRole == null) ? 0 : userRole.hashCode());
 		result = prime * result + userRoleID;
 		result = prime * result + ((username == null) ? 0 : username.hashCode());
 		return result;
@@ -136,11 +126,6 @@ public class User {
 			return false;
 		if (userID != other.userID)
 			return false;
-		if (userRole == null) {
-			if (other.userRole != null)
-				return false;
-		} else if (!userRole.equals(other.userRole))
-			return false;
 		if (userRoleID != other.userRoleID)
 			return false;
 		if (username == null) {
@@ -154,8 +139,7 @@ public class User {
 	@Override
 	public String toString() {
 		return "User [userID=" + userID + ", username=" + username + ", password=" + password + ", firstname="
-				+ firstname + ", lastname=" + lastname + ", email=" + email + ", userRoleID=" + userRoleID
-				+ ", userRole=" + userRole + "]";
+				+ firstname + ", lastname=" + lastname + ", email=" + email + ", userRoleID=" + userRoleID + "]";
 	}
 	
 	

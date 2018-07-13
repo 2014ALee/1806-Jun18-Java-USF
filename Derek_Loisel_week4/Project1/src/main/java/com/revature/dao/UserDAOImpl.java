@@ -55,7 +55,7 @@ public class UserDAOImpl implements UserDAO{
 	}
 
 	@Override
-	public User getUserByUsername(User user) {
+	public User getUserByUsername(String username) {
 		User u = new User();
 
 		try(Connection conn = ConnectionFactory.getInstance().getConnection();){
@@ -63,7 +63,7 @@ public class UserDAOImpl implements UserDAO{
 			String sql = "SELECT * FROM ers_users WHERE ers_username = ?";
 
 			PreparedStatement pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, user.getUsername()); 
+			pstmt.setString(1, username); 
 
 			ResultSet rs = pstmt.executeQuery();
 
@@ -86,7 +86,7 @@ public class UserDAOImpl implements UserDAO{
 	}
 
 	@Override
-	public User getUserByUsernameCallable(User user) {
+	public User getUserByUsernameCallable(String username) {
 		User u = new User();
 
 		try(Connection conn = ConnectionFactory.getInstance().getConnection();){
@@ -95,7 +95,7 @@ public class UserDAOImpl implements UserDAO{
 			CallableStatement cstmt = conn.prepareCall(sql);
 
 			//setting params is same as prepared statement
-			cstmt.setString(1, user.getUsername());
+			cstmt.setString(1, username);
 
 			//define the index of our second param and its type which is curosr
 			cstmt.registerOutParameter(2, OracleTypes.CURSOR);

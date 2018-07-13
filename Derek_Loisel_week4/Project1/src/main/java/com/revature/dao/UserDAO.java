@@ -8,9 +8,9 @@ public interface UserDAO {
 
 	public ArrayList<User> getAllUsers();
 	
-	public User getUserByUsername(User user);
+	public User getUserByUsername(String username);
 	
-	public User getUserByUsernameCallable(User user);
+	public User getUserByUsernameCallable(String username);
 	
 	public User addUser(User newUser);
 	

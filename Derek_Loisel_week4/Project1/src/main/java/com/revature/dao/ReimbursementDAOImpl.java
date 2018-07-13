@@ -6,15 +6,14 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import com.revature.models.Reimbursement;
-import com.revature.models.User;
 import com.revature.util.ConnectionFactory;
 
 public class ReimbursementDAOImpl implements ReimbursementDAO{
 	
-	public ArrayList<User> getAllReimbursements(){
+	public ArrayList<Reimbursement> getAllReimbursements(){
 		
-		ArrayList<User> ul = new ArrayList<>();
-		return ul;
+		ArrayList<Reimbursement> rl = new ArrayList<>();
+		return rl;
 	}
 
 	@Override
