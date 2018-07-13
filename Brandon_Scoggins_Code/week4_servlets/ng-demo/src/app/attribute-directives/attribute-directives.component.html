@@ -1,0 +1,24 @@
+<form>
+  <span>Name: </span>
+  <input type="checkbox" (click)="enabler()">
+  <select #optionColor [(ngModel)]="color" name="color" [disabled]="isDisabled">
+    <option *ngFor="let color of colors" [value]="color">
+      {{ color }}
+    </option>
+  </select>
+  <hr>
+  <span>Change Class</span>
+  <br><br>
+  <select #classOption multiple name="styles" (change)="addClass($event)">
+    <option *ngFor="let class of classes" [value]="class">
+      {{ class }}
+    </option>
+  </select>
+  <br><br>
+  <span>Press and hold CTRL <br>to select multiple options</span>
+</form>
+<hr>
+<span>Name: {{ name }}</span>
+<span [ngClass]="selectedClass" [ngStyle]="{'color': optionColor.value}">
+  color: {{ optionColor.value }}
+</span>

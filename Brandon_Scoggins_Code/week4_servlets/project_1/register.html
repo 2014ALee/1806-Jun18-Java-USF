@@ -1,0 +1,44 @@
+<!--
+    if username/email not available, don't clear fields
+        - highlight in red or yello until changed
+    Successful registration returns to login screen
+-->
+
+<form class="container col centered col-4 shadow p-4 mb-4 bg-light">
+    <h2 class="text-center">Happy Little ERS Registration</h2>
+    <hr>
+    <div class="form-group">
+    <label for="inputFirstName">Firstname</label>
+    <input type="text" class="form-control" id="inputFirstName" placeholder="Firstname">
+    </div>
+    <div class="form-group">
+    <label for="inputLastName">Lastname</label>
+    <input type="text" class="form-control" id="inputLastName" placeholder="Lastname">
+    </div>
+    <div class="form-group">
+    <label for="inputEmail">Email address</label>
+    <input type="email" class="form-control" id="inputEmail" aria-describedby="emailExist" placeholder="Email address">
+    <small id="emailExist" class="form-text text-danger" style="">That email already exist.</small>
+    </div>
+    <div class="form-group">
+    <label for="inputUserName">Username</label>
+    <input type="text" class="form-control" id="inputUserName" aria-describedby="userNameExist" placeholder="Username">
+    </div>
+    <small id="userNameExist" class="form-text text-danger" style="">That username already exist.</small>
+    <div class="form-group">
+    <label for="inputPassword">Password</label>
+    <input type="password" class="form-control" id="inputPassword" placeholder="Password">
+    </div>
+    <div class="form-group">
+    <label for="inputPasswordConfirm">Confirm Password</label>
+    <input type="password" class="form-control" id="inputPasswordConfirm" placeholder="Password">
+    </div>
+    <div class="form-group form-check">
+    <input type="checkbox" class="form-check-input" id="roleCheckBox">
+    <label class="form-check-label" for="roleCheckBox">Check if management</label>
+    </div>
+    <br>
+    <div align="right">
+        <button type="submit" class="btn btn-primary" id="register">Register</button>
+    </div>
+</form>

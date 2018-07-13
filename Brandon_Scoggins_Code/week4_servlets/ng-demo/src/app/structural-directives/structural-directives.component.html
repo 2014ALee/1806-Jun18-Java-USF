@@ -1,0 +1,30 @@
+<div *ngIf="condition">condition met</div>
+<div *ngIf="!condition">condition not met</div>
+<button (click)="changeCondition()">Change Condition</button>
+
+<hr>
+<h3>People</h3>
+<ul>
+  <li *ngFor="let person of people">
+    {{person}}
+  </li>
+</ul>
+
+<hr>
+<h3>Monsters</h3>
+<ul>
+  <li *ngFor="let monster of monsters">
+    {{ monster.name }}: {{ monster.location }}
+  </li>
+</ul>
+
+<hr>
+<h3>Day &amp; Night</h3>
+<div [ngSwitch]="time">
+  <span *ngSwitchCase="'night'">It's night time.
+    <button (click)="changeDay()">Change to day</button>
+  </span>
+  <span *ngSwitchCase="'day'">It's day time
+    <button (click)="changeNight()">Change to night</button>
+  </span>
+</div>

@@ -13,9 +13,11 @@ import com.revature.models.AccountRegistrar;
 import com.revature.models.User;
 
 public class BankService {
+
 	static UserDAO userDao = new UserDAOImpl();
 	static AccountDAO accountDao = new AccountDAOImpl();
 	static AccountRegistrarDAO accountRegistrarDao = new AccountRegistrarDAOImpl();
+
 
 	public User createNewUser(User user) {
 
@@ -32,12 +34,14 @@ public class BankService {
 
 	}
 
+
 	public User getUserById(int userId) {
 
 		User soughtUser = userDao.getUserById(userId);
 		return soughtUser;
 
 	}
+
 
 	public User getUserByUsername(String username) {
 
@@ -46,6 +50,7 @@ public class BankService {
 
 	}
 
+	
 	public User getUserByEmailAddress(String emailAddress) {
 
 		User soughtUser = userDao.getUserByEmailAddress(emailAddress);
@@ -53,12 +58,14 @@ public class BankService {
 
 	}
 
+
 	public User updateUser(User userForUpdate) {
 
 		User updatedUser = userDao.updateUser(userForUpdate.getId(), userForUpdate);
 		return updatedUser;
 
 	}
+
 
 	public User loginUser(String username, String password) {
 
@@ -85,6 +92,7 @@ public class BankService {
 		return loggedInUser;
 	}
 
+
 	public void printAllUsers() {
 
 		ArrayList<User> users = userDao.getAllUsers();
@@ -95,6 +103,7 @@ public class BankService {
 
 	}
 
+	
 	public boolean isUsernameAvailable(String username) {
 
 		ArrayList<User> users = userDao.getAllUsers();
@@ -108,6 +117,7 @@ public class BankService {
 		return true;
 
 	}
+
 
 	public boolean isEmailAvailable(String emailAddress) {
 
@@ -123,6 +133,7 @@ public class BankService {
 
 	}
 
+
 	public Account createNewAccount(String accountType) {
 
 		Account newAccount = new Account();
@@ -136,6 +147,7 @@ public class BankService {
 
 	}
 
+
 	public Account getAccountById(int accountId) {
 
 		Account soughtAccount = accountDao.getAccountById(accountId);
@@ -143,12 +155,14 @@ public class BankService {
 
 	}
 
+	
 	public Account updateAccountBalance(Account accountForUpdate) {
 
 		Account updatedAccount = accountDao.updateBalance(accountForUpdate.getAcctId(), accountForUpdate.getBalance());
 		return updatedAccount;
 
 	}
+
 
 	public AccountRegistrar registerAccountToUser(User user, Account account, String userPrivilege) {
 
@@ -163,6 +177,7 @@ public class BankService {
 		return registeredUserAccount;
 	}
 
+	
 	public ArrayList<Account> getUserAccounts(User user) {
 
 		ArrayList<Integer> userAccountIds = new ArrayList<Integer>();
@@ -189,4 +204,5 @@ public class BankService {
 		return usersOnAccount;
 
 	}
+
 }

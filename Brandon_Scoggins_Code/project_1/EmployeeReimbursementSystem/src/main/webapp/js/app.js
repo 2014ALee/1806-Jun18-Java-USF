@@ -20,8 +20,9 @@ function loadLogin(){
 			$('#toLogin').show();
 			
 			$('#toHome').hide();
-			$('#toProgile').hide();
+			$('#toProfile').hide();
 			$('#toLogout').hide();
+			$('#navbarDropdownMenuLink').hide();
 		}
 	}
 	
@@ -38,8 +39,8 @@ function loadLoginInfo(){
 function login() {
 	console.log('in login()');
 	
-	let username = $('#login-username').val();
-	let password = $('#login-password').val();
+	let username = $('#inputUserNameOrEmail').val();
+	let password = $('#inputPassword').val();
 	
 	let toSend = [username, password];
 	

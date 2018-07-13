@@ -18,7 +18,7 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/js/bootstrap.min.js" 
     integrity="sha384-o+RDsa0aLu++PJvFqy8fFScvbHFLtbvScb8AjopnFD+iEQ7wo/CG0xlczd+2O/em" crossorigin="anonymous"></script>
 
-    <link rel="stylesheet" href="css/index.css">
+<!--    <link rel="stylesheet" href="css/index.css"> -->
     
 </head>
 <body class="bg-secondary">
@@ -56,12 +56,12 @@
                 
             </div>
             <div>
-                <ul class="navbar-nav justify-content-end">
+                <ul class="navbar-nav">
                     <!-- Login and Register will be shown together if not logged in -->
-                    <li class="nav-item active" id="toLogin">
+                    <li class="nav-item" id="toLogin">
                         <a class="nav-link"> Login </a>
                     </li>
-                    <li class="nav-item" id="toRegister">
+                    <li class="nav-item active" id="toRegister">
                         <a class="nav-link"> Register </a>
                     </li>
                     <li class="nav-item" id="toLogout">
@@ -71,8 +71,56 @@
             </div>
         </nav>    
         <br><br>
-        <div id="view"></div>
+        <div id="view">
+
+
+
+
+
+                <form class="container col centered col-4 shadow p-4 mb-4 bg-light">
+                    <h2 class="text-center">Happy Little ERS Registration</h2>
+                    <hr>
+                    <div class="form-group">
+                    <label for="inputFirstName">Firstname</label>
+                    <input type="text" class="form-control" id="inputFirstName" placeholder="Firstname">
+                    </div>
+                    <div class="form-group">
+                    <label for="inputLastName">Lastname</label>
+                    <input type="text" class="form-control" id="inputLastName" placeholder="Lastname">
+                    </div>
+                    <div class="form-group">
+                    <label for="inputEmail">Email address</label>
+                    <input type="email" class="form-control" id="inputEmail" aria-describedby="emailExist" placeholder="Email address">
+                    <small id="emailExist" class="form-text text-danger" style="">That email already exist.</small>
+                    </div>
+                    <div class="form-group">
+                    <label for="inputUserName">Username</label>
+                    <input type="text" class="form-control" id="inputUserName" aria-describedby="userNameExist" placeholder="Username">
+                    </div>
+                    <small id="userNameExist" class="form-text text-danger" style="">That username already exist.</small>
+                    <div class="form-group">
+                    <label for="inputPassword">Password</label>
+                    <input type="password" class="form-control" id="inputPassword" placeholder="Password">
+                    </div>
+                    <div class="form-group">
+                    <label for="inputPasswordConfirm">Confirm Password</label>
+                    <input type="password" class="form-control" id="inputPasswordConfirm" placeholder="Password">
+                    </div>
+                    <div class="form-group form-check">
+                    <input type="checkbox" class="form-check-input" id="roleCheckBox">
+                    <label class="form-check-label" for="roleCheckBox">Check if management</label>
+                    </div>
+                    <br>
+                    <div align="right">
+                        <button type="submit" class="btn btn-primary" id="register">Register</button>
+                    </div>
+                </form>
+
+
+
+
+        </div>
         
-    <script type="text/javascript" src="js/app.js"></script>
+<!--    <script type="text/javascript" src="js/app.js"></script> -->
 </body>
 </html>
