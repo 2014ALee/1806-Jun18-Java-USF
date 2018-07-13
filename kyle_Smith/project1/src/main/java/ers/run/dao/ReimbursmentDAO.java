@@ -10,6 +10,7 @@ public interface ReimbursmentDAO {
 	ArrayList<Reimbursment> getReimbursmentsByAuthor(int author);
 	
 	Reimbursment getTypeAndStatus(int reimbursmentId);
+	Reimbursment getReimbursmentById(int reimId);
 	
     boolean insertReimbursment(Reimbursment reim);
     boolean updateReimbursment(Reimbursment reim);

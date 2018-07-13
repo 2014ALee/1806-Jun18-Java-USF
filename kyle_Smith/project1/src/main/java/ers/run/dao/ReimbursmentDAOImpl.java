@@ -8,7 +8,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-
 import ers.run.models.Reimbursment;
 import ers.run.util.ConnectionFactory;
 
@@ -49,8 +48,37 @@ public class ReimbursmentDAOImpl implements ReimbursmentDAO {
 
 	@Override
 	public ArrayList<Reimbursment> getReimbursmentsByAuthor(int author) {
-		// TODO Auto-generated method stub
-		return null;
+		ArrayList<Reimbursment> reims = new ArrayList<>();
+		
+		try(Connection conn = ConnectionFactory.getInstance().getConnection();){
+			
+			String sql = "SELECT * FROM ERS_REIMBURSEMENT WHERE REIMB_AUTHOR = ?";
+			String[] keys = new String[1];
+			keys[0] = "REIMB_ID";
+			
+			PreparedStatement pstmt = conn.prepareStatement(sql, keys);
+			pstmt.setInt(1, author);
+			ResultSet rs = pstmt.executeQuery(sql);
+			
+			while(rs.next()) {
+				Reimbursment temp = new Reimbursment();
+				temp.setReimbursmentId(rs.getInt("REIMB_ID"));
+				temp.setAmount(rs.getInt("REIMB_AMOUNT"));
+				temp.setSubmitted(rs.getDate("REIMB_SUBMITTED"));
+				temp.setResolved(rs.getDate("REIMB_RESOLVED"));
+				temp.setDescription(rs.getString("REIMB_DESCRIPTION"));
+				temp.setReceipt(rs.getBlob("REIMB_RECEIPT"));
+				temp.setAuthor(rs.getInt("REIMB_AUTHOR"));
+				temp.setResolver(rs.getInt("REIMB_RESOLVER"));
+				temp.setStatusId(rs.getInt("REIMB_STATUS_ID"));
+				temp.setTypeId(rs.getInt("REIMB_TYPE_ID"));
+			
+				reims.add(temp);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return reims;
 	}
 
 	@Override
@@ -155,6 +183,38 @@ public class ReimbursmentDAOImpl implements ReimbursmentDAO {
 			return false;
 		}
 		return false;
+	}
+
+	@Override
+	public Reimbursment getReimbursmentById(int reimId) {
+		Reimbursment reimb = new Reimbursment();
+		
+		try(Connection conn = ConnectionFactory.getInstance().getConnection();){
+			
+			String sql = "SELECT * FROM ERS_REIMBURSEMENT WHERE REIMB_ID = ?";
+			String[] keys = new String[1];
+			keys[0] = "REIMB_ID";
+			conn.setAutoCommit(false);
+			PreparedStatement pstmt = conn.prepareStatement(sql, keys);
+			pstmt.setInt(1, reimId);
+			ResultSet rs = pstmt.executeQuery(sql);
+			
+			while(rs.next()) {
+				reimb.setReimbursmentId(rs.getInt("REIMB_ID"));
+				reimb.setAmount(rs.getInt("REIMB_AMOUNT"));
+				reimb.setSubmitted(rs.getDate("REIMB_SUBMITTED"));
+				reimb.setResolved(rs.getDate("REIMB_RESOLVED"));
+				reimb.setDescription(rs.getString("REIMB_DESCRIPTION"));
+				reimb.setReceipt(rs.getBlob("REIMB_RECEIPT"));
+				reimb.setAuthor(rs.getInt("REIMB_AUTHOR"));
+				reimb.setResolver(rs.getInt("REIMB_RESOLVER"));
+				reimb.setStatusId(rs.getInt("REIMB_STATUS_ID"));
+				reimb.setTypeId(rs.getInt("REIMB_TYPE_ID"));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return reimb;
 	}
 
 }

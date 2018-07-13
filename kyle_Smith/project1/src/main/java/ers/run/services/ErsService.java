@@ -3,6 +3,7 @@ package ers.run.services;
 import java.util.ArrayList;
 
 import ers.run.dao.*;
+import ers.run.models.Reimbursment;
 import ers.run.models.User;
 
 public class ErsService {
@@ -178,25 +179,35 @@ public class ErsService {
 //	}
 //
 //	
-//	public ArrayList<Account> getUserAccounts(User user) {
-//
-//		ArrayList<Integer> userAccountIds = new ArrayList<Integer>();
-//
-//		for(AccountRegistrar userAcct_reg : accountRegistrarDao.getUserAccounts(user.getId())) {
-//			userAccountIds.add(userAcct_reg.getAcctId());
-//		}
-//
-//		ArrayList<Account> userAccounts = new ArrayList<Account>();
-//
-//		for(int acctId : userAccountIds) {
-//			Account temp = new Account();
-//			temp = getAccountById(acctId);
-//			userAccounts.add(temp);
-//		}
-//
-//		return userAccounts;
-//
-//	}
+	//ArrayList<Reimbursment> getReimbursmentsByAuthor(int author)
+	public Reimbursment getReimbursmentById(int reimId) {
+		Reimbursment newReim = new Reimbursment();
+		
+		newReim = reim.getReimbursmentById(reimId);
+
+		return newReim;
+
+	}
+	
+	public ArrayList<Reimbursment> getReimbursmentsByAuthor(int authorId) {
+
+		ArrayList<Integer> authorIds = new ArrayList<Integer>();
+
+		for(Reimbursment authReim : getReimbursmentsByAuthor(authorId)) {
+			authorIds.add(authReim.getAuthor());
+		}
+
+		ArrayList<Reimbursment> userReimbursments = new ArrayList<Reimbursment>();
+
+		for(int authId : authorIds) {
+			Reimbursment temp = new Reimbursment();
+			temp = getReimbursmentById(authId);
+			userReimbursments.add(temp);
+		}
+
+		return userReimbursments;
+
+	}
 //
 //	public ArrayList<AccountRegistrar> getUsersOnAccount(Account acct) {
 //
