@@ -25,12 +25,14 @@ public class ErsService {
 
 		boolean emailAddressAvailable = isEmailAvailable(user.getEmail());
 		boolean usernameAvailable = isUsernameAvailable(user.getUsername());
-
+		System.out.println("got to regServlet " + emailAddressAvailable);
+		System.out.println("got to regServlet " + usernameAvailable);
 		if (emailAddressAvailable && usernameAvailable) {
 			userDao.insertUser(user);
 			newUser = getUserByUsername(user.getUsername());
 		}
-
+		System.out.println("got to regServlet " + newUser.getUsername());
+		System.out.println("got to regServlet " + newUser);
 		return newUser;
 
 	}
@@ -45,7 +47,7 @@ public class ErsService {
 
 
 	public User getUserByUsername(String username) {
-
+		System.out.println("username - got to getUserByUsername service" + username);
 		User soughtUser = userDao.getUserByUsername(username);
 		return soughtUser;
 

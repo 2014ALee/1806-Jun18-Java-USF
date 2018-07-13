@@ -43,7 +43,9 @@ public class LoginServlet extends HttpServlet {
 		String[] userInfo = mapper.readValue(json, String[].class);
 		String username = userInfo[0];
 		String password = userInfo[1];
-		
+		System.out.println(username);
+		System.out.println(service.getUserByUsername(username).getUserId());
+		System.out.println(service.getUserByUsername(username).getUsername());
 		User temp = (service.getUserByUsername(username).getUserId() != 0) ? service.getUserByUsername(username) : null;
 		
 		if(temp == null) {
@@ -58,6 +60,7 @@ public class LoginServlet extends HttpServlet {
 		} else {
 			HttpSession session = req.getSession();
 			session.setAttribute("user", temp); // persists this user to the session
+			System.out.println("[LOG] - in loginServlet " + session.getAttribute("user"));
 		}
 		
 		PrintWriter pw = resp.getWriter();

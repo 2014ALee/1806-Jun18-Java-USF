@@ -2,9 +2,6 @@ window.onload = function() {
 	loadLogin();
 	$('#toLogin').on('click', loadLogin);
 	$('#toRegister').on('click', loadRegister);
-	if (event.target == document.getElementById('createForm')) {
-        createForm.style.display = "none";
-    }
 	$('#toHome').on('click', loadHome);
 //	$('#toProfile').on('click', loadProfile);
 	$('#toLogout').on('click', logout);	
@@ -59,7 +56,7 @@ function login() {
 				$('#login-message').html('Invalid credentials!');
 			} else {
 				alert('Login successful!');
-				//loadHome();
+				loadHome();
 				console.log(`User id: ${user.id} login successful!`)
 			}
 		}
@@ -113,7 +110,7 @@ function register() {
 		username: username,
 		password: password,
 		roleId: 1,
-		userRole: Employee
+		userRole: "Employee"
 	}
 	
 	let userJson = JSON.stringify(user);
@@ -221,25 +218,25 @@ function loadHomeInfo() {
 		if(xhr.readyState == 4 && xhr.status == 200) {
 			let homeInfo = JSON.parse(xhr.responseText);
 			let user = homeInfo.user;
-			let accounts = homeInfo.userAccounts;
+			let reims = homeInfo.userReimbursments;
 			
-			$('#user_id').html(user.id);
+			$('#user_id').html(user.userId);
 			$('#user_fn').html(user.firstName);
 			$('#user_ln').html(user.lastName);
-			$('#user_email').html(user.emailAddress);
+			$('#user_email').html(user.email);
 			$('#user_username').html(user.username);
 			$('#user_password').html(user.password);
 			
-			if(accounts.length > 0) {
-				accounts.forEach((account) => {
-					let id = account.acctId;
-					let type = account.acctType[0].toUpperCase() + account.acctType.substring(1);
-					let balance = parseFloat(Math.round(account.balance * 100) / 100).toFixed(2);
+			if(reims.length > 0) {
+				reims.forEach((reim) => {
+					let authId = reim.author;
+					let reimId = reim.reimbursmentId
+					let amount = parseFloat(Math.round(reim.amount * 100) / 100).toFixed(2);
 					
 					let markup = `<tr>
-									<td>${id}</td>
-									<td>${type}</td>
-									<td>${balance}</td>
+									<td>${authId}</td>
+									<td>${reimId}</td>
+									<td>${amount}</td>
 								  </tr>`;
 					
 					$('table tbody').append(markup);

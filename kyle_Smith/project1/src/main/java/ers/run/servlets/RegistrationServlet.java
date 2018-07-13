@@ -42,6 +42,7 @@ public class RegistrationServlet extends HttpServlet {
 		resp.setContentType("application/json");
 		
 		String userJSON = mapper.writeValueAsString(temp);
+		System.out.println("got to regServlet" + userJSON);
 		pw.write(userJSON);
 	}
 

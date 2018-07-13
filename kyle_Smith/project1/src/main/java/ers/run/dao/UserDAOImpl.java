@@ -93,15 +93,18 @@ public class UserDAOImpl implements UserDAO{
 		try(Connection conn = ConnectionFactory.getInstance().getConnection();){
 			
 			String sql = "SELECT * FROM ERS_USERS WHERE ERS_USERNAME = ?";
-			
+	
 			String[] keys = new String[1];
 			keys[0] = "ERS_USERS_ID";
 			
 			PreparedStatement pstmt = conn.prepareStatement(sql, keys);
 			pstmt.setString(1, username);
+			System.out.println(sql);
 			ResultSet rs = pstmt.executeQuery();
 			
+			System.out.println("username - got to getUserByUsername DAO " + username);
 			while(rs.next()) {
+				System.out.println("username - got to getUserByUsername DAO " + rs.getString("ERS_USERNAME"));
 				user.setUserId(rs.getInt("ERS_USERS_ID"));
 				user.setUsername(rs.getString("ERS_USERNAME"));
 				user.setPassword(rs.getString("ERS_PASSWORD"));
@@ -163,7 +166,7 @@ public class UserDAOImpl implements UserDAO{
 			String sql = "INSERT INTO ERS_USERS (ERS_USERS_ID,ERS_USERNAME,ERS_PASSWORD,USER_FIRST_NAME,USER_LAST_NAME,USER_EMAIL,USER_ROLE_ID) VALUES (?,?,?,?,?,?,?)";
 			
 			String[] keys = new String[1];
-			keys[0] = "userId";
+			keys[0] = "ERS_USERS_ID";
 					
 			PreparedStatement pstmt = conn.prepareStatement(sql, keys);
 			pstmt.setInt(1, newUser.getUserId());
@@ -184,7 +187,7 @@ public class UserDAOImpl implements UserDAO{
 				conn.commit();
 			}
 		} catch (SQLException e) {
-			System.out.println("error creating user.");
+			System.out.println("error creating user." + e);
 			return false;
 		}
 		
