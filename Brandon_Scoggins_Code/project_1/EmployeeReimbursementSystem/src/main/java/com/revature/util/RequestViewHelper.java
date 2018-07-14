@@ -12,7 +12,7 @@ public class RequestViewHelper {
 		case "/EmployeeReimbursementSystem/login.view":
 			return "partials/login.html";
 		case "/EmployeeReimbursementSystem/register.view":
-			return "partials/login.html";
+			return "partials/register.html";
 		default:
 			return null;
 		}

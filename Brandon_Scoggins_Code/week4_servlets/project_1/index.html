@@ -31,13 +31,13 @@
             <div class="collapse navbar-collapse" id="navbarNavDropdown">
                 <ul class="navbar-nav">
                     <!-- Show these options if logged in -->
-                    <li class="nav-item" id="toHome">
+                    <li class="nav-item" id="toHome" hidden>
                         <a class="nav-link" href="#"> Home </a>
                     </li>
-                    <li class="nav-item" id="toProfile">
+                    <li class="nav-item" id="toProfile" hidden>
                         <a class="nav-link"> Profile </a>
                     </li>
-                    <li class="nav-item dropdown" id="navbarDropdownMenuLink">
+                    <li class="nav-item dropdown" id="navbarDropdownMenuLink" hidden>
                         <a class="nav-link dropdown-toggle" href="#" role="button" 
                             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> Reimbursements </a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
@@ -58,13 +58,13 @@
             <div>
                 <ul class="navbar-nav">
                     <!-- Login and Register will be shown together if not logged in -->
-                    <li class="nav-item" id="toLogin">
+                    <li class="nav-item active" id="toLogin">
                         <a class="nav-link"> Login </a>
                     </li>
-                    <li class="nav-item active" id="toRegister">
+                    <li class="nav-item" id="toRegister">
                         <a class="nav-link"> Register </a>
                     </li>
-                    <li class="nav-item" id="toLogout">
+                    <li class="nav-item" id="toLogout" hidden>
                         <a class="nav-link"> Logout </a>
                     </li>                    
                 </ul>
@@ -77,44 +77,31 @@
 
 
 
-                <form class="container col centered col-4 shadow p-4 mb-4 bg-light">
-                    <h2 class="text-center">Happy Little ERS Registration</h2>
-                    <hr>
-                    <div class="form-group">
-                    <label for="inputFirstName">Firstname</label>
-                    <input type="text" class="form-control" id="inputFirstName" placeholder="Firstname">
+            <form class="container col centered col-4 shadow p-4 mb-4 bg-light rounded">
+                <h2 class="text-center">Happy Little ERS Login</h2>
+                <hr>
+                <div class="form-group">
+                <label for="inputUserNameOrEmail">Username or Email address</label>
+                <input type="email/text" class="form-control" id="inputUserNameOrEmail" aria-describedby="credentialsHelp" placeholder="Enter username/email">
+                <small id="credentialsHelp" class="form-text text-danger" style="">Must be a valid email.</small>
+                </div>
+                <div class="form-group">
+                <label for="inputPassword">Password</label>
+                <input type="password" class="form-control" id="inputPassword" placeholder="Password">
+                </div>
+                <br>
+                <div class="row rounded">
+                    <div class="col-1"></div>
+                    <div class="col centered bg-warning rounded d-flex justify-content-center pt-1 text-body">
+                        Invalid credentials.
                     </div>
-                    <div class="form-group">
-                    <label for="inputLastName">Lastname</label>
-                    <input type="text" class="form-control" id="inputLastName" placeholder="Lastname">
+                    <div class="col-3" align="right">
+                        <button type="submit" class="btn btn-primary" id="login">Login</button>
                     </div>
-                    <div class="form-group">
-                    <label for="inputEmail">Email address</label>
-                    <input type="email" class="form-control" id="inputEmail" aria-describedby="emailExist" placeholder="Email address">
-                    <small id="emailExist" class="form-text text-danger" style="">That email already exist.</small>
-                    </div>
-                    <div class="form-group">
-                    <label for="inputUserName">Username</label>
-                    <input type="text" class="form-control" id="inputUserName" aria-describedby="userNameExist" placeholder="Username">
-                    </div>
-                    <small id="userNameExist" class="form-text text-danger" style="">That username already exist.</small>
-                    <div class="form-group">
-                    <label for="inputPassword">Password</label>
-                    <input type="password" class="form-control" id="inputPassword" placeholder="Password">
-                    </div>
-                    <div class="form-group">
-                    <label for="inputPasswordConfirm">Confirm Password</label>
-                    <input type="password" class="form-control" id="inputPasswordConfirm" placeholder="Password">
-                    </div>
-                    <div class="form-group form-check">
-                    <input type="checkbox" class="form-check-input" id="roleCheckBox">
-                    <label class="form-check-label" for="roleCheckBox">Check if management</label>
-                    </div>
-                    <br>
-                    <div align="right">
-                        <button type="submit" class="btn btn-primary" id="register">Register</button>
-                    </div>
-                </form>
+                </div>
+            
+            <!--    <div class="alert alert-danger" id="login-message"></div> -->
+            </form>
 
 
 

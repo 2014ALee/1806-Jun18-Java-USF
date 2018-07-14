@@ -18,6 +18,7 @@ function loadLogin(){
 			loadLoginInfo();
 			$('#toRegister').show();
 			$('#toLogin').show();
+			$('#toLogin').addClass('active');
 			
 			$('#toHome').hide();
 			$('#toProfile').hide();
@@ -32,7 +33,8 @@ function loadLogin(){
 
 function loadLoginInfo(){
 	console.log('in loadLoginInfo()');
-	$('#login-message').hide();
+	$('#login-message').removeClass('bg-warning');
+	$('#login-message').html('');
 	$('#login').on('click', login);
 }
 
@@ -51,13 +53,15 @@ function login() {
 	xhr.onreadystatechange =  function() {
 		if(xhr.readyState == 4 && xhr.status == 200){
 			let user = JSON.parse(xhr.responseText);
-			$('#login-message').show();
 			
 			if(user.userId == 0) {
+				$('#login-message').addClass('bg-warning');
 				$('#login-message').html('Invalid Credentials!');
+				console.log(`User id: ${user.userId} login failed!`);
 			} else {
 				alert('Login Successful!');
-				$('#login-message').hide();
+				$('#login-message').removeClass('bg-warning');
+				$('#login-message').html('');
 				//laodHome();
 				console.log(`User id: ${user.userId} login successful!`);
 			}

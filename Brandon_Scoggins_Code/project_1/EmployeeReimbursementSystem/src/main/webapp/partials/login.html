@@ -1,4 +1,4 @@
-<form class="container col centered col-4 shadow p-4 mb-4 bg-light">
+<form class="container col centered col-4 shadow p-4 mb-4 bg-light rounded">
     <h2 class="text-center">Happy Little ERS Login</h2>
     <hr>
     <div class="form-group">
@@ -11,9 +11,11 @@
     <input type="password" class="form-control" id="inputPassword" placeholder="Password">
     </div>
     <br>
-    <div align="right">
-        <button type="submit" class="btn btn-primary" id="login">Login</button>
+    <div class="row rounded">
+        <div class="col-1"></div>
+        <div class="col centered rounded d-flex justify-content-center pt-1 text-body" id="login-message"></div>
+        <div class="col-3" align="right">
+            <button type="submit" class="btn btn-primary" id="login">Login</button>
+        </div>
     </div>
-
-    <div class="alert alert-danger" id="login-message"></div>
 </form>
