@@ -1,4 +1,4 @@
-package com.revature.DAOInterfaces;
+package com.revature.DAO;
 
 import com.revature.models.User;
 
