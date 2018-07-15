@@ -1,0 +1,23 @@
+<h1>Angular</h1>
+
+<!-- When nG sees this element, it will use the markup we defined in our component file
+to render this element in the browser. In the browser, inspect this element to explore
+how the browser actually renders it. Notice that there is another custom HTML element
+included besides our courses element: the 'app-root' element, which can be found in the
+index.html of our nG project.-->
+<courses></courses>
+
+<hr/>
+<h2>Structural Directives</h2>
+<structural-directives></structural-directives>
+
+<hr/>
+<h2>Attribute Directives</h2>
+<attribute-directives></attribute-directives>
+
+<hr/>
+<authors></authors>
+
+<hr/>
+<input type="text" [(ngModel)]="title"/><br>
+{{ title | titleCase }}
