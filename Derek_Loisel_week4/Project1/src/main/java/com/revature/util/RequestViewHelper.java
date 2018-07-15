@@ -16,6 +16,8 @@ public class RequestViewHelper {
 		case "/Project1/register.view":
 			return "partials/register.html";
 		
+		case "/Project1/home.view":
+			return "partials/home.html";
 		default:
 			return null;
 		} 

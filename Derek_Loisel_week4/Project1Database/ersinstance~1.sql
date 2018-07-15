@@ -5,6 +5,10 @@ user_role               VARCHAR2(10)
 
 );
 
+INSERT INTO ers_user_roles VALUES (1, 'manager');
+INSERT INTO ers_user_roles VALUES (2, 'employee');
+INSERT INTO ers_user_roles VALUES (3, 'admin');
+
 CREATE TABLE ers_reimbursement_status(
 
 reimb_status_id         NUMBER CONSTRAINT pk_ers_reimbursement_status PRIMARY KEY ,
@@ -12,11 +16,20 @@ reimb_status            VARCHAR2 (10)
 
 );
 
+INSERT INTO ers_reimbursement_status VALUES (1, 'pending');
+INSERT INTO ers_reimbursement_status VALUES (2, 'approved');
+INSERT INTO ers_reimbursement_status VALUES (3, 'denied');
+
 CREATE TABLE ers_reimbursement_type(
 reimb_type_id           NUMBER CONSTRAINT pk_ers_reimbursement_type PRIMARY KEY ,
 reimb_type              VARCHAR2(10)
 
 );
+
+INSERT INTO ers_reimbursement_type VALUES (1, 'lodging');
+INSERT INTO ers_reimbursement_type VALUES (2, 'travel');
+INSERT INTO ers_reimbursement_type VALUES (3, 'food');
+INSERT INTO ers_reimbursement_type VALUES (4, 'other');
 
 CREATE TABLE ers_users(
 

@@ -43,19 +43,16 @@ public class LoginServlet extends HttpServlet {
 		String username = userInfo[0];
 		String password = userInfo[1];
 		
+		//System.out.println(username);
+		//System.out.println(password);		
+		//System.out.println(service.getUserByUsername(username).getUserID());
+		
 		User temp = (service.getUserByUsername(username).getUserID() != 0) ? service.getUserByUsername(username) : null;
 		
 		if(temp == null) {
 			System.out.println("[LOG] - Variable 'temp' in LoginServlet is null");
 		} else if(!temp.getPassword().equals(password)) {
-			temp.setUserID(0);
-			temp.setFirstname(null);
-			temp.setLastname(null);
-			temp.setEmail(null);
-			temp.setUsername(null);
-			temp.setPassword(null);
-			temp.setUserRoleID(0);
-
+			temp = null;
 		} else {
 			HttpSession session = req.getSession();
 			session.setAttribute("user", temp); // persists this user to the session

@@ -39,8 +39,8 @@ public class UserDAOImpl implements UserDAO{
 				temp.setUserID(rs.getInt("ers_users_id")); //identifying column by column name string 
 				temp.setUsername(rs.getString("ers_username"));
 				temp.setPassword(rs.getString("ers_password"));
-				temp.setFirstname(rs.getString("user_firstname"));
-				temp.setLastname(rs.getString("user_lastname"));
+				temp.setFirstname(rs.getString("user_first_name"));
+				temp.setLastname(rs.getString("user_last_name"));
 				temp.setEmail(rs.getString("user_email"));
 				temp.setUserRoleID(rs.getInt("user_role_id"));
 				//add the user object (row) to your array
@@ -72,8 +72,8 @@ public class UserDAOImpl implements UserDAO{
 				u.setUserID(rs.getInt(1));
 				u.setUsername(rs.getString("ers_username"));
 				u.setPassword(rs.getString("ers_password"));
-				u.setFirstname(rs.getString("user_firstname"));
-				u.setLastname(rs.getString("user_lastname"));
+				u.setFirstname(rs.getString("user_first_name"));
+				u.setLastname(rs.getString("user_last_name"));
 				u.setEmail(rs.getString("user_email"));
 				u.setUserRoleID(rs.getInt("user_role_id"));
 			}
@@ -109,8 +109,8 @@ public class UserDAOImpl implements UserDAO{
 				u.setUserID(rs.getInt(1));
 				u.setUsername(rs.getString("ers_username"));
 				u.setPassword(rs.getString("ers_password"));
-				u.setFirstname(rs.getString("user_firstname"));
-				u.setLastname(rs.getString("user_lastname"));
+				u.setFirstname(rs.getString("user_first_name"));
+				u.setLastname(rs.getString("user_last_name"));
 				u.setEmail(rs.getString("user_email"));
 				u.setUserRoleID(rs.getInt("user_role_id"));				
 			}	
@@ -127,7 +127,7 @@ public class UserDAOImpl implements UserDAO{
 
 		try(Connection conn = ConnectionFactory.getInstance().getConnection();){
 
-			String sql = "INSERT INTO ers_users (ers_username, ers_password, user_firstname, user_lastname, user_email, user_role_id) VALUES (?, ?, ?, ?, ?, ?)";
+			String sql = "INSERT INTO ers_users (ers_username, ers_password, user_first_name, user_last_name, user_email, user_role_id) VALUES (?, ?, ?, ?, ?, ?)";
 
 			//an array of string objects that will take IN the primary keys that's generated WHEN you put the user in
 			String[] keys = new String[1];// the 1 IS how many columns we're keeping track of keys for, here its only 1 
