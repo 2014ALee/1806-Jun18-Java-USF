@@ -141,7 +141,7 @@ public class UserDAOImpl implements UserDAO{
 	}
 
 
-	public boolean validLogin(String userName, String email, String password) {
+	public boolean validLogin(String userName, String password) {
 
 		try(Connection con = ConnectionFactory.getInstance().getConnection();){
 
@@ -172,11 +172,9 @@ public class UserDAOImpl implements UserDAO{
 			//now we do our username and email validation
 			for(int i = 0; i < userList.size(); i++) {
 				if(userName.equals(userList.get(i).getUserName())) {
-					if(email.equals(userList.get(i).getEmailName())) {
 						if(password.equals(userList.get(i).getPassword())){
 							return true;
-						}
-					}
+						}	
 				} 
 			}
 

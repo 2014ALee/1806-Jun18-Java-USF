@@ -1,6 +1,7 @@
 package com.revature.models;
 
 import com.revature.DAO.ReimbDAOImpl;
+import com.revature.DAO.UserDAO;
 import com.revature.DAO.UserDAOImpl;
 import com.revature.models.interfaces.EmployeeReimbursementSystemInterface;
 
@@ -27,38 +28,20 @@ public class EmployeeReimbursementSystem implements EmployeeReimbursementSystemI
 		mainMenu();
 	}
 	
-	public void logIn() {
+	public User logIn(String userName, String password) {
 		// we need to get user
 		//we have front end forms that ask for the information
 		//if we are succesful, we send them to the logged in menu
 		
 		//sample vars
-		String userName = "tomsteyaert";
-		String password = "password";
-		
+
 		User newUser = new User();	
 		newUser.setUserName(userName);
 		newUser.setPassword(password);
 		
-		//if our login is succesful
-	//	if(userDAO.validLogin(newUser)) {
-		//	newUser = userDAO.getUser(newUser);
-	//	}
+		User loggedInUser = userDAO.getUser(newUser);
 		
-	/*
-	 * 
-	 * if(newUser.roleName == "manager"){
-	 * 	loggedInMenuManager(User newUser);
-	 * } else if(newUser.roleName == "employee"){
-	 *  loggedInMenuEmployee(User newUser);
-	 * }
-	 * 
-	 * 
-	 * 
-	 */
-		
-		
-		boolean inDatabase = userInDatabase(newUser);
+		return loggedInUser;
 		
 	}
 	
@@ -102,18 +85,12 @@ public class EmployeeReimbursementSystem implements EmployeeReimbursementSystemI
 		return true;
 	}
 	
-	public boolean userInDatabase(User newUser) {
-		//both username and email must be in there for the same user
-		//first check username
-		//	if it exists, go to next step
-		//	if match, then check email, if no match user already exists
-		//	if no match for both of these, user doesn't yet exist
+	public boolean userInDatabase(String userName, String password) {
+	
+		boolean validLogin = userDAO.validLogin(userName, password);
 		
 		
-		//create connection, do our thing to check
-		//we will use a procedure stored in the database
-		
-		return false;
+		return validLogin;
 	}
 
 	@Override

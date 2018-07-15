@@ -34,6 +34,7 @@ public class RegistrationServlet extends HttpServlet {
 		}
 		
 		ObjectMapper mapper = new ObjectMapper();
+		
 		User temp = mapper.readValue(json, User.class);
 		temp = service.createNewUser(temp);
 		
@@ -41,6 +42,7 @@ public class RegistrationServlet extends HttpServlet {
 		resp.setContentType("application/json");
 		
 		String userJSON = mapper.writeValueAsString(temp);
+		
 		pw.write(userJSON);
 	}
 

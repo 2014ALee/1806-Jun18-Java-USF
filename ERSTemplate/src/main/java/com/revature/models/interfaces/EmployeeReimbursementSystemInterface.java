@@ -1,9 +1,11 @@
 package com.revature.models.interfaces;
 
+import com.revature.models.User;
+
 public interface EmployeeReimbursementSystemInterface {
 
 	public void registerUser();
-	public void logIn();
+	public User logIn(String userName, String password);
 	public void mainMenu();
 	public void exitProgram();
 	

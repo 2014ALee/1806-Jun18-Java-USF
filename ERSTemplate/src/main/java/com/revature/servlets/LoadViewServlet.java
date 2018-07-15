@@ -36,7 +36,8 @@ public class LoadViewServlet extends HttpServlet {
 	}
 
 	public String choosePartial(String requestURI) {
-		if(requestURI == "/ERSTemplate/Login.view") {	
+		System.out.println(requestURI + "Our ur!!!!!!!!!!!!!!111");
+		if(requestURI.equals("/ERSTemplate/Login.view")) {	
 			return "partials/Login.html";
 	} else {
 			return null;

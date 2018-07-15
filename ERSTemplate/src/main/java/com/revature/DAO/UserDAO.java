@@ -14,7 +14,7 @@ public interface UserDAO {
 	public boolean validRegistration(User newUser);
 	
 	//check if a user exists
-public boolean validLogin(String userName, String email, String password);	
+public boolean validLogin(String userName, String password);	
 
 
 //message if taken., message if improper format

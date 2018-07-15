@@ -102,7 +102,7 @@ public class DatabaseBackUp implements DatabaseBackUpInterface {
 			
 			return false;
 		}
-]	
+
 	}
 
 	@Override
