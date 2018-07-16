@@ -1,13 +1,12 @@
 package ers.run.dao;
 
-import java.sql.Blob;
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+
 import ers.run.models.Reimbursment;
 import ers.run.util.ConnectionFactory;
 
@@ -51,14 +50,15 @@ public class ReimbursmentDAOImpl implements ReimbursmentDAO {
 		ArrayList<Reimbursment> reims = new ArrayList<>();
 		
 		try(Connection conn = ConnectionFactory.getInstance().getConnection();){
-			
+			System.out.println("error 1");
 			String sql = "SELECT * FROM ERS_REIMBURSEMENT WHERE REIMB_AUTHOR = ?";
 			String[] keys = new String[1];
 			keys[0] = "REIMB_ID";
-			
+			System.out.println("error 2");
 			PreparedStatement pstmt = conn.prepareStatement(sql, keys);
 			pstmt.setInt(1, author);
-			ResultSet rs = pstmt.executeQuery(sql);
+			ResultSet rs = pstmt.executeQuery();
+			System.out.println("error 3");
 			
 			while(rs.next()) {
 				Reimbursment temp = new Reimbursment();
@@ -72,10 +72,11 @@ public class ReimbursmentDAOImpl implements ReimbursmentDAO {
 				temp.setResolver(rs.getInt("REIMB_RESOLVER"));
 				temp.setStatusId(rs.getInt("REIMB_STATUS_ID"));
 				temp.setTypeId(rs.getInt("REIMB_TYPE_ID"));
-			
+				System.out.println("temp to string " + temp.toString());
 				reims.add(temp);
 			}
 		} catch (SQLException e) {
+			System.out.println("error in sql statement");
 			e.printStackTrace();
 		}
 		return reims;
@@ -91,25 +92,34 @@ public class ReimbursmentDAOImpl implements ReimbursmentDAO {
 	public boolean insertReimbursment(Reimbursment reim) {
 		
 		try(Connection conn = ConnectionFactory.getInstance().getConnection();){
-			
+			System.out.println("creating reimDAO");
 			conn.setAutoCommit(false);
 			
-			String sql = "INSERT INTO ERS_REIMBURSEMENT (REIMB_ID,REIMB_AMOUNT,REIMB_SUBMITTED,REIMB_RESOLVED,REIMB_DESCRIPTION,REIMB_RECEIPT,REIMB_AUTHOR,REIMB_RESOLVER,REIMB_STATUS_ID,REIMB_TYPE_ID) VALUES (?,?,?,?,?,?,?,?,?,?)";
+			String sql = "INSERT INTO ERS_REIMBURSEMENT (REIMB_ID,REIMB_AMOUNT,REIMB_SUBMITTED,REIMB_DESCRIPTION,"
+					+ "REIMB_AUTHOR,REIMB_STATUS_ID,REIMB_TYPE_ID) "
+					+ "VALUES (?,?,?,?,?,?,?)";
 			
 			String[] keys = new String[1];
 			keys[0] = "REIMB_ID";
-					
+			System.out.println(reim.getSubmitted().getTime());
+			System.out.println("converted timestamp: " + new java.sql.Timestamp(reim.getSubmitted().getTime()));
 			PreparedStatement pstmt = conn.prepareStatement(sql, keys);
 			pstmt.setInt(1, reim.getReimbursmentId());
 			pstmt.setDouble(2, reim.getAmount());
-			pstmt.setDate(3, reim.getSubmitted());
-			pstmt.setDate(4, reim.getResolved());
-			pstmt.setString(5, reim.getDescription());
-			pstmt.setBlob(6, reim.getReceipt());
-			pstmt.setInt(7, reim.getAuthor());
-			pstmt.setInt(8, reim.getResolver());
-			pstmt.setInt(9, reim.getStatusId());
-			pstmt.setInt(10, reim.getTypeId());
+			pstmt.setDate(3, new java.sql.Date(reim.getSubmitted().getTime()));
+			pstmt.setString(4, reim.getDescription());
+			pstmt.setInt(5, reim.getAuthor());
+			pstmt.setInt(6, reim.getStatusId());
+			pstmt.setInt(7, reim.getTypeId());
+			System.out.println(reim.getReimbursmentId());
+			System.out.println(reim.getAmount());
+			System.out.println(reim.getSubmitted());
+			System.out.println(reim.getDescription());
+			System.out.println(reim.getAuthor());
+			System.out.println(reim.getResolver());
+			System.out.println(reim.getStatusId());
+			System.out.println(reim.getTypeId());
+			System.out.println("creating reimDAO " + sql );	
 			int rowsUpdated = pstmt.executeUpdate();
 			
 			ResultSet rs = pstmt.getGeneratedKeys();
@@ -121,7 +131,8 @@ public class ReimbursmentDAOImpl implements ReimbursmentDAO {
 				conn.commit();
 			}
 		} catch (SQLException e) {
-			System.out.println("error creating user.");
+			System.out.println("error creating reim.");
+			e.printStackTrace();
 			return false;
 		}
 		return true;

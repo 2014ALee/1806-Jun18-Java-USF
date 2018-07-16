@@ -15,18 +15,20 @@ public class LoadInfoHelper {
 
 	public Object process(HttpServletRequest req, HttpServletResponse resp) {
 		System.out.println("[LOG] - Processing request with LoadInfoHelper: " + req.getRequestURI());
+		ErsService service = new ErsService();
+		HttpSession session = req.getSession();
+		User sessionUser = (User) session.getAttribute("user");
+		sessionUser.setPassword("***************");
+		ArrayList<Reimbursment> sessionUserReim = service.getReimbursmentsByAuthor(sessionUser.getUserId());
+		UserReimbursments homeInfo = new UserReimbursments(sessionUser, sessionUserReim);
 		
 		switch(req.getRequestURI()) {
-		case "/fs-bank-demo/home.loadinfo":
-			ErsService service = new ErsService();
-			HttpSession session = req.getSession();
-			User sessionUser = (User) session.getAttribute("user");
-			sessionUser.setPassword("***************");
-			ArrayList<Reimbursment> sessionUserAccounts = service.getReimbursmentsByAuthor(sessionUser.getUserId());
-			UserReimbursments homeInfo = new UserReimbursments(sessionUser, sessionUserAccounts);
-			
+		case "/project1/home.loadinfo":
 			return homeInfo;
-			
+		case "/project1/adminHome.loadinfo":
+			return homeInfo;
+		case "/project1/managerHome.loadinfo":
+			return homeInfo;
 		default:
 			return null;
 		}

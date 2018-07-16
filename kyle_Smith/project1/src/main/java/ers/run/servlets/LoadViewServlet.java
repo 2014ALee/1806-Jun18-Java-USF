@@ -23,7 +23,5 @@ public class LoadViewServlet extends HttpServlet {
 		System.out.println(nextView);
 		
 		req.getRequestDispatcher(nextView).forward(req, resp);
-		
 	}
-
 }

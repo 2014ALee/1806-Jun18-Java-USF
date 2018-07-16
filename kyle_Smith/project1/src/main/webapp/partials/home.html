@@ -8,11 +8,38 @@
 		<b>Username:</b> <span id="user_username"></span><br><br>
 		<b>Password:</b> <span id="user_password"></span><br><br>
 	</div>
-	<h1>Test</h1>
+	<hr>
+	<div class="form-group col-md-4 offset-md-4 bootstrap-overrides">
+			<h3>Create New Reimbursment</h3>
+			<div class="form-group">
+				<label for="reimType">Reimbursment Type</label>
+				<select class="form-control" id="reimType" required>
+					<option id="selectLodging" value="1">Lodging</option>
+					<option id="selectTravel" value="2">Travel</option>
+					<option id="selectFood" value="3">Food</option>
+					<option id="selectOther" value="4">Other</option>
+				</select>
+			</div>
+			<div class="form-label-group">
+				<input type="number" id="amount" class="form-control" placeholder="Amount" required>
+				<label for="amount">Amount</label>
+			</div>
+			<div class="form-group">
+				<label for="description">Description</label>
+				<textarea class="form-control" id="description" rows="3"></textarea>
+			</div>
+
+			<div class="form-group">
+				<label for="receipt">Receipt</label>
+				<input type="file" class="form-control-file" id="receipt">
+			</div>
+			<button class="btn btn-lg btn-primary" type="submit" id="createReim">Submit</button>
+			<span id="validationError" style="display: none"></span>  
+		</div>
+		<ul id="list"></ul>
 	<hr>
 	
 	<table class="table" id="userAccounts-table">
-		
 		<thead>
 			<tr>
 				<th>Account Id</th>
@@ -20,8 +47,6 @@
 				<th>Balance</th>
 			</tr>
 		</thead>
-		
 		<tbody></tbody>
-		
 	</table>
 </div>

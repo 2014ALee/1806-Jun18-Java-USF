@@ -1,10 +1,12 @@
 package ers.run.services;
 
+import java.sql.Date;
 import java.util.ArrayList;
 
 import ers.run.dao.*;
 import ers.run.models.Reimbursment;
 import ers.run.models.User;
+import oracle.sql.DATE;
 
 public class ErsService {
 
@@ -192,23 +194,18 @@ public class ErsService {
 	}
 	
 	public ArrayList<Reimbursment> getReimbursmentsByAuthor(int authorId) {
+		System.out.println("made it here");
+		return reim.getReimbursmentsByAuthor(authorId);
 
-		ArrayList<Integer> authorIds = new ArrayList<Integer>();
-
-		for(Reimbursment authReim : getReimbursmentsByAuthor(authorId)) {
-			authorIds.add(authReim.getAuthor());
-		}
-
-		ArrayList<Reimbursment> userReimbursments = new ArrayList<Reimbursment>();
-
-		for(int authId : authorIds) {
-			Reimbursment temp = new Reimbursment();
-			temp = getReimbursmentById(authId);
-			userReimbursments.add(temp);
-		}
-
-		return userReimbursments;
-
+	}
+	
+	public boolean createReim(Reimbursment newReim, User user) {
+		
+		Reimbursment temp = newReim;
+		temp.setAuthor(user.getUserId());
+		boolean created = reim.insertReimbursment(newReim);
+		
+		return created;
 	}
 //
 //	public ArrayList<AccountRegistrar> getUsersOnAccount(Account acct) {
