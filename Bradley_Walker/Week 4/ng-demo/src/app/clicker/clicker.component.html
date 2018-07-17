@@ -1,0 +1,5 @@
+<p>Count: {{count}}</p>
+<button (click)="incrementCount(1)">+1</button>
+<button *ngIf="count >= 10" (click)="incrementCount(10)">+10</button>
+<button *ngIf="count >= 100" (click)="incrementCount(100)">+100</button>
+<button *ngIf="count >= 1000" (click)="incrementCount(1000)">+1000</button>

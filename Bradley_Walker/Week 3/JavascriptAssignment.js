@@ -29,7 +29,7 @@ window.onload = function(){
     // Add the event handler to the time display buttons
     $('#earth_time_check').click(earthButtonClicked);
     $('#mars_time_check').click(marsButtonClicked);
-    $('#acb_time_check').click(acbButtonClickedAJAX);
+    $('#acb_time_check').click(acbButtonClickedFetch);
     
     // Add the event handler to the Intergalactic Directory heading
     $('body').find('h1:contains("Intergalactic Directory")').click(headingClicked);
@@ -264,6 +264,7 @@ function walkTheDom(node, func){
         walkTheDom(element, func);
     });
 }
+
 
 
 
