@@ -24,7 +24,7 @@ import { TitleCasePipe } from './title-case.pipe';
   // imports = external modules
   imports: [
     BrowserModule,
-    FormsModule
+    FormsModule // necessary for ngModel (two-way binding)
   ],
   // providers = services (component dependencies)
   providers: [],

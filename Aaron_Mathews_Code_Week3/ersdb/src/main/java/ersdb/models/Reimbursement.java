@@ -19,7 +19,7 @@ public class Reimbursement {
 	
 	public Reimbursement() {}
 
-	public Reimbursement(int reimbId, int reimbAmount, Date submitted, Date resolved, String description, Blob receipt, int author,
+	public Reimbursement(int reimbId, double reimbAmount, Date submitted, Date resolved, String description, Blob receipt, int author,
 			int resolver, int statusId, int typeId) {
 		super();
 		this.reimbId = reimbId;

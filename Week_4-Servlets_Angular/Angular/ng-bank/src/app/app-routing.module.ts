@@ -1,18 +1,17 @@
-import { NgModule } from "../../node_modules/@angular/core";
-import { listLazyRoutes } from "../../node_modules/@angular/compiler/src/aot/lazy_routes";
+import { NgModule } from '../../node_modules/@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { LoginComponent } from "./components/login/login.component";
-import { DashboardComponent } from "./components/dashboard/dashboard.component";
-import { LandingComponent } from "./components/landing/landing.component";
+import { LoginComponent } from './components/login/login.component';
+import { DashboardComponent } from './components/dashboard/dashboard.component';
+import { LandingComponent } from './components/landing/landing.component';
 
 const ROUTES: Routes = [
     {
-        path: '', 
-        redirectTo: 'landing', 
+        path: '',
+        redirectTo: 'landing',
         pathMatch: 'full'
     },
     {
-        path: 'landing', 
+        path: 'landing',
         component: LandingComponent
     },
     {
@@ -23,9 +22,11 @@ const ROUTES: Routes = [
         path: 'dashboard',
         component: DashboardComponent
     }
-]
+];
+
 @NgModule({
     imports: [RouterModule.forRoot(ROUTES)],
     exports: [RouterModule]
 })
+
 export class AppRoutingModule {}

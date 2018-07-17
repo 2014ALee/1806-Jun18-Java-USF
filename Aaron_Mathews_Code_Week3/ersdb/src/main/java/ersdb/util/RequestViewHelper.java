@@ -13,6 +13,12 @@ public class RequestViewHelper {
 			return "partials/login.html";
 		case "/ersdb/signup.view":
 			return "partials/signup.html";
+		case "/ersdb/adminhome.view":
+			return "partials/adminhome.html";
+		case "/ersdb/managerhome.view":
+			return "partials/managerhome.html";
+		case "/ersdb/home.view":
+			return "partials/home.html";
 		default:
 			return null;
 		}

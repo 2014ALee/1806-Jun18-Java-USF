@@ -25,7 +25,7 @@ import { UserService } from './services/user.service';
     AppRoutingModule,
     FormsModule,
     HttpClientModule,
-    NgbModule
+    NgbModule.forRoot()
   ],
   providers: [
     UserService
