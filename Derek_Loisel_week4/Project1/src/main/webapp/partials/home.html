@@ -1,19 +1,52 @@
 <div>
-	<h1>Home</h1><br>
+	<h1>Home</h1>
+	<br>
 	<div id="user-info">
-		<b>User ID:</b> <span id="user_id"></span><br><br>
-		<b>First name:</b> <span id="user_fn"></span><br><br>
-		<b>Last name:</b> <span id="user_ln"></span><br><br>
-		<b>Email address:</b> <span id="user_email"></span><br><br>
-		<b>Username:</b> <span id="user_username"></span><br><br>
-		<b>Password:</b> <span id="user_password"></span><br><br>
-		<b>User Role ID:</b><span id="user_role_id"></span><br><br>
+		<b>User ID:</b> <span id="user_id"></span><br> <br> <b>First
+			name:</b> <span id="user_fn"></span><br> <br> <b>Last name:</b>
+		<span id="user_ln"></span><br> <br> <b>Email address:</b> <span
+			id="user_email"></span><br> <br> <b>Username:</b> <span
+			id="user_username"></span><br> <br> <b>Password:</b> <span
+			id="user_password"></span><br> <br> <b>User Role ID:</b><span
+			id="user_role_id"></span><br> <br>
 	</div>
-	
+
+
+	<br>
 	<hr>
+	<br>
 	
-	<table class="table" id="userReimbursements-table">
+	<div id="createreimbdiv">
+	
+	<h2>Create New Reimbursement Request</h2>
+	
+		<div class="input-group mb-3">
+			<input type="number" id="amount" class="form-control" placeholder="Amount...">
+			<input type="text" id="description" class="form-control" placeholder="Description...">			
+		</div>
+
+		<div class="input-group mb-3">
+			<select class="custom-select" id="reimb-type-dropdown">
+				<option selected>Reimbursement Type...</option>
+				<option value="1">Lodging</option>
+				<option value="2">Travel</option>
+				<option value="3">Food</option>
+				<option value="4">Other</option>
+			</select>
+		</div>
 		
+		<div id="buttondiv">
+			<button class="btn btn-outline-secondary" id="button-add-reimb" type="submit" >Submit Reimbursement</button>
+		</div>
+
+	</div>
+
+	<br>
+	<hr>
+	<br>
+
+	<table class="table" id="userReimbursements-table">
+
 		<thead>
 			<tr>
 				<th>ID</th>
@@ -30,4 +63,8 @@
 		<tbody></tbody>
 	</table>
 	<p id="acct-info"></p>
+
+	
+	
+	
 </div>

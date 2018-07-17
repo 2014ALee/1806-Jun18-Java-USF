@@ -128,7 +128,7 @@ public class ReimbursementDAOImpl implements ReimbursementDAO{
 
 		try(Connection conn = ConnectionFactory.getInstance().getConnection();){
 
-			String sql = "INSERT INTO ers_reimbursement (reimb_amount, reimb_submitted, reimb_resolved, reimb_description, reimb_receipt, reimb_author, reimb_resolver, reimb_status_id, reimb_type_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+			String sql = "INSERT INTO ers_reimbursement (reimb_amount, reimb_submitted, reimb_resolved, reimb_description, reimb_receipt, reimb_author, reimb_status_id, reimb_type_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
 			//an array of string objects that will take in the primary keys that's generated when you put the account in
 			String[] keys = new String[1];// the 1 IS how many columns we're keeping track of keys for, here its only 1
@@ -141,9 +141,9 @@ public class ReimbursementDAOImpl implements ReimbursementDAO{
 			pstmt.setString(4, newReimbursement.getReimbursementDescription());
 			pstmt.setBlob(5, newReimbursement.getReimbursementReceipt());
 			pstmt.setInt(6, newReimbursement.getReimbursementAuthor());
-			pstmt.setInt(7, newReimbursement.getReimbursementResolver());
-			pstmt.setInt(8, newReimbursement.getReimbursementStatusID());
-			pstmt.setInt(9, newReimbursement.getReimbursementTypeID());
+			//pstmt.setInt(7, newReimbursement.getReimbursementResolver());
+			pstmt.setInt(7, newReimbursement.getReimbursementStatusID());
+			pstmt.setInt(8, newReimbursement.getReimbursementTypeID());
 
 			int rowsUpdated = pstmt.executeUpdate(); //this isnt a query, its an update.  it also returns a value that tells you how many rows were updated
 

@@ -4,7 +4,7 @@ window.onload = function() {
 	
 	$('#toLogin').on('click', loadLogin);
 	$('#toRegister').on('click', loadRegister);
-	$('#toHome').on('click', loadHome);
+	//$('#toHome').on('click', loadHome);
 //	$('#toProfile').on('click', loadProfile);
 //	$('#toLogout').on('click', logout);
 
@@ -15,8 +15,6 @@ console.log('in loadLogin()');
 
 
 	let xhr = new XMLHttpRequest();
-	
-	
 	
 	xhr.onreadystatechange = function() {
 		
@@ -67,12 +65,25 @@ function login() {
 				//alert('Invalid credentials!')
 				console.log('invalid credentials!');
 			} else {
-				
+				//instead of passing a user to load home, have 3 different load homes, that all call the same load home info
 				//alert('Login successful!');
-				loadHome(user);
+				console.log('user role id inside loadHome after loadHomeInfo: ' + user.userRoleID);
+				
 				console.log('username: ' + user.username);
 				console.log('User id: ' + user.userID);
 				console.log('login successful!');
+				//load home according to user role
+				if(user.userRoleID == 1){
+					loadEmployeeHome();
+				}
+				else if(user.userRoleID == 2){
+					loadManagerHome();
+
+				}else{
+					loadAdminHome();
+
+				}
+				
 			}
 		}
 	}
@@ -173,25 +184,10 @@ function register() {
 }
 
 
-function loadHome(user) {
-	console.log('in loadHome()');
+function loadEmployeeHome() {
+	console.log('in loadEmployeeHome()');
 	
 	let xhr = new XMLHttpRequest();
-	
-	let currentView = '';
-	console.log('user role id inside loadHome after loadHomeInfo: ' + user.userRoleID);
-	//set view according to user role
-	if(user.userRoleID == 1){
-		console.log("employee role signing in");
-		currentView = 'home.view';
-	}
-	else if(user.userRoleID == 2){
-		console.log("manager role signing in");
-		currentView = 'managerhome.view';
-	}else{
-		console.log("admin role signing in");
-		currentView = 'adminhome.view';
-	}
 	
 	xhr.onreadystatechange = function() {
 		if(xhr.readyState == 4 && xhr.status == 200) {
@@ -199,7 +195,7 @@ function loadHome(user) {
 			loadHomeInfo();
 			
 			
-			$('#toHome').show();
+			//$('#toHome').show();
 			$('#toProfile').show();
 			$('#toLogout').show();
 			$('#toLogin').hide();
@@ -207,12 +203,57 @@ function loadHome(user) {
 		}
 	}
 	
-	xhr.open('GET', currentView, true);
+	xhr.open('GET', 'home.view', true);
 	xhr.send();
 }
 
+function loadManagerHome() {
+	console.log('in loadManagerHome()');
+	
+	let xhr = new XMLHttpRequest();
+	
+	xhr.onreadystatechange = function() {
+		if(xhr.readyState == 4 && xhr.status == 200) {
+			$('#view').html(xhr.responseText);
+			loadHomeInfo();
+			
+			
+			//$('#toHome').show();
+			$('#toProfile').show();
+			$('#toLogout').show();
+			$('#toLogin').hide();
+			$('#toRegister').hide();
+		}
+	}
+	
+	xhr.open('GET', 'managerhome.view', true);
+	xhr.send();
+}
 
+function loadAdminHome() {
+	console.log('in loadAdminHome()');
+	
+	let xhr = new XMLHttpRequest();
+	
+	xhr.onreadystatechange = function() {
+		if(xhr.readyState == 4 && xhr.status == 200) {
+			$('#view').html(xhr.responseText);
+			loadHomeInfo();
+			
+			
+			//$('#toHome').show();
+			$('#toProfile').show();
+			$('#toLogout').show();
+			$('#toLogin').hide();
+			$('#toRegister').hide();
+		}
+	}
+	
+	xhr.open('GET', 'adminhome.view', true);
+	xhr.send();
+}
 
+let passedUser;
 function loadHomeInfo() {
 	console.log('in loadHomeInfo()');
 	
@@ -222,6 +263,7 @@ function loadHomeInfo() {
 		if(xhr.readyState == 4 && xhr.status == 200) {
 			let homeInfo = JSON.parse(xhr.responseText);
 			let user = homeInfo.user;
+			passedUser = user;
 			let reimbursements = homeInfo.userReimbursements;
 			
 			$('#user_id').html(user.userID);
@@ -242,9 +284,6 @@ function loadHomeInfo() {
 			if(reimbursements.length > 0) {
 				reimbursements.forEach((reimbursement) => {
 					
-					if(filteringByUser == true && reimbursement.reimursementAuthor == userToFilterBy){
-						
-					}
 					
 					let id = reimbursement.reimbursementID;
 					let amount = reimbursement.reimbursementAmount;
@@ -269,7 +308,6 @@ function loadHomeInfo() {
 					
 					let statusID = reimbursement.reimbursementStatusID;
 					let typeID = reimbursement.reimbursementTypeID;
-					console.log(dateResolved);
 					let markup = `<tr>
 									<td>${id}</td>
 									<td>${amount}</td>
@@ -288,9 +326,13 @@ function loadHomeInfo() {
 				$('#acct-info').html('No accounts on record');
 			}
 			
-			//reset filters
-			filteringByUser = false;
-			filteringByStatus = false;
+			
+			//set the event listeners for all views
+			$('#button-add-reimb').on('click', addReimbursement)
+			
+			
+			
+			
 			
 			//set the views event listeners according to user role
 			if(user.userRoleID == 1){
@@ -311,4 +353,90 @@ function loadHomeInfo() {
 		
 	xhr.open('GET', 'home.loadinfo', true);
 	xhr.send();
+}
+
+function addReimbursement(){
+	//copy somethin similar to registration function 
+	//set up reimbursment object to send over in json
+	//might need to find way to make user vars avail here to set author id
+	
+console.log('in addReimbursement()');
+	
+    //set vars to pass to reimb object
+	let amount = $('#amount').val();
+	let dateSubmitted = new Date();
+	let dateResolved = null;
+	let description = $('#description').val();
+	let receipt = null;
+	let author = passedUser.userID; //current user
+	//let resolver = null;
+	let statusID = 1;
+	//set type from dropdown
+	let typeSelect = document.getElementById('reimb-type-dropdown');
+	let typeID = 0;
+	if(typeSelect.options[ typeSelect.selectedIndex ].innerHTML == 'Lodging'){
+		typeID = 1;
+	}
+	if(typeSelect.options[ typeSelect.selectedIndex ].innerHTML == 'Travel'){
+		typeID = 2;
+	}
+	if(typeSelect.options[ typeSelect.selectedIndex ].innerHTML == 'Food'){
+		typeID = 3;
+	}
+	if(typeSelect.options[ typeSelect.selectedIndex ].innerHTML == 'Other'){
+		typeID = 4;
+	}
+	
+	let reimb = {
+			
+			reimbursementAmount: amount,
+			reimbursementSubmitted: dateSubmitted,
+			reimbursementResolved: dateResolved,
+			reimbursementDescription: description,
+			reimbursementReceipt: receipt,
+			reimbursementAuthor: author,
+			//reimbursementResolver: resolver,
+			reimbursementStatusID: statusID,
+			reimbursementTypeID: typeID
+			
+		}
+		
+		let reimbJson = JSON.stringify(reimb);
+		
+		let xhr = new XMLHttpRequest();
+		
+		xhr.onreadystatechange = function() {
+			
+			console.log("xhr readyState: " + xhr.readyState);
+			console.log("xhr status: " + xhr.status);
+			
+			if(xhr.readyState == 4 && xhr.status == 200) {		
+				//registeration servlet returns json of user
+				let reimbur = JSON.parse(xhr.responseText);
+				if(reimbur == null) {
+//					$('#login-message').html('Username/Email unavailable!');
+					console.log('reimbursement creation unsuccessful, enter valid input');
+				} else {
+//					$('#message').hide();
+					console.log('reimbursement creation successful');
+					
+					//check user to load correct home		
+					if(passedUser.userRoleID == 1){
+						loadEmployeeHome();	
+					}
+					if(passedUser.userRoleID == 2){
+						loadManagerHome();
+					}
+					if(passedUser.userRoleID == 3){
+						loadAdminHomem();
+					}
+				}
+
+			}
+		}
+		
+		xhr.open('POST', 'addreimbursement', true);
+		xhr.setRequestHeader('Content-type', 'application/json');
+		xhr.send(reimbJson);
+	
 }
