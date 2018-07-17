@@ -15,12 +15,10 @@ public class RequestViewHelper {
 			return "partials/register.html";
 		case "/EmployeeReimbursementSystem/home.view":
 			return "partials/home.html";
-		case "/EmployeeReimbursementSystem/create.view":
-			return "partials/create.html";
+		case "/EmployeeReimbursementSystem/view_all.view":
+			return "partials/view_all.html";
 		case "/EmployeeReimbursementSystem/profile.view":
 			return "partials/profile.html";
-		case "/EmployeeReimbursementSystem/logout.view":
-			return "partials/logout.html";
 		default:
 			return null;
 		}

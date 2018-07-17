@@ -16,13 +16,20 @@ public class LoadInfoHelper {
 		System.out.println("[LOG] - Processing request with LoadInfoHelper: " + req.getRequestURI());
 		
 		ERSService service = new ERSService();
-		
+	
 		HttpSession session = req.getSession();
 		ERSUser sessionUser = (ERSUser) session.getAttribute("user");
 		
-		ArrayList<ERSReimbursement> sessionUserReimbursements = service.getUserReimbursements(sessionUser);
-		
-		return new Object[] {sessionUser, sessionUserReimbursements};
+		switch(req.getRequestURI()) {
+		case "/EmployeeReimbursementSystem/home.loadinfo":
+			ArrayList<ERSReimbursement> sessionUserReimbursements = service.getUserReimbursements(sessionUser);
+			return new Object[] {sessionUser, sessionUserReimbursements};
+		case "/EmployeeReimbursementSystem/view_all.loadinfo":
+			ArrayList<ERSReimbursement> allReimbursements = service.getAllReimbursements();
+			return new Object[] {sessionUser, allReimbursements};
+		default:
+			return null;
+		}
 		
 	}
 }

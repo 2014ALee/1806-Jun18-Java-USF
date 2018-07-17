@@ -30,6 +30,10 @@ public class ERSService {
 		return reimDao.getAllReimbursementsByUserId(user.getUserId());
 	}
 
+	public ArrayList<ERSReimbursement> getAllReimbursements() {
+		return reimDao.getAllReimbursements();
+	}
+
 	public boolean createReimbursement(int userId, double reimAmount, String reimDesc, int reimType) {
 		ERSReimbursement newReim = new ERSReimbursement(0, reimAmount, "", "", reimDesc, userId, 0, 1, reimType);
 		return reimDao.createReimbursement(newReim);

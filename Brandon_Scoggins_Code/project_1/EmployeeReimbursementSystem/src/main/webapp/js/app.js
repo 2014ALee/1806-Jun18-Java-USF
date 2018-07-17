@@ -6,9 +6,8 @@ window.onload = function() {
 	$('#toProfile').on('click', loadProfile);
 	$('#toLogoutModal').on('click', loadLogout);
 	$('#createCase').on('click', loadCreateNew);
+	$('#toViewAll').on('click', loadViewAll);
 	$('[data-toggle="popover"]').popover('hide');
-	
-	console.log('test number 5');
 }
 
 /*
@@ -248,6 +247,7 @@ function loadProfile(){
 			$('#toLogout').removeClass('active');
 			$('#navbarDropdownMenuLink').show();
 			$('#navbarDropdownMenuLink').removeClass('active');
+			$('#toViewAll').removeClass('active');
 			
 			$('#toRegister').hide();
 			$('#toLogin').hide();
@@ -363,6 +363,7 @@ function loadHome(){
 			$('#toLogout').removeClass('active');
 			$('#navbarDropdownMenuLink').show();
 			$('#navbarDropdownMenuLink').removeClass('active');
+			$('#toViewAll').removeClass('active');
 			
 			$('#toRegister').hide();
 			$('#toLogin').hide();
@@ -492,6 +493,119 @@ function isMoney(num){
     });
     console.log(num);
 	return success;
+}
+
+/*
+ * Management Stuff
+ */
+
+function loadViewAll(){
+	console.log('in loadViewAll()');
+	
+	let xhr = new XMLHttpRequest();
+	
+	xhr.onreadystatechange =  function() {
+		if(xhr.readyState == 4 && xhr.status == 200){
+			$('#view').html(xhr.responseText);
+			loadViewAllInfo();
+			$('#toHome').show();
+			$('#toHome').removeClass('active');
+			$('#toProfile').show();
+			$('#toProfile').removeClass('active');
+			$('#toLogout').show();
+			$('#toLogout').removeClass('active');
+			$('#navbarDropdownMenuLink').show();
+			$('#navbarDropdownMenuLink').addClass('active');
+			$('#toViewAll').addClass('active');
+			
+			$('#toRegister').hide();
+			$('#toLogin').hide();
+			
+			$('#reimAmount').val('');
+			$('#reimType').val('Choose..');
+			$('#reimDesc').val('');
+		}
+	}
+	
+	xhr.open('GET', 'view_all.view', true);
+	xhr.send();
+}
+
+function loadViewAllInfo(){
+	console.log('in loadViewAllInfo()');
+
+	let xhr = new XMLHttpRequest();
+	
+	xhr.onreadystatechange = function() {
+		if (xhr.readyState == 4 && xhr.status == 200){
+			console.log('getting all reimbursements');
+			let allInfo = JSON.parse(xhr.responseText);
+			let user = allInfo[0];
+			let reimbursements = allInfo[1];
+			
+			console.log(`userRoleId: ${user.userRoleId} in view_all.loadinfo`);
+			let reimbursementsAsc = reverseArr(reimbursements);
+			
+			function reverseArr(reimArr) {
+				let temp = [];
+				reimArr.forEach((reim) => {
+					temp.unshift(reim);
+				})
+				return temp;
+			};
+			
+			if(reimbursements.length > 0) {
+				$('#tableDiv').html(`<table class="table table-hover table-striped">
+							            <thead>
+							                <tr>
+							                    <th scope="col">Id</th>
+							                    <th scope="col">Submitted</th>
+							                    <th scope="col">Resolved</th>
+							                    <th scope="col">Employee</th>
+							                    <th scope="col">Resolver</th>
+							                    <th scope="col">Description</th>
+							                    <th scope="col">Type</th>
+							                    <th scope="col">Amount</th>
+							                    <th scope="col">Status</th>
+							                </tr>
+							            </thead>
+							            <tbody>
+							            </tbody>
+							        </table>`);
+			
+				reimbursementsAsc.forEach((reim) => {
+					let id = reim.reimId;
+					let amount = parseFloat(Math.round(reim.reimAmount * 100) / 100).toFixed(2);
+					let subDate = reim.reimSubmitted;
+					let resDate = reim.reimResolved;
+					let desc = reim.reimDescription;
+					let author = reim.reimAuthor;
+					let resolver = reim.reimResolver;
+					let status = reim.reimStatusString;
+					let type = reim.reimTypeString;
+					
+					if ((author).valueOf() != (user.userId).valueOf()) {
+						let tableEntry = `<tr>
+											<td>${id}</td>
+											<td>${subDate}</td>
+											<td>${resDate}</td>
+											<td>${author}</td>
+											<td>${resolver}</td>
+											<td>${desc}</td>
+											<td>${type}</td>
+											<td>$${amount}</td>
+											<td>${status}</td>
+										  </tr>`;
+					
+						$('table tbody').append(tableEntry);
+					}
+					
+				})
+			}
+		}
+	}
+	xhr.open('GET', 'view_all.loadinfo', true);
+	xhr.send();
 }
 
 /*
