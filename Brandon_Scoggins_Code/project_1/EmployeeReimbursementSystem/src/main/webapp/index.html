@@ -42,14 +42,16 @@
                             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> Reimbursements </a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                             <h6>&nbsp;&nbsp;Employee </h6>
-                        <a class="dropdown-item" id="toCreateNew"> Create New </a>
-                        <a class="dropdown-item" id="toViewExisting"> View Existing </a>
-                        <a class="dropdown-item" id="toViewResolved"> View Resolved </a>
-                        <hr>
-                        <!-- Only show this option if a manager is logged in -->
-                        <h6>&nbsp;&nbsp;Manager </h6>
-                        <a class="dropdown-item" id="toViewAll"> View All </a>
-                        <!-- on this page, include menus to sort and view specific cases -->
+	                        <a class="dropdown-item" id="toCreateNewNav" data-toggle="modal" data-target="#createModal"> Create New </a>
+	                        <a class="dropdown-item" id="toViewResolved"> View Resolved </a>
+	                        <a class="dropdown-item" id="toViewUnresolved"> View Unresolved </a>
+	                        <div id="managementOption">
+		                        <hr>
+		                        <!-- Only show this option if a manager is logged in -->
+		                        <h6>&nbsp;&nbsp;Manager </h6>
+		                        <a class="dropdown-item" id="toViewAll"> View All </a>
+		                        <!-- on this page, include menus to sort and view specific cases -->
+	                        </div>
                         </div>
                     </li>
                 </ul>
@@ -65,12 +67,83 @@
                         <a class="nav-link"> Register </a>
                     </li>
                     <li class="nav-item" id="toLogout">
-                        <a class="nav-link"> Logout </a>
+                        <a class="nav-link" data-toggle="modal" data-target="#logoutModal"> Logout </a>
                     </li>                    
                 </ul>
             </div>
-        </nav>    
-        <br><br>
+        </nav>  
+        <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="logoutModalTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title col" align="center" id="logoutModalTitle">Logout Confirmation</h4>
+                </div>
+                <div class="modal-body col" align="center">
+                    <h5>Are you sure you want to end your session?</h5>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary col" data-dismiss="modal" id="toLogoutModal">Yes - Logout</button>
+                    <button type="button" class="btn btn-primary col" data-dismiss="modal">No - Resume Session</button>
+                </div>
+                </div>
+            </div>
+        </div>  
+        <br>
+        <div class="modal fade" id="createModal" tabindex="-1" role="dialog" aria-labelledby="createModalTitle" aria-hidden="true">
+	        <div class="modal-dialog modal-dialog-centered" role="document">
+	            <div class="modal-content">
+	                <div class="modal-header">
+	                    <h4 class="modal-title col" align="center" id="createModalTitle">Create Reimbursement Case</h4>
+	                </div>
+	                <div class="modal-body row">
+	                    <div class="col">
+	                        <label for="reimAmount"><b>Amount:</b></label> 
+	                        <div class="input-group">
+	                            <div class="input-group-prepend">
+	                                <span class="input-group-text" id="amountFormat" data-container="body" data-toggle="popover" data-placement="left" data-trigger="manual" data-content="Invalid amount format.">$</span>
+	                                <span class="input-group-text">0.00</span>
+	                            </div>
+	                            <input type="number" class="form-control" id="reimAmount" placeholder="Amount..">
+	                        </div>
+	                    </div>
+	                    <div class="col">
+	                        <label for="reimType"><b>Type:</b></label> 
+	                        <select class="custom-select" id="reimType" data-container="body" data-toggle="popover" data-placement="right" data-trigger="manual" data-content="All fields must be complete.">
+	                            <option selected>Choose..</option>
+	                            <option value="1">Lodging</option>
+	                            <option value="2">Travel</option>
+	                            <option value="3">Food</option>
+	                            <option value="4">Other</option>
+	                        </select>
+	                    </div>
+	                </div>
+	                <div class="modal-body col">
+	                    <label for="reimDesc"><b>Description:</b></label> 
+	                    <textarea class="form-control" id="reimDesc" maxlength="250" placeholder="Description.." data-container="body" data-toggle="popover" data-placement="right" data-trigger="manual" data-content="All fields must be complete."></textarea>
+	                </div>
+	                <div class="modal-footer">
+	                    <button type="button" class="btn btn-primary col" id="createCase">Submit Case</button>
+	                    <button type="button" class="btn btn-primary col" data-dismiss="modal">Cancel</button>
+	                </div>
+	            </div>
+	        </div>
+    	</div> 
+        <div class="modal fade" id="successfulCreationModal" tabindex="-1" role="dialog" aria-labelledby="successfulCreationModalTitle" aria-hidden="true">
+	        <div class="modal-dialog modal-dialog-centered" role="document">
+	            <div class="modal-content">
+	                <div class="modal-header">
+	                    <h4 class="modal-title col" align="center" id="successfulCreationModalTitle">Registration Confirmation</h4>
+	                </div>
+	                <div class="modal-body col" align="center">
+	                	<h5>Reimbursement case successfully created!</h3>
+					</div>
+	                <div class="modal-footer">
+	                    <button type="button" class="btn btn-primary col" data-dismiss="modal">Continue</button>
+	                </div>
+	            </div>
+	        </div>
+    	</div> 
+        <br>
         <div id="view"></div>
         
     <script type="text/javascript" src="js/app.js"></script>

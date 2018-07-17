@@ -75,9 +75,15 @@ public class ERSUsersDAOImpl implements ERSUsersDAO{
 	}
 
 	@Override
-	public boolean createUser(ERSUser newUser) {
+	public String[] createUser(ERSUser newUser) {
 
-		if(!userExist(newUser.getUserName()) && !userExist(newUser.getEmail())) {
+		if (userExist(newUser.getUserName())) {
+			System.out.println("User already exist. Creation aborted.");
+			return new String[] {"false", "0"};
+		} else if (userExist(newUser.getEmail())) {
+			System.out.println("User already exist. Creation aborted.");
+			return new String[] {"false", "1"};
+		} else {
 			System.out.println("User credentials available. Creating..\n");
 			try(Connection conn = ConnectionFactory.getInstance().getConnection();){
 
@@ -96,10 +102,7 @@ public class ERSUsersDAOImpl implements ERSUsersDAO{
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
-			return true;
-		}else {
-			System.out.println("User already exist. Creation aborted.");
-			return false;
+			return new String[]{"true", "0"};
 		}
 	}
 

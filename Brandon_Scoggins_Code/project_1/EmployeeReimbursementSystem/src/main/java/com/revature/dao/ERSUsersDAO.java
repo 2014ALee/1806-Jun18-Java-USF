@@ -10,7 +10,7 @@ public interface ERSUsersDAO {
 	
 	public boolean userExist(String userNameOrEmail);	
 	
-	public boolean createUser(ERSUser newUser);		
+	public String[] createUser(ERSUser newUser);		
 				
 	public boolean deleteUser(ERSUser deleteUser);		
 	

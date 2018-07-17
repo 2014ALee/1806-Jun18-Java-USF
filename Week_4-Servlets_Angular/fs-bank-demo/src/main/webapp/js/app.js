@@ -50,7 +50,8 @@ function login() {
 	xhr.onreadystatechange = function() {
 		if(xhr.readyState == 4 && xhr.status == 200) {
 			let user = JSON.parse(xhr.responseText);
-			
+			console.log('user returned to app.js. Identifying if successful');
+
 			if(user == null) {
 				$('#login-message').html('Invalid credentials!');
 			} else {

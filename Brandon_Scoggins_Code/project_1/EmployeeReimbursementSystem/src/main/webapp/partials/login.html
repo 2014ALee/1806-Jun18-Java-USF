@@ -1,10 +1,9 @@
-<form class="container col centered col-4 shadow p-4 mb-4 bg-light rounded">
-    <h2 class="text-center">Happy Little ERS Login</h2>
+<div class="container col centered col-4 shadow p-4 mb-4 bg-light rounded">
+    <h2 class="text-center">Login</h2>
     <hr>
     <div class="form-group">
     <label for="inputUserNameOrEmail">Username or Email address</label>
-    <input type="email/text" class="form-control" id="inputUserNameOrEmail" aria-describedby="credentialsHelp" placeholder="Enter username/email">
-    <small id="credentialsHelp" class="form-text text-danger" style="">Must be a valid email.</small>
+    <input type="email/text" class="form-control" id="inputUserNameOrEmail" placeholder="Enter username/email">
     </div>
     <div class="form-group">
     <label for="inputPassword">Password</label>
@@ -13,9 +12,9 @@
     <br>
     <div class="row rounded">
         <div class="col-1"></div>
-        <div class="col centered rounded d-flex justify-content-center pt-1 text-body" id="login-message"></div>
+        <div class="col centered rounded d-flex justify-content-center pt-1 text-body bg-warning" id="login-message">Invalid Credentials!</div>
         <div class="col-3" align="right">
             <button type="submit" class="btn btn-primary" id="login">Login</button>
         </div>
     </div>
-</form>
+</div>

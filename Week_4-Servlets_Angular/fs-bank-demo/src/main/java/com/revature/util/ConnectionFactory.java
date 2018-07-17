@@ -27,8 +27,7 @@ public class ConnectionFactory {
 		Properties prop = new Properties();
 		
 		try {
-			prop.load(new FileReader("C:\\Users\\Wezley\\batch-repos\\1806-Jun18-Java-USF\\Week_4-Servlets_Angular\\"
-					+ "fs-bank-demo\\src\\main\\resources\\application.properties"));
+			prop.load(new FileReader("C:\\batch-repos\\1806-Jun18-Java-USF\\Week_4-Servlets_Angular\\fs-bank-demo\\src\\main\\resources\\application.properties"));
 			
 			Class.forName(prop.getProperty("driver"));
 			

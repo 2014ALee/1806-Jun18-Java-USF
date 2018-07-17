@@ -10,20 +10,19 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.revature.models.ERSUser;
 import com.revature.services.ERSService;
 
-@WebServlet("/login")
-public class LoginServlet extends HttpServlet {
+@WebServlet("/register")
+public class RegisterServlet extends HttpServlet {
 
 	private static final long serialVersionUID = 1L;
 
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException{
-		System.out.println("[LOG] - Request sent to LoginServlet.doPost()");
+		System.out.println("[LOG] - Request sent to RegisterServlet.doPost()");
 
 		ERSService service = new ERSService();
 
@@ -41,25 +40,27 @@ public class LoginServlet extends HttpServlet {
 
 		// 3) Convert received JSON to String array 
 		String[] userInfo = mapper.readValue(json, String[].class);
-		String userNameOrEmail = userInfo[0];
-		String passWord = userInfo[1];
+		String firstName = userInfo[0];
+		String lastName = userInfo[1];
+		String email = userInfo[2];
+		String username = userInfo[3];
+		String password = userInfo[4];
+		String userRoleId = userInfo[5];
 
-		ERSUser temp = new ERSUser();
+		ERSUser temp = new ERSUser(0, username, password, firstName, lastName, email, Integer.parseInt(userRoleId));
 		
-		temp = service.logInUser(userNameOrEmail, passWord);
+		String[] success = service.registerUser(temp);
 
-		if (temp.equals(new ERSUser())) {
-			System.out.println("[LOG] - Variable 'temp' in loginServlet did not exist in database");
+		if (Boolean.parseBoolean(success[0])) {
+			System.out.println("[LOG] - New user created in RegisterServlet");
 		} else {
-			System.out.println("[LOG] - Variable 'temp' in loginServlet assigned to new user");
-			HttpSession session = req.getSession();
-			session.setAttribute("user", temp);		// persist this user to the session
+			System.out.println("[LOG] - User already exist (RegisterServlet)");
 		}
 
 		PrintWriter pw = resp.getWriter();
 		resp.setContentType("application/json");
 
-		String userJSON = mapper.writeValueAsString(temp);
+		String userJSON = mapper.writeValueAsString(success);
 
 		pw.write(userJSON);
 	}

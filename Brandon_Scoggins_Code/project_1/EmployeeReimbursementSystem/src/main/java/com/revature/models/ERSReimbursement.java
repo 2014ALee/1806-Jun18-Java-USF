@@ -15,6 +15,9 @@ public class ERSReimbursement implements Serializable{
 	private int reimResolver;
 	private int reimStatusId;
 	private int reimTypeId;
+
+	private String reimStatusString;
+	private String reimTypeString;
 	
 	public ERSReimbursement () {
 		
@@ -32,6 +35,20 @@ public class ERSReimbursement implements Serializable{
 		this.reimResolver = reimResolver;
 		this.reimStatusId = reimStatusId;
 		this.reimTypeId = reimTypeId;
+	}
+	
+	public ERSReimbursement(int reimId, double reimAmount, String reimSubmitted, String reimResolved,
+			String reimDescription, int reimAuthor, int reimResolver, String reimStatusString, String reimTypeString) {
+		super();
+		this.reimId = reimId;
+		this.reimAmount = reimAmount;
+		this.reimSubmitted = reimSubmitted;
+		this.reimResolved = reimResolved;
+		this.reimDescription = reimDescription;
+		this.reimAuthor = reimAuthor;
+		this.reimResolver = reimResolver;
+		this.reimStatusString = reimStatusString;
+		this.reimTypeString = reimTypeString;
 	}
 
 	public int getReimId() {
@@ -106,6 +123,22 @@ public class ERSReimbursement implements Serializable{
 		this.reimTypeId = reimTypeId;
 	}
 
+	public String getReimStatusString() {
+		return reimStatusString;
+	}
+
+	public void setReimStatusString(String reimStatusString) {
+		this.reimStatusString = reimStatusString;
+	}
+
+	public String getReimTypeString() {
+		return reimTypeString;
+	}
+
+	public void setReimTypeString(String reimTypeString) {
+		this.reimTypeString = reimTypeString;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -119,8 +152,10 @@ public class ERSReimbursement implements Serializable{
 		result = prime * result + ((reimResolved == null) ? 0 : reimResolved.hashCode());
 		result = prime * result + reimResolver;
 		result = prime * result + reimStatusId;
+		result = prime * result + ((reimStatusString == null) ? 0 : reimStatusString.hashCode());
 		result = prime * result + ((reimSubmitted == null) ? 0 : reimSubmitted.hashCode());
 		result = prime * result + reimTypeId;
+		result = prime * result + ((reimTypeString == null) ? 0 : reimTypeString.hashCode());
 		return result;
 	}
 
@@ -153,12 +188,22 @@ public class ERSReimbursement implements Serializable{
 			return false;
 		if (reimStatusId != other.reimStatusId)
 			return false;
+		if (reimStatusString == null) {
+			if (other.reimStatusString != null)
+				return false;
+		} else if (!reimStatusString.equals(other.reimStatusString))
+			return false;
 		if (reimSubmitted == null) {
 			if (other.reimSubmitted != null)
 				return false;
 		} else if (!reimSubmitted.equals(other.reimSubmitted))
 			return false;
 		if (reimTypeId != other.reimTypeId)
+			return false;
+		if (reimTypeString == null) {
+			if (other.reimTypeString != null)
+				return false;
+		} else if (!reimTypeString.equals(other.reimTypeString))
 			return false;
 		return true;
 	}
@@ -168,8 +213,7 @@ public class ERSReimbursement implements Serializable{
 		return "ERSReimbursement [reimId=" + reimId + ", reimAmount=" + reimAmount + ", reimSubmitted=" + reimSubmitted
 				+ ", reimResolved=" + reimResolved + ", reimDescription=" + reimDescription + ", reimAuthor="
 				+ reimAuthor + ", reimResolver=" + reimResolver + ", reimStatusId=" + reimStatusId + ", reimTypeId="
-				+ reimTypeId + "]";
+				+ reimTypeId + ", reimStatusString=" + reimStatusString + ", reimTypeString=" + reimTypeString + "]";
 	}
-	
-	
+
 }

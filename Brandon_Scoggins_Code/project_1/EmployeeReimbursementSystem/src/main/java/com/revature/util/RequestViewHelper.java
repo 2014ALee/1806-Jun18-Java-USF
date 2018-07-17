@@ -13,6 +13,14 @@ public class RequestViewHelper {
 			return "partials/login.html";
 		case "/EmployeeReimbursementSystem/register.view":
 			return "partials/register.html";
+		case "/EmployeeReimbursementSystem/home.view":
+			return "partials/home.html";
+		case "/EmployeeReimbursementSystem/create.view":
+			return "partials/create.html";
+		case "/EmployeeReimbursementSystem/profile.view":
+			return "partials/profile.html";
+		case "/EmployeeReimbursementSystem/logout.view":
+			return "partials/logout.html";
 		default:
 			return null;
 		}

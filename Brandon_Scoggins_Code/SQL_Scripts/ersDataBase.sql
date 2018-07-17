@@ -112,8 +112,7 @@ INSERT INTO ersReimbursementStatus VALUES(1, 'New');
 INSERT INTO ersReimbursementStatus VALUES(2, 'Viewed');
 INSERT INTO ersReimbursementStatus VALUES(3, 'Approved');
 INSERT INTO ersReimbursementStatus VALUES(4, 'Denied');
-INSERT INTO ersReimbursementStatus VALUES(5, 'Complete');
-INSERT INTO ersReimbursementStatus VALUES(6, 'Canceled');
+INSERT INTO ersReimbursementStatus VALUES(5, 'Canceled');
 
 INSERT INTO ersReimbursementType VALUES(1, 'Lodging');
 INSERT INTO ersReimbursementType VALUES(2, 'Travel');
@@ -136,3 +135,12 @@ BEGIN
     FROM dual;
 END;
 /
+
+-- Make some test reimbursement data
+INSERT INTO ersReimbursement (reimAmount, reimDescription, reimAuthor, reimStatusId, reimTypeId) VALUES (56.00, 'For testing purposes', 24, 1, 4);
+INSERT INTO ersReimbursement (reimAmount, reimDescription, reimAuthor, reimStatusId, reimTypeId) VALUES (56.00, 'For testing purposes', 24, 2, 3);
+INSERT INTO ersReimbursement (reimAmount, reimDescription, reimAuthor, reimStatusId, reimTypeId) VALUES (56.00, 'For testing purposes', 24, 3, 2);
+INSERT INTO ersReimbursement (reimAmount, reimDescription, reimAuthor, reimStatusId, reimTypeId) VALUES (56.00, 'For testing purposes', 24, 4, 1);
+INSERT INTO ersReimbursement (reimAmount, reimDescription, reimAuthor, reimStatusId, reimTypeId) VALUES (56.00, 'For testing purposes', 25, 5, 3);
+INSERT INTO ersReimbursement (reimAmount, reimDescription, reimAuthor, reimStatusId, reimTypeId) VALUES (56.00, 'For testing purposes', 25, 1, 4);
+COMMIT;

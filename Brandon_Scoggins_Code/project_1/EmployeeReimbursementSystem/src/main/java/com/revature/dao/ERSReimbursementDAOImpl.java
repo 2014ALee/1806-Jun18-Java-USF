@@ -29,10 +29,10 @@ public class ERSReimbursementDAOImpl implements ERSReimbursementsDAO {
 			pstmt.setInt(5, newReim.getReimTypeId());
 			
 			if(pstmt.executeUpdate() != 0) {
-				System.out.println("\nUpdate succesful!\n");
+				System.out.println("\nReimbursement creationg succesful!\n");
 				return true;
 			}else {
-				System.out.println("\nUpdate failed.\n");
+				System.out.println("\nReimbursement creation failed.\n");
 				return false;
 			}
 			
@@ -105,32 +105,60 @@ public class ERSReimbursementDAOImpl implements ERSReimbursementsDAO {
 	public ArrayList<ERSReimbursement> getAllReimbursements() {
 
 		ArrayList<ERSReimbursement> allReimbursements = new ArrayList<>();
+		ArrayList<ERSReimbursement> allReimbursementsStrings = new ArrayList<>();
 		
 		try(Connection conn = ConnectionFactory.getInstance().getConnection();){
 			
-			String sql = "SELECT * FROM ersReimbursement ORDER BY reimSubmitted";
+			String sql = "SELECT * FROM ersReimbursement ORDER BY reimSubmitted DESC";
 			
 			Statement stmt = conn.createStatement();
 			ResultSet rs = stmt.executeQuery(sql);
 
 			while(rs.next()) {
 				allReimbursements.add(new ERSReimbursement(rs.getInt(1), rs.getDouble(2), rs.getDate(3).toString(),
-						rs.getDate(4).toString(), rs.getString(5), rs.getInt(6), rs.getInt(7), rs.getInt(8), rs.getInt(9)));
+						(rs.getDate(4) != null) ? rs.getDate(4).toString() : (String) null,
+						rs.getString(5), rs.getInt(6), rs.getInt(7), rs.getInt(8), rs.getInt(9)));
+			}
+			
+			for (ERSReimbursement reim : allReimbursements) {
+				sql = "SELECT reimStatus FROM ersReimbursementStatus WHERE reimStatusId = ?";
+				
+				PreparedStatement pstmt = conn.prepareStatement(sql);
+				pstmt.setInt(1, reim.getReimStatusId());
+				
+				rs = pstmt.executeQuery();
+				
+				rs.next();
+				String status = rs.getString(1);
+				
+				sql = "SELECT reimType FROM ersReimbursementType WHERE reimTypeId = ?";
+				
+				pstmt = conn.prepareStatement(sql);
+				pstmt.setInt(1, reim.getReimTypeId());
+				
+				rs = pstmt.executeQuery();
+				
+				rs.next();
+				String type = rs.getString(1);
+				
+				allReimbursementsStrings.add(new ERSReimbursement(reim.getReimId(), reim.getReimAmount(), 
+						reim.getReimSubmitted(), reim.getReimResolved(), reim.getReimDescription(), 
+						reim.getReimAuthor(), reim.getReimResolver(), status, type));
 			}
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		
-		return allReimbursements;
+		return allReimbursementsStrings;
 	}
 
 	@Override
-	public ArrayList<ERSReimbursement> getAllReimbursementsByStatus(int reimStatusId) {
+	public ArrayList<ERSReimbursement> getAllReimbursementsByStatus(String reimStatus) {
 		ArrayList<ERSReimbursement> allReimbursementsByStatus = new ArrayList<>();
 		
 		for (ERSReimbursement reim : getAllReimbursements()) {
-			if (reim.getReimStatusId() == reimStatusId) {
+			if (reim.getReimStatusString().equals(reimStatus)) {
 				allReimbursementsByStatus.add(reim);
 			}
 		}
@@ -138,11 +166,11 @@ public class ERSReimbursementDAOImpl implements ERSReimbursementsDAO {
 	}
 
 	@Override
-	public ArrayList<ERSReimbursement> getAllReimbursementsByType(int reimTypeId) {
+	public ArrayList<ERSReimbursement> getAllReimbursementsByType(String reimType) {
 		ArrayList<ERSReimbursement> allReimbursementsByType = new ArrayList<>();
 		
 		for (ERSReimbursement reim : getAllReimbursements()) {
-			if (reim.getReimTypeId() == reimTypeId) {
+			if (reim.getReimTypeString().equals(reimType)) {
 				allReimbursementsByType.add(reim);
 			}
 		}

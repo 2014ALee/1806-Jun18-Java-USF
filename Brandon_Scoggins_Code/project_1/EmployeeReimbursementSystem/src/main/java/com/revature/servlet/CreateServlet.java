@@ -16,14 +16,14 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.revature.models.ERSUser;
 import com.revature.services.ERSService;
 
-@WebServlet("/login")
-public class LoginServlet extends HttpServlet {
+@WebServlet("/create")
+public class CreateServlet extends HttpServlet {
 
 	private static final long serialVersionUID = 1L;
 
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException{
-		System.out.println("[LOG] - Request sent to LoginServlet.doPost()");
+		System.out.println("[LOG] - Request sent to CreateServlet.doPost()");
 
 		ERSService service = new ERSService();
 
@@ -40,27 +40,27 @@ public class LoginServlet extends HttpServlet {
 		ObjectMapper mapper = new ObjectMapper();
 
 		// 3) Convert received JSON to String array 
-		String[] userInfo = mapper.readValue(json, String[].class);
-		String userNameOrEmail = userInfo[0];
-		String passWord = userInfo[1];
+		String[] newReimInfo = mapper.readValue(json, String[].class);
+		double reimAmount = Double.parseDouble(newReimInfo[0]);
+		int reimType = Integer.parseInt(newReimInfo[1]);
+		String reimDesc = newReimInfo[2];
 
-		ERSUser temp = new ERSUser();
+		HttpSession session = req.getSession();
+		ERSUser sessionUser = (ERSUser) session.getAttribute("user");
 		
-		temp = service.logInUser(userNameOrEmail, passWord);
+		boolean success = service.createReimbursement(sessionUser.getUserId(), reimAmount, reimDesc, reimType);
 
-		if (temp.equals(new ERSUser())) {
-			System.out.println("[LOG] - Variable 'temp' in loginServlet did not exist in database");
+		if (!success) {
+			System.out.println("[LOG] - Unable to insert new reimbursement case into database");
 		} else {
-			System.out.println("[LOG] - Variable 'temp' in loginServlet assigned to new user");
-			HttpSession session = req.getSession();
-			session.setAttribute("user", temp);		// persist this user to the session
+			System.out.println("[LOG] - Successfully inserted new reimbursement case into database");
 		}
 
 		PrintWriter pw = resp.getWriter();
 		resp.setContentType("application/json");
 
-		String userJSON = mapper.writeValueAsString(temp);
+		String successJSON = mapper.writeValueAsString(success);
 
-		pw.write(userJSON);
+		pw.write(successJSON);
 	}
 }

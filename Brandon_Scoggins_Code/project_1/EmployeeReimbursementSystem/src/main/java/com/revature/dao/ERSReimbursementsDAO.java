@@ -17,9 +17,9 @@ public interface ERSReimbursementsDAO {
 	
 	public ArrayList<ERSReimbursement> getAllReimbursements();
 	
-	public ArrayList<ERSReimbursement> getAllReimbursementsByStatus(int reimStatusId);
+	public ArrayList<ERSReimbursement> getAllReimbursementsByStatus(String reimStatus);
 
-	public ArrayList<ERSReimbursement> getAllReimbursementsByType(int reimTypeId);
+	public ArrayList<ERSReimbursement> getAllReimbursementsByType(String reimType);
 
 	public ArrayList<ERSReimbursement> getAllReimbursementsByUserId(int userId);
 
