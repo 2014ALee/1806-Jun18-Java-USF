@@ -14,7 +14,7 @@ public interface ERSUsersDAO {
 				
 	public boolean deleteUser(ERSUser deleteUser);		
 	
-	public boolean updateUser(ERSUser updatedUser);
+	public String[] updateUser(ERSUser updatedUser, ERSUser currentUser);
 	
 	public ArrayList<ERSUser> getAllUsers();
 

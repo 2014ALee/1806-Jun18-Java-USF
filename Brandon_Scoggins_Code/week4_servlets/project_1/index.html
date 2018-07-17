@@ -93,45 +93,44 @@
 
 
 
-    <div class="modal fade" id="createModal" tabindex="-1" role="dialog" aria-labelledby="createModalTitle" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h4 class="modal-title col" align="center" id="createModalTitle">Create Reimbursement Case</h4>
+            <form class="container col centered col-4 shadow p-4 mb-4 bg-light rounded">
+                <h2 class="text-center">Registration</h2>
+                <hr>
+                <div class="form-group">
+                <label for="inputFirstName">Firstname</label>
+                <input type="text" class="form-control" id="inputFirstName" placeholder="Firstname">
                 </div>
-                <div class="modal-body row">
-                    <div class="col">
-                        <label for="reimAmount"><b>Amount:</b></label> 
-                        <div class="input-group">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text">$</span>
-                                <span class="input-group-text">0.00</span>
-                            </div>
-                            <input type="number" class="form-control" id="reimAmount" placeholder="Amount..">
-                        </div>
-                    </div>
-                    <div class="col">
-                        <label for="reimType"><b>Type:</b></label> 
-                        <select class="custom-select" id="reimType">
-                            <option selected>Choose...</option>
-                            <option value="1">Lodging</option>
-                            <option value="2">Travel</option>
-                            <option value="3">Food</option>
-                            <option value="4">Other</option>
-                        </select>
-                    </div>
+                <div class="form-group">
+                <label for="inputLastName">Lastname</label>
+                <input type="text" class="form-control" id="inputLastName" placeholder="Lastname">
                 </div>
-                <div class="modal-body col">
-                    <label for="reimDesc"><b>Description:</b></label> 
-                    <textarea class="form-control" id="reimDesc" maxlength="250" placeholder="Description.."></textarea>
+                <div class="form-group">
+                <label for="inputEmail">Email address</label>
+                <input type="email" class="form-control" id="inputEmail" aria-describedby="emailExist" placeholder="Email address">
+                <small id="emailExist" class="form-text text-danger" style="">That email already exist.</small>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-primary col" id="createCase">Submit Case</button>
-                    <button type="button" class="btn btn-primary col" data-dismiss="modal">Cancel</button>
+                <div class="form-group">
+                <label for="inputUserName">Username</label>
+                <input type="text" class="form-control" id="inputUserName" aria-describedby="userNameExist" placeholder="Username">
                 </div>
-            </div>
-        </div>
-    </div> 
+                <small id="userNameExist" class="form-text text-danger" style="">That username already exist.</small>
+                <div class="form-group">
+                <label for="inputPassword">Password</label>
+                <input type="password" class="form-control" id="inputPassword" placeholder="Password">
+                </div>
+                <div class="form-group">
+                <label for="inputPasswordConfirm">Confirm Password</label>
+                <input type="password" class="form-control" id="inputPasswordConfirm" placeholder="Password">
+                </div>
+                <div class="form-group form-check">
+                <input type="checkbox" class="form-check-input" id="roleCheckBox">
+                <label class="form-check-label" for="roleCheckBox">Check if management</label>
+                </div>
+                <br>
+                <div align="right">
+                    <button type="submit" class="btn btn-primary" id="register">Register</button>
+                </div>
+            </form>
                 
 
 

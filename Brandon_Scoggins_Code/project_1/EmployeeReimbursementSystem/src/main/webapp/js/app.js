@@ -3,7 +3,7 @@ window.onload = function() {
 	$('#toLogin').on('click', loadLogin);
 	$('#toRegister').on('click', loadRegister);
 	$('#toHome').on('click', loadHome);
-//	$('#toProfile').on('click', loadProfile);
+	$('#toProfile').on('click', loadProfile);
 	$('#toLogoutModal').on('click', loadLogout);
 	$('#createCase').on('click', loadCreateNew);
 	$('[data-toggle="popover"]').popover('hide');
@@ -148,16 +148,16 @@ function register() {
 				let success = JSON.parse(xhr.responseText);
 				console.log(`${success} response text in register`);
 				if(success[0] == 'true') {
-					alert('Registration successful');
+					$('#successfulRegistrationModal').modal('show');
 					loadLogin();
 					console.log(`Successful registration`);
 				} else if (success[1] == '0') {
-					alert('Registration failed by username!');
+					$('#failedRegistrationModal').modal('show');
 					$('#userNameExist').show();
 					$('#emailExist').hide();
 					console.log(`Registration failed by username!`);
 				} else if (success[1] == '1') {
-					alert('Registration failed by email!');
+					$('#failedRegistrationModal').modal('show');
 					$('#emailExist').show();
 					$('#userNameExist').hide();
 					console.log(`Registration failed by email!`);
@@ -182,10 +182,14 @@ function validateRegister() {
 	let confirmedPassword = $('#inputPasswordConfirm').val();
 	
 	if (firstName == '' || lastName == '' || username == '' || password == '') {
+		$('#update-message').addClass('bg-warning');
+		$('#update-message').html('All fields must be complete!');
 		$('#register-message').addClass('bg-warning');
 		$('#register-message').html('All fields must be complete!');
 		return false;
 	} else {
+		$('#update-message').removeClass('bg-warning');
+		$('#update-message').html('');
 		$('#register-message').removeClass('bg-warning');
 		$('#register-message').html('');
 	}
@@ -220,8 +224,128 @@ function validateRegister() {
 }
 
 /*
+ * Profile Update Stuff
+ */
+
+function loadProfile(){
+	console.log('in loadProfile()');
+	
+	let xhr = new XMLHttpRequest();
+	
+	xhr.onreadystatechange =  function() {
+		if(xhr.readyState == 4 && xhr.status == 200){
+			$('#view').html(xhr.responseText);
+			$('#emailExist').hide();
+			$('#emailInvalid').hide();
+			$('#userNameExist').hide();
+			$('#passwordsMatch').hide();
+			loadProfileInfo();
+			$('#toHome').show();
+			$('#toHome').removeClass('active');
+			$('#toProfile').show();
+			$('#toProfile').addClass('active');
+			$('#toLogout').show();
+			$('#toLogout').removeClass('active');
+			$('#navbarDropdownMenuLink').show();
+			$('#navbarDropdownMenuLink').removeClass('active');
+			
+			$('#toRegister').hide();
+			$('#toLogin').hide();
+
+			$('#managementOption').hide();
+		}
+	}
+	
+	xhr.open('GET', 'profile.view', true);
+	xhr.send();
+}
+
+function loadProfileInfo(){
+	console.log('in loadProfileInfo()');
+	$('#update').on('click', update);
+	$('#update-message').removeClass('bg-warning');
+	$('#update-message').html('');
+	
+	let xhr = new XMLHttpRequest();
+	
+	xhr.onreadystatechange = function() {
+		if (xhr.readyState == 4 && xhr.status == 200){
+			
+			let homeInfo = JSON.parse(xhr.responseText);
+			let user = homeInfo[0];
+			
+			console.log(`userRoleId: ${user.userRoleId}`);
+			if (user.userRoleId == 1) {
+				$('#managementOption').hide();
+			} else {
+				$('#managementOption').show();
+			}
+			
+			$('#inputFirstName').val(user.firstName);
+			$('#inputLastName').val(user.lastName);
+			$('#inputEmail').val(user.email);
+			$('#inputUserName').val(user.userName);
+			
+			$('#roleCheckBox').prop('checked', ((user.userRoleId).valueOf() == (1).valueOf()) ? false : true);
+			
+		}
+	}
+
+	xhr.open('GET', 'profile.loadinfo', true);
+	xhr.send();
+}
+
+function update() {
+	console.log('in update()');
+	
+	if (validateRegister()){
+		let firstName = $('#inputFirstName').val();
+		let lastName = $('#inputLastName').val();
+		let email = $('#inputEmail').val();
+		let username = $('#inputUserName').val();
+		let password = $('#inputPassword').val();
+		let userRoleId = ($('#roleCheckBox').is(':checked')) ? 2 : 1;
+		console.log(`valid input. Checking if credentials available and creating user if so`);
+		
+		let toSend = [firstName, lastName, email, username, password, userRoleId];
+		
+		let json = JSON.stringify(toSend);
+		
+		let xhr = new XMLHttpRequest();
+		
+		xhr.onreadystatechange =  function() {
+			if(xhr.readyState == 4 && xhr.status == 200){
+				
+				let success = JSON.parse(xhr.responseText);
+				console.log(`${success} response text in profile`);
+				if(success[0] == 'true') {
+					$('#successfulUpdateModal').modal('show');
+					loadProfile();
+					console.log(`Successful update`);
+				} else if (success[1] == '0') {
+					$('#failedUpdateModal').modal('show');
+					$('#userNameExist').show();
+					$('#emailExist').hide();
+					console.log(`Update failed by username!`);
+				} else if (success[1] == '1') {
+					$('#failedUpdateModal').modal('show');
+					$('#emailExist').show();
+					$('#userNameExist').hide();
+					console.log(`Update failed by email!`);
+				}
+			}
+		}
+		
+		xhr.open('POST', 'profile', true);
+		xhr.setRequestHeader('Content-type', 'application/json');
+		xhr.send(json);
+	}
+}
+
+/*
  * Home Stuff
  */
+
 function loadHome(){
 	console.log('in loadHome()');
 	

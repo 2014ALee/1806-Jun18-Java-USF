@@ -113,36 +113,40 @@ public class ERSUsersDAOImpl implements ERSUsersDAO{
 	}
 
 	@Override
-	public boolean updateUser(ERSUser updatedUser) {
+	public String[] updateUser(ERSUser updatedUser, ERSUser currentUser) {
 
-		try(Connection conn = ConnectionFactory.getInstance().getConnection();){
-
-			String sql = "UPDATE ersUsers SET userName = ?,"
-					+ " passWord = ?, firstName = ?,"
-					+ " lastName = ?, email = ?, userRoleId = ?"
-					+ " WHERE userId = ?";
-
-			PreparedStatement pstmt = conn.prepareStatement(sql);
-
-			pstmt.setString(1, updatedUser.getUserName());
-			pstmt.setString(2, updatedUser.getPassWord());
-			pstmt.setString(3, updatedUser.getFirstName());
-			pstmt.setString(4, updatedUser.getLastName());
-			pstmt.setString(5, updatedUser.getEmail());
-			pstmt.setInt(6, updatedUser.getUserRoleId());
-			pstmt.setInt(7, updatedUser.getUserId());
-
-			if(pstmt.executeUpdate() != 0) {
-				System.out.println("\nUpdate succesful!\n");
-				return true;
-			}else {
-				System.out.println("\nUpdate failed.\n");
-				return false;
+		if (userExist(updatedUser.getUserName()) && getUserId(updatedUser.getUserName()) != currentUser.getUserId()) {
+			System.out.println("User already exist. Creation aborted.");
+			return new String[] {"false", "0"};
+		} else if (userExist(updatedUser.getEmail()) && getUserId(updatedUser.getEmail()) != currentUser.getUserId()) {
+			System.out.println("User already exist. Creation aborted.");
+			return new String[] {"false", "1"};
+		} else {
+			System.out.println("User credentials available. Creating..\n");
+			try(Connection conn = ConnectionFactory.getInstance().getConnection();){
+	
+				String sql = "UPDATE ersUsers SET userName = ?,"
+						+ " passWord = ?, firstName = ?,"
+						+ " lastName = ?, email = ?, userRoleId = ?"
+						+ " WHERE userId = ?";
+	
+				PreparedStatement pstmt = conn.prepareStatement(sql);
+	
+				pstmt.setString(1, updatedUser.getUserName());
+				pstmt.setString(2, updatedUser.getPassWord());
+				pstmt.setString(3, updatedUser.getFirstName());
+				pstmt.setString(4, updatedUser.getLastName());
+				pstmt.setString(5, updatedUser.getEmail());
+				pstmt.setInt(6, updatedUser.getUserRoleId());
+				pstmt.setInt(7, updatedUser.getUserId());
+	
+				pstmt.executeUpdate();
+				
+			} catch (SQLException e) {
+				e.printStackTrace();
 			}
-		} catch (SQLException e) {
-			e.printStackTrace();
+			return new String[]{"true", "0"};
 		}
-		return false;
 	}
 
 	@Override

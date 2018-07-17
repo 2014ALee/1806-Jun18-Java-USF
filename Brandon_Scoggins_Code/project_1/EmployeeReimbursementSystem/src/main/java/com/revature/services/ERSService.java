@@ -21,6 +21,10 @@ public class ERSService {
 	public String[] registerUser(ERSUser user) {
 		return usersDao.createUser(user);
 	}
+	
+	public String[] updateUser(ERSUser updatedUser, ERSUser currentUser) {
+		return usersDao.updateUser(updatedUser, currentUser);
+	}
 
 	public ArrayList<ERSReimbursement> getUserReimbursements(ERSUser user) {
 		return reimDao.getAllReimbursementsByUserId(user.getUserId());
