@@ -77,7 +77,15 @@ CONSTRAINT ers_reimbursement_type_fk
     REFERENCES ers_reimbursement_type (reimb_type_id)
     
 );
+INSERT INTO ers_users (ers_username, ers_password, user_first_name, user_last_name, user_email, user_role_id) VALUES ('admin', 'adminpass', 'adminfn', 'adminln', 'coadmin@gmail.com', 3);
+INSERT INTO ers_users (ers_username, ers_password, user_first_name, user_last_name, user_email, user_role_id) VALUES ('am', 'andypass', 'Andy', 'Milonakis', 'am@gmail.com', 1);
+INSERT INTO ers_users (ers_username, ers_password, user_first_name, user_last_name, user_email, user_role_id) VALUES ('ovie', 'managerpass', 'Alexander', 'Ovechkin', 'ao@gmail.com', 2);
 
+INSERT INTO ers_reimbursement (reimb_amount, reimb_submitted, reimb_resolved, reimb_description, reimb_receipt, reimb_author, reimb_resolver, reimb_status_id, reimb_type_id) VALUES (30, CURRENT_TIMESTAMP, null, 'this is Dereks first reimbursement submission', null, 66, null, 1, 1);
+INSERT INTO ers_reimbursement (reimb_amount, reimb_submitted, reimb_resolved, reimb_description, reimb_receipt, reimb_author, reimb_resolver, reimb_status_id, reimb_type_id) VALUES (20, CURRENT_TIMESTAMP, null, 'Andys reimbursement for string cheese purchase', null, 83, null, 1, 3);
+INSERT INTO ers_reimbursement (reimb_amount, reimb_submitted, reimb_resolved, reimb_description, reimb_receipt, reimb_author, reimb_resolver, reimb_status_id, reimb_type_id) VALUES (2100, CURRENT_TIMESTAMP, null, 'Alexanders reimbursement for expensive hotel stay', null, 84, null, 1, 1);
+
+commit;
 -- Create sequence that will be used to increment primary keys in the ers_users table
 CREATE SEQUENCE ers_users_sequence
 MINVALUE 1

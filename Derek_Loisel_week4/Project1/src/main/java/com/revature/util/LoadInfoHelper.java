@@ -26,11 +26,22 @@ public class LoadInfoHelper {
 			HttpSession session = req.getSession();
 			User sessionUser = (User) session.getAttribute("user");
 			sessionUser.setPassword("***************");
-
+				System.out.println("user role ID in LoadInfoHelper: " + sessionUser.getUserRoleID());
+			//return home info depending on the users role
+			if(sessionUser.getUserRoleID() == 1) {
+			//return info depending on the users role
+			//employee returns all personal reimbursements
+				System.out.println("user ID in LoadInfoHelper: " + sessionUser.getUserID());
 			ArrayList<Reimbursement> sessionUserReimbursements = service.getReimbursementsByUserID(sessionUser.getUserID());
+				System.out.println("user reimbursements length from LoadInfoHelper: " + sessionUserReimbursements.size());
 			UserReimbursements homeInfo = new UserReimbursements(sessionUser, sessionUserReimbursements);
-
 			return homeInfo;
+			}else {
+			//manager and admin returns all reimbursements
+			ArrayList<Reimbursement> sessionAllReimbursements = service.getAllReimbursements();
+			UserReimbursements managerHomeInfo = new UserReimbursements(sessionUser, sessionAllReimbursements);
+			return managerHomeInfo;
+			}
 
 		default:
 			return null;

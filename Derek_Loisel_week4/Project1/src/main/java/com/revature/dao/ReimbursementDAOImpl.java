@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import com.revature.models.Reimbursement;
 import com.revature.util.ConnectionFactory;
@@ -13,6 +14,39 @@ public class ReimbursementDAOImpl implements ReimbursementDAO{
 	public ArrayList<Reimbursement> getAllReimbursements(){
 		
 		ArrayList<Reimbursement> rl = new ArrayList<>();
+		
+		//create a connection
+				try(Connection conn = ConnectionFactory.getInstance().getConnection();){
+
+					//create an object for the type of statement you want to make
+					Statement stmt = conn.createStatement();
+
+					//create a string that holds the query you want to run
+					String sql = "SELECT * FROM ers_reimbursement ORDER BY reimb_status_id";
+
+					//execute the query into a result set object
+					ResultSet rs = stmt.executeQuery(sql);
+
+					while(rs.next()) { //while the results has a next value, we want to loop
+
+						Reimbursement r= new Reimbursement();
+						r.setReimbursementID(rs.getInt("reimb_id"));
+						r.setReimbursementAmount(rs.getDouble("reimb_amount"));
+						r.setReimbursementSubmitted(rs.getDate("reimb_submitted"));
+						r.setReimbursementResolved(rs.getDate("reimb_resolved"));
+						r.setReimbursementDescription(rs.getString("reimb_description"));
+						r.setReimbursementReceipt(rs.getBlob("reimb_receipt"));
+						r.setReimbursementAuthor(rs.getInt("reimb_author"));
+						r.setReimbursementResolver(rs.getInt("reimb_resolver"));
+						r.setReimbursementStatusID(rs.getInt("reimb_status_id"));
+						r.setReimbursementTypeID(rs.getInt("reimb_type_id"));
+						rl.add(r);			
+					}
+
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+		
 		return rl;
 	}
 

@@ -33,7 +33,6 @@ public class UserDAOImpl implements UserDAO{
 
 			while(rs.next()) { //while the results has a next value, we want to loop
 
-				//create an artist object to represent each row
 				User temp = new User();
 				//add the row contents to the user object
 				temp.setUserID(rs.getInt("ers_users_id")); //identifying column by column name string 

@@ -64,21 +64,15 @@ function login() {
 			
 			if(user == null) {
 				//$('#login-message').html('Invalid credentials!');
-				alert('Invalid credentials!')
+				//alert('Invalid credentials!')
+				console.log('invalid credentials!');
 			} else {
 				
-				alert('Login successful!');
-				if(user.userRoleID == 1){
-					loadHome();
-				}
-				//or maybe something like this should go elsehwere? how should i do manager and admin pages?
-//				else if(user.userRoleID == 2){
-//					loadManagerHome();
-//				}else{
-//					loadAdminHome();
-//				}
-				
-				console.log(`User id: ${user.id} login successful!`)
+				//alert('Login successful!');
+				loadHome(user);
+				console.log('username: ' + user.username);
+				console.log('User id: ' + user.userID);
+				console.log('login successful!');
 			}
 		}
 	}
@@ -179,15 +173,31 @@ function register() {
 }
 
 
-function loadHome() {
+function loadHome(user) {
 	console.log('in loadHome()');
 	
 	let xhr = new XMLHttpRequest();
+	
+	let currentView = '';
+	console.log('user role id inside loadHome after loadHomeInfo: ' + user.userRoleID);
+	//set view according to user role
+	if(user.userRoleID == 1){
+		console.log("employee role signing in");
+		currentView = 'home.view';
+	}
+	else if(user.userRoleID == 2){
+		console.log("manager role signing in");
+		currentView = 'managerhome.view';
+	}else{
+		console.log("admin role signing in");
+		currentView = 'adminhome.view';
+	}
 	
 	xhr.onreadystatechange = function() {
 		if(xhr.readyState == 4 && xhr.status == 200) {
 			$('#view').html(xhr.responseText);
 			loadHomeInfo();
+			
 			
 			$('#toHome').show();
 			$('#toProfile').show();
@@ -197,9 +207,11 @@ function loadHome() {
 		}
 	}
 	
-	xhr.open('GET', 'home.view', true);
+	xhr.open('GET', currentView, true);
 	xhr.send();
 }
+
+
 
 function loadHomeInfo() {
 	console.log('in loadHomeInfo()');
@@ -218,32 +230,85 @@ function loadHomeInfo() {
 			$('#user_email').html(user.email);
 			$('#user_username').html(user.username);
 			$('#user_password').html(user.password);
+			$('#user_role_id').html(user.userRoleID);
 			
 			//click nav to go to profile page
 //			$('#toProfile').on('click', loadProfile);
 			
 			
+			//create table: list the users reimbursements if employee signed in 
+							//or list from all reimbursements if manager or admin signed in
+			console.log('reimbursements length in loadHomeInfo at initial table creation: ' + reimbursements.length);
+			if(reimbursements.length > 0) {
+				reimbursements.forEach((reimbursement) => {
+					
+					if(filteringByUser == true && reimbursement.reimursementAuthor == userToFilterBy){
+						
+					}
+					
+					let id = reimbursement.reimbursementID;
+					let amount = reimbursement.reimbursementAmount;
+					let dateSubmitted = reimbursement.reimbursementSubmitted;
+					let dateResolved;
+					if(reimbursement.reimbursementResolved){
+						dateResolved = reimbursement.reimbursementResolved;
+					}else{						
+						dateResolved = "n/a";
+					}		
+					
+					let description = reimbursement.reimbursementDescription;
+					//blob goes in here too
+					let author = reimbursement.reimbursementAuthor;
+					
+					let resolver;
+					if(reimbursement.reimbursementResolver){
+						resolver = reimbursement.reimbursementResolver;
+					}else{					
+						resolver = "n/a";
+					}
+					
+					let statusID = reimbursement.reimbursementStatusID;
+					let typeID = reimbursement.reimbursementTypeID;
+					console.log(dateResolved);
+					let markup = `<tr>
+									<td>${id}</td>
+									<td>${amount}</td>
+									<td>${dateSubmitted}</td>
+									<td>${dateResolved}</td>
+									<td>${description}</td>
+									<td>${author}</td>
+									<td>${resolver}</td>
+									<td>${statusID}</td>
+									<td>${typeID}</td>
+								  </tr>`;
+					
+					$('table tbody').append(markup);
+				})
+			} else {
+				$('#acct-info').html('No accounts on record');
+			}
 			
-//			if(accounts.length > 0) {
-//				accounts.forEach((account) => {
-//					let id = account.acctId;
-//					let type = account.acctType[0].toUpperCase() + account.acctType.substring(1);
-//					let balance = parseFloat(Math.round(account.balance * 100) / 100).toFixed(2);
-//					
-//					let markup = `<tr>
-//									<td>${id}</td>
-//									<td>${type}</td>
-//									<td>${balance}</td>
-//								  </tr>`;
-//					
-//					$('table tbody').append(markup);
-//				})
-//			} else {
-//				$('#acct-info').html('No accounts on record');
-//			}
+			//reset filters
+			filteringByUser = false;
+			filteringByStatus = false;
+			
+			//set the views event listeners according to user role
+			if(user.userRoleID == 1){
+							
+			}
+			if(user.userRoleID == 2 || user.userRoleID == 3){
+			
+			}
+			if(user.userRoleID == 2){
+				
+			}
+			if(user.userRoleID == 3){
+				
+			}
 		}
+		
 	}
-	
+		
 	xhr.open('GET', 'home.loadinfo', true);
 	xhr.send();
 }

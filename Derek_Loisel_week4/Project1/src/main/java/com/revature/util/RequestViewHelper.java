@@ -18,6 +18,12 @@ public class RequestViewHelper {
 		
 		case "/Project1/home.view":
 			return "partials/home.html";
+			
+		case "/Project1/managerhome.view":
+			return "partials/managerhome.html";
+			
+		case "/Project1/adminhome.view":
+			return "partials/adminhome.html";
 		default:
 			return null;
 		} 

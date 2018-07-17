@@ -15,15 +15,12 @@ public class Reimbursement{
 	private int reimbursementResolver;
 	private int reimbursementStatusID;
 	private int reimbursementTypeID;
-	private int reimbursementStatus;
-	private int reimbursementType;
 	
 	public Reimbursement() {}
 	
 	public Reimbursement(int reimbursementID, double reimbursementAmount, Date reimbursementSubmitted,
 			Date reimbursementResolved, String reimbursementDescription, Blob reimbursementReceipt,
-			int reimbursementAuthor, int reimbursementResolver, int reimbursementStatusID, int reimbursementTypeID,
-			int reimbursementStatus, int reimbursementType) {
+			int reimbursementAuthor, int reimbursementResolver, int reimbursementStatusID, int reimbursementTypeID) {
 		super();
 		this.reimbursementID = reimbursementID;
 		this.reimbursementAmount = reimbursementAmount;
@@ -35,8 +32,7 @@ public class Reimbursement{
 		this.reimbursementResolver = reimbursementResolver;
 		this.reimbursementStatusID = reimbursementStatusID;
 		this.reimbursementTypeID = reimbursementTypeID;
-		this.reimbursementStatus = reimbursementStatus;
-		this.reimbursementType = reimbursementType;
+		
 	}
 
 	public int getReimbursementID() {
@@ -119,21 +115,6 @@ public class Reimbursement{
 		this.reimbursementTypeID = reimbursementTypeID;
 	}
 
-	public int getReimbursementStatus() {
-		return reimbursementStatus;
-	}
-
-	public void setReimbursementStatus(int reimbursementStatus) {
-		this.reimbursementStatus = reimbursementStatus;
-	}
-
-	public int getReimbursementType() {
-		return reimbursementType;
-	}
-
-	public void setReimbursementType(int reimbursementType) {
-		this.reimbursementType = reimbursementType;
-	}
 
 	@Override
 	public int hashCode() {
@@ -148,10 +129,8 @@ public class Reimbursement{
 		result = prime * result + ((reimbursementReceipt == null) ? 0 : reimbursementReceipt.hashCode());
 		result = prime * result + ((reimbursementResolved == null) ? 0 : reimbursementResolved.hashCode());
 		result = prime * result + reimbursementResolver;
-		result = prime * result + reimbursementStatus;
 		result = prime * result + reimbursementStatusID;
 		result = prime * result + ((reimbursementSubmitted == null) ? 0 : reimbursementSubmitted.hashCode());
-		result = prime * result + reimbursementType;
 		result = prime * result + reimbursementTypeID;
 		return result;
 	}
@@ -188,16 +167,12 @@ public class Reimbursement{
 			return false;
 		if (reimbursementResolver != other.reimbursementResolver)
 			return false;
-		if (reimbursementStatus != other.reimbursementStatus)
-			return false;
 		if (reimbursementStatusID != other.reimbursementStatusID)
 			return false;
 		if (reimbursementSubmitted == null) {
 			if (other.reimbursementSubmitted != null)
 				return false;
 		} else if (!reimbursementSubmitted.equals(other.reimbursementSubmitted))
-			return false;
-		if (reimbursementType != other.reimbursementType)
 			return false;
 		if (reimbursementTypeID != other.reimbursementTypeID)
 			return false;
@@ -211,7 +186,6 @@ public class Reimbursement{
 				+ reimbursementResolved + ", reimbursementDescription=" + reimbursementDescription
 				+ ", reimbursementReciept=" + reimbursementReceipt + ", reimbursementAuthor=" + reimbursementAuthor
 				+ ", reimbursementResolver=" + reimbursementResolver + ", reimbursementStatusID="
-				+ reimbursementStatusID + ", reimbursementTypeID=" + reimbursementTypeID + ", reimbursementStatus="
-				+ reimbursementStatus + ", reimbursementType=" + reimbursementType + "]";
+				+ reimbursementStatusID + ", reimbursementTypeID=" + reimbursementTypeID + "]";
 	}
 }
