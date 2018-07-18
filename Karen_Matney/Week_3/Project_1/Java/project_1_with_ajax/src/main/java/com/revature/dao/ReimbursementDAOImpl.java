@@ -100,7 +100,6 @@ public class ReimbursementDAOImpl implements ReimbursementDAO {
 			
 			return reimbursements;
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return null;
@@ -133,7 +132,6 @@ public class ReimbursementDAOImpl implements ReimbursementDAO {
 			
 			return reimbursements;
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return null;
@@ -143,12 +141,17 @@ public class ReimbursementDAOImpl implements ReimbursementDAO {
 	// public ArrayList<Reimbursement> viewRequestsById(int uid) {}
 
 	@Override
-	public ArrayList<Reimbursement> viewRequestsByStatus(int status) {
+	public ArrayList<Reimbursement> viewRequestsByStatus(User u, int status) {
 		ArrayList<Reimbursement> reimbursements = new ArrayList<>();
 		Reimbursement temp;
 		
 		try(Connection conn = ConnectionFactory.getInstance().getConnection();) {
-			String sql = "Select * FROM reimbursement WHERE reimb_status_id = " + status;
+			String sql;
+			if(u.getUserRole().equals("FinancMngr")) {
+				sql = "Select * FROM reimbursement WHERE reimb_status_id = " + status;
+			} else {
+				sql = "Select * FROM reimbursement WHERE reimb_status_id = " + status + " AND reimb_author = " + u.getUserId();
+			}
 			
 			Statement stmt = conn.createStatement();
 			ResultSet rs = stmt.executeQuery(sql);
@@ -170,7 +173,6 @@ public class ReimbursementDAOImpl implements ReimbursementDAO {
 			
 			return reimbursements;
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return null;
@@ -209,10 +211,20 @@ public class ReimbursementDAOImpl implements ReimbursementDAO {
 			
 			return temp;
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return null;
+	}
+	
+	private String usernameByUserId(int userId) {
+		UserDAO userDao = new UserDAOImpl();
+		User user = userDao.getByUserId(userId);
+		
+		if(user != null) {
+			return user.getFirstName() + " " + user.getLastName();
+		} else {
+			return "";
+		}
 	}
 
 }

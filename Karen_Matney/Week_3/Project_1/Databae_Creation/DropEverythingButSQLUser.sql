@@ -1,4 +1,6 @@
 DROP PROCEDURE update_reimbursement;
+DROP TRIGGER user_trigger;
+DROP SEQUENCE user_seq;
 DROP TRIGGER reimb_trigger;
 DROP SEQUENCE reimb_seq;
 DROP TABLE reimbursement;

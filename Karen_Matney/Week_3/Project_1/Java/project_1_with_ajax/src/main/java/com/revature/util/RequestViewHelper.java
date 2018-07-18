@@ -10,6 +10,14 @@ public class RequestViewHelper {
 		switch(req.getRequestURI()) {
 		case "/project_1_with_ajax/login.view":
 			return "partials/login.html";
+		case "/project_1_with_ajax/dashboard.view":
+			return "partials/dashboard.html";
+		case "/project_1_with_ajax/register.view":
+			return "partials/register.html";
+		case "/project_1_with_ajax/addrequest.view":
+			return "partials/addrequest.html";
+		case "/project_1_with_ajax/request.view":
+			return "partials/request.html";
 		default:
 			return null;
 		}

@@ -12,7 +12,7 @@ public interface ReimbursementDAO {
 	
 	// public ArrayList<Reimbursement> viewRequestsById(int uid);
 	
-	public ArrayList<Reimbursement> viewRequestsByStatus(int status);
+	public ArrayList<Reimbursement> viewRequestsByStatus(User u, int status);
 	
 	public Reimbursement saveRequest(Reimbursement reimb);
 }
