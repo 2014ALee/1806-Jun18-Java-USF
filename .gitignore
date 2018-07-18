@@ -86,5 +86,10 @@ RemoteSystemsTempFiles/
 # .properties files
 *.properties
 
+<<<<<<< HEAD
 # dependencies
 */node_modules/*
+=======
+# package-lock.json
+package-lock.json
+>>>>>>> b5260ed48b3dd811617ddc8ed0de1e9cb1686ec2

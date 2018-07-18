@@ -212,25 +212,17 @@ function loadHome(user) {
 function loadHomeInfo(user) {
 	console.log('in loadHomeInfo()');
 	
-	if($('#filter').attr('onblur') !== typeof undefined && $('#filter').attr('onblur') !== false) {
-		$('#filter').blur(function(event) {
-			$('table tbody').empty();
-			$('#filter').off('blur');
-			$('#filter').unbind('blur');
-			$('#filter').attr('onblur', '');
-			loadHomeInfo(user);
-		});
-		
-	}
-	if($('#viewMyReimb').attr('onclick') !== typeof undefined && $('#viewMyReimb').attr('onclick') !== false) {
-		$('#viewMyReimb').text('Back to Home');
-		$('#viewMyReimb').click(function(event) {
-			$('#viewMyReimb').off('click');
-			$('#viewMyReimb').unbind('click');
-			$('#viewMyReimb').attr('onclick', '');
-			managerView(user);
-		});
-	}
+	$('#filter').off('blur');
+	$('#filter').blur(function() {
+		$('table tbody').empty();
+		loadHomeInfo(user);
+	});
+	
+	$('#viewMyReimb').text('Back to Home');
+	$('#viewMyReimb').off('click');
+	$('#viewMyReimb').click(function() {
+		managerView(user);
+	});
 	
 	let stat_id = $('#filter option:selected').val();
 	
@@ -262,29 +254,75 @@ function loadHomeInfo(user) {
 					let markup = "";
 					if(stat_id == 0 || stat_id == stat) {
 						if(user.role_id === 1) {
-							markup = `<tr>
-								<td>${id}</td>
-								<td>${amount}</td>
-								<td>${submitted}</td>
-								<td>${resolved}</td>
-								<td>${desc}</td>
-								<td>${auth}</td>
-								<td>${stat}</td>
-								<td>${type}</td>
-								<td><button class="btn btn-block btn-primary" id="approve${id}">Approve</button></td>
-								<td><button class="btn btn-block btn-primary" id="deny${id}">Deny</button></td>
-							  </tr><hr/>`;
+							markup = '<tr>' +
+							'<td>'+id+'</td>'+
+							'<td>$'+amount+'</td>'+
+							'<td>'+submitted+'</td>'+
+							'<td>'+resolved+'</td>'+
+							'<td>'+desc+'</td>'+
+							'<td>'+auth+'</td>';
+						switch(stat) {
+							case 1:
+								markup+='<td>Pending</td>';
+								break;
+							case 2:
+								markup+='<td>Denied</td>';
+								break;
+							case 3:
+								markup+='<td>Approved</td>';
+								break;
+						}
+						switch(type) {
+							case 1:
+								markup+='<td>Lodging</td>';
+								break;
+							case 2:
+								markup+='<td>Travel</td>';
+								break;
+							case 3:
+								markup+='<td>Food</td>';
+								break;
+							case 4:
+								markup+='<td>Other</td>';
+								break;
+						}
+						markup+='<td><button class="btn btn-block btn-primary" id="approve${id}">Approve</button></td>';
+						markup+='<td><button class="btn btn-block btn-primary" id="deny${id}">Deny</button></td>';
+						markup+='</tr><hr/>';
 						} else {
-							markup = `<tr>
-								<td>${id}</td>
-								<td>${amount}</td>
-								<td>${submitted}</td>
-								<td>${resolved}</td>
-								<td>${desc}</td>
-								<td>${auth}</td>
-								<td>${stat}</td>
-								<td>${type}</td>
-							  </tr><hr/>`;
+							markup = '<tr>' +
+							'<td>'+id+'</td>'+
+							'<td>$'+amount+'</td>'+
+							'<td>'+submitted+'</td>'+
+							'<td>'+resolved+'</td>'+
+							'<td>'+desc+'</td>'+
+							'<td>'+auth+'</td>';
+						switch(stat) {
+							case 1:
+								markup+='<td>Pending</td>';
+								break;
+							case 2:
+								markup+='<td>Denied</td>';
+								break;
+							case 3:
+								markup+='<td>Approved</td>';
+								break;
+						}
+						switch(type) {
+							case 1:
+								markup+='<td>Lodging</td>';
+								break;
+							case 2:
+								markup+='<td>Travel</td>';
+								break;
+							case 3:
+								markup+='<td>Food</td>';
+								break;
+							case 4:
+								markup+='<td>Other</td>';
+								break;
+						}
+						markup+='</tr><hr/>';
 						}
 					}
 					
@@ -327,24 +365,17 @@ function managerView(user) {
 	console.log('in managerView()');
 	$('table tbody').empty();
 	
-	if($('#filter').attr('onblur') !== typeof undefined && $('#filter').attr('onblur') !== false) {
-		$('#filter').blur(function(event) {
-			$('table tbody').empty();
-			$('#filter').off('blur');
-			$('#filter').unbind('blur');
-			$('#filter').attr('onblur', '');
-			managerView(user);
-		});
-	}
-	if($('#viewMyReimb').attr('onclick') !== typeof undefined && $('#viewMyReimb').attr('onclick') !== false) {
-		$('#viewMyReimb').text('Back to Home');
-		$('#viewMyReimb').click(function(event) {
-			$('#viewMyReimb').off('click');
-			$('#viewMyReimb').unbind('click');
-			$('#viewMyReimb').attr('onclick', '');
-			loadHomeInfo(user);
-		});
-	}
+	$('#filter').off('blur');
+	$('#filter').blur(function(event) {
+		$('table tbody').empty();
+		managerView(user);
+	});
+
+	$('#viewMyReimb').text('Back to Home');
+	$('#viewMyReimb').off('click');
+	$('#viewMyReimb').click(function(event) {
+		loadHomeInfo(user);
+	});
 	
 	let stat_id = $('#filter option:selected').val();
 	
@@ -376,16 +407,39 @@ function managerView(user) {
 					
 					let markup = "";
 					if(stat_id == 0 || stat_id == stat) {
-						markup = `<tr>
-							<td>${id}</td>
-							<td>${amount}</td>
-							<td>${submitted}</td>
-							<td>${resolved}</td>
-							<td>${desc}</td>
-							<td>${auth}</td>
-							<td>${stat}</td>
-							<td>${type}</td>
-						  </tr><hr/>`;
+						markup = '<tr>' +
+							'<td>'+id+'</td>'+
+							'<td>$'+amount+'</td>'+
+							'<td>'+submitted+'</td>'+
+							'<td>'+resolved+'</td>'+
+							'<td>'+desc+'</td>'+
+							'<td>'+auth+'</td>';
+						switch(stat) {
+							case 1:
+								markup+='<td>Pending</td>';
+								break;
+							case 2:
+								markup+='<td>Denied</td>';
+								break;
+							case 3:
+								markup+='<td>Approved</td>';
+								break;
+						}
+						switch(type) {
+							case 1:
+								markup+='<td>Lodging</td>';
+								break;
+							case 2:
+								markup+='<td>Travel</td>';
+								break;
+							case 3:
+								markup+='<td>Food</td>';
+								break;
+							case 4:
+								markup+='<td>Other</td>';
+								break;
+						}
+						markup+='</tr><hr/>';
 					}
 				
 					$('table tbody').append(markup);
