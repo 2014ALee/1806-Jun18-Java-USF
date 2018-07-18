@@ -1,0 +1,62 @@
+
+	<div class="row">
+		<div class="col-md-6">
+			<div   id="fileForm" role="form">
+				
+					<div class="text-center">
+						Please create an account. 
+					</div>
+
+					<div class="form-group">
+						<label for="firstname"><span class="req">* </span> First
+							name: </label> <input class="form-control" type="text" name="register-firstname"
+							id="register-firstname" required />
+						<div id="errFirst"></div>
+					</div>
+
+					<div class="form-group">
+						<label for="lastname"><span class="req">* </span> Last
+							name: </label> <input class="form-control" type="text" name="register-lastname"
+							id="register-lastname" 	placeholder="last name" required />
+						<div id="errLast"></div>
+					</div>
+
+					<div class="form-group">
+						<label for="register-email"><span class="req">* </span> Email
+							Address: </label> <input class="form-control" required type="email"
+							name="register-email" id="register-email" />
+						<div class="status" id="status"></div>
+					</div>
+
+					<div class="form-group">
+						<label for="username"> User
+							name: <small>This will be your login user name</small> </label> <input
+							class="form-control" type="text" name="username"
+							id="register-username" placeholder="username" required />
+						
+					</div>
+
+					<div class="form-group">
+						<label for="password">
+							Password: </label> <input required name="password" id="register-password"
+							type="password" class="form-control inputpass"
+							 />
+					</div>
+
+					<div class="radio">
+						<input type="radio" id="emp-rad" name="emp-rad" /> <label for="emp-rad">Employee</label>
+					</div>
+
+					<div class="radio">
+						<input type="radio" id="manager-rad" name="manager-rad" /><label for="manager-rad">Manager</label>
+					</div>
+
+					<div class="form-group">
+						<button class="btn btn-primary" name="register" id="register">Register</button>
+					</div>
+					
+				</div>
+		</div>
+	</div>
+	
+	<div class="alert alert-danger" id="reg-message"></div>

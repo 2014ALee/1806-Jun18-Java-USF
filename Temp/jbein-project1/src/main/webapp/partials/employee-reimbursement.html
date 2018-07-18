@@ -1,0 +1,61 @@
+
+
+
+<div id="user-info">
+		<b>User ID:</b> <span nname="emp-user_id" id="emp-user_id"></span><br><br>
+		<b>First name:</b> <span id="emp-user_fn"></span><br><br>
+		<b>Last name:</b> <span id="emp-user_ln"></span><br><br>
+		<b>Email address:</b> <span id="emp-user_email"></span><br><br>
+		<b>Username:</b> <span id="emp-user_username"></span><br><br>
+		<b>Password:</b> <span id="emp-user_password"></span><br><br>
+		<b>Role:</b> <span id="emp-user_role"></span><br><br>	
+</div>
+	
+<h2>Manage Your reimbursements below</h2>
+
+<h3>Submit a reimbursement</h3>
+<div>
+  <div class="form-group">
+    <label>Reimbursement type: </label>
+    <select class="form-control" id="reimbType">
+      <option id="selectLodging" value="1">Lodging</option>
+      <option id="selectTravel" value="2">Travel</option>
+      <option id="selectFood" value="3">Food</option>
+      <option id="selectOther" value="4">Other</option>
+    </select>
+    
+  </div>
+  <div class="form-group">
+    <label for="empAmount">Amount: </label>
+    <input type="text" class="form-control"  id="empAmount" placeholder="Amount">
+  </div>
+  
+  <div class="form-group">
+    <label for="empDescription">Description: </label>
+    <input type="text" class="form-control" id="empDescription" placeholder="Description">
+  </div>
+  
+  <button type="submit" id="emp-reimb" class="btn btn-primary">Submit</button>
+</div>
+ 
+<hr>
+<h2>View your reimbursements</h2>
+	<div>
+		<table class="table" id="userReimbursements-table">
+			<thead>
+				<tr>
+					<th>Reimbursement ID</th>
+					<th>Amount</th>
+					<th>Date Submitted</th>
+					
+					<th>Reimbursement Description</th>
+					
+					  
+					<th>Reimbursement Type</th>
+					<th>Reimbursement Status</th>
+				</tr>
+			</thead>
+			<tbody></tbody>
+		</table>
+	</div>
+	<div id="reimb-info"></div>
