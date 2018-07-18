@@ -9,12 +9,18 @@ public class RequestViewHelper {
 		System.out.println("[LOG] - Processing request with RequestViewHelper.process(): " + req.getRequestURI());
 		
 		switch(req.getRequestURI()) {
-			case "/fs-bank-demo/login":
-				return "partials/login.html";
-			case "/fs-bank-demo/register":
-				return "partials/register.html";
-			default:
-				return null;
+		
+		case "/fs-bank-demo/login.view":
+			return "partials/login.html";
+			
+		case "/fs-bank-demo/register.view":
+			return "partials/register.html";
+			
+		case "/fs-bank-demo/home.view":
+			return "partials/home.html";
+		
+		default:
+			return null;
 		}
 	}
 

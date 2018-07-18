@@ -22,16 +22,21 @@ public class ConnectionFactory {
 	}
 	
 	public Connection getConnection() {
+		
 		Connection conn = null;
 		Properties prop = new Properties();
+		
 		try {
-			prop.load(new FileReader("C:\\Users\\Christian Defaria\\project-repos\\1806-Jun18-Java-USF\\Christian_DeFaria\\"
-					+ "Week4\\fs-bank-demo\\src\\main\\resources\\application.properties"));
+			prop.load(new FileReader("C:\\Users\\Wezley\\batch-repos\\1806-Jun18-Java-USF\\Week_4-Servlets_Angular\\"
+					+ "fs-bank-demo\\src\\main\\resources\\application.properties"));
+			
 			Class.forName(prop.getProperty("driver"));
+			
 			conn = DriverManager.getConnection(
 					prop.getProperty("url"),
-					prop.getProperty("usr"), 
+					prop.getProperty("usr"),
 					prop.getProperty("pw"));
+			
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -40,7 +45,8 @@ public class ConnectionFactory {
 			e.printStackTrace();
 		} catch (SQLException e) {
 			e.printStackTrace();
-		} 
+		}
+		
 		return conn;
 	}
 

@@ -11,6 +11,9 @@ import { RouterModule } from '@angular/router';
 import { appRoutes } from './routes';
 import { NavComponent } from './components/nav/nav.component';
 import { AccountsComponent } from './components/accounts/accountss.component';
+import { VideoGameService } from './services/video-game.service';
+import { FormsModule } from '@angular/forms';
+import { VideoGamePipe } from './pipes/video-game.pipe';
 
 @NgModule({
   declarations: [
@@ -20,14 +23,18 @@ import { AccountsComponent } from './components/accounts/accountss.component';
     ClickerComponent,
     VideoGamesComponent,
     NavComponent,
-    AccountsComponent
+    AccountsComponent,
+    VideoGamePipe
   ],
   imports: [
     BrowserModule,
     NgbModule.forRoot(),
-    RouterModule.forRoot(appRoutes)
+    RouterModule.forRoot(appRoutes),
+    FormsModule
   ],
-  providers: [],
+  providers: [
+    VideoGameService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

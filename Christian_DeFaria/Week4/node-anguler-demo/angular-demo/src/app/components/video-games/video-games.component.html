@@ -1,5 +1,34 @@
 <h1>Video games!</h1>
-<div *ngFor="let game of games" class="card mb-3 video-game-card">
+<form (ngSubmit)="submit()">
+  <div class="form-group">
+    <label for="title">Title</label>
+    <input type="text"
+      class="form-control"
+      id="title"
+      name="game.title"
+      placeholder="Title"
+      [(ngModel)]="game.title" />
+  </div>
+  <div class="form-group">
+    <label for="image">Image</label>
+    <input type="text"
+      class="form-control"
+      name="game.image"
+      placeholder="Image"
+      [(ngModel)]="game.image" />
+  </div>
+  <div class="form-group">
+    <label for="description">Description</label>
+    <input type="text"
+      class="form-control"
+      name="game.description"
+      placeholder="Description"
+      [(ngModel)]="game.description">
+  </div>
+  <button class="btn btn-primary" type="submit">Submit</button>
+</form>
+<input type="text" name="titleFilter" [(ngModel)]="filterTitleString"/>
+<div *ngFor="let game of (games | videoGameTitle:filterTitleString)" class="card mb-3 video-game-card">
     <img class="card-img-top" [src]="game.image"
      alt="Card image cap">
     <div class="card-body">

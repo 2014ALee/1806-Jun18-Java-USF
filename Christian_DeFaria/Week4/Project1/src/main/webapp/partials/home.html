@@ -1,0 +1,45 @@
+<div>
+	<h1>Home</h1><br>
+	<div id="user-info">
+		<!--b>User ID:</b> <span id="user_id"></span><br><br-->
+		<b>First name:</b> <span id="user_fn"></span><br><br>
+		<b>Last name:</b> <span id="user_ln"></span><br><br>
+		<b>Email address:</b> <span id="user_email"></span><br><br>
+		<b>Username:</b> <span id="user_username"></span><br><br>
+		<!--b>Password:</b> <span id="user_password"></span><br><br-->
+	</div>
+	
+	<hr/>
+	
+	<label>Select a Filter:</label>
+	<select class="dropdown" id="filter">
+		<option value="0">All</option>
+		<option value="1">Pending</option>
+		<option value="2">Denied</option>
+		<option value="3">Approved</option>
+	</select>
+	
+	<hr/>
+	
+	<table class="table" id="userReimbursements-table">
+		
+		<thead>
+			<tr>
+				<th>Reimbursement ID</th>
+				<th>Amount</th>
+				<th>Submitted</th>
+				<th>Resolved</th>
+				<th>Description</th>
+				<th>Author</th>
+				<th>Status</th>
+				<th>Type</th>
+			</tr>
+		</thead>
+		
+		<tbody></tbody>
+		
+	</table>
+</div>
+<div id="empty-table"></div>
+<button class="btn btn-block btn-primary" id="addReimb">Add Reimbursement</button><br/>
+<button class="btn btn-block btn-primary" id="viewMyReimb">View my Reimbursements</button><br/><br/>

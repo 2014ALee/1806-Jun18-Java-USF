@@ -5,7 +5,7 @@ import { ClickerComponent } from './components/clicker/clicker.component';
 import { VideoGamesComponent } from './components/video-games/video-games.component';
 import { AccountsComponent } from './components/accounts/accountss.component';
 
-export const appRoutes : Routes = [
+export const appRoutes: Routes = [
     {
         path: 'first',
         component: FirstComponent
