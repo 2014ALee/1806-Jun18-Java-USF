@@ -17,15 +17,15 @@ import com.revature.models.EmployeeReimbursementSystem;
 import com.revature.models.User;
 
 
-@WebServlet("/login")
-public class LoginServlet extends HttpServlet {
+@WebServlet("/register")
+public class RegisterServlet extends HttpServlet {
 
 	private static final long serialVersionUID = 1L;
+	EmployeeReimbursementSystem ERS = new EmployeeReimbursementSystem();
 	
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		System.out.println("[LOG] - Request sent to LoginServlet.doPost()");
-		EmployeeReimbursementSystem ERS = new EmployeeReimbursementSystem();
+		System.out.println("[LOG] - Request sent to LoginRegister.doPost()");
 		
 		// 1) Get received JSON data from request
 		BufferedReader br = new BufferedReader(new InputStreamReader(req.getInputStream()));
@@ -40,32 +40,31 @@ public class LoginServlet extends HttpServlet {
 		ObjectMapper mapper = new ObjectMapper();
 		
 		// 3) Convert received JSON to String array
-		String[] userInfo = mapper.readValue(json, String[].class);
-		String userName = userInfo[0];
-		String password = userInfo[1];
+		String[] registerInfo = mapper.readValue(json, String[].class);
+		
+		String userName = registerInfo[0];
+		String password = registerInfo[1];
+		String firstName = registerInfo[2];
+		String lastName = registerInfo[3];
+		String email = registerInfo[4];
+		String accountType = registerInfo[5];
+		
+		User newUser = new User(userName, password, firstName, lastName, email, accountType);
+		boolean successfulRegister = false;
+		
+		if(ERS.registrationValid(newUser)) {
+			ERS.registerUser(newUser);
+			successfulRegister = true;
+		} else {
+			successfulRegister = false;
+		}
 		
 		//User temp = (service.getUserByUsername(username).getId() != 0) ? service.getUserByUsername(username) : null;
-	
-		User newUser = null;
-		Boolean userInDB = false;
-		
-		if(ERS.userInDatabase(userName, password)) {
-			userInDB = true;
-			newUser = ERS.logIn(userName, password);
-		}
-		
-		if(newUser == null) {
-			System.out.println("[LOG] - Variable 'temp' in LoginServlet is null");
-		} else {
-			HttpSession session = req.getSession();
-			session.setAttribute("user", newUser); // persists this user to the session
-			System.out.println("our user is: " + newUser);
-		}
 		
 		PrintWriter pw = resp.getWriter();
 		resp.setContentType("application/json");
 		
-		String userJSON = mapper.writeValueAsString(newUser);
+		String userJSON = mapper.writeValueAsString(successfulRegister);
 		pw.write(userJSON);
 	}
 

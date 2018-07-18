@@ -19,4 +19,24 @@
     <servlet-name>LoginServlet</servlet-name>
     <url-pattern>/LoginServlet</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>ValidateServlet</display-name>
+    <servlet-name>ValidateServlet</servlet-name>
+    <servlet-class>com.revature.servlets.ValidateServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>ValidateServlet</servlet-name>
+    <url-pattern>/ValidateServlet</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>RegisterServlet</display-name>
+    <servlet-name>RegisterServlet</servlet-name>
+    <servlet-class>com.revature.servlets.RegisterServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>RegisterServlet</servlet-name>
+    <url-pattern>/RegisterServlet</url-pattern>
+  </servlet-mapping>
 </web-app>

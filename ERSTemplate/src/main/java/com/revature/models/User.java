@@ -27,7 +27,6 @@ public class User implements UserInterface {
 		this.lastName = lastName;
 		this.email = email;
 		this.roleName = roleName;
-		this.roleID = roleID;
 	}
 
 	public User() {

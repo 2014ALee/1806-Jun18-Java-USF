@@ -104,12 +104,19 @@ public class UserDAOImpl implements UserDAO{
 			//we user currval because we create the FK and PK consecutively so the sequence
 			//will be in the correct place
 
+			
 			String userRole = newUser.getRoleName();
-			if(userRole == "employee") {
-				newUser.setRoleID(1);;
-			} else if(userRole == "manager") {
+			if(userRole.equals("employee")) {
+				newUser.setRoleID(1);
+			} else if(userRole.equals("manager")) {
 				newUser.setRoleID(2);
 			}
+			
+			
+			System.out.println(newUser.getRoleName() + " is the name of the role");
+			System.out.println(newUser.getRoleID() + " is the ID of the role");
+			
+			
 			//if role == manager
 			//roleID = 2
 			//else if role == employee
@@ -142,7 +149,7 @@ public class UserDAOImpl implements UserDAO{
 
 
 	public boolean validLogin(String userName, String password) {
-
+		
 		try(Connection con = ConnectionFactory.getInstance().getConnection();){
 
 

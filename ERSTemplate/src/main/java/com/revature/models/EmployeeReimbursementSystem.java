@@ -9,68 +9,63 @@ public class EmployeeReimbursementSystem implements EmployeeReimbursementSystemI
 
 	UserDAOImpl userDAO = new UserDAOImpl();
 	ReimbDAOImpl reimbDAO = new ReimbDAOImpl();
-	
+
 	//there will be a menu with options
 	//login, register
-	
-	public void registerUser() {
-		// do our checks, see if we can do this
-		//if so, add them to userbank
-		//please provide x information
-		User newUser = new User();
-		if(userDAO.validRegistration(newUser)) {
-			userDAO.registerUser(newUser);
-			System.out.println("user registered successfully!");
-			mainMenu();
-		}
-		
-		
-		mainMenu();
+
+	public void registerUser(User newUser) {
+
+		userDAO.registerUser(newUser);
 	}
-	
+
+	public boolean registrationValid(User user) {
+
+		return userDAO.validRegistration(user);
+	}
+
 	public User logIn(String userName, String password) {
 		// we need to get user
 		//we have front end forms that ask for the information
 		//if we are succesful, we send them to the logged in menu
-		
+
 		//sample vars
 
 		User newUser = new User();	
 		newUser.setUserName(userName);
 		newUser.setPassword(password);
-		
+
 		User loggedInUser = userDAO.getUser(newUser);
-		
+
 		return loggedInUser;
-		
+
 	}
-	
+
 
 	public void mainMenu() {
 		System.out.println("welcome to the ERS!");
 		System.out.println("[1] for login");
 		System.out.println("[2] for registration");
 		//we do a system get here
-		
+
 		/*
 		 * if (input == 1){
 			logIn();
 	}
-	
-	
-	*/	
+
+
+		 */	
 	}
 
 	public void exitProgram() {
 		System.exit(0);
-		
+
 	}
 
 	public void loggedInMenuEmployee(User newUser) {
 		newUser.setReimbList(reimbDAO.getReimbursements(newUser));
-		
+
 		// we will display this to the user on the front end
-		
+
 	}
 
 	public void loggedInMenuManager() {
@@ -79,26 +74,38 @@ public class EmployeeReimbursementSystem implements EmployeeReimbursementSystemI
 		//view all reimbs
 		//add new one
 	}	
-	
+
 	public boolean nameAndEmailAvailable() {
-		
+
 		return true;
 	}
-	
+
 	public boolean userInDatabase(String userName, String password) {
-	
+
 		boolean validLogin = userDAO.validLogin(userName, password);
-		
-		
+
+
 		return validLogin;
 	}
+
+	public boolean checkUserName(String userName) {
+		boolean isValid = userDAO.validUserName(userName);
+		return isValid;
+	}
+
+	public boolean checkEmail(String email) {
+		boolean isValid = userDAO.validEmail(email);
+		return isValid;
+	}
+
 
 	@Override
 	public void loggedInMenuEmployee() {
 
-		
-		
-		
+
+
+
 	}
-	
+
+
 }

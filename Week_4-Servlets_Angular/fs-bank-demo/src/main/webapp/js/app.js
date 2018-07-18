@@ -15,6 +15,11 @@ function loadLogin() {
 	xhr.onreadystatechange = function() {
 		if(xhr.readyState == 4 && xhr.status == 200) {
 			$('#view').html(xhr.responseText);
+			
+			//we get the view element
+			//then we set it's html to whatever xhr gives us 
+			//in this case, it should be the entire partial, login.html
+			
 			loadLoginInfo();
 			$('#toRegister').show();
 			$('#toLogin').show();
