@@ -6,6 +6,7 @@ import ersdb.dao.ReimbursementDAO;
 import ersdb.dao.ReimbursementDAOImpl;
 import ersdb.dao.UserDAO;
 import ersdb.dao.UserDAOImpl;
+import ersdb.models.Reimbursement;
 import ersdb.models.User;
 
 public class ERSService {
@@ -82,6 +83,16 @@ public class ERSService {
 		ArrayList<User> allUsers = userDAO.getAllUsers();
 		
 		return allUsers;
+	}
+	
+	public ArrayList<Reimbursement> getReimbursementsByAuthor(int authorId) {
+		ArrayList<Reimbursement> reimbs = reimbDAO.getReimbursementByAuthorId(authorId);
+		return reimbs;
+	}
+	
+	public ArrayList<Reimbursement> getAllReimbursements() {
+		ArrayList<Reimbursement> reimbs = reimbDAO.getAllReimbursements();
+		return reimbs;
 	}
 
 	private static boolean unameAvailable(String username) {

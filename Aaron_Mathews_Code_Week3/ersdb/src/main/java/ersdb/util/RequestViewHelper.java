@@ -19,6 +19,10 @@ public class RequestViewHelper {
 			return "partials/managerhome.html";
 		case "/ersdb/home.view":
 			return "partials/home.html";
+		case "/ersdb/userReim.view":
+			return "partials/userReim.html";
+		case "/ersdb/reimbursements.view":
+			return "partials/reimbursements.html";
 		default:
 			return null;
 		}

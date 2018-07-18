@@ -4,9 +4,11 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 
 import ersdb.models.Reimbursement;
+import ersdb.models.User;
 import ersdb.util.ConnectionFactory;
 
 public class ReimbursementDAOImpl implements ReimbursementDAO {
@@ -234,6 +236,36 @@ public class ReimbursementDAOImpl implements ReimbursementDAO {
 			pstat.setInt(1, type);
 			
 			ResultSet rs = pstat.executeQuery();
+			
+			while(rs.next()) {
+				Reimbursement temp = new Reimbursement();
+				temp.setAuthor(rs.getInt("reimb_author"));
+				temp.setDescription(rs.getString("reimb_description"));
+				temp.setReceipt(rs.getBlob("reimb_receipt"));
+				temp.setReimbAmount(rs.getDouble("reimb_amount"));
+				temp.setReimbId(rs.getInt("reimb_id"));
+				temp.setResolved(rs.getDate("reimb_resolved"));
+				temp.setResolver(rs.getInt("reimb_resolver"));
+				temp.setStatusId(rs.getInt("reimb_status_id"));
+				temp.setSubmitted(rs.getDate("reimb_submitted"));
+				temp.setTypeId(rs.getInt("reimb_type_id"));
+				reimbs.add(temp);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return reimbs;
+	}
+	
+	@Override
+	public ArrayList<Reimbursement> getAllReimbursements() {
+		ArrayList<Reimbursement> reimbs = new ArrayList<>();
+		
+		try (Connection conn = ConnectionFactory.getInstance().getConnection();) {
+			String sql = "SELECT * FROM ers_reimbursements";
+			
+			Statement stat = conn.createStatement();
+			ResultSet rs = stat.executeQuery(sql);
 			
 			while(rs.next()) {
 				Reimbursement temp = new Reimbursement();

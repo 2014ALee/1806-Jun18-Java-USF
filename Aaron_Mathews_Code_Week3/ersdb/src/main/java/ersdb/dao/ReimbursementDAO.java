@@ -21,5 +21,7 @@ public interface ReimbursementDAO {
 	public ArrayList<Reimbursement> getReimbursementByStatus(int status);
 	
 	public ArrayList<Reimbursement> getReimbursementByType(int type);
+	
+	public ArrayList<Reimbursement> getAllReimbursements();
 
 }

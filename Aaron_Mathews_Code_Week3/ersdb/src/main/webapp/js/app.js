@@ -167,13 +167,13 @@ function loadHomePage(user) {
 
 function loadSideNavInfo() {
 	$('.sidenav').show();
-	$('#sidebarHome').on('click', loadHomePageInfo);
 	
 	//Request the current user info
 	let xhr = new XMLHttpRequest();
 	
 	xhr.onreadystatechange = function() {
 		if(xhr.readyState == 4 && xhr.status == 200) {
+			$('#sidebarHome').on('click', loadHomePageInfo);
 			let user = JSON.parse(xhr.responseText);
 			
 			if (user.roleid === 1) {
@@ -227,18 +227,13 @@ function loadHomePageInfo() {
 	xhr.onreadystatechange = function() {
 		if(xhr.readyState == 4 && xhr.status == 200) {
 			let user = JSON.parse(xhr.responseText);
-			
-//			if (user.roleid === 1) {
-//				$('#viewAllReimb').on('click', loadAllReimb);
-//				$('#viewUsers').on('click', loadAllUsers);
-//			} else if (user.roleid === 2) {
-//				$('#viewAllReimb').on('click', loadAllReimb);
-//				$('#sidebarProfile').on('click', loadProfile);
-//			} else if (user.roleid === 3){
-//				$('#viewReimb').on('click', loadReimb);
-//				$('#submitReimb').on('click', loadSubmitReimb);
-//				$('#sidebarProfile').on('click', loadProfile);
-//			}
+
+			$('#user_firstname').html(user.firstname);
+			$('#user_id').html(user.userid);
+			$('#user_fn').html(user.firstname);
+			$('#user_ln').html(user.lastname);
+			$('#user_email').html(user.email);
+			$('#user_username').html(user.username);
 		}
 	}
 	
@@ -248,10 +243,45 @@ function loadHomePageInfo() {
 
 function loadReimb() {
 	console.log('In loadReimb();')
+	let xhr = new XMLHttpRequest();
+	
+	xhr.onreadystatechange = function() {
+		if (xhr.readyState == 4 && xhr.status == 200) {
+			$('#view').html(xhr.responseText);
+			$('#viewReimb').on('click', viewReimb);
+			$('#submitReimb').on('click', submitReimb);
+		}
+	}
+	xhr.open('GET', 'userReim.view', true);
+	xhr.send();
 }
 
+function viewReimb() {
+	console.log('In viewReimb();');
+	let xhr = new XMLHttpRequest();
+	
+	xhr.onreadystatechange = function() {
+		if (xhr.readyState == 4 && xhr.status == 200) {
+			$('#view').html(xhr.responseText);
+		}
+	}
+	
+	xhr.open('GET', 'reimbursements.view', true);
+	xhr.send();
+}
 function loadAllReimb() {
-	console.log('In loadAllReimb();')
+	console.log('In loadAllReimb();');
+	let xhr = new XMLHttpRequest();
+	
+	xhr.onreadystatechange = function() {
+		if (xhr.readyState == 4 && xhr.status == 200) {
+			let reimbs = JSON.parse(xhr.responseText);
+			
+			
+		}
+	}
+	xhr.open('GET', 'reimb.loadreimb', true);
+	xhr.send();
 }
 
 function loadAllUser() {
@@ -266,12 +296,10 @@ function loadSubmitReimb() {
 	console.log('In loadSubmitReimb();')
 }
 
-function viewReimb() {
-	console.log('In viewReimb();')
-}
 
 function submitReimb() {
-	console.log('In submitReimb();')
+	console.log('In submitReimb();');
+	
 }
 
 function viewUsers() {
