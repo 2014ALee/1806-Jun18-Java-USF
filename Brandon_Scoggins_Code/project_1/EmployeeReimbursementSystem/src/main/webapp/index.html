@@ -35,21 +35,21 @@
                         <a class="nav-link" href="#"> Home </a>
                     </li>
                     <li class="nav-item" id="toProfile">
-                        <a class="nav-link"> Profile </a>
+                        <a class="nav-link" href="#"> Profile </a>
                     </li>
                     <li class="nav-item dropdown" id="navbarDropdownMenuLink">
                         <a class="nav-link dropdown-toggle" href="#" role="button" 
                             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> Reimbursements </a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                             <h6>&nbsp;&nbsp;Employee </h6>
-	                        <a class="dropdown-item" id="toCreateNewNav" data-toggle="modal" data-target="#createModal"> Create New </a>
-	                        <a class="dropdown-item" id="toViewResolved"> View Resolved </a>
-	                        <a class="dropdown-item" id="toViewUnresolved"> View Unresolved </a>
+	                        <a class="dropdown-item" id="toCreateNewNav" data-toggle="modal" data-target="#createModal" href="#"> Create New </a>
+	                        <a class="dropdown-item" id="toViewResolved" href="#"> View Resolved </a>
+	                        <a class="dropdown-item" id="toViewUnresolved" href="#"> View Unresolved </a>
 	                        <div id="managementOption">
 		                        <hr>
 		                        <!-- Only show this option if a manager is logged in -->
 		                        <h6>&nbsp;&nbsp;Manager </h6>
-		                        <a class="dropdown-item" id="toViewAll"> View All </a>
+		                        <a class="dropdown-item" id="toViewAll" href="#"> View All </a>
 		                        <!-- on this page, include menus to sort and view specific cases -->
 	                        </div>
                         </div>
@@ -59,15 +59,18 @@
             </div>
             <div>
                 <ul class="navbar-nav justify-content-end">
+                    <li class="nav-item active col">
+                        <a class="nav-link col" id="userIdNav"> User Id: <span id="userIdNavValue"></span></a>
+                    </li>
                     <!-- Login and Register will be shown together if not logged in -->
                     <li class="nav-item" id="toLogin">
-                        <a class="nav-link"> Login </a>
+                        <a class="nav-link" href="#"> Login </a>
                     </li>
                     <li class="nav-item" id="toRegister">
-                        <a class="nav-link"> Register </a>
+                        <a class="nav-link" href="#"> Register </a>
                     </li>
                     <li class="nav-item" id="toLogout">
-                        <a class="nav-link" data-toggle="modal" data-target="#logoutModal"> Logout </a>
+                        <a class="nav-link" data-toggle="modal" data-target="#logoutModal" href="#"> Logout </a>
                     </li>                    
                 </ul>
             </div>
@@ -199,6 +202,36 @@
 					</div>
 	                <div class="modal-footer">
 	                    <button type="button" class="btn btn-primary col" data-dismiss="modal">Continue</button>
+	                </div>
+	            </div>
+	        </div>
+    	</div>  
+        <div class="modal fade" id="successfulReimUpdateModal" tabindex="-1" role="dialog" aria-labelledby="successfulReimUpdateModalTitle" aria-hidden="true">
+	        <div class="modal-dialog modal-dialog-centered" role="document">
+	            <div class="modal-content">
+	                <div class="modal-header">
+	                    <h4 class="modal-title col" align="center" id="successfulReimUpdateModalTitle">Reimbursement Update Confirmation</h4>
+	                </div>
+	                <div class="modal-body col" align="center">
+	                	<h5>Reimbursement successfully updated!</h3>
+					</div>
+	                <div class="modal-footer">
+	                    <button type="button" id="dismissReimUpdateModal" class="btn btn-primary col" data-dismiss="modal">Continue</button>
+	                </div>
+	            </div>
+	        </div>
+    	</div>  
+        <div class="modal fade" id="failedReimUpdateModal" tabindex="-1" role="dialog" aria-labelledby="failedReimUpdateModalTitle" aria-hidden="true">
+	        <div class="modal-dialog modal-dialog-centered" role="document">
+	            <div class="modal-content">
+	                <div class="modal-header">
+	                    <h4 class="modal-title col" align="center" id="failedReimUpdateModalTitle">Reimbursement Update Confirmation</h4>
+	                </div>
+	                <div class="modal-body col" align="center">
+	                	<h5>Unable to update reimbursement.</h3>
+					</div>
+	                <div class="modal-footer">
+	                    <button type="button" id="dismissReimUpdateModal" class="btn btn-primary col" data-dismiss="modal">Continue</button>
 	                </div>
 	            </div>
 	        </div>

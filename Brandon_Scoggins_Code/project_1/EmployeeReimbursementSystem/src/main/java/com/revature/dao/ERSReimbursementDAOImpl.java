@@ -53,7 +53,7 @@ public class ERSReimbursementDAOImpl implements ERSReimbursementsDAO {
 	public boolean approveReimbursement(ERSReimbursement approvedReim, ERSUser currentUser) {
 
 		try(Connection conn = ConnectionFactory.getInstance().getConnection();){
-			String sql = "UPDATE ersReimbursement SET reimResolver = ?, reimStatus = ? WHERE reimId = ?";
+			String sql = "UPDATE ersReimbursement SET reimResolver = ?, reimStatusId = ? WHERE reimId = ?";
 			
 			PreparedStatement pstmt = conn.prepareStatement(sql);
 			
@@ -79,7 +79,7 @@ public class ERSReimbursementDAOImpl implements ERSReimbursementsDAO {
 	public boolean denyReimbursement(ERSReimbursement deniedReim, ERSUser currentUser) {
 
 		try(Connection conn = ConnectionFactory.getInstance().getConnection();){
-			String sql = "UPDATE ersReimbursement SET reimResolver = ?, reimStatus = ? WHERE reimId = ?";
+			String sql = "UPDATE ersReimbursement SET reimResolver = ?, reimStatusID = ? WHERE reimId = ?";
 			
 			PreparedStatement pstmt = conn.prepareStatement(sql);
 			
@@ -88,10 +88,10 @@ public class ERSReimbursementDAOImpl implements ERSReimbursementsDAO {
 			pstmt.setInt(3, deniedReim.getReimId());
 			
 			if(pstmt.executeUpdate() != 0) {
-				System.out.println("\nApproval succesful!\n");
+				System.out.println("\nDenial succesful!\n");
 				return true;
 			}else {
-				System.out.println("\nApproval failed.\n");
+				System.out.println("\nDenial failed.\n");
 				return false;
 			}
 			
@@ -99,6 +99,55 @@ public class ERSReimbursementDAOImpl implements ERSReimbursementsDAO {
 			e.printStackTrace();
 		}
 		return false;
+	}
+	
+	@Override
+	public boolean viewReimbursement(ERSReimbursement viewedReim, ERSUser currentUser) {
+
+		try(Connection conn = ConnectionFactory.getInstance().getConnection();){
+			String sql = "UPDATE ersReimbursement SET reimResolver = ?, reimStatusId = ? WHERE reimId = ?";
+			
+			PreparedStatement pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setInt(1, currentUser.getUserId());
+			pstmt.setInt(2, 2);
+			pstmt.setInt(3, viewedReim.getReimId());
+			
+			if(pstmt.executeUpdate() != 0) {
+				System.out.println("\nView succesful!\n");
+				return true;
+			}else {
+				System.out.println("\nView failed.\n");
+				return false;
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
+	
+	public ERSReimbursement getReimbursementByReimId(int reimId) {
+		
+		try(Connection conn = ConnectionFactory.getInstance().getConnection();) {
+			
+			String sql = "SELECT * FROM ersReimbursement WHERE reimId = ?";
+			
+			PreparedStatement pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, reimId);
+			
+			ResultSet rs = pstmt.executeQuery();
+			
+			rs.next();
+			
+			return new ERSReimbursement(rs.getInt(1), rs.getDouble(2), rs.getDate(3).toString(),
+					(rs.getDate(4) != null) ? rs.getDate(4).toString() : (String) null,
+					rs.getString(5), rs.getInt(6), rs.getInt(7), rs.getInt(8), rs.getInt(9));
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 	@Override

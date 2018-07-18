@@ -10,3 +10,75 @@ input[type=number]::-webkit-outer-spin-button {
     appearance: none;
     margin: 0; 
 }
+
+
+
+/*
+	Allow tables to have a sticky header
+	https://stackoverflow.com/questions/21168521/scrollable-table-with-fixed-header-in-bootstrap
+*/
+
+.header-fixed {
+    width: 100% 
+}
+
+.header-fixed > thead,
+.header-fixed > tbody,
+.header-fixed > thead > tr,
+.header-fixed > tbody > tr,
+.header-fixed > thead > tr > th,
+.header-fixed > tbody > tr > td {
+    display: block;
+}
+
+.header-fixed > tbody > tr:after,
+.header-fixed > thead > tr:after {
+    content: ' ';
+    display: block;
+    visibility: hidden;
+    clear: both;
+}
+
+.header-fixed > tbody {
+    overflow-y: scroll;
+    height: 250px;
+}
+
+.header-fixed > tbody > tr > td,
+.header-fixed > thead > tr > th {
+    float: left;
+}
+
+#tableId {width: 6%;}
+#tableSub {width: 15%;}
+#tableDes {width: 40%;}
+#tableTyp {width: 13%;}
+#tableAmo {width: 13%;}
+#tableSta {width: 13%;}
+
+#tableHeadId {width: 5.7%;}
+#tableHeadSub {width: 14.7%;}
+#tableHeadDes {width: 39.7%;}
+#tableHeadTyp {width: 12.7%;}
+#tableHeadAmo {width: 12.7%;}
+#tableHeadSta {width: 12.7%;}
+
+#tableAllHeadId {width: 5%;}
+#tableAllHeadSub {width: 11.2%;}
+#tableAllHeadResd {width: 9.2%;}
+#tableAllHeadEmp {width: 9%;}
+#tableAllHeadRes {width: 10%;}
+#tableAllHeadDes {width: 25.8%;}
+#tableAllHeadTyp {width: 8%;}
+#tableAllHeadAmo {width: 10%;}
+#tableAllHeadSta {width: 10%;}
+
+#tableAllId {width: 4.7%;}
+#tableAllSub {width: 11.1%;}
+#tableAllResd {width: 12%;}
+#tableAllAut {width: 10%;}
+#tableAllRes {width: 7%;}
+#tableAllDes {width: 27%;}
+#tableAllTyp {width: 9.2%;}
+#tableAllAmo {width: 9.2%;}
+#tableAllSta {}

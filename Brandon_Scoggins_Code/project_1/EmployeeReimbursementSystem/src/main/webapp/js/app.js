@@ -3,6 +3,8 @@ window.onload = function() {
 	$('#toLogin').on('click', loadLogin);
 	$('#toRegister').on('click', loadRegister);
 	$('#toHome').on('click', loadHome);
+	$('#toViewResolved').on('click', loadViewResolved);
+	$('#toViewUnresolved').on('click', loadViewUnresolved);
 	$('#toProfile').on('click', loadProfile);
 	$('#toLogoutModal').on('click', loadLogout);
 	$('#createCase').on('click', loadCreateNew);
@@ -31,6 +33,7 @@ function loadLogin(){
 			$('#toHome').hide();
 			$('#toProfile').hide();
 			$('#toLogout').hide();
+			$('#userIdNav').hide();
 			$('#navbarDropdownMenuLink').hide();
 		}
 	}
@@ -73,6 +76,7 @@ function login() {
 				$('#login-message').removeClass('bg-warning');
 				$('#login-message').html('');
 				loadHome();
+				$('#userIdNavValue').html(user.userId);
 				console.log(`User id: ${user.userId} login successful!`);
 			}
 		}
@@ -108,6 +112,7 @@ function loadRegister(){
 			$('#toHome').hide();
 			$('#toProfile').hide();
 			$('#toLogout').hide();
+			$('#userIdNav').hide();
 			$('#navbarDropdownMenuLink').hide();
 		}
 	}
@@ -245,6 +250,7 @@ function loadProfile(){
 			$('#toProfile').addClass('active');
 			$('#toLogout').show();
 			$('#toLogout').removeClass('active');
+			$('#userIdNav').show();
 			$('#navbarDropdownMenuLink').show();
 			$('#navbarDropdownMenuLink').removeClass('active');
 			$('#toViewAll').removeClass('active');
@@ -291,7 +297,7 @@ function loadProfileInfo(){
 		}
 	}
 
-	xhr.open('GET', 'profile.loadinfo', true);
+	xhr.open('GET', 'home.loadinfo', true);
 	xhr.send();
 }
 
@@ -361,9 +367,12 @@ function loadHome(){
 			$('#toProfile').removeClass('active');
 			$('#toLogout').show();
 			$('#toLogout').removeClass('active');
+			$('#userIdNav').show();
 			$('#navbarDropdownMenuLink').show();
 			$('#navbarDropdownMenuLink').removeClass('active');
 			$('#toViewAll').removeClass('active');
+			$('#toViewResolved').removeClass('active');
+			$('#toViewUnresolved').removeClass('active');
 			
 			$('#toRegister').hide();
 			$('#toLogin').hide();
@@ -400,6 +409,22 @@ function loadHomeInfo(){
 			}
 			
 			if(reimbursements.length > 0) {
+				$('#tableDiv').html(`
+				        <table class="table table-hover table-striped header-fixed">
+				            <thead>
+				                <tr>
+				                    <th scope="col" id='tableHeadId'>Id</th>
+				                    <th scope="col" id='tableHeadSub'>Submitted</th>
+				                    <th scope="col" id='tableHeadDes'>Description</th>
+				                    <th scope="col" id='tableHeadTyp'>Type</th>
+				                    <th scope="col" id='tableHeadAmo'>Amount</th>
+				                    <th scope="col" id='tableHeadSta'>Status</th>
+				                </tr>
+				            </thead>
+				            <tbody>
+				            </tbody>
+				        </table>`);
+				
 				reimbursements.forEach((reim) => {
 					let id = reim.reimId;
 					let amount = parseFloat(Math.round(reim.reimAmount * 100) / 100).toFixed(2);
@@ -412,20 +437,236 @@ function loadHomeInfo(){
 					let type = reim.reimTypeString;
 					
 					let tableEntry = `<tr>
-										<td>${id}</td>
-										<td>${subDate}</td>
-										<td>${desc}</td>
-										<td>${type}</td>
-										<td>$${amount}</td>
-										<td>${status}</td>
+										<td id='tableId'>${id}</td>
+										<td id='tableSub'>${subDate}</td>
+										<td id='tableDes'>${desc}</td>
+										<td id='tableTyp'>${type}</td>
+										<td id='tableAmo'>$${amount}</td>
+										<td id='tableSta'>${status}</td>
 									  </tr>`;
 					
 					$('table tbody').append(tableEntry);
 				})
+			}
+		}
+	}
+
+	xhr.open('GET', 'home.loadinfo', true);
+	xhr.send();
+}
+
+/*
+ * View Resolved Stuff
+ */
+
+function loadViewResolved(){
+	console.log('in loadViewResolved()');
+	
+	let xhr = new XMLHttpRequest();
+	
+	xhr.onreadystatechange =  function() {
+		if(xhr.readyState == 4 && xhr.status == 200){
+			$('#view').html(xhr.responseText);
+			loadViewResolvedInfo();
+			$('#toHome').show();
+			$('#toHome').removeClass('active');
+			$('#toProfile').show();
+			$('#toProfile').removeClass('active');
+			$('#toLogout').show();
+			$('#toLogout').removeClass('active');
+			$('#userIdNav').show();
+			$('#navbarDropdownMenuLink').show();
+			$('#navbarDropdownMenuLink').removeClass('active');
+			$('#toViewAll').removeClass('active');
+			$('#toViewResolved').addClass('active');
+			$('#toViewUnresolved').removeClass('active');
+			
+			$('#toRegister').hide();
+			$('#toLogin').hide();
+
+			$('#managementOption').hide();
+			
+			$('#reimAmount').val('');
+			$('#reimType').val('Choose..');
+			$('#reimDesc').val('');
+		}
+	}
+	
+	xhr.open('GET', 'home.view', true);
+	xhr.send();
+}
+
+function loadViewResolvedInfo(){
+	console.log('in loadViewResolvedInfo()');
+
+	let xhr = new XMLHttpRequest();
+	
+	xhr.onreadystatechange = function() {
+		if (xhr.readyState == 4 && xhr.status == 200){
+			
+			let resolvedInfo = JSON.parse(xhr.responseText);
+			let user = resolvedInfo[0];
+			let reimbursements = resolvedInfo[1];
+			
+			console.log(`userRoleId: ${user.userRoleId}`);
+			if (user.userRoleId == 1) {
+				$('#managementOption').hide();
 			} else {
-				$('#tableDiv').html(`<div class="col justify-content-center pt-4 mt-5" align="center">
-		                                 <h4>No reimbursement history.</h4>
-		                             </div>`);
+				$('#managementOption').show();
+			}
+			
+			if(reimbursements.length > 0) {
+				$('#homeTitle').html(`<div>Resolved Reimbursements</div>`);
+				$('#tableDiv').html(`
+				        <table class="table table-hover table-striped header-fixed">
+				            <thead>
+				                <tr>
+				                    <th scope="col" id='tableHeadId'>Id</th>
+				                    <th scope="col" id='tableHeadSub'>Submitted</th>
+				                    <th scope="col" id='tableHeadDes'>Description</th>
+				                    <th scope="col" id='tableHeadTyp'>Type</th>
+				                    <th scope="col" id='tableHeadAmo'>Amount</th>
+				                    <th scope="col" id='tableHeadSta'>Status</th>
+				                </tr>
+				            </thead>
+				            <tbody>
+				            </tbody>
+				        </table>`);
+				
+				reimbursements.forEach((reim) => {
+					let id = reim.reimId;
+					let amount = parseFloat(Math.round(reim.reimAmount * 100) / 100).toFixed(2);
+					let subDate = reim.reimSubmitted;
+					let resDate = reim.reimResolved;
+					let desc = reim.reimDescription;
+					let author = reim.reimAuthor;
+					let resolver = reim.reimResolver;
+					let status = reim.reimStatusString;
+					let type = reim.reimTypeString;
+					
+					if (status == 'Approved' || status == 'Denied' || status == 'Canceled'){
+						let tableEntry = `<tr>
+										<td id='tableId'>${id}</td>
+										<td id='tableSub'>${subDate}</td>
+										<td id='tableDes'>${desc}</td>
+										<td id='tableTyp'>${type}</td>
+										<td id='tableAmo'>$${amount}</td>
+										<td id='tableSta'>${status}</td>
+										  </tr>`;
+						
+						$('table tbody').append(tableEntry);
+					}
+				})
+			}
+		}
+	}
+
+	xhr.open('GET', 'home.loadinfo', true);
+	xhr.send();
+}
+
+/*
+ * View Unresolved Stuff
+ */
+
+function loadViewUnresolved(){
+	console.log('in loadViewUnresolved()');
+	
+	let xhr = new XMLHttpRequest();
+	
+	xhr.onreadystatechange =  function() {
+		if(xhr.readyState == 4 && xhr.status == 200){
+			$('#view').html(xhr.responseText);
+			loadViewUnresolvedInfo();
+			$('#toHome').show();
+			$('#toHome').removeClass('active');
+			$('#toProfile').show();
+			$('#toProfile').removeClass('active');
+			$('#toLogout').show();
+			$('#toLogout').removeClass('active');
+			$('#userIdNav').show();
+			$('#navbarDropdownMenuLink').show();
+			$('#navbarDropdownMenuLink').removeClass('active');
+			$('#toViewAll').removeClass('active');
+			$('#toViewResolved').removeClass('active');
+			$('#toViewUnresolved').addClass('active');
+			
+			$('#toRegister').hide();
+			$('#toLogin').hide();
+
+			$('#managementOption').hide();
+			
+			$('#reimAmount').val('');
+			$('#reimType').val('Choose..');
+			$('#reimDesc').val('');
+		}
+	}
+	
+	xhr.open('GET', 'home.view', true);
+	xhr.send();
+}
+
+function loadViewUnresolvedInfo(){
+	console.log('in loadViewUnresolvedInfo()');
+
+	let xhr = new XMLHttpRequest();
+	
+	xhr.onreadystatechange = function() {
+		if (xhr.readyState == 4 && xhr.status == 200){
+			
+			let unresolvedInfo = JSON.parse(xhr.responseText);
+			let user = unresolvedInfo[0];
+			let reimbursements = unresolvedInfo[1];
+			
+			console.log(`userRoleId: ${user.userRoleId}`);
+			if (user.userRoleId == 1) {
+				$('#managementOption').hide();
+			} else {
+				$('#managementOption').show();
+			}
+			
+			if(reimbursements.length > 0) {
+				$('#homeTitle').html(`<div>Unresolved Reimbursements</div>`);
+				$('#tableDiv').html(`
+				        <table class="table table-hover table-striped header-fixed">
+				            <thead>
+				                <tr>
+				                    <th scope="col" id='tableHeadId'>Id</th>
+				                    <th scope="col" id='tableHeadSub'>Submitted</th>
+				                    <th scope="col" id='tableHeadDes'>Description</th>
+				                    <th scope="col" id='tableHeadTyp'>Type</th>
+				                    <th scope="col" id='tableHeadAmo'>Amount</th>
+				                    <th scope="col" id='tableHeadSta'>Status</th>
+				                </tr>
+				            </thead>
+				            <tbody>
+				            </tbody>
+				        </table>`);
+				
+				reimbursements.forEach((reim) => {
+					let id = reim.reimId;
+					let amount = parseFloat(Math.round(reim.reimAmount * 100) / 100).toFixed(2);
+					let subDate = reim.reimSubmitted;
+					let resDate = reim.reimResolved;
+					let desc = reim.reimDescription;
+					let author = reim.reimAuthor;
+					let resolver = reim.reimResolver;
+					let status = reim.reimStatusString;
+					let type = reim.reimTypeString;
+					
+					if (status == 'New' || status == 'Viewed'){
+						let tableEntry = `<tr>
+										<td id='tableId'>${id}</td>
+										<td id='tableSub'>${subDate}</td>
+										<td id='tableDes'>${desc}</td>
+										<td id='tableTyp'>${type}</td>
+										<td id='tableAmo'>$${amount}</td>
+										<td id='tableSta'>${status}</td>
+										  </tr>`;
+						
+						$('table tbody').append(tableEntry);
+					}
+				})
 			}
 		}
 	}
@@ -514,9 +755,12 @@ function loadViewAll(){
 			$('#toProfile').removeClass('active');
 			$('#toLogout').show();
 			$('#toLogout').removeClass('active');
+			$('#userIdNav').show();
 			$('#navbarDropdownMenuLink').show();
 			$('#navbarDropdownMenuLink').addClass('active');
 			$('#toViewAll').addClass('active');
+			$('#toViewResolved').removeClass('active');
+			$('#toViewUnresolved').removeClass('active');
 			
 			$('#toRegister').hide();
 			$('#toLogin').hide();
@@ -524,6 +768,8 @@ function loadViewAll(){
 			$('#reimAmount').val('');
 			$('#reimType').val('Choose..');
 			$('#reimDesc').val('');
+			
+			$('#dismissReimUpdateModal').on('click', loadViewAll);
 		}
 	}
 	
@@ -534,6 +780,21 @@ function loadViewAll(){
 function loadViewAllInfo(){
 	console.log('in loadViewAllInfo()');
 
+	$('#viewAllType').addClass('active');
+	$('#viewAllStatus').addClass('active');
+	
+	let selectedReimId = 0;
+	
+	$('#approveCase').click(function() {
+		approveCase(selectedReimId);
+	});
+	$('#denyCase').click(function() {
+		denyCase(selectedReimId);
+	});
+	$('#viewedCase').click(function() {
+		viewedCase(selectedReimId);
+	});
+
 	let xhr = new XMLHttpRequest();
 	
 	xhr.onreadystatechange = function() {
@@ -542,70 +803,417 @@ function loadViewAllInfo(){
 			let allInfo = JSON.parse(xhr.responseText);
 			let user = allInfo[0];
 			let reimbursements = allInfo[1];
-			
 			console.log(`userRoleId: ${user.userRoleId} in view_all.loadinfo`);
-			let reimbursementsAsc = reverseArr(reimbursements);
-			
-			function reverseArr(reimArr) {
-				let temp = [];
-				reimArr.forEach((reim) => {
-					temp.unshift(reim);
-				})
-				return temp;
-			};
+			let reimbursementsAsc = reimbursements.reverse();
+			let reimByStatus = [];
+			let reimByType = [];
 			
 			if(reimbursements.length > 0) {
-				$('#tableDiv').html(`<table class="table table-hover table-striped">
-							            <thead>
-							                <tr>
-							                    <th scope="col">Id</th>
-							                    <th scope="col">Submitted</th>
-							                    <th scope="col">Resolved</th>
-							                    <th scope="col">Employee</th>
-							                    <th scope="col">Resolver</th>
-							                    <th scope="col">Description</th>
-							                    <th scope="col">Type</th>
-							                    <th scope="col">Amount</th>
-							                    <th scope="col">Status</th>
-							                </tr>
-							            </thead>
-							            <tbody>
-							            </tbody>
-							        </table>`);
+				fillTable(reimbursementsAsc);
+			}
 			
+			let currentStatus = '';
+			let currentType = '';
+			
+			$('#viewNew').click(function() {
+				let temp = [];
 				reimbursementsAsc.forEach((reim) => {
-					let id = reim.reimId;
-					let amount = parseFloat(Math.round(reim.reimAmount * 100) / 100).toFixed(2);
-					let subDate = reim.reimSubmitted;
-					let resDate = reim.reimResolved;
-					let desc = reim.reimDescription;
-					let author = reim.reimAuthor;
-					let resolver = reim.reimResolver;
-					let status = reim.reimStatusString;
-					let type = reim.reimTypeString;
-					
-					if ((author).valueOf() != (user.userId).valueOf()) {
-						let tableEntry = `<tr>
-											<td>${id}</td>
-											<td>${subDate}</td>
-											<td>${resDate}</td>
-											<td>${author}</td>
-											<td>${resolver}</td>
-											<td>${desc}</td>
-											<td>${type}</td>
-											<td>$${amount}</td>
-											<td>${status}</td>
-										  </tr>`;
-					
-						$('table tbody').append(tableEntry);
+					if (reim.reimStatusString == 'New') {
+						temp.push(reim);
 					}
-					
 				})
+				reimByStatus = temp;
+				if (reimByType.length == 0) {
+					fillTable(reimByStatus);
+				} else {
+					fillTable(reimByType.filter(function(reim) {
+						if (reim.reimStatusString == 'New') {
+							return reim;
+						}
+					}));
+				}
+				
+				$('#viewNew').addClass('active');
+				$('#viewViewed').removeClass('active');
+				$('#viewApproved').removeClass('active');
+				$('#viewDenied').removeClass('active');
+				$('#viewCanceled').removeClass('active');
+				$('#viewAllStatus').removeClass('active');
+			});
+			
+			$('#viewViewed').click(function() {
+				let temp = [];
+				reimbursementsAsc.forEach((reim) => {
+					if (reim.reimStatusString == 'Viewed') {
+						temp.push(reim);
+					}
+				})
+				reimByStatus = temp;
+				if (reimByType.length == 0) {
+					fillTable(reimByStatus);
+				} else {
+					fillTable(reimByType.filter(function(reim) {
+						if (reim.reimStatusString == 'Viewed') {
+							return reim;
+						}
+					}));
+				}
+
+				$('#viewNew').removeClass('active');
+				$('#viewViewed').addClass('active');
+				$('#viewApproved').removeClass('active');
+				$('#viewDenied').removeClass('active');
+				$('#viewCanceled').removeClass('active');
+				$('#viewAllStatus').removeClass('active');
+			});
+			
+			$('#viewApproved').click(function() {
+				let temp = [];
+				reimbursementsAsc.forEach((reim) => {
+					if (reim.reimStatusString == 'Approved') {
+						temp.push(reim);
+					}
+				})
+				reimByStatus = temp;
+				if (reimByType.length == 0) {
+					fillTable(reimByStatus);
+				} else {
+					fillTable(reimByType.filter(function(reim) {
+						if (reim.reimStatusString == 'Approved') {
+							return reim;
+						}
+					}));
+				}
+
+				$('#viewNew').removeClass('active');
+				$('#viewViewed').removeClass('active');
+				$('#viewApproved').addClass('active');
+				$('#viewDenied').removeClass('active');
+				$('#viewCanceled').removeClass('active');
+				$('#viewAllStatus').removeClass('active');
+			});
+			
+			$('#viewDenied').click(function() {
+				let temp = [];
+				reimbursementsAsc.forEach((reim) => {
+					if (reim.reimStatusString == 'Denied') {
+						temp.push(reim);
+					}
+				})
+				reimByStatus = temp;
+				if (reimByType.length == 0) {
+					fillTable(reimByStatus);
+				} else {
+					fillTable(reimByType.filter(function(reim) {
+						if (reim.reimStatusString == 'Denied') {
+							return reim;
+						}
+					}));
+				}
+
+				$('#viewNew').removeClass('active');
+				$('#viewViewed').removeClass('active');
+				$('#viewApproved').removeClass('active');
+				$('#viewDenied').addClass('active');
+				$('#viewCanceled').removeClass('active');
+				$('#viewAllStatus').removeClass('active');
+			});
+			
+			$('#viewCanceled').click(function() {
+				let temp = [];
+				reimbursementsAsc.forEach((reim) => {
+					if (reim.reimStatusString == 'Canceled') {
+						temp.push(reim);
+					}
+				})
+				reimByStatus = temp;
+				if (reimByType.length == 0) {
+					fillTable(reimByStatus);
+				} else {
+					fillTable(reimByType.filter(function(reim) {
+						if (reim.reimStatusString == 'Canceled') {
+							return reim;
+						}
+					}));
+				}
+
+				$('#viewNew').removeClass('active');
+				$('#viewViewed').removeClass('active');
+				$('#viewApproved').removeClass('active');
+				$('#viewDenied').removeClass('active');
+				$('#viewCanceled').addClass('active');
+				$('#viewAllStatus').removeClass('active');
+			});
+			
+			$('#viewAllStatus').click(function() {
+				if (reimByType.length == 0) {
+					fillTable(reimbursementsAsc);
+				} else {
+					fillTable(reimByType);
+				}
+				reimByStatus = [];
+				
+				$('#viewNew').removeClass('active');
+				$('#viewViewed').removeClass('active');
+				$('#viewApproved').removeClass('active');
+				$('#viewDenied').removeClass('active');
+				$('#viewCanceled').removeClass('active');
+				$('#viewAllStatus').addClass('active');
+			});
+			
+			$('#viewLodging').click(function() {
+				let temp = [];
+				reimbursementsAsc.forEach((reim) => {
+					if (reim.reimTypeString == 'Lodging') {
+						temp.push(reim);
+					}
+				})
+				reimByType = temp;
+				if (reimByStatus.length == 0) {
+					fillTable(reimByType);
+				} else {
+					fillTable(reimByStatus.filter(function(reim) {
+						if (reim.reimTypeString == 'Lodging') {
+							return reim;
+						}
+					}));
+				}	
+
+				$('#viewLodging').addClass('active');
+				$('#viewTravel').removeClass('active');
+				$('#viewFood').removeClass('active');
+				$('#viewOther').removeClass('active');
+				$('#viewAllType').removeClass('active');			
+			});
+			
+			$('#viewTravel').click(function() {
+				let temp = [];
+				reimbursementsAsc.forEach((reim) => {
+					if (reim.reimTypeString == 'Travel') {
+						temp.push(reim);
+					}
+				})
+				reimByType = temp;
+				if (reimByStatus.length == 0) {
+					fillTable(reimByType);
+				} else {
+					fillTable(reimByStatus.filter(function(reim) {
+						if (reim.reimTypeString == 'Travel') {
+							return reim;
+						}
+					}));
+				}
+
+				$('#viewLodging').removeClass('active');
+				$('#viewTravel').addClass('active');
+				$('#viewFood').removeClass('active');
+				$('#viewOther').removeClass('active');
+				$('#viewAllType').removeClass('active');
+			});
+			
+			$('#viewFood').click(function() {
+				let temp = [];
+				reimbursementsAsc.forEach((reim) => {
+					if (reim.reimTypeString == 'Food') {
+						temp.push(reim);
+					}
+				})
+				reimByType = temp;
+				if (reimByStatus.length == 0) {
+					fillTable(reimByType);
+				} else {
+					fillTable(reimByStatus.filter(function(reim) {
+						if (reim.reimTypeString == 'Food') {
+							return reim;
+						}
+					}));
+				}
+
+				$('#viewLodging').removeClass('active');
+				$('#viewTravel').removeClass('active');
+				$('#viewFood').addClass('active');
+				$('#viewOther').removeClass('active');
+				$('#viewAllType').removeClass('active');
+			});
+			
+			$('#viewOther').click(function() {
+				let temp = [];
+				reimbursementsAsc.forEach((reim) => {
+					if (reim.reimTypeString == 'Other') {
+						temp.push(reim);
+					}
+				})
+				reimByType = temp;
+				if (reimByStatus.length == 0) {
+					fillTable(reimByType);
+				} else {
+					fillTable(reimByStatus.filter(function(reim) {
+						if (reim.reimTypeString == 'Other') {
+							return reim;
+						}
+					}));
+				}
+
+				$('#viewLodging').removeClass('active');
+				$('#viewTravel').removeClass('active');
+				$('#viewFood').removeClass('active');
+				$('#viewOther').addClass('active');
+				$('#viewAllType').removeClass('active');
+			});
+			
+			$('#viewAllType').click(function() {
+				if (reimByStatus.length == 0) {
+					fillTable(reimbursementsAsc);
+				} else {
+					fillTable(reimByStatus);
+				}
+				reimByType = [];
+
+				$('#viewLodging').removeClass('active');
+				$('#viewTravel').removeClass('active');
+				$('#viewFood').removeClass('active');
+				$('#viewOther').removeClass('active');
+				$('#viewAllType').addClass('active');
+			});
+			
+			function fillTable(arr) {
+				if (arr.length == 0) {
+					$('#tableDiv').html(`<div class="col justify-content-center pt-4 mt-5" align="center">
+				                        	<h4>No reimbursements to show.</h4>
+				                        </div>`);
+				} else {
+					$('#tableDiv').html(`<table class="table table-hover table-striped header-fixed">
+								            <thead>
+								                <tr>
+								                    <th scope="col" id='tableAllHeadId'>Id</th>
+								                    <th scope="col" id='tableAllHeadSub'>Submitted</th>
+								                    <th scope="col" id='tableAllHeadResd'>Resolved</th>
+								                    <th scope="col" id='tableAllHeadEmp'>Employee</th>
+								                    <th scope="col" id='tableAllHeadRes'>Resolver</th>
+								                    <th scope="col" id='tableAllHeadDes'>Description</th>
+								                    <th scope="col" id='tableAllHeadTyp'>Type</th>
+								                    <th scope="col" id='tableAllHeadAmo'>Amount</th>
+								                    <th scope="col" id='tableAllHeadSta'>Status</th>
+								                </tr>
+								            </thead>
+								            <tbody>
+								            </tbody>
+								        </table>`);
+				
+					arr.forEach((reim) => {
+						let id = reim.reimId;
+						let amount = parseFloat(Math.round(reim.reimAmount * 100) / 100).toFixed(2);
+						let subDate = reim.reimSubmitted;
+						let resDate = reim.reimResolved;
+						let desc = reim.reimDescription;
+						let author = reim.reimAuthor;
+						let resolver = reim.reimResolver;
+						let status = reim.reimStatusString;
+						let type = reim.reimTypeString;
+						
+						if ((author).valueOf() != (user.userId).valueOf()) {
+							let tableEntry = `<tr id="${id}" data-toggle="modal" data-target="#managementModal">
+												<td id="tableAllId">${id}</td>
+												<td id="tableAllSub">${subDate}</td>
+												<td id="tableAllResd">${resDate}</td>
+												<td id="tableAllAut">${author}</td>
+												<td id="tableAllRes">${resolver}</td>
+												<td id="tableAllDes">${desc}</td>
+												<td id="tableAllTyp">${type}</td>
+												<td id="tableAllAmo">$${amount}</td>
+												<td id="tableAllSta">${status}</td>
+											  </tr>`;
+						
+							$('table tbody').append(tableEntry);
+							$(`#${id}`).on('click', function() {
+								selectedReimId = id;
+								console.log(amount);
+								console.log('print variable test');
+								$('#reimAmountModal').html(amount);
+								$('#reimTypeModal').html(type);
+								$('#reimDescModal').text(desc);
+							});
+						}
+					})
+				}
 			}
 		}
-	}
+	}	
 	xhr.open('GET', 'view_all.loadinfo', true);
 	xhr.send();
+}
+
+function approveCase(reimId) {
+	console.log(`In approveCase. currentId: ${reimId}`);
+	let updateSuccess = false;
+	if (reimId != 0) {
+		let toSend = [reimId, 3];
+		
+		let json = JSON.stringify(toSend);
+		
+		let xhr = new XMLHttpRequest();
+		
+		xhr.onreadystatechange = function () {
+			if (xhr.readyState == 4 && xhr.status == 200) {
+				let success = JSON.parse(xhr.responseText);
+					$('#managementModal').modal('hide');
+				if (success) {
+					$('#successfulReimUpdateModal').modal('show');
+					updateSuccess = true;
+				} else {
+					$('#failedReimUpdateModal').modal('show');
+				}
+			}
+		}
+		xhr.open('POST', 'update', true);
+		xhr.setRequestHeader('Content-type', 'application/json');
+		xhr.send(json);
+	}
+}
+
+function denyCase(reimId) {
+	console.log(`In denyCase. currentId: ${reimId}`);
+	if (reimId != 0) {
+		let toSend = [reimId, 4];
+		
+		let json = JSON.stringify(toSend);
+		
+		let xhr = new XMLHttpRequest();
+		
+		xhr.onreadystatechange = function () {
+			if (xhr.readyState == 4 && xhr.status == 200) {
+				let success = JSON.parse(xhr.responseText);
+					$('#managementModal').modal('hide');
+				if (success) {
+					$('#successfulReimUpdateModal').modal('show');
+				} else {
+					$('#failedReimUpdateModal').modal('show');
+				}
+			}
+		}
+		xhr.open('POST', 'update', true);
+		xhr.setRequestHeader('Content-type', 'application/json');
+		xhr.send(json);
+	}
+}
+
+function viewedCase(reimId) {
+	console.log(`In viewedCase. currentId: ${reimId}`);
+	if (reimId != 0) {
+		let toSend = [reimId, 2];
+		
+		let json = JSON.stringify(toSend);
+		
+		let xhr = new XMLHttpRequest();
+		
+		xhr.onreadystatechange = function () {
+			if (xhr.readyState == 4 && xhr.status == 200) {
+			}
+		}
+		xhr.open('POST', 'update', true);
+		xhr.setRequestHeader('Content-type', 'application/json');
+		xhr.send(json);
+	}
 }
 
 /*

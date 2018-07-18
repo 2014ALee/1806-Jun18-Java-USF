@@ -15,6 +15,10 @@ public interface ERSReimbursementsDAO {
 	
 	public boolean denyReimbursement(ERSReimbursement deniedReim, ERSUser currentUser);
 	
+	public boolean viewReimbursement(ERSReimbursement viewedReim, ERSUser currentUser);
+	
+	public ERSReimbursement getReimbursementByReimId(int reimId);
+	
 	public ArrayList<ERSReimbursement> getAllReimbursements();
 	
 	public ArrayList<ERSReimbursement> getAllReimbursementsByStatus(String reimStatus);

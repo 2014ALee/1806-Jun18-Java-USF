@@ -1,7 +1,7 @@
-<div class="container col centered col-8 shadow p-4 mb-4 bg-light rounded">
+<div class="container col centered col-8 shadow p-4 mb-4 bg-light rounded" style="overflow: hidden">
     <h2 class="text-center">All User Reimbursements</h2>
     <hr>
-    <div style="overflow-y: scroll; height: 295px" id="tableDiv">
+    <div style="height: 295px; overflow: hidden" id="tableDiv">
     <div class="col justify-content-center pt-4 mt-5" align="center">
                         <h4>No reimbursement history.</h4>
                     </div>
@@ -11,8 +11,20 @@
     <div class="row rounded">   
         <div class="col" align="right">
         	<div class="btn-group">
-			  <button type="button" id="managementViews" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-			    Select Status
+			  <button type="button" id="managementTypeViews" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+			    View By Type
+			  </button>
+			  <div class="dropdown-menu dropdown-menu-right">
+			    <a class="dropdown-item" href="#" id="viewLodging">Lodging</a>
+			    <a class="dropdown-item" href="#" id="viewTravel">Travel</a>
+			    <a class="dropdown-item" href="#" id="viewFood">Food</a>
+			    <a class="dropdown-item" href="#" id="viewOther">Other</a>
+			    <a class="dropdown-item" href="#" id="viewAllType">All</a>
+			  </div>
+			</div>
+        	<div class="btn-group">
+			  <button type="button" id="managementStatusViews" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+			    View By Status
 			  </button>
 			  <div class="dropdown-menu">
 			    <a class="dropdown-item" href="#" id="viewNew">New</a>
@@ -20,8 +32,42 @@
 			    <a class="dropdown-item" href="#" id="viewApproved">Approved</a>
 			    <a class="dropdown-item" href="#" id="viewDenied">Denied</a>
 			    <a class="dropdown-item" href="#" id="viewCanceled">Canceled</a>
+			    <a class="dropdown-item" href="#" id="viewAllStatus">All</a>
 			  </div>
 			</div>
 		</div>
     </div>
 </div>
+<div class="modal fade" id="managementModal" tabindex="-1" role="dialog" aria-labelledby="managementModalTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title col" align="center" id="managementModalTitle">Reimbursement Case</h4>
+            </div>
+            <div class="modal-body row">
+                <div class="col">
+                    <label for="reimAmountModal"><b>Amount:</b></label> 
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="amountFormat">$</span>
+                        </div>
+                        <div class="form-control" id="reimAmountModal"></div>
+                    </div>
+                </div>
+                <div class="col">
+                    <label for="reimTypeModal"><b>Type:</b></label> 
+                    <div class="form-control" id="reimTypeModal"></div>
+                </div>
+            </div>
+            <div class="modal-body col">
+                <label for="reimDescModal"><b>Description:</b></label> 
+                <div class="form-control" id="reimDescModal"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary col" id="approveCase">Approve</button>
+                <button type="button" class="btn btn-primary col" id="denyCase">Deny</button>
+                <button type="button" class="btn btn-primary col" id="viewedCase" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div> 

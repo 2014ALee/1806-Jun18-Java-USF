@@ -38,4 +38,26 @@ public class ERSService {
 		ERSReimbursement newReim = new ERSReimbursement(0, reimAmount, "", "", reimDesc, userId, 0, 1, reimType);
 		return reimDao.createReimbursement(newReim);
 	}
+	
+	public boolean updateReimCase(int reimId, int reimStatusId, ERSUser currentUser) {
+		
+		if (reimStatusId == 2 && reimDao.getReimbursementByReimId(reimId).getReimStatusId() != 1) {
+			return false;
+		} else if (reimDao.getReimbursementByReimId(reimId).getReimStatusId() == reimStatusId) {
+			return false;
+		} else {
+			switch(reimStatusId) {
+			case 2:
+				return reimDao.viewReimbursement(reimDao.getReimbursementByReimId(reimId), currentUser);
+			case 3:
+				return reimDao.approveReimbursement(reimDao.getReimbursementByReimId(reimId), currentUser);
+			case 4:
+				return reimDao.denyReimbursement(reimDao.getReimbursementByReimId(reimId), currentUser);
+	//		case 5:
+	//			return reimDao.cancelReimbursement(reimDao.getReimbursementByReimId(reimId), currentUser);
+			default:
+				return false;
+			}
+		}
+	}
 }
