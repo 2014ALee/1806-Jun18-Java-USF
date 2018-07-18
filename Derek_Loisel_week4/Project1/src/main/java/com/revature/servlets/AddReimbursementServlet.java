@@ -50,7 +50,7 @@ public class AddReimbursementServlet extends HttpServlet {
 		//check for null or default values from user input in temp to make sure its a full reimbursem	ent
 		if(!(temp.getReimbursementAmount() > 0) ||
 				temp.getReimbursementDescription() == "" || temp.getReimbursementDescription() == null ||
-				(temp.getReimbursementTypeID() != 1 && temp.getReimbursementTypeID() != 2 && temp.getReimbursementTypeID() != 3 )){
+				(temp.getReimbursementTypeID() != 1 && temp.getReimbursementTypeID() != 2 && temp.getReimbursementTypeID() != 3 && temp.getReimbursementTypeID() != 4)){
 			temp = null;			
 		}
 

@@ -15,5 +15,6 @@ public interface ReimbursementDAO {
 	
 	public boolean updateReimbursementByReimbursementID(Reimbursement updatedReimbursement);
 	
+	public boolean updateReimbursementsByAuthor(Reimbursement updatedReimbursement);
 	//public ArrayList<Reimbursement> getReimbursementsByType();
 }

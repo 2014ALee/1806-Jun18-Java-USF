@@ -83,4 +83,9 @@ public class ErsService {
 		boolean b = reimbursementDAO.updateReimbursementByReimbursementID(updatedReimbursement);
 		return b;
 	} 
+	
+	public boolean updateReimbursementsByAuthor(Reimbursement updatedReimbursement) {
+		boolean b = reimbursementDAO.updateReimbursementsByAuthor(updatedReimbursement);
+		return b;
+	} 
 }

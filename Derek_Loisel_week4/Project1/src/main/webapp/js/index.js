@@ -132,7 +132,7 @@ function register() {
 	
 	//validate email input
 	 let regularExpression = /^([a-zA-Z0-9_\.\-+])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
-	 let emailValid = regularExpression.test(myEmail);
+	 let emailValid = regularExpression.test(em);
 	 if(!emailValid){
 		 alert("Please enter a valid email!");
 		 return;
@@ -328,24 +328,24 @@ function loadHomeInfo() {
 			
 			
 			//set the event listeners for all views
-			$('#button-add-reimb').on('click', addReimbursement)
-			
-			
-			
-			
-			
+				$('#button-add-reimb').on('click', addReimbursement)
+								
 			//set the views event listeners according to user role
-			if(user.userRoleID == 1){
-							
+			if(user.userRoleID == 1 || user.userRoleID == 2){
+				
 			}
 			if(user.userRoleID == 2 || user.userRoleID == 3){
-			
+				$('#button-approve-reimb').on('click', approveReimbursement);
+				$('#button-reject-reimb').on('click', rejectReimbursement);		
+			}
+			if(user.userRoleID == 1){
+				
 			}
 			if(user.userRoleID == 2){
 				
 			}
 			if(user.userRoleID == 3){
-				
+				$('#createmanagerbtn').on('click', createNewManager);
 			}
 		}
 		
@@ -355,12 +355,175 @@ function loadHomeInfo() {
 	xhr.send();
 }
 
-function addReimbursement(){
-	//copy somethin similar to registration function 
-	//set up reimbursment object to send over in json
-	//might need to find way to make user vars avail here to set author id
+function approveReimbursement(){
 	
-console.log('in addReimbursement()');
+	//determine the user only inserted a reimb id or a username, not both
+	let reimbID = $('#reimb-id').val();
+	let author = $('#author').val();
+	let reimbIDExists = true;
+	let authorExists = true;
+	
+	if(reimbID == "" || reimbID == null || reimbID == undefined){
+		reimbIDExists = false;
+	}
+	if(author == "" || author == null || author == undefined){
+		authorExists = false;
+	}
+	
+	if (reimbIDExists && authorExists){
+		console.log('select to approve by either reimbursement ID or by author');
+		//check user to load correct home		
+		if(passedUser.userRoleID == 1){
+			loadEmployeeHome();	
+		}
+		if(passedUser.userRoleID == 2){
+			loadManagerHome();
+		}
+		if(passedUser.userRoleID == 3){
+			loadAdminHomem();
+		}
+	}
+	if(reimbIDExists == false && authorExists == false){
+		console.log('select either a reimbursement ID or an author to update reimbursement');
+		//check user to load correct home		
+		if(passedUser.userRoleID == 1){
+			loadEmployeeHome();	
+		}
+		if(passedUser.userRoleID == 2){
+			loadManagerHome();
+		}
+		if(passedUser.userRoleID == 3){
+			loadAdminHomem();
+		}
+	}
+	
+	//set the status id to pass 
+	let statusId = 2;
+	updateReimbursement(statusId, reimbIDExists, authorExists);
+}
+
+function rejectReimbursement(){
+	
+	//determine the user only inserted a reimb id or a author, not both
+	let reimbID = $('#reimb-id').val();
+	let author = $('#author').val();
+	let reimbIDExists = true;
+	let authorExists = true;
+	
+	if(reimbID == "" || reimbID == null || reimbID == undefined){
+		reimbIDExists = false;
+	}
+	if(author == "" || author == null || author == undefined){
+		authorExists = false;
+	}
+	
+	if (reimbIDExists && authorExists){
+		console.log('select to approve by either reimbursement ID or by author');
+		//check user to load correct home		
+		if(passedUser.userRoleID == 1){
+			loadEmployeeHome();	
+		}
+		if(passedUser.userRoleID == 2){
+			loadManagerHome();
+		}
+		if(passedUser.userRoleID == 3){
+			loadAdminHomem();
+		}
+	}
+	if(reimbIDExists == false && authorExists == false){
+		console.log('select either a reimbursement ID or an author to update reimbursement');
+		//check user to load correct home		
+		if(passedUser.userRoleID == 1){
+			loadEmployeeHome();	
+		}
+		if(passedUser.userRoleID == 2){
+			loadManagerHome();
+		}
+		if(passedUser.userRoleID == 3){
+			loadAdminHomem();
+		}
+	}
+	
+	//set the status id to pass 
+	let statusId = 3;
+	updateReimbursement(statusId, reimbIDExists, authorExists);
+}
+
+function updateReimbursement(statusId, reimbIDExists, authorExists){
+	
+//set up reimbursment object to send over in json
+	
+	console.log('in updateReimbursement()');
+	
+    //set vars to pass to reimb object
+	let dateResolved = new Date();
+	let resolver = passedUser.userID;
+	let statusID = statusId;
+	let reimbID;
+	let author;
+	
+	if(reimbIDExists){
+		reimbID = $('#reimb-id').val();
+	}
+	if(authorExists){
+		author = $('#author').val();
+	}
+
+	//in the java servlet for updating reimbursements we will check if the reimb id or author is empty to know which to update by
+	let reimb = {		
+			reimbursementResolved: dateResolved,
+			reimbursementAuthor: author,
+			reimbursementResolver: resolver,
+			reimbursementStatusID: statusID	,
+			reimbursementID: reimbID
+		}
+		
+		let reimbJson = JSON.stringify(reimb);
+		
+		let xhr = new XMLHttpRequest();
+		
+		xhr.onreadystatechange = function() {
+			
+			console.log("xhr readyState: " + xhr.readyState);
+			console.log("xhr status: " + xhr.status);
+			
+			if(xhr.readyState == 4 && xhr.status == 200) {		
+				//registeration servlet returns json of user
+				let reimburBool = JSON.parse(xhr.responseText);
+				console.log(reimburBool);
+				if(reimburBool == false) {
+//					$('#login-message').html('Username/Email unavailable!');
+					console.log('reimbursement update unsuccessful, enter valid input');
+				} else {
+//					$('#message').hide();
+					console.log('reimbursement update successful');
+					
+					//check user to load correct home		
+					if(passedUser.userRoleID == 1){
+						loadEmployeeHome();	
+					}
+					if(passedUser.userRoleID == 2){
+						loadManagerHome();
+					}
+					if(passedUser.userRoleID == 3){
+						loadAdminHomem();
+					}
+				}
+
+			}
+		}
+		
+		xhr.open('POST', 'updatereimbursement', true);
+		xhr.setRequestHeader('Content-type', 'application/json');
+		xhr.send(reimbJson);
+	
+}
+
+function addReimbursement(){
+
+	//set up reimbursment object to send over in json
+	
+	console.log('in addReimbursement()');
 	
     //set vars to pass to reimb object
 	let amount = $('#amount').val();
@@ -439,4 +602,68 @@ console.log('in addReimbursement()');
 		xhr.setRequestHeader('Content-type', 'application/json');
 		xhr.send(reimbJson);
 	
+}
+
+function createNewManager(){
+	
+console.log('in createNewManager()');
+	
+	//get input from html
+	let fn = $('#managerFirstname').val();
+	let ln = $('#managerLastname').val();
+	let em = $('#managerEmail').val();
+	let use = $('#managerUsername').val();
+	let pass = $('#managerPassword').val();
+	
+	//validate email input
+	 let regularExpression = /^([a-zA-Z0-9_\.\-+])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+	 let emailValid = regularExpression.test(em);
+	 if(!emailValid){
+		 alert("Please enter a valid email!");
+		 return;
+	 } 
+
+	 //set user object for json string
+	let user = {
+		userID: 0,
+		firstname: fn,
+		lastname: ln,
+		email: em,
+		username: use,
+		password: pass,
+		userRoleID: 2
+	}
+	
+	let userJson = JSON.stringify(user);
+	
+	let xhr = new XMLHttpRequest();
+	
+	xhr.onreadystatechange = function() {
+		
+		console.log("xhr readyState: " + xhr.readyState);
+		console.log("xhr status: " + xhr.status);
+		
+		if(xhr.readyState == 4 && xhr.status == 200) {		
+			//registeration servlet returns json of user
+			let user = JSON.parse(xhr.responseText);
+			if(user == null) {
+//				$('#login-message').html('Username/Email unavailable!');
+				alert('Username/Email unavailable!');
+			} else {
+//				$('#message').hide();
+				alert('Account Created!');	
+				//clear input text boxes
+//				$('#managerFirstname').val() = '';
+//				$('#managerLastname').val() = '';
+//				$('#managerEmail').val() = '';
+//				$('#managerUsername').val() = '';
+//				$('#managerPassword').val() = '';
+			}
+
+		}
+	}
+	
+	xhr.open('POST', 'register', true);
+	xhr.setRequestHeader('Content-type', 'application/json');
+	xhr.send(userJson);
 }

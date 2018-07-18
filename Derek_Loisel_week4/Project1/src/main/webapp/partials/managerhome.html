@@ -10,7 +10,70 @@
 		<b>User Role ID:</b><span id="user_role_id"></span><br><br>
 	</div>
 
+	<br>
 	<hr>
+	<br>
+
+	<div id="createreimbdiv">
+
+		<h2>Create New Reimbursement Request</h2>
+
+		<div class="input-group mb-3">
+			<input type="number" id="amount" class="form-control" placeholder="Amount..."> 
+			<input type="text" id="description" class="form-control" placeholder="Description...">
+		</div>
+
+		<div class="input-group mb-3">
+			<select class="custom-select" id="reimb-type-dropdown">
+				<option selected>Reimbursement Type...</option>
+				<option value="1">Lodging</option>
+				<option value="2">Travel</option>
+				<option value="3">Food</option>
+				<option value="4">Other</option>
+			</select>
+		</div>
+
+		<div id="buttondiv">
+			<button class="btn btn-outline-primary" id="button-add-reimb"
+				type="submit">Submit Reimbursement</button>
+		</div>
+
+	</div>
+
+	<br>
+	<hr>
+	<br>
+	
+	
+	<br>
+	<hr>
+	<br>
+
+	<div id="updatereimbdiv">
+
+		<h2>Approve/Reject Reimbursement Request</h2>
+
+		<div class="input-group mb-3">
+			<input type="number" id="reimb-id" class="form-control" placeholder="Reimbursement ID..."> 
+			<p class="mb-3">or</p>
+			<input type="text" id="author" class="form-control" placeholder="Author...">
+		</div>
+
+		<div id="approvebuttondiv">
+			<button class="btn btn-outline-success" id="button-approve-reimb"
+				type="submit">Approve</button>
+		</div>
+		<div id="rejectbuttondiv">
+			<button class="btn btn-outline-danger" id="button-reject-reimb"
+				type="submit">Reject</button>
+		</div>
+
+	</div>
+
+	<br>
+	<hr>
+	<br>
+	
 	
 	<table class="table" id="userReimbursements-table">
 		

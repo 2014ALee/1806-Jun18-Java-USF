@@ -178,18 +178,13 @@ public class ReimbursementDAOImpl implements ReimbursementDAO{
 
 		try(Connection conn = ConnectionFactory.getInstance().getConnection();){
 
-			String sql = "UPDATE ers_reimbursement SET reimb_amount = ?, reimb_submitted = ?, reimb_resolved = ?, reimb_description = ?, reimb_resolver = ?, reimb_receipt = ?, reimb_status_id = ?, reimb_type_id = ?, WHERE reimb_id = ?";
+			String sql = "UPDATE ers_reimbursement SET reimb_resolved = ?, reimb_resolver = ?, reimb_status_id = ? WHERE reimb_id = ?";
 
 			PreparedStatement pstmt = conn.prepareStatement(sql);
-			pstmt.setDouble(1,  updatedReimbursement.getReimbursementAmount());
-			pstmt.setDate(2,  updatedReimbursement.getReimbursementSubmitted());
-			pstmt.setDate(3,  updatedReimbursement.getReimbursementResolved());
-			pstmt.setString(4,  updatedReimbursement.getReimbursementDescription());
-			pstmt.setDouble(5,  updatedReimbursement.getReimbursementResolver());
-			pstmt.setBlob(6,  updatedReimbursement.getReimbursementReceipt());
-			pstmt.setInt(7, updatedReimbursement.getReimbursementStatusID());
-			pstmt.setInt(8, updatedReimbursement.getReimbursementTypeID());
-			pstmt.setInt(9,  updatedReimbursement.getReimbursementID());
+			pstmt.setDate(1,  updatedReimbursement.getReimbursementResolved());
+			pstmt.setDouble(2,  updatedReimbursement.getReimbursementResolver());
+			pstmt.setInt(3, updatedReimbursement.getReimbursementStatusID());
+			pstmt.setInt(4,  updatedReimbursement.getReimbursementID());
 			
 			int rowsUpdated = pstmt.executeUpdate();
 
@@ -201,6 +196,32 @@ public class ReimbursementDAOImpl implements ReimbursementDAO{
 			e.printStackTrace();
 		}
 
+		return false;
+	}
+
+	
+	@Override
+	public boolean updateReimbursementsByAuthor(Reimbursement updatedReimbursement) {
+		try(Connection conn = ConnectionFactory.getInstance().getConnection();){
+			
+			String sql = "UPDATE ers_reimbursement SET reimb_resolved = ?, reimb_resolver = ?, reimb_status_id = ? WHERE reimb_author = ?";
+			
+			PreparedStatement pstmt = conn.prepareStatement(sql);
+			pstmt.setDate(1,  updatedReimbursement.getReimbursementResolved());
+			pstmt.setDouble(2,  updatedReimbursement.getReimbursementResolver());
+			pstmt.setInt(3, updatedReimbursement.getReimbursementStatusID());
+			pstmt.setInt(4,  updatedReimbursement.getReimbursementAuthor());
+			
+			int rowsUpdated = pstmt.executeUpdate();
+			
+			if(rowsUpdated != 0) {
+				return true;
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
 		return false;
 	}
 
