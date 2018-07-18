@@ -3,6 +3,7 @@ window.onload = function(){
 
 }
 
+
 function loadLogIn(){
 	console.log("Logging in");
 
@@ -21,7 +22,8 @@ function loadLogIn(){
 	xhr.send();
 }
 
-function loadLoggedInEmployee(){
+/*
+function loadUser(){
 	console.log("Logged in, going to employee main screen");
 
 	let xhr = new XMLHttpRequest();
@@ -29,18 +31,32 @@ function loadLoggedInEmployee(){
 	xhr.onreadystatechange = function() {
 		if(xhr.readyState == 4 && xhr.status == 200) {
 
-			$('#view').html(xhr.responseText);
-			//document.getElementById("view").innerHTML= xhr.responseText;
+			let user = JSON.parse(xhr.responseText);
+
+			$('#user_ID').html(user.userID);
+			$('#user_firstName').html(user.firstName);
+			$('#user_lastName').html(user.lastName);
+			$('#user_email').html(user.email);
+			$('#user_userName').html(user.userName);
+			$('#user_password').html(user.password);
+			$('#user_role').html(user.roleName);
+
+			console.log($('#user_userName').html(user.username) + " is the username returned by servlet");
 
 		}
 	}
 
-	xhr.open('GET', 'LoggedInEmployee.view', true);
-	xhr.send();
+	if(user.roleName === 'employee'){
+		xhr.open('GET', 'LoggedInEmployee.view', true);
+		xhr.send();
+	} else if(user.roleName === 'manager'){
+		xhr.open('GET', 'LoggedInManager.view', true);
+		xhr.send();
+	}
 }
+ */
 
-
-function loadLoggedInManager(){
+function loadLoggedInManager(user){
 	console.log("Logged in, going to manager main screen");
 
 	let xhr = new XMLHttpRequest();
@@ -49,8 +65,15 @@ function loadLoggedInManager(){
 		if(xhr.readyState == 4 && xhr.status == 200) {
 
 			$('#view').html(xhr.responseText);
-			//document.getElementById("view").innerHTML= xhr.responseText;
+			console.log(logged);
 
+			$('#firstNameLoggedIn').html('First Name: ' + user.firstName);
+			$('#lastNameLoggedIn').html('Last Name: ' + user.lastName);
+			$('#emailLoggedIn').html('Email: ' + user.email);
+			$('#userNameLoggedIn').html('Username: ' + user.userName);
+			$('#accountTypeLoggedIn').html('Account Type: ' + user.roleName);
+			
+			fillReimbsTable(user);
 		}
 	}
 
@@ -58,6 +81,39 @@ function loadLoggedInManager(){
 	xhr.send();
 }
 
+
+function fillReimbsTable(user){
+	
+	
+}
+
+
+function loadLoggedInEmployee(user){
+	console.log("Logged in, going to employee main screen");
+
+	let xhr = new XMLHttpRequest();
+
+	xhr.onreadystatechange = function() {
+		if(xhr.readyState == 4 && xhr.status == 200) {
+
+			$('#view').html(xhr.responseText);
+			console.log(logged);
+
+			$('#firstNameLoggedIn').html('First Name: ' + user.firstName);
+			$('#lastNameLoggedIn').html('Last Name: ' + user.lastName);
+			$('#emailLoggedIn').html('Email: ' + user.email);
+			$('#userNameLoggedIn').html('Username: ' + user.userName);
+			$('#accountTypeLoggedIn').html('Account Type: ' + user.roleName);
+			
+			fillReimbsTable(user);
+		}
+	}
+
+	xhr.open('GET', 'LoggedInEmployee.view', true);
+	xhr.send();
+
+
+}
 
 function loadRegister(){
 	console.log("Registering");
@@ -102,12 +158,21 @@ function submitLoginInfo(){
 			if(user == null) {
 				$('#login-message').html('Invalid credentials!');
 				alert('Login unsuccesful');
+				return;
 			} else {
-				
-				console.log(user[0] + "is user at 0");
-				console.log(user[1] + "is user at 1");
-					
-			//	loadHome();
+
+				console.log(user.firstName + "is user first name");
+				console.log(user.lastName + "is user last name");
+
+				console.log('our role name is' + user.roleName);
+
+				if(user.roleName === 'employee'){
+					loadLoggedInEmployee(user);
+				} else if(user.roleName === 'manager'){
+					loadLoggedInManager(user);
+				}
+
+				//	loadHome();
 				console.log(`User id: ${user.id} login successful!`)
 			}
 		}
@@ -117,7 +182,11 @@ function submitLoginInfo(){
 	xhr.open('POST', 'LoginServlet', true);
 	xhr.setRequestHeader('Content-type', 'application/json');
 	xhr.send(json);
+
+
 }
+
+
 
 function submitRegisterInfo(){
 
@@ -145,7 +214,7 @@ function submitRegisterInfo(){
 
 	xhr.onreadystatechange = function() {
 		if(xhr.readyState == 4 && xhr.status == 200) {
-			
+
 			let validRegistration = JSON.parse(xhr.responseText);
 
 			console.log("Is valid is equal to: " + validRegistration);
@@ -156,7 +225,7 @@ function submitRegisterInfo(){
 			} else {	
 				console.log("Registration succesful!!");
 			}
-		
+
 		}
 	}
 

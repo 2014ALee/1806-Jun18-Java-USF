@@ -18,6 +18,10 @@
     border-radius: 10px;
 }
 
+.table{
+	   background-color:#F5F5F5 !important;
+}
+
 #Welcome {
     align-self: center;
     text-align: center;

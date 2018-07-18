@@ -19,7 +19,7 @@ public class Reimbursement implements ReimbursementInterface{
 
 	private int typeID;
 	private String typeName;
-
+	
 	//we get ID's from database, but the userID and resoverID can be set initially to the own users ones
 	public Reimbursement(int reimbID, double reimbursementAmount, Timestamp dateSubmitted, Timestamp dateResolved, String description
 			, int authorID, int resolverID, String status, String type) {

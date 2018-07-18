@@ -117,7 +117,9 @@ public class ReimbDAOImpl implements ReimbDao{
 		
 	}
 	
-//this gets a user's past tickets	
+	
+//this gets a user's past tickets
+//we need to match the ID's to the names
 	@Override
 	public ArrayList<Reimbursement> getReimbursements(User newUser) {
 		int userID = newUser.getUserID();
