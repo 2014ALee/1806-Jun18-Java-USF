@@ -215,16 +215,4 @@ public class ReimbursementDAOImpl implements ReimbursementDAO {
 		}
 		return null;
 	}
-	
-	private String usernameByUserId(int userId) {
-		UserDAO userDao = new UserDAOImpl();
-		User user = userDao.getByUserId(userId);
-		
-		if(user != null) {
-			return user.getFirstName() + " " + user.getLastName();
-		} else {
-			return "";
-		}
-	}
-
 }

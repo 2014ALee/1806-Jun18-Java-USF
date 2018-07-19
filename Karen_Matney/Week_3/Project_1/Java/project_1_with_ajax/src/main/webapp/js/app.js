@@ -173,11 +173,17 @@ function loadReimbursementTable (user,version) {
 	
 	xhr.onreadystatechange = function () {
 		if(xhr.readyState == 4 && xhr.status == 200) {
-			let reimbursements = JSON.parse(xhr.responseText);
+			let values = JSON.parse(xhr.responseText);
+			let reimbursements = values[0];
+			let humanReadableValues = values[1];
+			console.log(values);
+			console.log(reimbursements);
+			console.log(humanReadableValues);
 			
 			$('table tbody').html('');
 			
 			if(reimbursements.length > 0) {
+				let i = 0;
 				reimbursements.forEach((reimbursement) => {
 					let id = reimbursement.id;
 					let amount = reimbursement.amount;
@@ -185,9 +191,13 @@ function loadReimbursementTable (user,version) {
 					let resolved = 	
 						(reimbursement.resolved != null) ? dateToString(new Date(reimbursement.resolved)) : '-';
 					let receipt = (reimbursement.reciept == null) ? '-' : reimbursement.reciept;
+					reimbursement.author = humanReadableValues[i][2];
 					let author = reimbursement.author;
-					let resolver = (reimbursement.resolver == 0) ? '-' : reimbursement.resolver;
+					reimbursement.resolver = humanReadableValues[i][3];
+					let resolver = (reimbursement.resolver == '') ? '-' : reimbursement.resolver;
+					reimbursement.status = humanReadableValues[i][1];
 					let status = reimbursement.status;
+					reimbursement.type = humanReadableValues[i][0];
 					let type = reimbursement.type; 
 					
 					let markup = `
@@ -206,6 +216,7 @@ function loadReimbursementTable (user,version) {
 					
 					$('table tbody').append(markup);
 					loadUpdateRequestInfo(user,reimbursement,version);
+					i++
 				});
 			}
 		}

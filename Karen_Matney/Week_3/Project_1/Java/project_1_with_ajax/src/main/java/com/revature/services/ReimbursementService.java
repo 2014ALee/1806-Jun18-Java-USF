@@ -6,6 +6,8 @@ import java.util.LinkedHashMap;
 
 import com.revature.dao.ReimbursementDAO;
 import com.revature.dao.ReimbursementDAOImpl;
+import com.revature.dao.UserDAO;
+import com.revature.dao.UserDAOImpl;
 import com.revature.models.Reimbursement;
 import com.revature.models.User;
 
@@ -90,4 +92,56 @@ public class ReimbursementService {
 		
 		return reimbDao.saveRequest(temp);
 	}
+	
+	public String[] getHumanReadableValues(Reimbursement reimb) {
+		String[] values = new String[4];
+		
+		// TODO: Get type values from SQL
+		switch(reimb.getType()) {
+		case 1:
+			values[0] = "Lodging";
+			break;
+		case 2:
+			values[0] = "Travel";
+			break;
+		case 3:
+			values[0] = "Food";
+			break;
+		default:
+			values[0] = "Other";
+			break;
+		}
+		
+		// TODO: Get status values from SQL
+		switch(reimb.getStatus()) {
+		case 1:
+			values[1] = "Pending";
+			break;
+		case 2:
+			values[1] = "Approved";
+			break;
+		case 3:
+			values[1] = "Denied";
+			break;
+		default:
+			values[1] = "";
+		}
+		
+		values[2] = usernameByUserId(reimb.getAuthor());
+		values[3] = usernameByUserId(reimb.getResolver());
+		
+		return values;
+	}
+	
+	private String usernameByUserId(int userId) {
+		UserDAO userDao = new UserDAOImpl();
+		User user = userDao.getByUserId(userId);
+		
+		if(user != null) {
+			return user.getFirstName() + " " + user.getLastName();
+		} else {
+			return "";
+		}
+	}
+
 }

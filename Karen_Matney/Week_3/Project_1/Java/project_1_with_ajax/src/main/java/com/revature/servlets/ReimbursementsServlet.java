@@ -27,6 +27,8 @@ public class ReimbursementsServlet extends HttpServlet {
 		HttpSession session = req.getSession();
 		User u = (User) session.getAttribute("user");
 		ObjectMapper mapper = new ObjectMapper();
+		ArrayList<String[]> humanReadableValues = new ArrayList<>();
+		ArrayList<Object> valuesToSend = new ArrayList<>();
 		
 		
 		if(req.getInputStream() != null) {
@@ -50,9 +52,22 @@ public class ReimbursementsServlet extends HttpServlet {
 			allReimbursements = reimbursementService.getAllReimbursements(u);
 		}
 		
+		if(allReimbursements.size() == 0) {
+			humanReadableValues = null;
+		} else {
+			for(Reimbursement reimb : allReimbursements) {
+				humanReadableValues.add(reimbursementService.getHumanReadableValues(reimb));
+			}
+		}
+		
+		valuesToSend.add(allReimbursements);
+		valuesToSend.add(humanReadableValues);
+		System.out.println(mapper.writeValueAsString(allReimbursements));
+		System.out.println(mapper.writeValueAsString(valuesToSend));
+		
 		PrintWriter pw = resp.getWriter();
 		resp.setContentType("application/json");
 		
-		pw.write(mapper.writeValueAsString(allReimbursements));
+		pw.write(mapper.writeValueAsString(valuesToSend));
 	}
 }
