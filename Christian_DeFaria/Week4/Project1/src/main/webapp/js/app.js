@@ -2,7 +2,6 @@ window.onload = function() {
 	loadLogin();
 	$('#toLogin').on('click', loadLogin);
 	$('#toRegister').on('click', loadRegister);
-	$('#toHome').on('click', loadHome);
 	$('#toLogout').on('click', logout);	
 }
 
@@ -17,8 +16,6 @@ function loadLogin() {
 			loadLoginInfo();
 			$('#toRegister').show();
 			$('#toLogin').show();
-			
-			$('#toHome').hide();
 			$('#toLogout').hide();
 		}
 	}
@@ -48,13 +45,14 @@ function login() {
 	xhr.onreadystatechange = function() {
 		if(xhr.readyState == 4 && xhr.status == 200) {
 			let user = JSON.parse(xhr.responseText);
+//			console.log('user: ' + JSON.stringify(user));
 			
-			if(user == null) {
+			if(user == null || user.user_id == 0) {
 				$('#login-message').html('Invalid credentials!');
+				alert('Invalid Login Credentials');
 			} else {
-//				alert('Login successful!');
+//				console.log(`User id: ${user.user_id} login successful!`);
 				loadHome(user);
-				console.log(`User id: ${user.user_id} login successful!`)
 			}
 		}
 	}
@@ -100,7 +98,7 @@ function register() {
 	let password = $('#reg-password').val();
 	let r_id = $('#role_id option:selected').val();
 	
-	console.log('Role_ID: ' + r_id);
+//	console.log('Role_ID: ' + r_id);
 	
 	let users = {
 		user_id: 0,
@@ -113,7 +111,7 @@ function register() {
 	};
 	
 	let userJson = JSON.stringify(users);
-	console.log(`user: ${userJson}`);
+//	console.log(`user: ${userJson}`);
 	
 	let xhr = new XMLHttpRequest();
 	
@@ -189,7 +187,6 @@ function validateEmail() {
 
 function loadHome(user) {
 	console.log('in loadHome()');
-//	$('#toHome').show();
 	
 	let xhr = new XMLHttpRequest();
 	
@@ -197,8 +194,6 @@ function loadHome(user) {
 		if(xhr.readyState == 4 && xhr.status == 200) {
 			$('#view').html(xhr.responseText);
 			loadHomeInfo(user);
-			
-			$('#toHome').show();
 			$('#toLogout').show();
 			$('#toLogin').hide();
 			$('#toRegister').hide();
@@ -232,7 +227,7 @@ function loadHomeInfo(user) {
 		if(xhr.readyState == 4 && xhr.status == 200) {
 			$('table tbody').empty();
 			let homeInfo = JSON.parse(xhr.responseText);
-			console.log(homeInfo);
+//			console.log(homeInfo);
 			let reimbs = homeInfo;
 			
 			$('#user_fn').html(user.firstname);
@@ -255,74 +250,74 @@ function loadHomeInfo(user) {
 					if(stat_id == 0 || stat_id == stat) {
 						if(user.role_id === 1) {
 							markup = '<tr>' +
-							'<td>'+id+'</td>'+
-							'<td>$'+amount+'</td>'+
-							'<td>'+submitted+'</td>'+
-							'<td>'+resolved+'</td>'+
-							'<td>'+desc+'</td>'+
-							'<td>'+auth+'</td>';
-						switch(stat) {
-							case 1:
-								markup+='<td>Pending</td>';
-								break;
-							case 2:
-								markup+='<td>Denied</td>';
-								break;
-							case 3:
-								markup+='<td>Approved</td>';
-								break;
-						}
-						switch(type) {
-							case 1:
-								markup+='<td>Lodging</td>';
-								break;
-							case 2:
-								markup+='<td>Travel</td>';
-								break;
-							case 3:
-								markup+='<td>Food</td>';
-								break;
-							case 4:
-								markup+='<td>Other</td>';
-								break;
-						}
-						markup+='<td><button class="btn btn-block btn-primary" id="approve${id}">Approve</button></td>';
-						markup+='<td><button class="btn btn-block btn-primary" id="deny${id}">Deny</button></td>';
-						markup+='</tr><hr/>';
+								'<td>'+id+'</td>'+
+								'<td>$'+amount+'</td>'+
+								'<td>'+submitted+'</td>'+
+								'<td>'+resolved+'</td>'+
+								'<td>'+desc+'</td>'+
+								'<td>'+auth+'</td>';
+							switch(stat) {
+								case 1:
+									markup+='<td>Pending</td>';
+									break;
+								case 2:
+									markup+='<td>Denied</td>';
+									break;
+								case 3:
+									markup+='<td>Approved</td>';
+									break;
+							}
+							switch(type) {
+								case 1:
+									markup+='<td>Lodging</td>';
+									break;
+								case 2:
+									markup+='<td>Travel</td>';
+									break;
+								case 3:
+									markup+='<td>Food</td>';
+									break;
+								case 4:
+									markup+='<td>Other</td>';
+									break;
+							}
+							markup+='<td><button class="btn btn-block btn-primary" id="approve${id}">Approve</button></td>';
+							markup+='<td><button class="btn btn-block btn-primary" id="deny${id}">Deny</button></td>';
+							markup+='</tr><hr/>';
 						} else {
 							markup = '<tr>' +
-							'<td>'+id+'</td>'+
-							'<td>$'+amount+'</td>'+
-							'<td>'+submitted+'</td>'+
-							'<td>'+resolved+'</td>'+
-							'<td>'+desc+'</td>'+
-							'<td>'+auth+'</td>';
-						switch(stat) {
-							case 1:
-								markup+='<td>Pending</td>';
-								break;
-							case 2:
-								markup+='<td>Denied</td>';
-								break;
-							case 3:
-								markup+='<td>Approved</td>';
-								break;
-						}
-						switch(type) {
-							case 1:
-								markup+='<td>Lodging</td>';
-								break;
-							case 2:
-								markup+='<td>Travel</td>';
-								break;
-							case 3:
-								markup+='<td>Food</td>';
-								break;
-							case 4:
-								markup+='<td>Other</td>';
-								break;
-						}
-						markup+='</tr><hr/>';
+								'<td>'+id+'</td>'+
+								'<td>$'+amount+'</td>'+
+								'<td>'+submitted+'</td>'+
+								'<td>'+resolved+'</td>'+
+								'<td>'+desc+'</td>'+
+								'<td>'+auth+'</td>';
+							switch(stat) {
+								case 1:
+									markup+='<td>Pending</td>';
+									break;
+								case 2:
+									markup+='<td>Denied</td>';
+									break;
+								case 3:
+									markup+='<td>Approved</td>';
+									break;
+							}
+							switch(type) {
+								case 1:
+									markup+='<td>Lodging</td>';
+									break;
+								case 2:
+									markup+='<td>Travel</td>';
+									break;
+								case 3:
+									markup+='<td>Food</td>';
+									break;
+								case 4:
+									markup+='<td>Other</td>';
+									break;
+							}
+							markup+='</tr><hr/>';
 						}
 					}
 					
@@ -383,10 +378,9 @@ function managerView(user) {
 	
 	xhr.onreadystatechange = function() {
 		if(xhr.readyState == 4 && xhr.status == 200) {
-//			$('#toHome').hide();
 			$('table tbody').empty();
 			let homeInfo = JSON.parse(xhr.responseText);
-			console.log(homeInfo);
+//			console.log(homeInfo);
 			let reimbs = homeInfo;
 			
 			$('#user_fn').html(user.firstname);
@@ -499,7 +493,7 @@ function loadAddInfo(user) {
 
 function add(user) {
 	console.log('in add()');
-	console.log('user: ' + JSON.stringify(user));
+//	console.log('user: ' + JSON.stringify(user));
 	
 	let amount = $('#amount').val();
 	let desc = $('#desc').val();
@@ -507,7 +501,7 @@ function add(user) {
 	
 	let toSend = [user.user_id, amount, desc, type_id];
 	let json = JSON.stringify(toSend);
-	console.log(`json: ${json}`);
+//	console.log(`json: ${json}`);
 	
 	let xhr = new XMLHttpRequest();
 	

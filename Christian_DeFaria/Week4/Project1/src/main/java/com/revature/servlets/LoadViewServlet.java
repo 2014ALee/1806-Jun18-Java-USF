@@ -20,7 +20,6 @@ public class LoadViewServlet extends HttpServlet {
 		System.out.println("[LOG] - Request sent to front controller, LoadViewServlet.doGet()");
 		
 		String nextView = new RequestViewHelper().process(req, resp);
-		System.out.println(nextView);
 		
 		req.getRequestDispatcher(nextView).forward(req, resp);
 		

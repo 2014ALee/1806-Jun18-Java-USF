@@ -21,13 +21,10 @@ public class LoadInfoServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		System.out.println("[LOG} - Request sent to front controller =, loadInfoServlet.doGet()");
 		
-		System.out.println("Request URI: " + req.getRequestURI());
 		Object info = new LoadInfoHelper().process(req, resp);
-		System.out.println("info: " + info.toString());
 		
 		ObjectMapper mapper = new ObjectMapper();
 		String json = mapper.writeValueAsString(info);
-		System.out.println("json: " + json);
 		
 		PrintWriter pw = resp.getWriter();
 		resp.setContentType("application/json");

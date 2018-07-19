@@ -98,7 +98,6 @@ public class UserDAOImpl implements UserDAO {
 
 	@Override
 	public Users addUser(Users user) {
-//		Users u = new Users();
 		try (Connection conn = ConnectionFactory.getInstance().getConnection()) {
 			
 			String sql = "INSERT INTO ers_users (ers_username, ers_password, user_first_name, user_last_name, user_email, user_role_id) VALUES (?,?,?,?,?,?)";
@@ -113,8 +112,6 @@ public class UserDAOImpl implements UserDAO {
 			pstmt.setString(4, user.getLastname());
 			pstmt.setString(5, user.getEmail());
 			pstmt.setInt(6, user.getRole_id());
-			
-//			System.out.println(user.toString());
 			
 			int rowsUpdated = pstmt.executeUpdate();
 			

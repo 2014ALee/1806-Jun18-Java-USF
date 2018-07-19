@@ -27,8 +27,7 @@ public class UpdateReimbServlet extends HttpServlet {
 		System.out.println("[LOG] - Request sent to LoginServlet.doPost()");
 		
 		ERSService service = new ERSService();
-		
-		// 1) Get received JSON data from request
+
 		BufferedReader br = new BufferedReader(new InputStreamReader(req.getInputStream()));
 		
 		String json = "";
@@ -36,10 +35,8 @@ public class UpdateReimbServlet extends HttpServlet {
 			json = br.readLine();
 		}
 		
-		// 2) Initiate the Jackson object mapper (allow for conversion to and from Java objects to JSON)
 		ObjectMapper mapper = new ObjectMapper();
 		
-		// 3) Convert received JSON to String array
 		String[] userInfo = mapper.readValue(json, String[].class);
 		String userId = userInfo[0];
 		String reimbId = userInfo[1];
@@ -66,7 +63,7 @@ public class UpdateReimbServlet extends HttpServlet {
 					service.updateReimb(r);
 					break;
 				default:
-					System.out.println("[LOG] - Invalid .update path");
+					System.out.println("[LOG] - Invalid *.update path");
 					return;
 			}
 		}

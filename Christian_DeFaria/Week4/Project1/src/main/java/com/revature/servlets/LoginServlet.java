@@ -26,8 +26,7 @@ public class LoginServlet extends HttpServlet {
 		System.out.println("[LOG] - Request sent to LoginServlet.doPost()");
 		
 		ERSService service = new ERSService();
-		
-		// 1) Get received JSON data from request
+
 		BufferedReader br = new BufferedReader(new InputStreamReader(req.getInputStream()));
 		
 		String json = "";
@@ -35,10 +34,8 @@ public class LoginServlet extends HttpServlet {
 			json = br.readLine();
 		}
 		
-		// 2) Initiate the Jackson object mapper (allow for conversion to and from Java objects to JSON)
 		ObjectMapper mapper = new ObjectMapper();
 		
-		// 3) Convert received JSON to String array
 		String[] userInfo = mapper.readValue(json, String[].class);
 		String username = userInfo[0];
 		String password = userInfo[1];
@@ -47,8 +44,6 @@ public class LoginServlet extends HttpServlet {
 		
 		if(temp == null) {
 			System.out.println("[LOG] - Variable 'temp' in LoginServlet is null");
-			resp.sendRedirect("/Project1/");
-			return;
 		} else if(!temp.getPassword().equals(password)) {
 			temp.setUser_id(0);
 			temp.setFirstname(null);
@@ -56,11 +51,9 @@ public class LoginServlet extends HttpServlet {
 			temp.setEmail(null);
 			temp.setUsername(null);
 			temp.setPassword(null);
-			resp.sendRedirect("/Project1/");
-			return;
 		} else {
 			HttpSession session = req.getSession();
-			session.setAttribute("user", temp); // persists this user to the session
+			session.setAttribute("user", temp);
 		}
 		
 		PrintWriter pw = resp.getWriter();

@@ -36,7 +36,6 @@ public class RegistrationServlet extends HttpServlet {
 		ObjectMapper mapper = new ObjectMapper();
 		Users temp = mapper.readValue(json, Users.class);
 		temp = service.createNewUser(temp);
-		System.out.println("In Registration: " + temp.toString());
 		
 		PrintWriter pw = resp.getWriter();
 		resp.setContentType("application/json");

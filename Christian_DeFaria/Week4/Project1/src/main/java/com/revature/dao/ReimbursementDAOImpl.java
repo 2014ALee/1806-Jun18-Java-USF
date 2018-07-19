@@ -150,11 +150,9 @@ public class ReimbursementDAOImpl implements ReimbursementDAO {
 	public boolean updateReimb(Reimbursement r) {
 		try (Connection conn = ConnectionFactory.getInstance().getConnection()) {
 			
-//			String sql = "UPDATE ers_reimbursement SET reimb_amount=?, reimb_submitted=?, reimb_resolved=?, reimb_description=?, reimb_receipt=?, reimb_author=?, reimb_resolver=?, reimb_status_id=?, reimb_type_id=? WHERE reimb_id = ?";
 			String sql = "CALL update_reimb(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 			
 			CallableStatement cstmt = conn.prepareCall(sql);
-//			PreparedStatement pstmt = conn.prepareStatement(sql);
 			cstmt.setInt(1, r.getAmount());
 			cstmt.setDate(2, r.getSubmitted());
 			cstmt.setDate(3, r.getResolved());
