@@ -1,0 +1,24 @@
+body {
+    background-color: cadetblue
+    /* background-image: url('w3css.gif');
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-position: center; */
+}
+
+fieldset { 
+    display: block;
+    margin-left: 2px;
+    margin-right: 2px;
+    padding-top: 0.35em;
+    padding-bottom: 0.625em;
+    padding-left: 0.75em;
+    padding-right: 0.75em;
+    border: 2px groove (internal value);
+}
+ 
+#centerMe {
+    margin: auto;
+    margin-top: 100px;
+} 
+

@@ -16,16 +16,18 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.revature.models.User;
 import com.revature.services.BankService;
 
+@WebServlet("/login")
 public class LoginServlet extends HttpServlet {
-	
+
 	private static final long serialVersionUID = 1L;
 	
 	@Override
-	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException{
+	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		System.out.println("[LOG] - Request sent to LoginServlet.doPost()");
 		
 		BankService service = new BankService();
 		
+		// 1) Get received JSON data from request
 		BufferedReader br = new BufferedReader(new InputStreamReader(req.getInputStream()));
 		
 		String json = "";
@@ -33,9 +35,11 @@ public class LoginServlet extends HttpServlet {
 			json = br.readLine();
 		}
 		
+		// 2) Initiate the Jackson object mapper (allow for conversion to and from Java objects to JSON)
 		ObjectMapper mapper = new ObjectMapper();
 		
-		String[]userInfo = mapper.readValue(json, String[].class);
+		// 3) Convert received JSON to String array
+		String[] userInfo = mapper.readValue(json, String[].class);
 		String username = userInfo[0];
 		String password = userInfo[1];
 		
@@ -43,7 +47,7 @@ public class LoginServlet extends HttpServlet {
 		
 		if(temp == null) {
 			System.out.println("[LOG] - Variable 'temp' in LoginServlet is null");
-		} else if (temp.getPassword().equals(password)) {
+		} else if(!temp.getPassword().equals(password)) {
 			temp.setId(0);
 			temp.setFirstName(null);
 			temp.setLastName(null);
@@ -61,4 +65,5 @@ public class LoginServlet extends HttpServlet {
 		String userJSON = mapper.writeValueAsString(temp);
 		pw.write(userJSON);
 	}
+
 }

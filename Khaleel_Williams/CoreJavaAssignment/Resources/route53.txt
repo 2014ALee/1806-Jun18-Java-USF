@@ -1,0 +1,18 @@
+        - Route 53
+- Gives developers and business an extremely reliable and cost effective way to  route end users to internet applications.
+- distributed all over the world
+- highly available cloud DNS web service
+- translates human readable domain names to machine readable IP addresses
+  - which allows computers to communicate with each other
+- offers domain name registration
+  - purchase and buy domain names.
+- monitor the health of your applications end point
+- use to route users to a healthy end point.
+- connects user request to infrastructure running in and out of aws(ec2 instance, amazon s3 bucket).
+- 2 types of DNS service 
+     - Authoritative and Recursive
+        - update mechanism
+            - developers use to manage their public DNS names.
+        - as the final authority over a domain and is reponsible for providing 
+          asnwers to recursive DNS.
+        - Clients don't make queries to the Authoritative ser 
