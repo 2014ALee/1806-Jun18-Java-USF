@@ -15,7 +15,7 @@ public interface ReimbDao {
 	
 	public boolean approveOrDenyReimb(Reimbursement newReimb, String approveOrDeny);
 	
-	public boolean addReimbursement(Reimbursement newReimb, User user);
+	public Reimbursement addReimbursement(Reimbursement newReimb,  int userID);
 	
 	ArrayList<Reimbursement> getAllReimbursements();
 	

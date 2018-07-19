@@ -45,7 +45,10 @@ public class LoadViewServlet extends HttpServlet {
 			return "partials/LoggedInEmployee.html";
 		} else if(requestURI.equals("/ERSTemplate/LoggedInManager.view")) {
 			return "partials/LoggedInManager.html";
-		} else {
+		} else if(requestURI.equals("/ERSTemplate/AllReimbs.view")) {
+			return "partials/AllReimbs.html";
+		}
+		else {
 			return null;
 		}
 	}

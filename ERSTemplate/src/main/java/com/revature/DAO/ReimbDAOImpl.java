@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 import com.revature.DAO.ReimbDao;
@@ -64,8 +65,40 @@ public class ReimbDAOImpl implements ReimbDao{
 
 	}
 
+	
+	public static boolean isUSDFormat(double amount) {
+		if(amount < 0) {
+			return false;
+		}
+
+		DecimalFormat df = new DecimalFormat("0.00");
+		double amountInUSD = Double.parseDouble(df.format(amount));
+
+		if(amount!=amountInUSD) {
+			return false;
+		} else {
+			return true;	
+		}	
+	}
+	
+	public boolean validReimbursement(Reimbursement newReimb) {
+		boolean validAmount = (isUSDFormat(newReimb.getReimbursementAmount()));
+		boolean validDescription = (newReimb.getDescription().length() < 250);
+		
+		boolean validReimb = validAmount & validDescription;
+		
+		return validReimb;
+	}
+	
+	public Reimbursement getReimbById() {
+		
+		return null;
+	}
+	
 	@Override
-	public boolean addReimbursement(Reimbursement newReimb, User user) {
+	public Reimbursement addReimbursement(Reimbursement newReimb, int userID) {
+		
+		if(validReimbursement(newReimb)) {
 		
 		String reimbDescription = newReimb.getDescription();
 		Double reimbAmount = newReimb.getReimbursementAmount();
@@ -73,16 +106,21 @@ public class ReimbDAOImpl implements ReimbDao{
 		int reimbStatusID = 1;
 		Timestamp submittedTimeStamp = new Timestamp(System.currentTimeMillis());
 		Timestamp resolvedTimeStamp = null;
-		int reimbAuthor = user.getUserID();
-		int reimbResolver = user.getUserID();
+		int reimbAuthor = userID;
+		int reimbResolver = userID;
+		
+		int reimbKey = 0;
 		
 	try(Connection con = ConnectionFactory.getInstance().getConnection()){
+		
+		String[] keys = new String[1];
+		keys[0] = "REIMB_ID";
 		
 		String sql = "INSERT INTO ERS_REIMBURSEMENT(REIMB_AMOUNT ,REIMB_SUBMITTED ,REIMB_RESOLVED ,REIMB_DESCRIPTION"
 				+ " ,REIMB_AUTHOR,REIMB_RESOLVER ,REIMB_STATUS_ID,REIMB_TYPE_ID)"
 				+ "VALUES (?,?,?,?,?,?,?,?)";
 		
-		PreparedStatement statement = con.prepareStatement(sql);
+		PreparedStatement statement = con.prepareStatement(sql, keys);
 		
 		statement.setDouble(1, reimbAmount);
 		statement.setTimestamp(2, submittedTimeStamp);
@@ -94,16 +132,84 @@ public class ReimbDAOImpl implements ReimbDao{
 		statement.setInt(8, reimbTypeID);
 		
 		statement.executeUpdate();
+		ResultSet rs = statement.getGeneratedKeys();
 		
+		System.out.println("RIGHT BEFORE WE GET REIMB KEY");
+		
+		while(rs.next()) {
+			System.out.println("one of our reimb keys are " + rs.getInt(1));
+		reimbKey = rs.getInt(1);
+		}
+		
+		System.out.println("Our reimb key is " + reimbKey);
+		
+		//getGeneratedKeys
 	} catch (SQLException e) {
 		e.printStackTrace();
 	}
 		
-		return false;
+	newReimb = getReimbursementByID(reimbKey);
+	
+		return newReimb;
+		
+		} else {
+			return null;
+		}
+	}
+	
+	
+	public static Reimbursement getReimbursementByID(int reimbId) {
+		
+		Reimbursement reimb = new Reimbursement();
+		
+		try(Connection con = ConnectionFactory.getInstance().getConnection();){
+
+			String sql = "SELECT REIMB_ID, REIMB_AMOUNT, REIMB_SUBMITTED, REIMB_RESOLVED, REIMB_DESCRIPTION,"
+					+" REIMB_AUTHOR, REIMB_RESOLVER, REIMB_STATUS_ID, REIMB_TYPE_ID"
+					+ " FROM ERS_REIMBURSEMENT WHERE REIMB_ID = ?";
+
+			PreparedStatement statement = con.prepareStatement(sql);
+			statement.setInt(1, reimbId);
+
+			ResultSet rs = statement.executeQuery();
+
+			
+			while(rs.next()) {
+
+				int REIMB_ID = rs.getInt(1);
+				double REIMB_AMOUNT = rs.getDouble("REIMB_AMOUNT");
+				Timestamp REIMB_SUBMITTED = rs.getTimestamp("REIMB_SUBMITTED");
+				Timestamp REIMB_RESOLVED = rs.getTimestamp("REIMB_RESOLVED");
+				String REIMB_DESCRIPTION = rs.getString("REIMB_DESCRIPTION");
+
+				int REIMB_AUTHOR = rs.getInt("REIMB_AUTHOR");
+				int REIMB_RESOLVER = rs.getInt("REIMB_RESOLVER");
+				
+				//these ID's aren't going into our reimbursement object, they are going in their 
+				//respective objects
+				int REIMB_STATUS_ID = rs.getInt("REIMB_STATUS_ID");
+				int REIMB_TYPE_ID = rs.getInt("REIMB_TYPE_ID");
+		
+				
+				//we get our actual status and types here and set them to the member objects of the user
+	
+				 reimb = new Reimbursement(REIMB_ID,REIMB_AMOUNT,REIMB_SUBMITTED,
+						REIMB_RESOLVED, REIMB_DESCRIPTION, REIMB_AUTHOR, REIMB_RESOLVER,
+						REIMB_STATUS_ID, REIMB_TYPE_ID);
+	
+			}
+			
+		return reimb;
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 	
 	private static int getReimbursementID(String typeName) {
-	
+	System.out.println("Our type Name is: " + typeName);
+		
 		typeName = typeName.toLowerCase();
 		if(typeName == "lodging") {
 			return 1;

@@ -65,14 +65,13 @@ function loadLoggedInManager(user){
 		if(xhr.readyState == 4 && xhr.status == 200) {
 
 			$('#view').html(xhr.responseText);
-			console.log(logged);
 
 			$('#firstNameLoggedIn').html('First Name: ' + user.firstName);
 			$('#lastNameLoggedIn').html('Last Name: ' + user.lastName);
 			$('#emailLoggedIn').html('Email: ' + user.email);
 			$('#userNameLoggedIn').html('Username: ' + user.userName);
 			$('#accountTypeLoggedIn').html('Account Type: ' + user.roleName);
-			
+
 			fillReimbsTable(user);
 		}
 	}
@@ -82,9 +81,235 @@ function loadLoggedInManager(user){
 }
 
 
+function loadAllReimbs(reimbs){
+
+	let xhr = new XMLHttpRequest();
+
+	xhr.onreadystatechange = function() {
+		if(xhr.readyState == 4 && xhr.status == 200) {
+
+			console.log("reimbs length is: " + reimbs.length);
+			
+			fillAllReimbsTable(reimbs);
+
+			$('#view').html(xhr.responseText);
+			//document.getElementById("view").innerHTML= xhr.responseText;
+
+		}
+	}
+
+	xhr.open('GET', 'AllReimbs.view', true);
+	xhr.send();
+
+}
+
+
+function addReimbursement(){
+
+	let submittedFields = document.getElementsByClassName("newReimbForm")[0];
+	let values = submittedFields.getElementsByTagName("input");
+
+	let amount = values[0].value;
+	let description = values[1].value;
+	let reimbType = document.getElementById("newReimbId").value;
+
+	let toSend = [amount, description, reimbType];
+	let json = JSON.stringify(toSend);
+
+	let xhr = new XMLHttpRequest();
+
+	xhr.onreadystatechange = function() {
+		if(xhr.readyState == 4 && xhr.status == 200) {
+			let newReimb = JSON.parse(xhr.responseText);
+
+			if(newReimb == null) {
+				$('#reimb-message').html('add reimb unsuccesful');
+				alert('add reimb unsuccesful');
+				return;
+			} else {
+
+				console.log(newReimb.reimbursementAmount + ' is our reimbursement id of the new reimb added');
+
+				addToReimbTable(newReimb);
+			}
+		}
+	}
+
+
+	xhr.open('POST', 'NewReimbServlet', true);
+	xhr.setRequestHeader('Content-type', 'application/json');
+	xhr.send(json);
+
+}
+
+function addToReimbTable(currentReimb, reimbTable){
+	let tableRow = document.createElement("tr");
+
+	let amountCell = document.createElement("td");
+	let amountCellText = document.createTextNode("$" + currentReimb.reimbursementAmount);
+	amountCell.appendChild(amountCellText);
+	tableRow.appendChild(amountCell);
+
+	let submittedCell = document.createElement("td");
+	let submittedCellText = document.createTextNode(currentReimb.dateSubmitted);
+	submittedCell.appendChild(submittedCellText);
+	tableRow.appendChild(submittedCell);
+
+	let resolvedCell = document.createElement("td");
+	let resolvedCellText = document.createTextNode(currentReimb.dateResolved);
+	resolvedCell.appendChild(resolvedCellText);
+	tableRow.appendChild(resolvedCell);
+
+	let descriptionCell = document.createElement("td");
+	let descriptionCellText = document.createTextNode(currentReimb.description);
+	descriptionCell.appendChild(descriptionCellText);
+	tableRow.appendChild(descriptionCell);
+
+	let typeCell = document.createElement("td");
+	let typeCellText = document.createTextNode(currentReimb.typeName);
+	typeCell.appendChild(typeCellText);
+	tableRow.appendChild(typeCell);
+
+	let statusCell = document.createElement("td");
+	let statusCellText = document.createTextNode(currentReimb.statusName);
+	statusCell.appendChild(statusCellText);
+	tableRow.appendChild(statusCell);
+
+	reimbTable.appendChild(tableRow);
+}
+
+function fillAllReimbsTable(reimbs){
+
+	for(let i = 0; i < reimbs.length; i++){
+		let currentReimb = reimbs[i];
+		addToAllReimbTable(currentReimb);
+	}
+
+}
+
+function addToAllReimbTable(currentReimb){
+
+
+	let reimbTable = document.getElementsByClassName("allReimbTable")[0];
+
+	let tableRow = document.createElement("tr");
+
+	let idCell = document.createElement("td");
+	let idCellText = document.createTextNode("$" + currentReimb.reimbursementID);
+	idCell.appendChild(idCellText);
+	tableRow.appendChild(idCell);
+
+	let amountCell = document.createElement("td");
+	let amountCellText = document.createTextNode("$" + currentReimb.reimbursementAmount);
+	amountCell.appendChild(amountCellText);
+	tableRow.appendChild(amountCell);
+
+	let submittedCell = document.createElement("td");
+	let submittedCellText = document.createTextNode(currentReimb.dateSubmitted);
+	submittedCell.appendChild(submittedCellText);
+	tableRow.appendChild(submittedCell);
+
+	let resolvedCell = document.createElement("td");
+	let resolvedCellText = document.createTextNode(currentReimb.dateResolved);
+	resolvedCell.appendChild(resolvedCellText);
+	tableRow.appendChild(resolvedCell);
+
+	let descriptionCell = document.createElement("td");
+	let descriptionCellText = document.createTextNode(currentReimb.description);
+	descriptionCell.appendChild(descriptionCellText);
+	tableRow.appendChild(descriptionCell);
+
+	let typeCell = document.createElement("td");
+	let typeCellText = document.createTextNode(currentReimb.typeName);
+	typeCell.appendChild(typeCellText);
+	tableRow.appendChild(typeCell);
+
+	let statusCell = document.createElement("td");
+	let statusCellText = document.createTextNode(currentReimb.statusName);
+	statusCell.appendChild(statusCellText);
+	tableRow.appendChild(statusCell);
+
+	reimbTable.appendChild(tableRow);
+}
+
+function addToReimbTable(currentReimb){
+
+	let reimbTable = document.getElementsByClassName("reimbTable")[0];
+
+	let tableRow = document.createElement("tr");
+
+	let amountCell = document.createElement("td");
+	let amountCellText = document.createTextNode("$" + currentReimb.reimbursementAmount);
+	amountCell.appendChild(amountCellText);
+	tableRow.appendChild(amountCell);
+
+	let submittedCell = document.createElement("td");
+	let submittedCellText = document.createTextNode(currentReimb.dateSubmitted);
+	submittedCell.appendChild(submittedCellText);
+	tableRow.appendChild(submittedCell);
+
+	let resolvedCell = document.createElement("td");
+	let resolvedCellText = document.createTextNode(currentReimb.dateResolved);
+	resolvedCell.appendChild(resolvedCellText);
+	tableRow.appendChild(resolvedCell);
+
+	let descriptionCell = document.createElement("td");
+	let descriptionCellText = document.createTextNode(currentReimb.description);
+	descriptionCell.appendChild(descriptionCellText);
+	tableRow.appendChild(descriptionCell);
+
+	let typeCell = document.createElement("td");
+	let typeCellText = document.createTextNode(currentReimb.typeName);
+	typeCell.appendChild(typeCellText);
+	tableRow.appendChild(typeCell);
+
+	let statusCell = document.createElement("td");
+	let statusCellText = document.createTextNode(currentReimb.statusName);
+	statusCell.appendChild(statusCellText);
+	tableRow.appendChild(statusCell);
+
+	reimbTable.appendChild(tableRow);
+}
+
+
 function fillReimbsTable(user){
-	
-	
+	//we need a get reimbs function that takes in user, goes to a servlet, returns an array of them
+
+
+	let xhr = new XMLHttpRequest();
+
+	let toSend = [user];
+	let json = JSON.stringify(toSend);
+	let reimbTable = document.getElementsByClassName("table")[0];
+
+	xhr.onreadystatechange = function() {
+		if(xhr.readyState == 4 && xhr.status == 200) {
+			let user = JSON.parse(xhr.responseText);
+			let userReimbList = user.reimbList;
+
+			if(user == null) {
+				$('#login-message').html('reimb get failed!');
+				alert('reimb get unsuccesful');
+				return;
+			} else {
+
+				console.log("we will now put everything into our reimb table!!");
+				//we have six cells to add per row
+
+				console.log("reimb list is size: " + userReimbList.length);
+
+				for(let i = 0; i < userReimbList.length; i++){
+					let currentReimb = userReimbList[i];
+					addToReimbTable(currentReimb, reimbTable);
+				}
+			}
+		}
+	}
+
+
+	xhr.open('POST', 'ReimbursementServlet', true);
+	xhr.setRequestHeader('Content-type', 'application/json');
+	xhr.send(json);	
 }
 
 
@@ -104,7 +329,7 @@ function loadLoggedInEmployee(user){
 			$('#emailLoggedIn').html('Email: ' + user.email);
 			$('#userNameLoggedIn').html('Username: ' + user.userName);
 			$('#accountTypeLoggedIn').html('Account Type: ' + user.roleName);
-			
+
 			fillReimbsTable(user);
 		}
 	}
@@ -134,7 +359,33 @@ function loadRegister(){
 }
 
 
+function submitGetAllReimbs(){
+	
+	let xhr = new XMLHttpRequest();
+	let toSend = ["placeholder"];
+	let json = JSON.stringify(toSend);
 
+	xhr.onreadystatechange = function() {
+		if(xhr.readyState == 4 && xhr.status == 200) {
+			let reimbs = JSON.parse(xhr.responseText);
+
+			if(user == null) {
+				$('#login-message').html('get ALL reimbs unsuccesful');
+				alert('get ALL reimbs unsuccesful');
+				return;
+			} else {
+				console.log("ALL reimbs size is: " + reimbs.length);
+				
+				loadAllReimbs(reimbs);
+			}
+		}
+	}
+
+
+	xhr.open('POST', 'AllReimbsServlet', true);
+	xhr.setRequestHeader('Content-type', 'application/json');
+	xhr.send(json);
+}
 
 function submitLoginInfo(){
 
@@ -173,7 +424,7 @@ function submitLoginInfo(){
 				}
 
 				//	loadHome();
-				console.log(`User id: ${user.id} login successful!`)
+				//	console.log(`User id: ${user.id} login successful!`)
 			}
 		}
 	}

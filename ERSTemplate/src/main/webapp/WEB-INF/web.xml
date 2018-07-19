@@ -39,4 +39,34 @@
     <servlet-name>RegisterServlet</servlet-name>
     <url-pattern>/RegisterServlet</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>ReimbursementServlet</display-name>
+    <servlet-name>ReimbursementServlet</servlet-name>
+    <servlet-class>com.revature.servlets.ReimbursementServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>ReimbursementServlet</servlet-name>
+    <url-pattern>/ReimbursementServlet</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>NewReimbServlet</display-name>
+    <servlet-name>NewReimbServlet</servlet-name>
+    <servlet-class>com.revature.servlets.NewReimbServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>NewReimbServlet</servlet-name>
+    <url-pattern>/NewReimbServlet</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>AllReimbsServlet</display-name>
+    <servlet-name>AllReimbsServlet</servlet-name>
+    <servlet-class>com.revature.servlets.AllReimbsServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>AllReimbsServlet</servlet-name>
+    <url-pattern>/AllReimbsServlet</url-pattern>
+  </servlet-mapping>
 </web-app>

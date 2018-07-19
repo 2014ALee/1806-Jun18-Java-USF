@@ -1,5 +1,7 @@
 package com.revature.models;
 
+import java.util.ArrayList;
+
 import com.revature.DAO.ReimbDAOImpl;
 import com.revature.DAO.UserDAO;
 import com.revature.DAO.UserDAOImpl;
@@ -23,6 +25,12 @@ public class EmployeeReimbursementSystem implements EmployeeReimbursementSystemI
 		return userDAO.validRegistration(user);
 	}
 
+	public User getReimbursements(User user) {
+	 ArrayList<Reimbursement> reimbList = reimbDAO.getReimbursements(user);
+		user.setReimbList(reimbList);
+		return user;
+	}
+	
 	public User logIn(String userName, String password) {
 		// we need to get user
 		//we have front end forms that ask for the information
@@ -41,6 +49,25 @@ public class EmployeeReimbursementSystem implements EmployeeReimbursementSystemI
 	}
 
 
+	public Reimbursement addReimbursement(String type, String description, double amount, int userID) {
+		Reimbursement newReimb = new Reimbursement();
+		newReimb.setDescription(description);
+		newReimb.setReimbursementAmount(amount);
+		newReimb.setAuthorID(userID);
+		newReimb.setTypeName(type);
+		
+		newReimb = reimbDAO.addReimbursement(newReimb, userID);
+		
+		return newReimb;
+	}
+	
+	public ArrayList<Reimbursement> getAllReimbursements(){
+		
+		ArrayList<Reimbursement> allReimbs = reimbDAO.getAllReimbursements();
+		
+		return allReimbs;
+	}
+	
 	public void mainMenu() {
 		System.out.println("welcome to the ERS!");
 		System.out.println("[1] for login");

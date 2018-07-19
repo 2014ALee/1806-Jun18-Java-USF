@@ -5,7 +5,39 @@
 <title>Insert title here</title>
 </head>
 <body>
-welcome employee!!
+
+	<div class="newReimbContainer">
+		New Reimbursement
+
+		<!-- type, desc, amount -->
+
+		<form class="form-group newReimbForm">
+
+			<label class="reimbLabel" for="amt">Amount:</label> <input
+				type="number" class="form-control" id="amt"> <label
+				class="reimbLabel" for="desc">Description:</label> <input
+				type="text" class="form-control" id="desc">
+
+
+			<p>Type:</p>
+			<select name="types" id="newReimbId">
+
+				<option value="lodging">lodging</option>
+				<option value="travel">travel</option>
+				<option value="food">food</option>
+				<option value="other">other</option>
+
+			</select>
+
+			<button id="submitReimb" onclick='addReimbursement()' type="button"
+				class="btn btn-info submitReimbClass">Submit Reimbursement</button>
+
+		</form>
+
+
+	</div>
+
+	welcome Employee!!!
 	<p id="userNameLoggedIn">Username:</p>
 	<p id="firstNameLoggedIn">First Name:</p>
 	<p id="lastNameLoggedIn">Last Name:</p>
@@ -13,23 +45,27 @@ welcome employee!!
 	<p id="accountTypeLoggedIn">Account type:</p>
 
 
-	<table class="table">
+	<table class="table reimbTable">
 		<thead>
 			<tr>
-			<th>Amount</th>
+				<th>Amount</th>
 				<th>Date Submitted</th>
 				<th>Date Resolved</th>
 				<th>Description</th>
 				<th>Type</th>
 				<th>Status</th>
 			</tr>
+
+
+
 		</thead>
-		
 		<tbody>
-		
-		
+
+
 		</tbody>
 	</table>
 
+
 </body>
+
 </html>

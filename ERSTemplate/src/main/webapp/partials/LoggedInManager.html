@@ -5,6 +5,38 @@
 <title>Insert title here</title>
 </head>
 <body>
+
+	<div class="newReimbContainer">
+		New Reimbursement
+
+		<!-- type, desc, amount -->
+
+		<form class="form-group newReimbForm">
+
+			<label class="reimbLabel" for="amt">Amount:</label>
+			 <input	type="number" class="form-control" id="amt"> <label
+				
+				class="reimbLabel" for="desc">Description:</label> <input
+				type="text" class="form-control" id="desc"> 
+		
+		
+				<p>Type:</p>
+				<select name="types" id="newReimbId">
+				
+				<option value="lodging">lodging</option>
+				<option value="travel">travel</option>
+				<option value="food">food</option>
+				<option value="other">other</option>
+				
+				</select>
+			
+			 <button id="submitReimb" onclick ='addReimbursement()' type="button" class="btn btn-info submitReimbClass">Submit Reimbursement</button> 
+
+		</form>
+
+
+	</div>
+
 	welcome manager!!!
 	<p id="userNameLoggedIn">Username:</p>
 	<p id="firstNameLoggedIn">First Name:</p>
@@ -12,8 +44,12 @@
 	<p id="emailLoggedIn">Email:</p>
 	<p id="accountTypeLoggedIn">Account type:</p>
 
+	<button id="allReimbsId" onclick='loadAllReimbs()' type="button"
+		class="btn btn-info submitReimbClass">View all reimbursements</button>
 
-	<table class="table">
+
+
+	<table class="table reimbTable table-striped table-bordered table-hover table-sm"   >
 		<thead>
 			<tr>
 				<th>Amount</th>
@@ -33,5 +69,7 @@
 		</tbody>
 	</table>
 
+
 </body>
+
 </html>
