@@ -4,15 +4,40 @@ window.onload = function() {
 	
 	$('#toLogin').on('click', loadLogin);
 	$('#toRegister').on('click', loadRegister);
-	//$('#toHome').on('click', loadHome);
-//	$('#toProfile').on('click', loadProfile);
-//	$('#toLogout').on('click', logout);
+	$('#toHome').on('click', navigateHome);
+	$('#toProfile').on('click', loadProfile);
+	$('#toLogout').on('click', logout);
 
 }
  
+function loadProfile() {
+	console.log('in loadProfile()');
+
+		let xhr = new XMLHttpRequest();
+		
+		xhr.onreadystatechange = function() {
+			
+			console.log('ready state: ' + xhr.readyState);
+			console.log('xhr status: ' + xhr.status);
+			if(xhr.readyState == 4 && xhr.status == 200) {
+				$('#view').html(xhr.responseText);
+				loadProfileInfo();			
+			}
+		}
+		
+		xhr.open('GET', 'profile.view', true);
+		xhr.send();
+	}
+function loadProfileInfo(){
+	$('#user_fn').html(passedUser.firstname);
+	$('#user_ln').html(passedUser.lastname);
+	$('#user_email').html(passedUser.email);
+	$('#user_username').html(passedUser.username);
+	$('#user_role_id').html(passedUser.userRoleID);
+}
+
 function loadLogin() {
 console.log('in loadLogin()');
-
 
 	let xhr = new XMLHttpRequest();
 	
@@ -195,7 +220,7 @@ function loadEmployeeHome() {
 			loadHomeInfo();
 			
 			
-			//$('#toHome').show();
+			$('#toHome').show();
 			$('#toProfile').show();
 			$('#toLogout').show();
 			$('#toLogin').hide();
@@ -261,7 +286,10 @@ let filteredByStatus = false;
 let statusFilter;
 
 function loadHomeInfo() {
+	
 	console.log('in loadHomeInfo()');
+	
+	$('#toLogout').on('click', logout);
 	
 	let xhr = new XMLHttpRequest();
 	
@@ -299,13 +327,14 @@ function loadHomeInfo() {
 					formattedSubmitted.setTime(dateSubmitted);
 					
 					let dateResolved;
+					let formattedResolved = new Date();
 					if(reimbursement.reimbursementResolved){
 						dateResolved = reimbursement.reimbursementResolved;
-						//convert date to readable format
-						let formattedResolved = new Date();
+						//convert date to readable format					
 						formattedResolved.setTime(dateResolved);
 					}else{						
-						dateResolved = "n/a";
+						dateResolved = 'n/a';
+						formattedResolved = 'n/a';
 					}		
 					
 					let description = reimbursement.reimbursementDescription;

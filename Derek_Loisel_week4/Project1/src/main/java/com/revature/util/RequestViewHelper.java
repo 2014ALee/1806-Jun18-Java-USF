@@ -24,6 +24,9 @@ public class RequestViewHelper {
 			
 		case "/Project1/adminhome.view":
 			return "partials/adminhome.html";
+			
+		case "/Project1/profile.view":
+			return "partials/profile.html";
 		default:
 			return null;
 		} 
