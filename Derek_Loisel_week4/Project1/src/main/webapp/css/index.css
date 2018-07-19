@@ -1,1 +1,10 @@
 @charset "ISO-8859-1";
+
+.indexbody{
+	background-color: aliceblue;
+	
+}
+
+.navbar{
+	border-bottom: 1px solid lightskyblue;
+}

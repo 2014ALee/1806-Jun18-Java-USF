@@ -73,7 +73,27 @@
 	<br>
 	<hr>
 	<br>
-	
+	<div class = "btn-group">
+		<div class="dropdown">
+		  <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+		    Filter by Status
+		  </button>
+		  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+		    <a id = "filterpending" class="dropdown-item" >Pending</a>
+		    <a id = "filterapproved" class="dropdown-item" >Approved</a>
+		    <a id = "filterrejected" class="dropdown-item" >Rejected</a>
+		  </div>
+		  
+	 	  <div class="input-group mb-3">
+		  <div class="input-group-prepend">
+		    	<button class="btn btn-outline-secondary" type="button" id="filteruserbtn">Filter by Author</button>
+		  </div>
+		  		<input id = "userfilter" type="text" class="form-control" placeholder="Author..." aria-label="text with button addon" aria-describedby="button-addon1">
+		  </div>
+			  
+		</div>
+	</div>
+	<br>
 	
 	<table class="table" id="userReimbursements-table">
 		

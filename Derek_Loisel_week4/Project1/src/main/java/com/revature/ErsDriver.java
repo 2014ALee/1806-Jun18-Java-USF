@@ -9,13 +9,13 @@ public class ErsDriver {
 	public static void main(String[] args) {
 
 		
-		//testing sendEmail()
-		String fromEmail = "djloisel19@gmail.com";
-		String toEmail = "djloisel@yahoo.com";
-		String username = "CoolUsername";
-		String password = "p4ssw0rd";
-		
-		SendEmailHelper.sendEmail(fromEmail, toEmail, username, password);
+//		//testing sendEmail()
+//		String fromEmail = "djloisel19@gmail.com";
+//		String toEmail = "djloisel@yahoo.com";
+//		String username = "CoolUsername";
+//		String password = "p4ssw0rd";
+//		
+//		SendEmailHelper.sendEmail(fromEmail, toEmail, username, password);
 				
 		//testing DAO
 		

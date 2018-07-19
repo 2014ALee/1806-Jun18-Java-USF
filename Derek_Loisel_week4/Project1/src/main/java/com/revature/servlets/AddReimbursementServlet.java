@@ -36,8 +36,6 @@ public class AddReimbursementServlet extends HttpServlet {
 		ObjectMapper mapper = new ObjectMapper();
 		Reimbursement temp = mapper.readValue(json, Reimbursement.class);
 
-		
-		
 		System.out.println("amount from servlet: " +  temp.getReimbursementAmount());
 		System.out.println("date submitted from servlet: " +temp.getReimbursementSubmitted());
 		System.out.println("date resolved from servlet: " +temp.getReimbursementResolved());

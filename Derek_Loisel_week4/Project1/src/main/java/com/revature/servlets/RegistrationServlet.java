@@ -10,10 +10,12 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.revature.models.User;
 import com.revature.services.ErsService;
+import com.revature.util.SendEmailHelper;
 
 @WebServlet("/register")
 public class RegistrationServlet extends HttpServlet {
@@ -51,7 +53,15 @@ public class RegistrationServlet extends HttpServlet {
 			//if statement here to either add user or set temp as null
 			if(userAvail && emailAvail) {
 				//add user to database
-				temp = service.addUser(temp);	
+				temp = service.addUser(temp);
+				
+				//if it's an admin creating a manager account, send them an email with their user and pass
+				HttpSession sessionUser = req.getSession(false);		
+				User u = (User)sessionUser.getAttribute("user");
+				if(u.getUserRoleID() == 3) {
+					SendEmailHelper.sendEmail(u.getEmail(), temp.getEmail(), temp.getUsername(), temp.getPassword());
+				}
+				
 			}else {
 				temp = null;
 			}	

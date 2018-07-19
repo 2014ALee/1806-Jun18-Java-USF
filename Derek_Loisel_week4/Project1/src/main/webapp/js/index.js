@@ -254,6 +254,12 @@ function loadAdminHome() {
 }
 
 let passedUser;
+let passedReimbs;
+let filteredByUser = false;
+let userFilter;
+let filteredByStatus = false;
+let statusFilter;
+
 function loadHomeInfo() {
 	console.log('in loadHomeInfo()');
 	
@@ -265,6 +271,7 @@ function loadHomeInfo() {
 			let user = homeInfo.user;
 			passedUser = user;
 			let reimbursements = homeInfo.userReimbursements;
+			passedReimbs = reimbursements;
 			
 			$('#user_id').html(user.userID);
 			$('#user_fn').html(user.firstname);
@@ -283,14 +290,20 @@ function loadHomeInfo() {
 			console.log('reimbursements length in loadHomeInfo at initial table creation: ' + reimbursements.length);
 			if(reimbursements.length > 0) {
 				reimbursements.forEach((reimbursement) => {
-					
-					
+									
 					let id = reimbursement.reimbursementID;
 					let amount = reimbursement.reimbursementAmount;
 					let dateSubmitted = reimbursement.reimbursementSubmitted;
+					//convert date to readable format
+					let formattedSubmitted = new Date();
+					formattedSubmitted.setTime(dateSubmitted);
+					
 					let dateResolved;
 					if(reimbursement.reimbursementResolved){
 						dateResolved = reimbursement.reimbursementResolved;
+						//convert date to readable format
+						let formattedResolved = new Date();
+						formattedResolved.setTime(dateResolved);
 					}else{						
 						dateResolved = "n/a";
 					}		
@@ -308,11 +321,28 @@ function loadHomeInfo() {
 					
 					let statusID = reimbursement.reimbursementStatusID;
 					let typeID = reimbursement.reimbursementTypeID;
+								
+					//apply active filters
+					//user filter
+					if (filteredByUser){	
+						//don't add entries whos author doesnt match the filters specified user
+						if(author != userFilter){
+							return;
+						}			
+					}
+					
+					//status filter
+					if (filteredByStatus){
+						if(statusID !== statusFilter){
+							return;
+						}
+					}
+											
 					let markup = `<tr>
 									<td>${id}</td>
 									<td>${amount}</td>
-									<td>${dateSubmitted}</td>
-									<td>${dateResolved}</td>
+									<td>${formattedResolved}</td>
+									<td>${formattedSubmitted}</td>
 									<td>${description}</td>
 									<td>${author}</td>
 									<td>${resolver}</td>
@@ -326,10 +356,16 @@ function loadHomeInfo() {
 				$('#acct-info').html('No accounts on record');
 			}
 			
+			//reset filters
+			filteredByStatus = false;
+			filteredByUser = false;
 			
 			//set the event listeners for all views
-				$('#button-add-reimb').on('click', addReimbursement)
-								
+				$('#button-add-reimb').on('click', addReimbursement);
+				$('#filterpending').on('click', filterByPending);
+				$('#filterapproved').on('click', filterByApproved);
+				$('#filterrejected').on('click', filterByRejected);
+				
 			//set the views event listeners according to user role
 			if(user.userRoleID == 1 || user.userRoleID == 2){
 				
@@ -337,6 +373,7 @@ function loadHomeInfo() {
 			if(user.userRoleID == 2 || user.userRoleID == 3){
 				$('#button-approve-reimb').on('click', approveReimbursement);
 				$('#button-reject-reimb').on('click', rejectReimbursement);		
+				$('#filteruserbtn').on('click', filterTableByUser)
 			}
 			if(user.userRoleID == 1){
 				
@@ -353,6 +390,68 @@ function loadHomeInfo() {
 		
 	xhr.open('GET', 'home.loadinfo', true);
 	xhr.send();
+}
+
+function filterByPending(){
+	filteredByUser = false;
+	filteredByStatus = true;
+	statusFilter = 1;
+	navigateHome();
+}
+
+function filterByApproved(){
+	filteredByUser = false;
+	filteredByStatus = true;
+	statusFilter = 2;
+	navigateHome();
+}
+
+function filterByRejected(){
+	filteredByUser = false;
+	filteredByStatus = true;
+	statusFilter = 3;
+	navigateHome();
+}
+
+function filterTableByUser(){
+	console.log('in filterTableByUser()');
+	console.log('#userfilter: ' + $('#userfilter').val());
+	//make sure theres input in the field
+	if($('#userfilter').val() == '' || $('#userfilter').val() == null || $('#userfilter').val() == undefined){
+		console.log('Enter a valid user');
+		return;
+	}
+	//make sure the user being searched for exists
+	console.log('passedReimbs length: ' + passedReimbs.length);
+	let userExists = false;
+	for(let i = 0; i < passedReimbs.length; i++){
+		if(passedReimbs[i].reimbursementAuthor == $('#userfilter').val()){
+			userExists = true;
+		}
+	}
+	if(!userExists){
+		console.log('Enter a valid user');
+		return;
+	}
+		
+	filteredByStatus = false;
+	filteredByUser = true;	
+	userFilter = $('#userfilter').val();
+	navigateHome();
+}
+
+function navigateHome(){
+	
+	//check user to load correct home		
+	if(passedUser.userRoleID == 1){
+		loadEmployeeHome();	
+	}
+	if(passedUser.userRoleID == 2){
+		loadManagerHome();
+	}
+	if(passedUser.userRoleID == 3){
+		loadAdminHome();
+	}
 }
 
 function approveReimbursement(){
@@ -528,6 +627,7 @@ function addReimbursement(){
     //set vars to pass to reimb object
 	let amount = $('#amount').val();
 	let dateSubmitted = new Date();
+	
 	let dateResolved = null;
 	let description = $('#description').val();
 	let receipt = null;
@@ -666,4 +766,21 @@ console.log('in createNewManager()');
 	xhr.open('POST', 'register', true);
 	xhr.setRequestHeader('Content-type', 'application/json');
 	xhr.send(userJson);
+}
+
+
+function logout() {
+	console.log('in logout()');
+	
+	let xhr = new XMLHttpRequest();
+	
+	xhr.onreadystatechange = function() {
+		if(xhr.readyState == 4 && xhr.status == 200) {
+			console.log('Session invalidated!');
+			loadLogin();
+		}
+	}
+	
+	xhr.open('GET', 'logout', true);
+	xhr.send();
 }
