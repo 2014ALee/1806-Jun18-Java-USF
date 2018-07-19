@@ -1,5 +1,5 @@
 window.onload = function() {
-	console.log(1);
+	console.log(9);
 	loadLogin();
 	$('#toLogin').on('click', loadLogin);
 	$('#toRegister').on('click', loadRegister);
@@ -214,7 +214,63 @@ function showReimb(){
 				//$('#toLogin').hide();
 				$('#toLogout').show();
 				for (let i = 0; i < list.length; i++){
-					console.log("list = " + list + i)
+					let table = document.getElementById("table");
+
+					let tr = document.createElement("tr");
+					
+					let td = document.createElement("td");
+					let txt = document.createTextNode(list[i].reimbId);
+					td.appendChild(txt);
+					tr.appendChild(td);
+					
+					let td2 = document.createElement("td");
+					let txt2 = document.createTextNode(list[i].amount);
+					td2.appendChild(txt2);
+					tr.appendChild(td2);
+					
+					let td3 = document.createElement("td");
+					let txt3 = document.createTextNode(list[i].sumbitted);
+					td3.appendChild(txt3);
+					tr.appendChild(td3);
+					
+					let td4 = document.createElement("td");
+					let txt4 = document.createTextNode(list[i].resolved);
+					td4.appendChild(txt4);
+					tr.appendChild(td4);
+					
+					let td5 = document.createElement("td");
+					let txt5 = document.createTextNode(list[i].description);
+					td5.appendChild(txt5);
+					tr.appendChild(td5);
+					
+					let td6 = document.createElement("td");
+					let txt6 = document.createTextNode(list[i].receipt);
+					td6.appendChild(txt6);
+					tr.appendChild(td6);
+					
+					let td7 = document.createElement("td");
+					let txt7 = document.createTextNode(list[i].author);
+					td7.appendChild(txt7);
+					tr.appendChild(td7);
+					
+					let td8 = document.createElement("td");
+					let txt8 = document.createTextNode(list[i].resolver);
+					td8.appendChild(txt8);
+					tr.appendChild(td8);
+					
+					let td9 = document.createElement("td");
+					let txt9 = document.createTextNode(list[i].statusId);
+					td9.appendChild(txt9);
+					tr.appendChild(td9);
+					
+					let td10 = document.createElement("td");
+					let txt10 = document.createTextNode(list[i].typeId);
+					td10.appendChild(txt10);
+					tr.appendChild(td10);
+					
+					
+					table.appendChild(tr);
+					
 				}
 			}
 		}
