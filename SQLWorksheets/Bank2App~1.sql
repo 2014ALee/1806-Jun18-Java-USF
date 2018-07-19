@@ -31,11 +31,11 @@ CREATE TABLE ALL_USERS(
     END;
     /
     
-    CREATE OR REPLACE PROCEDURE check_email(
-    email IN VARCHAR2, counter OUT NUMBER)
-    IS
-    other_email VARCHAR2 (25);
-    BEGIN
-        SELECT COUNT(1) INTO counter FROM ALL_USERS WHERE (email = other_email);
-    END;
-    /
+CREATE OR REPLACE PROCEDURE check_email(
+email IN VARCHAR2, counter OUT NUMBER)
+IS
+other_email VARCHAR2 (25);
+BEGIN
+    SELECT COUNT(1) INTO counter FROM ALL_USERS WHERE (email = other_email);
+END;
+/

@@ -1,15 +1,14 @@
 package com.revature.models;
 
-import java.sql.Blob;
-import java.sql.Date;
+import java.sql.Timestamp;
 
 public class Reimbursement {
 	private long reimbId;
 	private double amount;
-	private Date submitTime;
-	private Date resolveTime;
+	private Timestamp submitTime;
+	private Timestamp resolveTime;
 	private String description;
-	private Blob reciept;
+	private String action;
 	private long authorId;
 	private long resolverId;
 	private long statusId;
@@ -17,15 +16,15 @@ public class Reimbursement {
 	
 	public Reimbursement() {}
 
-	public Reimbursement(long reimbId, double amount, Date submitTime, Date resolveTime, String description,
-			Blob reciept, long authorId, long resolverId, long statusId, long typeId) {
+	public Reimbursement(long reimbId, double amount, Timestamp submitTime, Timestamp resolveTime, String description,
+			String action, long authorId, long resolverId, long statusId, long typeId) {
 		super();
 		this.reimbId = reimbId;
 		this.amount = amount;
 		this.submitTime = submitTime;
 		this.resolveTime = resolveTime;
 		this.description = description;
-		this.reciept = reciept;
+		this.action = action;
 		this.authorId = authorId;
 		this.resolverId = resolverId;
 		this.statusId = statusId;
@@ -35,15 +34,15 @@ public class Reimbursement {
 	@Override
 	public String toString() {
 		return "Reimbursement [reimbId=" + reimbId + ", amount=" + amount + ", submitTime=" + submitTime
-				+ ", resolveTime=" + resolveTime + ", description=" + description + ", reciept=" + reciept
-				+ ", authorId=" + authorId + ", resolverId=" + resolverId + ", statusId=" + statusId + ", typeId="
-				+ typeId + "]";
+				+ ", resolveTime=" + resolveTime + ", description=" + description + ", action=" + action + ", authorId="
+				+ authorId + ", resolverId=" + resolverId + ", statusId=" + statusId + ", typeId=" + typeId + "]";
 	}
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
+		result = prime * result + ((action == null) ? 0 : action.hashCode());
 		long temp;
 		temp = Double.doubleToLongBits(amount);
 		result = prime * result + (int) (temp ^ (temp >>> 32));
@@ -67,6 +66,11 @@ public class Reimbursement {
 		if (getClass() != obj.getClass())
 			return false;
 		Reimbursement other = (Reimbursement) obj;
+		if (action == null) {
+			if (other.action != null)
+				return false;
+		} else if (!action.equals(other.action))
+			return false;
 		if (Double.doubleToLongBits(amount) != Double.doubleToLongBits(other.amount))
 			return false;
 		if (authorId != other.authorId)
@@ -113,19 +117,19 @@ public class Reimbursement {
 		this.amount = amount;
 	}
 
-	public Date getSubmitTime() {
+	public Timestamp getSubmitTime() {
 		return submitTime;
 	}
 
-	public void setSubmitTime(Date submitTime) {
+	public void setSubmitTime(Timestamp submitTime) {
 		this.submitTime = submitTime;
 	}
 
-	public Date getResolveTime() {
+	public Timestamp getResolveTime() {
 		return resolveTime;
 	}
 
-	public void setResolveTime(Date resolveTime) {
+	public void setResolveTime(Timestamp resolveTime) {
 		this.resolveTime = resolveTime;
 	}
 
@@ -137,12 +141,12 @@ public class Reimbursement {
 		this.description = description;
 	}
 
-	public Blob getReciept() {
-		return reciept;
+	public String getAction() {
+		return action;
 	}
 
-	public void setReciept(Blob reciept) {
-		this.reciept = reciept;
+	public void setAction(String action) {
+		this.action = action;
 	}
 
 	public long getAuthorId() {

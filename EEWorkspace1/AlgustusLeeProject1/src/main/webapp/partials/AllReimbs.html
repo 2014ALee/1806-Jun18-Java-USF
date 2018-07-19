@@ -1,0 +1,33 @@
+<div class="jumbotron" id="data-container">
+<!-- this is section is where you view all reimbursements -->
+	<h1>All Reimbursements</h1>
+	<br> Enter a field that you would like to filter by. i.e. a user id, "Denied", "Approved", "food".
+	<br>
+	<input class="form-control" id="myInput" type="text" placeholder="Filter.."> 
+	<table class="table" id='userReimbs'>
+	<thead>
+		<tr>
+		<th>Submitter ID</th>
+		<th>Resolver ID</th>
+		<th>Submit Time</th>
+		<th>Amount</th>
+		<th>Description</th>
+		<th>Status</th>
+		<th>Type</th>
+		<th>Resolve Time</th>
+		</tr>
+	</thead>
+	<tbody id="allReimbs"></tbody>
+	</table>
+	<br><br><br>
+	<span id="Reimbursement-Alert"></span>
+		<script>$(document).ready(function(){
+  	$("#myInput").on("keyup", function() {
+    var value = $(this).val().toLowerCase();
+    	$("#allReimbs tr").filter(function() {
+      $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+    });
+  });
+});
+</script>
+</div>

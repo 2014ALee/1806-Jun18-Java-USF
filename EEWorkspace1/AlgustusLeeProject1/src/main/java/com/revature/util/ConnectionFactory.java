@@ -28,13 +28,17 @@ public class ConnectionFactory {
 
 		try {
 			prop.load(new FileReader("C:\\Users\\AlgustusLee-Laptop\\project-repos\\1806-Jun18-Java-USF"+
-					"\\AlgustusLee Project1\\AleeProject1\\src\\main\\resources\\project1.properties"));
+					"\\EEWorkspace1\\AlgustusLeeProject1\\src\\main\\resources\\application.properties"));
+			Class.forName(prop.getProperty("driver"));
 			conn = DriverManager.getConnection(prop.getProperty("url"),prop.getProperty("usr"),prop.getProperty("pw"));
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
-		} catch (IOException e) {
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}catch (IOException e) {
 			e.printStackTrace();
 		}
 		return conn;
