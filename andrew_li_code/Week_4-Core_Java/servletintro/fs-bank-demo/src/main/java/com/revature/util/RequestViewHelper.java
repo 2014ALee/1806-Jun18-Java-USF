@@ -14,6 +14,8 @@ public class RequestViewHelper {
 			return "partials/login.html";
 		case "/fs-bank-demo/register.view":
 			return "partials/register.html";
+		case "/fs-bank-demo/home.view":
+			return "partials/home.html";
 		default:
 			System.out.println("NULL EXCEPTION");
 			System.out.println(uri);

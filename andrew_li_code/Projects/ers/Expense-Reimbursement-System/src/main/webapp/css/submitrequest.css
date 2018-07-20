@@ -1,0 +1,68 @@
+.submit-reimbursement-container {
+	position: absolute;
+	left: 10%;
+	top: 10%;
+	height: 70%;
+	width: 80%;
+	min-width: 600px;
+	min-height: 500px;
+	background-color: #55AA55;
+	width: 50%;
+	box-shadow: 1px 1px 2px 2px #118811;
+	border-radius: 40px;
+}
+.submit-reimbursement-line-one {
+	position: absolute;
+	top: 5%;
+	height: 10%;
+	text-align: center;
+	width: 100%;
+}
+.submit-reimbursement-line-two {
+	position: absolute;
+	top: 17%;
+	height: 10%;
+	width: 100%;
+}
+.submit-reimbursement-line-three {
+	position: absolute;
+	top: 30%;
+	height: 15%;
+	width: 100%;
+}
+.submit-reimbursement-line-four {
+	position: absolute;
+	top: 42%;
+	height: 30%;
+	width: 100%;
+}
+.submit-reimbursement-line-five {
+	position: absolute;
+	top: 75%;
+	height: 7%;
+	left: 10%;
+	width: 80%;
+	text-align: center;
+}
+.submit-reimbursement-line-six {
+	position: absolute;
+	top: 83%;
+	height: 14%;
+	width: 100%;
+	text-align: center;
+}
+.submit-reimbursement-label {
+	position: absolute;
+	left: 4%;
+	top: 20%;
+}	
+.submit-reimbursement-input {
+	position: absolute;
+	left: 24%;
+	width: 66%;
+	top: 10%;
+	height: 90%;
+}
+#submit-reimbursement {
+	width: 80%;
+}

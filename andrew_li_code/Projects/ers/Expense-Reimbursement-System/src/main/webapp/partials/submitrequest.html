@@ -1,0 +1,30 @@
+<input id="containertype" type="hidden" value="submitrequest">
+<div class="submit-reimbursement-container">
+    <h3 class="submit-reimbursement-line-one">Submit Reimbursement Request</h3>
+    <br />
+    <div class="submit-reimbursement-line-two">
+        <label class="submit-reimbursement-label" for="amount"><h5>Amount</h5></label> <input type="number" id="submit-reimbursement-amount" class="submit-reimbursement-input" min="0" max="1000000" step="0.01" placeholder=" Reimbursement amount">
+    </div>
+    <div class="submit-reimbursement-line-three">
+        <div class="form-group">
+            <label class="submit-reimbursement-label" for="reimbursementtype"><h5>Type</h5></label>
+            <select class="form-control submit-reimbursement-input" id="reimbursement-type">
+            	<option value="1">Lodging</option>
+            	<option value="2">Travel</option>
+            	<option value="3">Food</option>
+            	<option value="4">Other</option>
+            </select>
+        </div>
+    </div>                    
+    <div class="submit-reimbursement-line-four">
+        <div class="form-group">
+            <label class="submit-reimbursement-label" for="description"><h5>Description</h5></label> <textarea class="submit-reimbursement-input" id="submit-reimbursement-username" placeholder=" Enter description here" maxlength="250"></textarea>
+        </div>
+    </div>                 
+    <div class="submit-reimbursement-line-five"><div class="alert-danger form-group" id="submit-reimbursement-message"></div></div>
+    <div class="submit-reimbursement-line-six">
+        <div class="form-group">
+            <button type="submit" class="btn btn-primary" id="submit-reimbursement">Submit Reimbursement Request</button>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,59 @@
+.login-line-one {
+	position: absolute;
+	top: 8%;
+	height: 18%;
+	text-align: center;
+	width: 100%;
+}
+.login-line-two {
+	position: absolute;
+	top: 28%;
+	height: 18%;
+	width: 100%;
+}
+.login-line-three {
+	position: absolute;
+	top: 46%;
+	height: 18%;
+	width: 100%;
+}
+	
+.login-line-four {
+	position: absolute;
+	top: 64%;
+	height: 12%;
+	width: 100%;
+}
+.login-line-five {
+	position: absolute;
+	top: 76%;
+	height: 18%;
+	width: 100%;
+	text-align: center;
+}
+	
+.login-input {
+	position: absolute;
+	left: 28%;
+	width: 60%;
+}
+.login-label {
+	position: absolute;
+	left: 5%;
+}
+.login-container {
+	position: absolute;
+	left: 20%;
+	top: 20%;
+	height: 40%;
+	width: 60%;
+	min-width: 515px;
+	min-height: 309px;
+	background-color: #55AA55;
+	width: 50%;
+	box-shadow: 1px 1px 2px 2px #118811;
+	border-radius: 40px;
+}
+#login {
+	width: 80%;
+}

@@ -1,0 +1,83 @@
+.register-container {
+	position: absolute;
+	left: 10%;
+	top: 10%;
+	height: 70%;
+	width: 80%;
+	min-width: 600px;
+	min-height: 500px;
+	background-color: #55AA55;
+	width: 50%;
+	box-shadow: 1px 1px 2px 2px #118811;
+	border-radius: 40px;
+}
+.register-line-one {
+	position: absolute;
+	top: 5%;
+	height: 10%;
+	text-align: center;
+	width: 100%;
+}
+.register-line-two {
+	position: absolute;
+	top: 17%;
+	height: 10%;
+	width: 100%;
+}
+.register-line-three {
+	position: absolute;
+	top: 27%;
+	height: 10%;
+	width: 100%;
+}
+.register-line-four {
+	position: absolute;
+	top: 37%;
+	height: 10%;
+	width: 100%;
+}
+.register-line-five {
+	position: absolute;
+	top: 47%;
+	height: 10%;
+	width: 100%;
+}
+.register-line-six {
+	position: absolute;
+	top: 57%;
+	height: 10%;
+	width: 100%;
+}
+.register-line-seven {
+	position: absolute;
+	top: 67%;
+	height: 10%;
+	width: 100%;
+}
+.register-line-eight {
+	position: absolute;
+	top: 77%;
+	height: 7%;
+	left: 10%;
+	width: 80%;
+	text-align: center;
+}
+.register-line-nine {
+	position: absolute;
+	top: 84%;
+	height: 10%;
+	width: 100%;
+	text-align: center;
+}
+.register-label {
+	position: absolute;
+	left: 4%;
+}	
+.register-input {
+	position: absolute;
+	left: 40%;
+	width: 50%;
+}
+#register {
+	width: 80%;
+}

@@ -1,0 +1,70 @@
+.guesthome-container {
+	position: absolute;
+	left: 12%;
+	top: 5%;
+	height: 50%;
+	width: 75%;
+	min-width: 600px;
+	min-height: 500px;
+	background-color: #55AA55;
+	width: 50%;
+	box-shadow: 1px 1px 2px 2px #118811;
+	border-radius: 40px;
+}
+.guesthome-line-one {
+	position: absolute;
+	top: 3%;
+	height: 27%;
+	text-align: center;
+	left: 14%;
+	width: 70%;
+}
+.guesthome-line-two {
+	position: absolute;
+	top: 35%;
+	height: 38%;
+	left: 15%;
+	width: 68%;
+	text-align: center;
+	color: #CC0000;
+	background-color: #FFEE00;
+	border-radius: 20px;
+	padding-top: 14px;
+	padding-left: 8px;
+	padding-right: 8px;
+}
+.guesthome-line-three {
+	position: absolute;
+	top: 77%;
+	height: 17%;
+	left: 0%;
+	width: 100%;
+}
+.guesthome-line-three-left {
+	position: absolute;
+	top: 0%;
+	left: 0%;
+	height: 100%;
+	width: 50%;
+}
+.guesthome-line-three-right {
+	position: absolute;
+	top: 0%;
+	left: 50%;
+	height: 100%;
+	width: 50%;
+}
+#guesthome-tologin {
+	position: absolute;
+	top: 10%;
+	left: 10%;
+	width: 80%;
+	height: 80%
+}
+#guesthome-toregister {
+	position: absolute;
+	top: 10%;
+	left: 10%;
+	width: 80%;
+	height: 80%
+}

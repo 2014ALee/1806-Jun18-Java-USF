@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>Reimbursement Requests</title>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB"
+            crossorigin="anonymous">
+        
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+            crossorigin="anonymous"></script>
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+            crossorigin="anonymous"></script>
+        
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T"
+            crossorigin="anonymous"></script>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+	
+        <link rel="stylesheet" href="css/submitrequest.css">
+        <link rel="stylesheet" href="css/guesthome.css">
+        <link rel="stylesheet" href="css/userhome.css">	
+        <link rel="stylesheet" href="css/managerhome.css">	
+        <link rel="stylesheet" href="css/login.css">	
+        <link rel="stylesheet" href="css/register.css">	
+        <link rel="stylesheet" href="css/finishregistration.css">	
+        <link rel="stylesheet" href="css/finishsubmittingrequest.css">
+        <link rel="stylesheet" href="css/index.css">
+        
+        <script src="js/library.js"></script>
+    </head>
+    <body>
+        <div id="view">
+                <div class="header">
+                        <h1>
+                            Expense Reimbursement System
+                        </h1>
+                </div>
+                <div class="navbar">
+                    <ul id="navlinks">
+                    </ul>
+                </div>
+                <div class="main">
+                    <div id="container">
+
+                    </div>
+                </div>
+        </div>
+        <div id="resultlist">
+        	<button id="closetable" type="button" class="close" aria-label="Close" style=" background-color: red; opacity: 1; font-size: 36px;">×</button>
+            <table class="table table-striped table-dark">
+                <thead>
+                    <tr>
+                        <th scope="col">Ticket ID</th>
+                        <th scope="col">Requested Amount</th>
+                        <th scope="col">Reimbursement Type</th>
+                        <th scope="col">Author Username</th>
+                        <th scope="col">Author First Name</th>
+                        <th scope="col">Author Last Name</th>
+                        <th scope="col">Status</th>
+                        <th scope="col">Submitted Date</th>
+                        <th scope="col"><div class="col-xs-1">Page Number:&nbsp;&nbsp;&nbsp;<select id="pgnm"><option value="1">1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</option></select></div></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr style="display: none;">
+                        <th scope="row"></th>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td><button id="getticketinfo0" type="button" class="btn btn-info" onclick="(function() { $('#ticketID').text(window['requestsList'][0]['reimbursementid']); $('#athrfn').text(window['requestsList'][0]['author']['firstname']); $('#athrln').text(window['requestsList'][0]['author']['lastname']); $('#tktamt').text(window['requestsList'][0]['amount']); $('#ticketDescription').text(window['requestsList'][0]['description']); $('#ticketPage').show(); $('#resultlist').hide(); if ($('#pagetype').val() == 'manager' && window['requestsList'][0]['status'].trim() == 'PENDING') { $('#approveTicket').show(); $('#denyTicket').show(); } } ())">Info</button></td>
+                    </tr>
+                    <tr style="display: none;">
+                        <th scope="row"></th>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td><button id="getticketinfo1" type="button" class="btn btn-info" onclick="(function() { $('#ticketID').text(window['requestsList'][1]['reimbursementid']); $('#athrfn').text(window['requestsList'][1]['author']['firstname']); $('#athrln').text(window['requestsList'][1]['author']['lastname']); $('#tktamt').text(window['requestsList'][1]['amount']); $('#ticketDescription').text(window['requestsList'][1]['description']); $('#ticketPage').show(); $('#resultlist').hide(); if ($('#pagetype').val() == 'manager' && window['requestsList'][1]['status'].trim() == 'PENDING') { $('#approveTicket').show(); $('#denyTicket').show(); } } ())">Info</button></td>
+                    </tr>
+                    <tr style="display: none;">
+                        <th scope="row"></th>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td><button id="getticketinfo2" type="button" class="btn btn-info" onclick="(function() { $('#ticketID').text(window['requestsList'][2]['reimbursementid']); $('#athrfn').text(window['requestsList'][2]['author']['firstname']); $('#athrln').text(window['requestsList'][2]['author']['lastname']); $('#tktamt').text(window['requestsList'][2]['amount']); $('#ticketDescription').text(window['requestsList'][2]['description']); $('#ticketPage').show(); $('#resultlist').hide(); if ($('#pagetype').val() == 'manager' && window['requestsList'][2]['status'].trim() == 'PENDING') { $('#approveTicket').show(); $('#denyTicket').show(); } } ())">Info</button></td>
+                    </tr>
+                    <tr style="display: none;">
+                        <th scope="row"></th>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td><button id="getticketinfo3" type="button" class="btn btn-info" onclick="(function() { $('#ticketID').text(window['requestsList'][3]['reimbursementid']); $('#athrfn').text(window['requestsList'][3]['author']['firstname']); $('#athrln').text(window['requestsList'][3]['author']['lastname']); $('#tktamt').text(window['requestsList'][3]['amount']); $('#ticketDescription').text(window['requestsList'][3]['description']); $('#ticketPage').show(); $('#resultlist').hide(); if ($('#pagetype').val() == 'manager' && window['requestsList'][3]['status'].trim() == 'PENDING') { $('#approveTicket').show(); $('#denyTicket').show(); } } ())">Info</button></td>
+                    </tr>
+                    <tr style="display: none;">
+                        <th scope="row"></th>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td><button id="getticketinfo4" type="button" class="btn btn-info" onclick="(function() { $('#ticketID').text(window['requestsList'][4]['reimbursementid']); $('#athrfn').text(window['requestsList'][4]['author']['firstname']); $('#athrln').text(window['requestsList'][4]['author']['lastname']); $('#tktamt').text(window['requestsList'][4]['amount']); $('#ticketDescription').text(window['requestsList'][4]['description']); $('#ticketPage').show(); $('#resultlist').hide(); if ($('#pagetype').val() == 'manager' && window['requestsList'][4]['status'].trim() == 'PENDING') { $('#approveTicket').show(); $('#denyTicket').show(); } } ())">Info</button></td>
+                    </tr>
+                    <tr style="display: none;">
+                        <th scope="row"></th>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td><button id="getticketinfo5" type="button" class="btn btn-info" onclick="(function() { $('#ticketID').text(window['requestsList'][5]['reimbursementid']); $('#athrfn').text(window['requestsList'][5]['author']['firstname']); $('#athrln').text(window['requestsList'][5]['author']['lastname']); $('#tktamt').text(window['requestsList'][5]['amount']); $('#ticketDescription').text(window['requestsList'][5]['description']); $('#ticketPage').show(); $('#resultlist').hide(); if ($('#pagetype').val() == 'manager' && window['requestsList'][5]['status'].trim() == 'PENDING') { $('#approveTicket').show(); $('#denyTicket').show(); } } ())">Info</button></td>
+                    </tr>
+                    <tr style="display: none;">
+                        <th scope="row"></th>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td><button id="getticketinfo6" type="button" class="btn btn-info" onclick="(function() { $('#ticketID').text(window['requestsList'][6]['reimbursementid']); $('#athrfn').text(window['requestsList'][6]['author']['firstname']); $('#athrln').text(window['requestsList'][6]['author']['lastname']); $('#tktamt').text(window['requestsList'][6]['amount']); $('#ticketDescription').text(window['requestsList'][6]['description']); $('#ticketPage').show(); $('#resultlist').hide(); if ($('#pagetype').val() == 'manager' && window['requestsList'][6]['status'].trim() == 'PENDING') { $('#approveTicket').show(); $('#denyTicket').show(); } } ())">Info</button></td>
+                    </tr>
+                    <tr style="display: none;">
+                        <th scope="row"></th>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td><button id="getticketinfo7" type="button" class="btn btn-info" onclick="(function() { $('#ticketID').text(window['requestsList'][7]['reimbursementid']); $('#athrfn').text(window['requestsList'][7]['author']['firstname']); $('#athrln').text(window['requestsList'][7]['author']['lastname']); $('#tktamt').text(window['requestsList'][7]['amount']); $('#ticketDescription').text(window['requestsList'][7]['description']); $('#ticketPage').show(); $('#resultlist').hide(); if ($('#pagetype').val() == 'manager' && window['requestsList'][7]['status'].trim() == 'PENDING') { $('#approveTicket').show(); $('#denyTicket').show(); } } ())">Info</button></td>
+                    </tr>
+                    <tr style="display: none;">
+                        <th scope="row"></th>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td><button id="getticketinfo8" type="button" class="btn btn-info" onclick="(function() { $('#ticketID').text(window['requestsList'][8]['reimbursementid']); $('#athrfn').text(window['requestsList'][8]['author']['firstname']); $('#athrln').text(window['requestsList'][8]['author']['lastname']); $('#tktamt').text(window['requestsList'][8]['amount']); $('#ticketDescription').text(window['requestsList'][8]['description']); $('#ticketPage').show(); $('#resultlist').hide(); if ($('#pagetype').val() == 'manager' && window['requestsList'][8]['status'].trim() == 'PENDING') { $('#approveTicket').show(); $('#denyTicket').show(); } } ())">Info</button></td>
+                    </tr>
+                    <tr style="display: none;">
+                        <th scope="row"></th>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td><button id="getticketinfo9" type="button" class="btn btn-info" onclick="(function() { $('#ticketID').text(window['requestsList'][9]['reimbursementid']); $('#athrfn').text(window['requestsList'][9]['author']['firstname']); $('#athrln').text(window['requestsList'][9]['author']['lastname']); $('#tktamt').text(window['requestsList'][9]['amount']); $('#ticketDescription').text(window['requestsList'][9]['description']); $('#ticketPage').show(); $('#resultlist').hide(); if ($('#pagetype').val() == 'manager' && window['requestsList'][9]['status'].trim() == 'PENDING') { $('#approveTicket').show(); $('#denyTicket').show(); } } ())">Info</button></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div id="ticketPage">
+            <div id="ticketInfo">
+            	<div id="ticketinfo-line-one">
+            		<button id="closeticketPage" type="button" class="close" aria-label="Close" style=" background-color: red; opacity: 1; font-size: 36px;">×</button>
+            	</div>
+            	<div id="ticketinfo-line-two">
+            		<h2>Ticket ID: <span id="ticketID"></span></h2>
+            	</div>
+            	<div id="ticketinfo-line-three">
+            		<h5>Author:&nbsp;<span id="athrfn"></span> <span id="athrln"></span></h5>
+            		<h5>Amount:&nbsp;<span id="tktamt"></span></h5>
+            	</div>
+            	<div id="ticketinfo-line-four">
+            		<h6>Description:&nbsp;<span id="ticketDescription"></span></h6>
+            	</div>
+            	<div id="ticketinfo-line-five">
+            		<div id="ticketinfo-line-five-left">
+            			<button id="approveTicket" onclick="(function() { let xhr = new XMLHttpRequest(); xhr.open('POST', '/Expense-Reimbursement-System/approve', true); xhr.send($('#ticketID').html()); $('#view').show(); $('#ticketPage').hide(); $('#denyTicket').hide(); $('#approveTicket').hide(); $('#closetable').click(); } ())">Approve</button>
+            		</div>
+            		<div id="ticketinfo-line-five-right">
+            			<button id="denyTicket" onclick="(function() { let xhr = new XMLHttpRequest(); xhr.open('POST', '/Expense-Reimbursement-System/deny', true); xhr.send($('#ticketID').html()); $('#view').show(); $('#ticketPage').hide(); $('#denyTicket').hide(); $('#approveTicket').hide(); $('#closetable').click(); } ())">Deny</button>
+            		</div>
+            	</div>
+            </div>
+        </div>
+        <script src="js/getoldrequests.js"></script>
+        <script src="js/getpendingrequests.js"></script>
+        <script src="js/managernav.js"></script>
+        <script src="js/guestnav.js"></script>
+        <script src="js/usernav.js"></script>
+        <script src="js/homepage.js"></script>
+        <script src="js/main.js"></script>
+        <script src="js/loginbuttons.js"></script>
+        <script src="js/submitregistration.js"></script>
+        <script src="js/submitreimbursementRequest.js"></script>
+    </body>
+</html>
+
