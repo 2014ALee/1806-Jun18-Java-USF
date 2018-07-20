@@ -1,5 +1,6 @@
 package com.revature.dao;
 
+import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -9,6 +10,8 @@ import java.util.ArrayList;
 
 import com.revature.models.User;
 import com.revature.util.ConnectionFactory;
+
+import oracle.jdbc.OracleTypes;
 
 public class UserDAOImpl implements UserDAO {
 
@@ -165,4 +168,36 @@ public class UserDAOImpl implements UserDAO {
 		return users;
 	}
 
+	
+	@Override
+	public ArrayList<User> getAllUsersExcept(int id){
+		ArrayList<User> users = new ArrayList<>();
+
+		try(Connection conn = ConnectionFactory.getInstance().getConnection()){
+			String sql = "{CALL get_all_users_except(?, ?)}";
+			CallableStatement cs = conn.prepareCall(sql);
+			
+			cs.setInt(1, id);
+			
+			cs.registerOutParameter(2, OracleTypes.CURSOR);
+
+			cs.execute();
+			ResultSet rs = (ResultSet) cs.getObject(2);
+
+			while(rs.next()) {
+				User temp = new User();
+				temp.setId(rs.getInt("user_id"));
+				temp.setUsername(rs.getString("username"));
+				temp.setPwHash(rs.getString("pw_hash"));
+				temp.setPwSalt(rs.getString("pw_salt"));
+				temp.setEmail(rs.getString("email"));
+
+				users.add(temp);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return users;
+	}
 }

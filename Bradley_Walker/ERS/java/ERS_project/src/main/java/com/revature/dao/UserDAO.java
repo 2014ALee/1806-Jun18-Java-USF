@@ -14,4 +14,6 @@ public interface UserDAO {
 	public User getUserByEmail(String email);
 	
 	public User getUserById(int id);
+	
+	public ArrayList<User> getAllUsersExcept(int id);
 }
