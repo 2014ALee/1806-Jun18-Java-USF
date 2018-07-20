@@ -22,11 +22,10 @@ public class RegisterServlet extends HttpServlet {
 
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException{
-		System.out.println("[LOG] - Request sent to RegisterServlet.doPost()");
+//		System.out.println("[LOG] - Request sent to RegisterServlet.doPost()");
 
 		ERSService service = new ERSService();
 
-		// 1) Get received JSON data from request
 		BufferedReader br = new BufferedReader(new InputStreamReader(req.getInputStream()));
 
 		String json = "";
@@ -35,10 +34,8 @@ public class RegisterServlet extends HttpServlet {
 			json = br.readLine();
 		}
 
-		// 2) Initiate the Jackson object mapper which will allow conversion to and from java objects to JSON
 		ObjectMapper mapper = new ObjectMapper();
 
-		// 3) Convert received JSON to String array 
 		String[] userInfo = mapper.readValue(json, String[].class);
 		String firstName = userInfo[0];
 		String lastName = userInfo[1];
@@ -51,11 +48,11 @@ public class RegisterServlet extends HttpServlet {
 		
 		String[] success = service.registerUser(temp);
 
-		if (Boolean.parseBoolean(success[0])) {
-			System.out.println("[LOG] - New user created in RegisterServlet");
-		} else {
-			System.out.println("[LOG] - User already exist (RegisterServlet)");
-		}
+//		if (Boolean.parseBoolean(success[0])) {
+//			System.out.println("[LOG] - New user created in RegisterServlet");
+//		} else {
+//			System.out.println("[LOG] - User already exist (RegisterServlet)");
+//		}
 
 		PrintWriter pw = resp.getWriter();
 		resp.setContentType("application/json");

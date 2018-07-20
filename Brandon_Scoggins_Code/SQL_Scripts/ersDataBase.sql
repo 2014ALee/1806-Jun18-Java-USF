@@ -144,3 +144,8 @@ INSERT INTO ersReimbursement (reimAmount, reimDescription, reimAuthor, reimStatu
 INSERT INTO ersReimbursement (reimAmount, reimDescription, reimAuthor, reimStatusId, reimTypeId) VALUES (56.00, 'For testing purposes', 25, 5, 3);
 INSERT INTO ersReimbursement (reimAmount, reimDescription, reimAuthor, reimStatusId, reimTypeId) VALUES (56.00, 'For testing purposes', 25, 1, 4);
 COMMIT;
+
+-- Clean all tables
+DELETE FROM ersReimbursement;
+DELETE FROM ersUsers;
+COMMIT;

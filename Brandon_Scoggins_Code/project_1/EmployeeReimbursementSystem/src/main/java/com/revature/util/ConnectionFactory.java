@@ -42,7 +42,6 @@ public class ConnectionFactory {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
 		return conn;
 	}
 }

@@ -66,7 +66,6 @@ public class ERSUsersDAOImpl implements ERSUsersDAO{
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-
 		if(numOfUsers == 0) {
 			return false;
 		}else {
@@ -78,13 +77,13 @@ public class ERSUsersDAOImpl implements ERSUsersDAO{
 	public String[] createUser(ERSUser newUser) {
 
 		if (userExist(newUser.getUserName())) {
-			System.out.println("User already exist. Creation aborted.");
+//			System.out.println("User already exist. Creation aborted.");
 			return new String[] {"false", "0"};
 		} else if (userExist(newUser.getEmail())) {
-			System.out.println("User already exist. Creation aborted.");
+//			System.out.println("User already exist. Creation aborted.");
 			return new String[] {"false", "1"};
 		} else {
-			System.out.println("User credentials available. Creating..\n");
+//			System.out.println("User credentials available. Creating..\n");
 			try(Connection conn = ConnectionFactory.getInstance().getConnection();){
 
 				String sql = "INSERT INTO ersUsers (userName, passWord, firstName, lastName, email, userRoleId) VALUES (?, ?, ?, ?, ?, ?)";
@@ -108,7 +107,7 @@ public class ERSUsersDAOImpl implements ERSUsersDAO{
 
 	@Override
 	public boolean deleteUser(ERSUser deleteUser) {
-		// TODO Auto-generated method stub
+		
 		return false;
 	}
 
@@ -116,13 +115,13 @@ public class ERSUsersDAOImpl implements ERSUsersDAO{
 	public String[] updateUser(ERSUser updatedUser, ERSUser currentUser) {
 
 		if (userExist(updatedUser.getUserName()) && getUserId(updatedUser.getUserName()) != currentUser.getUserId()) {
-			System.out.println("User already exist. Creation aborted.");
+//			System.out.println("User already exist. Creation aborted.");
 			return new String[] {"false", "0"};
 		} else if (userExist(updatedUser.getEmail()) && getUserId(updatedUser.getEmail()) != currentUser.getUserId()) {
-			System.out.println("User already exist. Creation aborted.");
+//			System.out.println("User already exist. Creation aborted.");
 			return new String[] {"false", "1"};
 		} else {
-			System.out.println("User credentials available. Creating..\n");
+//			System.out.println("User credentials available. Creating..\n");
 			try(Connection conn = ConnectionFactory.getInstance().getConnection();){
 	
 				String sql = "UPDATE ersUsers SET userName = ?,"
@@ -203,9 +202,9 @@ public class ERSUsersDAOImpl implements ERSUsersDAO{
 
 			if(rs.next()) {
 				userId = rs.getInt(1);
-				System.out.println("\nFound userId.\n");
+//				System.out.println("\nFound userId.\n");
 			} else {
-				System.out.println("\nUserId not found.\n");
+//				System.out.println("\nUserId not found.\n");
 			}
 			
 		} catch (SQLException e) {

@@ -13,7 +13,7 @@ import com.revature.services.ERSService;
 public class LoadInfoHelper {
 
 	public Object[] process(HttpServletRequest req, HttpServletResponse resp) {
-		System.out.println("[LOG] - Processing request with LoadInfoHelper: " + req.getRequestURI());
+//		System.out.println("[LOG] - Processing request with LoadInfoHelper: " + req.getRequestURI());
 		
 		ERSService service = new ERSService();
 	
@@ -30,6 +30,5 @@ public class LoadInfoHelper {
 		default:
 			return null;
 		}
-		
 	}
 }

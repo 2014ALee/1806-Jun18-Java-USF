@@ -29,23 +29,21 @@ public class ERSReimbursementDAOImpl implements ERSReimbursementsDAO {
 			pstmt.setInt(5, newReim.getReimTypeId());
 			
 			if(pstmt.executeUpdate() != 0) {
-				System.out.println("\nReimbursement creationg succesful!\n");
+//				System.out.println("\nReimbursement creationg succesful!\n");
 				return true;
 			}else {
-				System.out.println("\nReimbursement creation failed.\n");
+//				System.out.println("\nReimbursement creation failed.\n");
 				return false;
 			}
-			
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		
 		return false;
 	}
 
 	@Override
 	public boolean cancelReimbursement(ERSReimbursement reimToCancel) {
-		// TODO Auto-generated method stub
+		
 		return false;
 	}
 
@@ -62,13 +60,12 @@ public class ERSReimbursementDAOImpl implements ERSReimbursementsDAO {
 			pstmt.setInt(3, approvedReim.getReimId());
 			
 			if(pstmt.executeUpdate() != 0) {
-				System.out.println("\nApproval succesful!\n");
+//				System.out.println("\nApproval succesful!\n");
 				return true;
 			}else {
-				System.out.println("\nApproval failed.\n");
+//				System.out.println("\nApproval failed.\n");
 				return false;
 			}
-			
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -88,13 +85,12 @@ public class ERSReimbursementDAOImpl implements ERSReimbursementsDAO {
 			pstmt.setInt(3, deniedReim.getReimId());
 			
 			if(pstmt.executeUpdate() != 0) {
-				System.out.println("\nDenial succesful!\n");
+//				System.out.println("\nDenial succesful!\n");
 				return true;
 			}else {
-				System.out.println("\nDenial failed.\n");
+//				System.out.println("\nDenial failed.\n");
 				return false;
 			}
-			
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -114,13 +110,12 @@ public class ERSReimbursementDAOImpl implements ERSReimbursementsDAO {
 			pstmt.setInt(3, viewedReim.getReimId());
 			
 			if(pstmt.executeUpdate() != 0) {
-				System.out.println("\nView succesful!\n");
+//				System.out.println("\nView succesful!\n");
 				return true;
 			}else {
-				System.out.println("\nView failed.\n");
+//				System.out.println("\nView failed.\n");
 				return false;
 			}
-			
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -194,11 +189,9 @@ public class ERSReimbursementDAOImpl implements ERSReimbursementsDAO {
 						reim.getReimSubmitted(), reim.getReimResolved(), reim.getReimDescription(), 
 						reim.getReimAuthor(), reim.getReimResolver(), status, type));
 			}
-			
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		
 		return allReimbursementsStrings;
 	}
 

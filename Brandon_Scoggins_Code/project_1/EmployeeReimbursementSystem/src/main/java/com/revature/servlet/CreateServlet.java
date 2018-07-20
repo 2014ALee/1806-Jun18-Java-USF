@@ -23,11 +23,10 @@ public class CreateServlet extends HttpServlet {
 
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException{
-		System.out.println("[LOG] - Request sent to CreateServlet.doPost()");
+//		System.out.println("[LOG] - Request sent to CreateServlet.doPost()");
 
 		ERSService service = new ERSService();
 
-		// 1) Get received JSON data from request
 		BufferedReader br = new BufferedReader(new InputStreamReader(req.getInputStream()));
 
 		String json = "";
@@ -36,10 +35,8 @@ public class CreateServlet extends HttpServlet {
 			json = br.readLine();
 		}
 
-		// 2) Initiate the Jackson object mapper which will allow conversion to and from java objects to JSON
 		ObjectMapper mapper = new ObjectMapper();
 
-		// 3) Convert received JSON to String array 
 		String[] newReimInfo = mapper.readValue(json, String[].class);
 		double reimAmount = Double.parseDouble(newReimInfo[0]);
 		int reimType = Integer.parseInt(newReimInfo[1]);
@@ -50,11 +47,11 @@ public class CreateServlet extends HttpServlet {
 		
 		boolean success = service.createReimbursement(sessionUser.getUserId(), reimAmount, reimDesc, reimType);
 
-		if (!success) {
-			System.out.println("[LOG] - Unable to insert new reimbursement case into database");
-		} else {
-			System.out.println("[LOG] - Successfully inserted new reimbursement case into database");
-		}
+//		if (!success) {
+//			System.out.println("[LOG] - Unable to insert new reimbursement case into database");
+//		} else {
+//			System.out.println("[LOG] - Successfully inserted new reimbursement case into database");
+//		}
 
 		PrintWriter pw = resp.getWriter();
 		resp.setContentType("application/json");

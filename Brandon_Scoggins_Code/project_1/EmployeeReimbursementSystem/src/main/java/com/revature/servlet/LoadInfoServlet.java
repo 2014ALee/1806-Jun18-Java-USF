@@ -19,7 +19,7 @@ public class LoadInfoServlet extends HttpServlet {
 	
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		System.out.println("[LOG] - Request sent to front controller, LoadInfoServlet.doGet()");
+//		System.out.println("[LOG] - Request sent to front controller, LoadInfoServlet.doGet()");
 		
 		Object[] info = new LoadInfoHelper().process(req, resp);
 		
@@ -30,5 +30,4 @@ public class LoadInfoServlet extends HttpServlet {
 		resp.setContentType("application/json");
 		pw.write(json);
 	}
-	
 }

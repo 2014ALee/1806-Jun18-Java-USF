@@ -53,8 +53,8 @@ public class ERSService {
 				return reimDao.approveReimbursement(reimDao.getReimbursementByReimId(reimId), currentUser);
 			case 4:
 				return reimDao.denyReimbursement(reimDao.getReimbursementByReimId(reimId), currentUser);
-	//		case 5:
-	//			return reimDao.cancelReimbursement(reimDao.getReimbursementByReimId(reimId), currentUser);
+//			case 5:
+//				return reimDao.cancelReimbursement(reimDao.getReimbursementByReimId(reimId), currentUser);
 			default:
 				return false;
 			}

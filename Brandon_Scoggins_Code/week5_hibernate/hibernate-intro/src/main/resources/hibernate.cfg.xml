@@ -28,6 +28,9 @@
 		<!-- Include persistence mapping file for the Employee class -->
 		<mapping resource="employee.hbm.xml"/>
 		
+		<!-- Include persistence mapping file for the named queries -->
+<!-- 		<mapping resource="employee.hbm.xml"/>					-->
+		
 	</session-factory>
 	
 </hibernate-configuration>

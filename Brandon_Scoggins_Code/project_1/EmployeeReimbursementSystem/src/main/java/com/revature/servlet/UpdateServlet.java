@@ -23,11 +23,10 @@ public class UpdateServlet extends HttpServlet {
 
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException{
-		System.out.println("[LOG] - Request sent to UpdateServlet.doPost()");
+//		System.out.println("[LOG] - Request sent to UpdateServlet.doPost()");
 
 		ERSService service = new ERSService();
 
-		// 1) Get received JSON data from request
 		BufferedReader br = new BufferedReader(new InputStreamReader(req.getInputStream()));
 
 		String json = "";
@@ -36,10 +35,8 @@ public class UpdateServlet extends HttpServlet {
 			json = br.readLine();
 		}
 
-		// 2) Initiate the Jackson object mapper which will allow conversion to and from java objects to JSON
 		ObjectMapper mapper = new ObjectMapper();
 
-		// 3) Convert received JSON to String array 
 		String[] receivedValue = mapper.readValue(json, String[].class);
 		int reimId = Integer.parseInt(receivedValue[0]);
 		int reimStatusId = Integer.parseInt(receivedValue[1]);
@@ -49,11 +46,11 @@ public class UpdateServlet extends HttpServlet {
 		
 		boolean success = service.updateReimCase(reimId, reimStatusId, sessionUser);
 
-		if (success) {
-			System.out.println("[LOG] - Reim status update successful in UpdateServlet");
-		} else {
-			System.out.println("[LOG] - Reim status update failed in UpdateServlet");
-		}
+//		if (success) {
+//			System.out.println("[LOG] - Reim status update successful in UpdateServlet");
+//		} else {
+//			System.out.println("[LOG] - Reim status update failed in UpdateServlet");
+//		}
 
 		PrintWriter pw = resp.getWriter();
 		resp.setContentType("application/json");

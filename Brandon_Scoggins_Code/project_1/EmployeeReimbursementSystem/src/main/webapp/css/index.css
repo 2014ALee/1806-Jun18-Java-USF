@@ -1,6 +1,5 @@
 /*
 	Remove spinners from number inputs
-	
 	https://w3reign.com/how-to-disable-input-type-number-field-arrows-from-css/
 */
 input[type=number]::-webkit-inner-spin-button, 
@@ -11,13 +10,10 @@ input[type=number]::-webkit-outer-spin-button {
     margin: 0; 
 }
 
-
-
 /*
 	Allow tables to have a sticky header
 	https://stackoverflow.com/questions/21168521/scrollable-table-with-fixed-header-in-bootstrap
 */
-
 .header-fixed {
     width: 100% 
 }

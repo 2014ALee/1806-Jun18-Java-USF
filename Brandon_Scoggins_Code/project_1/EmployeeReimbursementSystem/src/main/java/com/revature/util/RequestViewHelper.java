@@ -6,7 +6,7 @@ import javax.servlet.http.HttpServletResponse;
 public class RequestViewHelper {
 
 	public String process(HttpServletRequest req, HttpServletResponse resp) {
-		System.out.println("[LOG] - Processing request with RequestVewHelp.processs(): " + req.getRequestURI());
+//		System.out.println("[LOG] - Processing request with RequestVewHelp.processs(): " + req.getRequestURI());
 		
 		switch(req.getRequestURI()) {
 		case "/EmployeeReimbursementSystem/login.view":

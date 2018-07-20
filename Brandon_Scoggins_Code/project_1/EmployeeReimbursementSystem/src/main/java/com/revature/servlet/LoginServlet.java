@@ -23,11 +23,10 @@ public class LoginServlet extends HttpServlet {
 
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException{
-		System.out.println("[LOG] - Request sent to LoginServlet.doPost()");
+//		System.out.println("[LOG] - Request sent to LoginServlet.doPost()");
 
 		ERSService service = new ERSService();
 
-		// 1) Get received JSON data from request
 		BufferedReader br = new BufferedReader(new InputStreamReader(req.getInputStream()));
 
 		String json = "";
@@ -36,10 +35,8 @@ public class LoginServlet extends HttpServlet {
 			json = br.readLine();
 		}
 
-		// 2) Initiate the Jackson object mapper which will allow conversion to and from java objects to JSON
 		ObjectMapper mapper = new ObjectMapper();
 
-		// 3) Convert received JSON to String array 
 		String[] userInfo = mapper.readValue(json, String[].class);
 		String userNameOrEmail = userInfo[0];
 		String passWord = userInfo[1];
@@ -49,11 +46,11 @@ public class LoginServlet extends HttpServlet {
 		temp = service.logInUser(userNameOrEmail, passWord);
 
 		if (temp.equals(new ERSUser())) {
-			System.out.println("[LOG] - Variable 'temp' in loginServlet did not exist in database");
+//			System.out.println("[LOG] - Variable 'temp' in loginServlet did not exist in database");
 		} else {
-			System.out.println("[LOG] - Variable 'temp' in loginServlet assigned to new user");
+//			System.out.println("[LOG] - Variable 'temp' in loginServlet assigned to new user");
 			HttpSession session = req.getSession();
-			session.setAttribute("user", temp);		// persist this user to the session
+			session.setAttribute("user", temp);		
 		}
 
 		PrintWriter pw = resp.getWriter();
