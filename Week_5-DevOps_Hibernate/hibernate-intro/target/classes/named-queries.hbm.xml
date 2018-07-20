@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+
+	<!-- This is how we can include a named query associated with the Employee 
+		entity class. We can call this query using session.createNamedQuery() -->
+	<query name="findEmployeeByName">
+        	<![CDATA[from Employee e where e.name = :name]]>
+	</query>
+
+</hibernate-mapping>
