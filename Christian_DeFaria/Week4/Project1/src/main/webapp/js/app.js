@@ -281,8 +281,8 @@ function loadHomeInfo(user) {
 									markup+='<td>Other</td>';
 									break;
 							}
-							markup+='<td><button class="btn btn-block btn-primary" id="approve${id}">Approve</button></td>';
-							markup+='<td><button class="btn btn-block btn-primary" id="deny${id}">Deny</button></td>';
+							markup+='<td><button class="btn btn-block btn-primary" id="approve'+id+'">Approve</button></td>';
+							markup+='<td><button class="btn btn-block btn-primary" id="deny'+id+'">Deny</button></td>';
 							markup+='</tr><hr/>';
 						} else {
 							markup = '<tr>' +
