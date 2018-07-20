@@ -6,10 +6,25 @@
 </head>
 <body>
 
-<button type="button" onclick="logOut()">Log Out</button>
+	<button type="button" class="btn btn-secondary btn-lg" onclick="logOut()">Log Out</button>
+
+
+	<div class="home">
+		<h3>Employee Home</h3>
+
+		<br>
+
+		<p id="userNameLoggedIn">Username:</p>
+		<p id="firstNameLoggedIn">First Name:</p>
+		<p id="lastNameLoggedIn">Last Name:</p>
+		<p id="emailLoggedIn">Email:</p>
+		<p id="accountTypeLoggedIn">Account type:</p>
+	</div>
+
+	<br>
 
 	<div class="newReimbContainer">
-		New Reimbursement
+		<h3>New Reimbursement</h3>
 
 		<!-- type, desc, amount -->
 
@@ -29,8 +44,7 @@
 				<option value="food">food</option>
 				<option value="other">other</option>
 
-			</select>
-
+			</select> <br> <br>
 			<button id="submitReimb" onclick='addReimbursement()' type="button"
 				class="btn btn-info submitReimbClass">Submit Reimbursement</button>
 
@@ -39,15 +53,9 @@
 
 	</div>
 
-	welcome Employee!!!
-	<p id="userNameLoggedIn">Username:</p>
-	<p id="firstNameLoggedIn">First Name:</p>
-	<p id="lastNameLoggedIn">Last Name:</p>
-	<p id="emailLoggedIn">Email:</p>
-	<p id="accountTypeLoggedIn">Account type:</p>
-
-
-	<table class="table reimbTable table-hover">
+<br>
+<h3>Personal Reimbursement Requests</h3>
+	<table class="table reimbTable table-hover column-12 py-4 px-4">
 		<thead>
 			<tr>
 				<th>Amount</th>
