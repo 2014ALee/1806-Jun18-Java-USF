@@ -12,10 +12,10 @@ window.onload = function(){
 	document.getElementById('registerAdminPage').addEventListener('click', loadRegisterAdmin);
 }
 function loadLogin(){
-	console.log('in loadLogin()');
+	////console.log('in loadLogin()');
 	let xhr = new XMLHttpRequest();
 	xhr.onreadystatechange = function(){
-		console.log(xhr.readystate);
+		////console.log(xhr.readystate);
 		if(xhr.readyState == 4 && xhr.status == 200){
 			$('#view').html(xhr.responseText);
 			// document.getElementById('view').innerHTML = xhr.responseText;
@@ -32,18 +32,18 @@ function loadLogin(){
 			document.getElementById('registerAdminPage').setAttribute('hidden', true);
 			document.getElementById('loginButton').addEventListener('click', loginButton);
 		}
-		console.log('past the if statement in login');
+		////console.log('past the if statement in login');
 	}
 
 	xhr.open('GET', 'login.view', true);
 	xhr.send();
 }
 function loadHome(){
-	console.log('in loadHome()');
+	////console.log('in loadHome()');
 
 	let xhr = new XMLHttpRequest();
 	xhr.onreadystatechange = function(){
-		console.log(xhr.readystate);
+		////console.log(xhr.readystate);
 		if(xhr.readyState == 4 && xhr.status == 200){
 			$('#view').html(xhr.responseText);
 			// document.getElementById('view').innerHTML = xhr.responseText;
@@ -59,13 +59,13 @@ function loadHome(){
 			document.getElementById('editReimbPage').setAttribute('hidden', true);
 			document.getElementById('registerAdminPage').setAttribute('hidden', true);
 		}
-		console.log('past the if statement in home');
+		////console.log('past the if statement in home');
 	}
 	xhr.open('GET', 'home.view', true);
 	xhr.send();
 }
 function loadRegister(){
-	console.log('in loadRegister()');
+	////console.log('in loadRegister()');
 
 	let xhr = new XMLHttpRequest();
 	xhr.onreadystatechange = function(){
@@ -84,17 +84,17 @@ function loadRegister(){
 			document.getElementById('registerAdminPage').setAttribute('hidden', true);
 			document.getElementById('registerButton').addEventListener('click', registerButton);
 		}
-		console.log('past the if statement in register');
+		////console.log('past the if statement in register');
 	}
 	xhr.open('GET', 'register.view', true);
 	xhr.send();
 }
 function loadReimbs(){
-	console.log('in loadReimbs()');
+	////console.log('in loadReimbs()');
 
 	let xhr = new XMLHttpRequest();
 	xhr.onreadystatechange = function(){
-		console.log(xhr.readystate);
+		////console.log(xhr.readystate);
 		if(xhr.readyState == 4 && xhr.status == 200){
 			$('#view').html(xhr.responseText);
 			// document.getElementById('view').innerHTML = xhr.responseText;
@@ -110,32 +110,32 @@ function loadReimbs(){
 			document.getElementById('editReimbPage').setAttribute('hidden', true);
 			document.getElementById('registerAdminPage').setAttribute('hidden', true);
 		}
-		console.log('past the if statement in reimbs');
+		////console.log('past the if statement in reimbs');
 	}
 	xhr.open('GET', 'reimbs.view', true);
 	xhr.send();
 }
 function logout(){
-	console.log('in logout()');
+	////console.log('in logout()');
 
 	let xhr = new XMLHttpRequest();
 	xhr.onreadystatechange = function(){
-		console.log(xhr.readystate);
+		////console.log(xhr.readystate);
 		if(xhr.readyState == 4 && xhr.status == 200){
 			$('#view').html(xhr.responseText);
 			loadLogin();
 		}
-		console.log('past the if statement in logout');
+		////console.log('past the if statement in logout');
 	}
 	xhr.open('GET', 'logout', true);
 	xhr.send();
 }
 function loadHomeAdmin(){
-	console.log('in homeAdmin()');
+	////console.log('in homeAdmin()');
 
 	let xhr = new XMLHttpRequest();
 	xhr.onreadystatechange = function(){
-		console.log(xhr.readystate);
+		////console.log(xhr.readystate);
 		if(xhr.readyState == 4 && xhr.status == 200){
 			$('#view').html(xhr.responseText);
 			// document.getElementById('view').innerHTML = xhr.responseText;
@@ -151,17 +151,17 @@ function loadHomeAdmin(){
 			document.getElementById('editReimbPage').removeAttribute('hidden', false);
 			document.getElementById('logoutPage').removeAttribute('hidden', false);
 		}
-		console.log('past the if statement in homeadmin');
+		////console.log('past the if statement in homeadmin');
 	}
 	xhr.open('GET', 'homeAdmin.view', true);
 	xhr.send();
 }
 function loadEditReimbs(){
-	console.log('in loadEditReimbs()');
+	////console.log('in loadEditReimbs()');
 
 	let xhr = new XMLHttpRequest();
 	xhr.onreadystatechange = function(){
-		console.log(xhr.readystate);
+		////console.log(xhr.readystate);
 		if(xhr.readyState == 4 && xhr.status == 200){
 			$('#view').html(xhr.responseText);
 			// document.getElementById('view').innerHTML = xhr.responseText;
@@ -178,17 +178,17 @@ function loadEditReimbs(){
 			document.getElementById('registerAdminPage').removeAttribute('hidden', true);
 
 		}
-		console.log('past the if statement in editreimbs');
+		////console.log('past the if statement in editreimbs');
 	}
 	xhr.open('GET', 'loadEditReimbs.view', true);
 	xhr.send();
 }
 function loadAllReimbs(){
-	console.log('in loadAllReimbs()');
+	////console.log('in loadAllReimbs()');
 
 	let xhr = new XMLHttpRequest();
 	xhr.onreadystatechange = function(){
-		console.log(xhr.readystate);
+		////console.log(xhr.readystate);
 		if(xhr.readyState == 4 && xhr.status == 200){
 			$('#view').html(xhr.responseText);
 			// document.getElementById('view').innerHTML = xhr.responseText;
@@ -205,17 +205,17 @@ function loadAllReimbs(){
 			document.getElementById('registerAdminPage').removeAttribute('hidden', true);
 
 		}
-		console.log('past the if statement in allreimbs');
+		////console.log('past the if statement in allreimbs');
 	}
 	xhr.open('GET', 'loadAllReimbs.view', true);
 	xhr.send();
 }
 function loadRegisterAdmin(){
-	console.log('in loadRegisterAdmin()');
+	////console.log('in loadRegisterAdmin()');
 
 	let xhr = new XMLHttpRequest();
 	xhr.onreadystatechange = function(){
-		console.log(xhr.readystate);
+		//console.log(xhr.readystate);
 		if(xhr.readyState == 4 && xhr.status == 200){
 			$('#view').html(xhr.responseText);
 			// document.getElementById('view').innerHTML = xhr.responseText;
@@ -231,7 +231,7 @@ function loadRegisterAdmin(){
 			document.getElementById('registerAdminPage').removeAttribute('hidden', true);
 			document.getElementById('raButton').addEventListener('click', adminRegisterButton);
 		}
-		console.log('past the if statement in registerAdmin');
+		//console.log('past the if statement in registerAdmin');
 	}
 	xhr.open('GET', 'loadRegisterAdmin.view', true);
 	xhr.send();
@@ -242,14 +242,14 @@ function loginButton(){
 	let credentials = [un, pw];
 	let json = JSON.stringify(credentials);
 	if(un =='' || pw == ''){
-		console.log('bad alert happens here');
+		//console.log('bad alert happens here');
 		alert('Please enter both Username and Password!');
 	}
 	else{
-		console.log('else called');
+		//console.log('else called');
 		let xhr = new XMLHttpRequest;
 		xhr.onreadystatechange = function(){
-			console.log('request sent');
+			//console.log('request sent');
 			if(xhr.readyState == 4 && xhr.status == 200){
 				let getCode = JSON.parse(xhr.responseText)
 				if(getCode == 0){
@@ -257,11 +257,11 @@ function loginButton(){
 				}
 				else if(getCode == 1){
 					loadHome();
-					console.log('valid user login');
+					//console.log('valid user login');
 				}
 				else{
 					loadHomeAdmin();
-					console.log('valid admin login');
+					//console.log('valid admin login');
 				}
 			}
 		}
@@ -280,18 +280,18 @@ function registerButton(){
 	let json = JSON.stringify(userInfo);
 	let emailRegEx = /^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$/;
 	if(fn=='' || ln=='' || un =='' || pw == ''|| email == ''){
-		console.log('bad alert happens here');
+		//console.log('bad alert happens here');
 		alert('Please enter all fields!');
 	}
 	else if(!emailRegEx.test(email)){
-		console.log('bad alert happens here');
+		//console.log('bad alert happens here');
 		alert('Invalid Email');
 	}
 	else{
-		console.log('else called');
+		//console.log('else called');
 		let xhr = new XMLHttpRequest;
 		xhr.onreadystatechange = function(){
-			console.log('request sent');
+			//console.log('request sent');
 			if(xhr.readyState == 4 && xhr.status == 200){
 				let getCode = JSON.parse(xhr.responseText)
 				if(getCode == 1){
@@ -303,7 +303,7 @@ function registerButton(){
 				else{
 					alert('Successful User Registration');
 					loadLogin();
-					console.log('valid user registration');
+					//console.log('valid user registration');
 				}
 			}
 		}
@@ -313,11 +313,11 @@ function registerButton(){
 	}
 }
 function newReimbursementPage(){
-	console.log('in newReimbursementPage()');
+	//console.log('in newReimbursementPage()');
 
 	let xhr = new XMLHttpRequest();
 	xhr.onreadystatechange = function(){
-		console.log(xhr.readystate);
+		//console.log(xhr.readystate);
 		if(xhr.readyState == 4 && xhr.status == 200){
 			$('#view').html(xhr.responseText);
 			// document.getElementById('view').innerHTML = xhr.responseText;
@@ -333,20 +333,20 @@ function newReimbursementPage(){
 			document.getElementById('registerAdminPage').setAttribute('hidden', true);
 			document.getElementById('submitReimb').addEventListener('click', submitReimbursement);
 		}
-		console.log('past the if statement in home');
+		//console.log('past the if statement in home');
 	}
 	xhr.open('GET', 'NewReimbPage.view', true);
 	xhr.send();
 }
 function loadPastReimbs(){
-	console.log('loading one user\'s past reimbursements.');
+	//console.log('loading one user\'s past reimbursements.');
 	let xhr = new XMLHttpRequest();
 	xhr.onreadystatechange = function(){
 		if(xhr.readyState == 4 && xhr.status == 200){
 			let userReimb = JSON.parse(xhr.responseText);
 			let user = userReimb.user;
 			let reimbs = userReimb.uReimbs;
-			console.log(reimbs);
+			//console.log(reimbs);
 			if(reimbs.length > 0){
 				reimbs.forEach((reimb)=>{
 					let submitTime = reimb.submitTime;
@@ -379,9 +379,12 @@ function loadPastReimbs(){
 					let rMonth = new Date(resolveTime).getMonth();
 					let rDay = new Date(resolveTime).getDate();
 					let rTime = `${rMonth}/${rDay}/${rYear}`;
-					console.log('Reimb.Resolvetime = null?: '+reimb.resolveTime == null);
-					if(resolveTime == null || !resolveTime){
-						resolveTime == 'N/A';
+					//console.log(reimb.statusId);
+					//console.log((reimb.statusId)+' should equal 1: '+(reimb.statusId !== 1));
+					if(resolveTime == null/*reimb.statusId != 1*/){
+						rTime = 'N/A';
+						//console.log(resolveID);
+						resolveID = 'N/A';
 					}
 					let format = `<tr><td>${sTime}</td><td>$${amount}</td><td>${desc}</td>
 						<td>${status}</td><td>${type}</td><td>${rTime}</td></tr>`;
@@ -398,18 +401,17 @@ function loadPastReimbs(){
 	xhr.send()
 }
 function loadEditReimbursements(){
-	console.log('loading all editable user reimbursements.');
+	//console.log('loading all editable user reimbursements.');
 	let xhr = new XMLHttpRequest();
 	xhr.onreadystatechange = function(){
 		if(xhr.readyState == 4 && xhr.status == 200){
 			let userReimb = JSON.parse(xhr.responseText);
 			let user = userReimb.user;
 			let reimbs = userReimb.uReimbs;
-			console.log('reimbs = '+reimbs);
+			//console.log('reimbs = '+reimbs);
 			if(reimbs.length > 0){
 				reimbs.forEach((reimb)=>{
 					let submitID = reimb.authorId;
-					let resolveID = reimb.resolverId;
 					let submitTime = reimb.submitTime;
 					let sYear = new Date(submitTime).getFullYear();
 					let sMonth = new Date(submitTime).getMonth();
@@ -449,7 +451,7 @@ function loadEditReimbursements(){
 						type = 'Other';
 					}
 					let adminOption = reimb.action;
-					let format = `<tr><td>${submitID}</td><td>${resolveID}</td><td>${sTime}</td><td>$${amount}</td><td>${desc}</td>
+					let format = `<tr><td>${submitID}</td><td>${sTime}</td><td>$${amount}</td><td>${desc}</td>
 						<td>${theStatus}</td><td>${type}</td><td><select class="form-control" id="adminChoice"><option>&nbsp;</option><option>Approve</option><option>Deny</option></td></tr>`;
 					$('table tbody').append(format);
 
@@ -459,23 +461,23 @@ function loadEditReimbursements(){
 				$('#Reimbursement-Alert').html('No reimbursements have been submitted.');
 			}
 			document.getElementById('SubmitAction').addEventListener('click', function(){
-				console.log('submit button hit');
-				console.log('does user carry over? '+user);
+				//console.log('submit button hit');
+				//console.log('does user carry over? '+user);
 				let changedReimb = [];
 				for (let i = 0; i < reimbs.length; i++){
 					if(document.getElementsByClassName('form-control')[i].value == 'Approve' || document.getElementsByClassName('form-control')[i].value == 'Deny'){
 						reimbs[i].action = document.getElementsByClassName('form-control')[i].value;
 						changedReimb.push(reimbs[i]);
-						console.log('pushed an object');
+						//console.log('pushed an object');
 					}
-					console.log(reimbs[i]+' at position '+i+' has just been passed.');
+					//console.log(reimbs[i]+' at position '+i+' has just been passed.');
 				}
 				let json = JSON.stringify(changedReimb);
 				let xhr2 = new XMLHttpRequest();
 				xhr2.onreadystatechange = function(){
 					if(xhr2.readyState == 4 && xhr2.status == 200){
-						console.log(changedReimb);
-						console.log('total of changed reimbs: '+changedReimb.length);
+						//console.log(changedReimb);
+						//console.log('total of changed reimbs: '+changedReimb.length);
 						let getCode = JSON.parse(xhr.responseText)
 						if(getCode == 1){
 							alert('Username taken, try a different one!');
@@ -486,11 +488,11 @@ function loadEditReimbursements(){
 						else{
 							alert('Successful Submission');
 							loadHomeAdmin();
-							console.log('valid user registration');
+							//console.log('valid user registration');
 						}
 					}
 				}
-				console.log(json);
+				//console.log(json);
 				xhr2.open('POST','adminSubmit',true);
 				xhr2.send(json);
 			});
@@ -500,35 +502,35 @@ function loadEditReimbursements(){
 	xhr.send()
 }
 function homePageFunctions(){
-	console.log('loading home info and buttons');
+	//console.log('loading home info and buttons');
 	let xhr = new XMLHttpRequest();
 	xhr.onreadystatechange = function(){
 		if(xhr.readyState == 4 && xhr.status == 200){
-			console.log('in the callback function');
+			//console.log('in the callback function');
 			let userInfo = JSON.parse(xhr.responseText);
-			console.log(userInfo);
+			//console.log(userInfo);
 			$('#user-fn').html(userInfo.firstName);
 			document.getElementById('new-reimbs').addEventListener('click',newReimbursementPage);
 		}
-		console.log('should be calling the servlet here')
+		//console.log('should be calling the servlet here')
 	}
 	xhr.open('GET','user.loadUser',true);
 	xhr.send();
 }
 function loadAdminFunctions(){
-	console.log('in the admin functions');
+	//console.log('in the admin functions');
 	let xhr = new XMLHttpRequest();
 	xhr.onreadystatechange = function(){
 		if(xhr.readyState == 4 && xhr.status == 200){
-			console.log('in the callback function for admin');
+			//console.log('in the callback function for admin');
 			let userInfo = JSON.parse(xhr.responseText);
-			console.log(userInfo);
+			//console.log(userInfo);
 			$('#user-fn').html(userInfo.firstName);
 			document.getElementById('new-reimbs').addEventListener('click',newReimbursementPageAdmin);
 
 
 		}
-		console.log('should be calling the servlet here')
+		//console.log('should be calling the servlet here')
 	}
 	xhr.open('GET','admin.loadUser',true);
 	xhr.send();
@@ -539,15 +541,20 @@ function submitReimbursement(){
 	let type = document.getElementById('type').value;
 	let reimbInfo = [amount, desc, type];
 	let json = JSON.stringify(reimbInfo);
+	let amountRegEx = /[a-zA-Z/\/\,\-\+\*!@#$%^&()]/;
 	if(amount=='' || desc=='' || type ==''){
-		console.log('bad alert happens here');
+		//console.log('bad alert happens here');
 		alert('Please enter all fields!');
 	}
+	else if(amountRegEx.test(amount)){
+		alert('Invalid amount');
+	}
 	else{
-		console.log('else called');
+		//console.log('else called');
+		//console.log('The regEx: '+amountRegEx.test(amount))
 		let xhr = new XMLHttpRequest;
 		xhr.onreadystatechange = function(){
-			console.log('request sent');
+			//console.log('request sent');
 			if(xhr.readyState == 4 && xhr.status == 200){
 				let getCode = JSON.parse(xhr.responseText)
 				if(getCode == 1){
@@ -555,7 +562,7 @@ function submitReimbursement(){
 				}
 				else{
 					loadHome();
-					console.log('successful submission');
+					//console.log('successful submission');
 				}
 			}
 		}
@@ -574,18 +581,18 @@ function adminRegisterButton(){
 	let json = JSON.stringify(userInfo);
 	let emailRegEx = /^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$/;
 	if(fn=='' || ln=='' || un =='' || pw == ''|| email == ''){
-		console.log('bad alert happens here');
+		//console.log('bad alert happens here');
 		alert('Please enter all fields!');
 	}
 	else if(!emailRegEx.test(email)){
-		console.log('bad alert happens here');
+		//console.log('bad alert happens here');
 		alert('Invalid Email');
 	}
 	else{
-		console.log('else called');
+		//console.log('else called');
 		let xhr = new XMLHttpRequest;
 		xhr.onreadystatechange = function(){
-			console.log('request sent');
+			//console.log('request sent');
 			if(xhr.readyState == 4 && xhr.status == 200){
 				let getCode = JSON.parse(xhr.responseText)
 				if(getCode == 1){
@@ -597,7 +604,7 @@ function adminRegisterButton(){
 				else{
 					alert('Successful Admin Registration');
 					loadHomeAdmin();
-					console.log('valid user registration');
+					//console.log('valid user registration');
 				}
 			}
 		}
@@ -607,11 +614,11 @@ function adminRegisterButton(){
 	}
 }
 function newReimbursementPageAdmin(){
-	console.log('in newReimbursementPage()');
+	//console.log('in newReimbursementPage()');
 
 	let xhr = new XMLHttpRequest();
 	xhr.onreadystatechange = function(){
-		console.log(xhr.readystate);
+		//console.log(xhr.readystate);
 		if(xhr.readyState == 4 && xhr.status == 200){
 			$('#view').html(xhr.responseText);
 			// document.getElementById('view').innerHTML = xhr.responseText;
@@ -627,17 +634,17 @@ function newReimbursementPageAdmin(){
 			document.getElementById('registerAdminPage').removeAttribute('hidden', false);
 			document.getElementById('submitReimb').addEventListener('click', submitReimbursementAdmin);
 		}
-		console.log('past the if statement in home');
+		//console.log('past the if statement in home');
 	}
 	xhr.open('GET', 'NewReimbPage.view', true);
 	xhr.send();
 }
 function loadReimbsAdmin(){
-	console.log('in loadReimbsAdmin()');
+	//console.log('in loadReimbsAdmin()');
 
 	let xhr = new XMLHttpRequest();
 	xhr.onreadystatechange = function(){
-		console.log(xhr.readystate);
+		//console.log(xhr.readystate);
 		if(xhr.readyState == 4 && xhr.status == 200){
 			$('#view').html(xhr.responseText);
 			// document.getElementById('view').innerHTML = xhr.responseText;
@@ -653,20 +660,20 @@ function loadReimbsAdmin(){
 			document.getElementById('allReimbPage').removeAttribute('hidden', false);
 			document.getElementById('registerAdminPage').removeAttribute('hidden', false);
 		}
-		console.log('past the if statement in reimbs');
+		//console.log('past the if statement in reimbs');
 	}
 	xhr.open('GET', 'reimbs.view', true);
 	xhr.send();
 }
 function loadCurrentReimbs(){
-	console.log('loading current user reimbursements.');
+	//console.log('loading current user reimbursements.');
 	let xhr = new XMLHttpRequest();
 	xhr.onreadystatechange = function(){
 		if(xhr.readyState == 4 && xhr.status == 200){
 			let userReimb = JSON.parse(xhr.responseText);
 			let user = userReimb.user;
 			let reimbs = userReimb.uReimbs;
-			console.log('reimbs = '+reimbs);
+			//console.log('reimbs = '+reimbs);
 			if(reimbs.length > 0){
 				reimbs.forEach((reimb)=>{
 					let submitTime = reimb.submitTime;
@@ -712,9 +719,12 @@ function loadCurrentReimbs(){
 					let rMonth = new Date(resolveTime).getMonth();
 					let rDay = new Date(resolveTime).getDate();
 					let rTime = `${rMonth}/${rDay}/${rYear}`;
-					console.log('the resolvetime is: '+resolveTime);
-					if(resolveTime == null | !resolveTime){
-						resolveTime == 'N/A';
+					//console.log(reimb.statusId);
+					//console.log((reimb.statusId)+' should equal 1: '+(reimb.statusId !== 1));
+					if(resolveTime == null/*reimb.statusId != 1*/){
+						rTime = 'N/A';
+						//console.log(resolveID);
+//						resolveID = 'N/A';
 					}
 					let format = `<tr><td>${sTime}</td><td>$${amount}</td><td>${desc}</td>
 						<td>${theStatus}</td><td>${type}</td><td>${rTime}</td></tr>`;
@@ -731,17 +741,17 @@ function loadCurrentReimbs(){
 	xhr.send();
 }
 function loadAllReimbursements(){
-	console.log('loading all user reimbursements.');
+	//console.log('loading all user reimbursements.');
 	let xhr = new XMLHttpRequest();
 	xhr.onreadystatechange = function(){
 		if(xhr.readyState == 4 && xhr.status == 200){
 			let userReimb = JSON.parse(xhr.responseText);
 			let user = userReimb.user;
 			let reimbs = userReimb.uReimbs;
-			console.log('reimbs = '+reimbs);
+			//console.log('reimbs = '+reimbs);
 			if(reimbs.length > 0){
 				reimbs.forEach((reimb)=>{
-					console.log(reimb.resolveTime);
+					//console.log(reimb.resolveTime);
 					let submitID = reimb.authorId;
 					let resolveID = reimb.resolverId;
 					let submitTime = reimb.submitTime;
@@ -783,16 +793,18 @@ function loadAllReimbursements(){
 						type = 'Other';
 					}
 					let resolveTime = reimb.resolveTime;
-					console.log('Please show this at line 787 ');
-					console.log(resolveTime);
-					let rTime = 'N/A';
-					console.log(reimb.statusId);
-					console.log((reimb.statusId)+' should equal 1: '+(reimb.statusId !== 1));
-					if(resolveTime != null/*reimb.statusId != 1*/){
-						let rYear = new Date(resolveTime).getFullYear();
-						let rMonth = new Date(resolveTime).getMonth();
-						let rDay = new Date(resolveTime).getDate();
-						rTime = `${rMonth}/${rDay}/${rYear}`;
+					//console.log('Please show this at line 787 ');
+					//console.log(resolveTime);
+					let rYear = new Date(resolveTime).getFullYear();
+					let rMonth = new Date(resolveTime).getMonth();
+					let rDay = new Date(resolveTime).getDate();
+					let rTime = `${rMonth}/${rDay}/${rYear}`;
+					//console.log(reimb.statusId);
+					//console.log((reimb.statusId)+' should equal 1: '+(reimb.statusId !== 1));
+					if(resolveTime == null/*reimb.statusId != 1*/){
+						rTime = 'N/A';
+						//console.log(resolveID);
+						resolveID = 'N/A';
 					}
 					let format = `<tr><td>${submitID}</td><td>${resolveID}</td><td>${sTime}</td><td>$${amount}</td><td>${desc}</td>
 						<td>${theStatus}</td><td>${type}</td><td>${rTime}</td></tr>`;
@@ -814,15 +826,19 @@ function submitReimbursementAdmin(){
 	let type = document.getElementById('type').value;
 	let reimbInfo = [amount, desc, type];
 	let json = JSON.stringify(reimbInfo);
+	let amountRegEx = /[a-zA-Z/\/\,\-\+\*!@#$%^&()]/;
 	if(amount=='' || desc=='' || type ==''){
-		console.log('bad alert happens here');
+		//console.log('bad alert happens here');
 		alert('Please enter all fields!');
 	}
+	else if(amountRegEx.test(amount)){
+		alert('Invalid amount');
+	}
 	else{
-		console.log('else called');
+		//console.log('else called');
 		let xhr = new XMLHttpRequest;
 		xhr.onreadystatechange = function(){
-			console.log('request sent');
+			//console.log('request sent');
 			if(xhr.readyState == 4 && xhr.status == 200){
 				let getCode = JSON.parse(xhr.responseText)
 				if(getCode == 1){
@@ -830,7 +846,7 @@ function submitReimbursementAdmin(){
 				}
 				else{
 					loadHomeAdmin();
-					console.log('successful submission');
+					//console.log('successful submission');
 				}
 			}
 		}

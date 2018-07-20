@@ -17,13 +17,13 @@ public class LogoutServlet extends HttpServlet{
 	private static final long serialVersionUID = 1L;
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException{
-		System.out.println("Request sent to the LogoutServlet.doGet()");
+		//System.out.println("Request sent to the LogoutServlet.doGet()");
 		if(req.getSession(false) == null) {
 			res.sendRedirect("index.html");
 		}
 		HttpSession session = req.getSession(false);
 		session.invalidate();
-		System.out.println("Session invalidated");
+		//System.out.println("Session invalidated");
 		res.sendRedirect("index.html");
 	}
 	@Override

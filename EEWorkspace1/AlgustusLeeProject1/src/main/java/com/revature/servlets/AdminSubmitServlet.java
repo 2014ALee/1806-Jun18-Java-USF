@@ -21,7 +21,7 @@ import com.revature.service.ErsService;
 public class AdminSubmitServlet extends HttpServlet{
 	private static final long serialVersionUID = 1L;
 	protected void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException{
-		System.out.println("Submitted reimbursement Servlet called");
+		////System.out.println("Submitted reimbursement Servlet called");
 		ErsService eservice = new ErsService();
 		HttpSession session = req.getSession();
 		Scanner scan = new Scanner(new InputStreamReader(req.getInputStream()));
@@ -35,27 +35,27 @@ public class AdminSubmitServlet extends HttpServlet{
 		Reimbursement[] reimbs = (Reimbursement[]) mapper.readValue(json, Reimbursement[].class);
 		
 		for(Reimbursement reimb : reimbs) {
-			System.out.println(reimb);
-			System.out.println(reimb.getAction().equals("Approve"));
+			////System.out.println(reimb);
+			////System.out.println(reimb.getAction().equals("Approve"));
 			if(reimb.getAction().equals("Approve")) {
-				System.out.println("One Approved");
+				//System.out.println("One Approved");
 				eservice.resolveReimbursement(currentUser, reimb, 2);
 			}
 			else if(reimb.getAction().equals("Deny")) {
-				System.out.println("One Denied");
+				//System.out.println("One Denied");
 				eservice.resolveReimbursement(currentUser, reimb, 3);
 			}
 			else {
-				System.out.println("Somehow, the action wasn't approve or deny. Error");
+				//System.out.println("Somehow, the action wasn't approve or deny. Error");
 				returnCode = 1;
 			}
 		}
 		
-//		System.out.println("reimb length: "+reimb.length);
-//		System.out.println("reimb tostring: "+reimb.toString());
+//		//System.out.println("reimb length: "+reimb.length);
+//		//System.out.println("reimb tostring: "+reimb.toString());
 //		for (int i = 0; i < reimb.length; i++) {
-//			System.out.println("number of reimbs "+ i);
-//			System.out.println("reimb: "+(Reimbursement[i]) reimb);
+//			//System.out.println("number of reimbs "+ i);
+//			//System.out.println("reimb: "+(Reimbursement[i]) reimb);
 //		}
 		
 		PrintWriter pw1 = res.getWriter();

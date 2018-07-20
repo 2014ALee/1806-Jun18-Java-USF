@@ -66,10 +66,10 @@ public class usersDaoImpl implements usersDao{
 				return true;
 			}
 		} catch (SQLException e) {
-			System.out.println("exception "+e+" was seen here");
+			//System.out.println("exception "+e+" was seen here");
 			e.printStackTrace();
 		}
-		System.out.println("everything was ignored.");
+		//System.out.println("everything was ignored.");
 		return false;
 	}
 	@Override
@@ -82,7 +82,7 @@ public class usersDaoImpl implements usersDao{
 			cstmt.registerOutParameter(2, OracleTypes.INTEGER);
 			cstmt.executeQuery();
 			ResultSet rs = cstmt.executeQuery();
-			System.out.println("Validating Username...");
+			//System.out.println("Validating Username...");
 			if((Integer)cstmt.getObject(2)== (Integer)0) {
 				return true; //There should be no selection when the usernames are alike. therefore the resultset
 				//should be 0
@@ -103,7 +103,7 @@ public class usersDaoImpl implements usersDao{
 			cstmt.registerOutParameter(2, OracleTypes.INTEGER);
 			cstmt.executeQuery();
 			ResultSet rs = cstmt.executeQuery();
-			System.out.println("Validating E-mail...");
+			//System.out.println("Validating E-mail...");
 			if((Integer)cstmt.getObject(2)== (Integer)0) {
 				return true; //There should be no selection when the emails are alike. therefore the resultset
 				//should be 0
@@ -117,7 +117,7 @@ public class usersDaoImpl implements usersDao{
 
 	@Override
 	public User setUser(String username, User user) {
-		System.out.println("setUser in action");
+		//System.out.println("setUser in action");
 		try(Connection conn = ConnectionFactory.getInstanceMethod().getConnection()){
 			String sql = "SELECT * FROM ERS_USERS WHERE ERS_USERNAME = ?";
 			PreparedStatement pstmt = conn.prepareStatement(sql);
@@ -131,7 +131,7 @@ public class usersDaoImpl implements usersDao{
 				user.setEmail(rs.getString(6));
 				user.setUserRoleId(rs.getLong(7));
 			}
-			System.out.println("Setuser Data: "+user.toString());
+			//System.out.println("Setuser Data: "+user.toString());
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

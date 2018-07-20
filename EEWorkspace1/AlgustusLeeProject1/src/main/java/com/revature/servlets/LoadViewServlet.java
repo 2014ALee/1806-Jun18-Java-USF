@@ -16,9 +16,9 @@ public class LoadViewServlet extends HttpServlet{
 	private static final long serialVersionUID = 1L;
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException{
-		System.out.println("LoadViewServlet get request called");
+		//System.out.println("LoadViewServlet get request called");
 		String nextView = new RequestViewHelper().process(req, resp);
-		System.out.println(nextView);
+		//System.out.println(nextView);
 		
 		req.getRequestDispatcher(nextView).forward(req, resp);
 	}

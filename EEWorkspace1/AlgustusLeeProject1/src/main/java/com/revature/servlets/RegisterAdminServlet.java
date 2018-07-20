@@ -18,7 +18,7 @@ import com.revature.service.ErsService;
 public class RegisterAdminServlet extends HttpServlet{
 	private static final long serialVersionUID = 1L;
 	protected void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException{
-		System.out.println("Register servlet post method called");
+		//System.out.println("Register servlet post method called");
 		ErsService eservice = new ErsService();
 		Scanner scan = new Scanner(new InputStreamReader(req.getInputStream()));
 		int returnCode = 0;
@@ -39,12 +39,12 @@ public class RegisterAdminServlet extends HttpServlet{
 				eservice.registerAdmin(un, pw, fn, ln, email);
 			}
 			else {
-				System.out.println("Create user failure, email taken");
+				//System.out.println("Create user failure, email taken");
 				returnCode = 2;
 			}
 		}
 		else {
-			System.out.println("Create user failure, username taken");
+			//System.out.println("Create user failure, username taken");
 			returnCode = 1;
 		}
 

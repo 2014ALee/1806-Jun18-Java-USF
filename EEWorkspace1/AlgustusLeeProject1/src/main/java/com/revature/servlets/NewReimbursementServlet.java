@@ -22,7 +22,7 @@ public class NewReimbursementServlet extends HttpServlet{
 	private static final long serialVersionUID = 1L;
 	
 	protected void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException{
-		System.out.println("New Reimbursement Servlet Called");
+		//System.out.println("New Reimbursement Servlet Called");
 		ErsService eservice = new ErsService();
 		HttpSession session = req.getSession();
 		Reimbursement temp = new Reimbursement();
@@ -55,9 +55,9 @@ public class NewReimbursementServlet extends HttpServlet{
 			break;
 		default:
 			returnCode = 1;
-			System.out.println("Error in newReimbursement");
+			//System.out.println("Error in newReimbursement");
 		}
-		System.out.println("Type Id: "+type);
+		//System.out.println("Type Id: "+type);
 		temp.setAmount(amount);
 		temp.setDescription(desc);
 		temp.setTypeId(type);
@@ -65,7 +65,7 @@ public class NewReimbursementServlet extends HttpServlet{
 		if(returnCode == 0) {
 			eservice.submitReimbursement(u, temp);
 		}
-		System.out.println("Return code for new reimbursement: "+returnCode);
+		//System.out.println("Return code for new reimbursement: "+returnCode);
 		
 		PrintWriter pw1 = res.getWriter();
 		res.setContentType("application/json");

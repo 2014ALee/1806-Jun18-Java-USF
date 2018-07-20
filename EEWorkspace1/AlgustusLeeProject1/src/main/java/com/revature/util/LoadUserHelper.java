@@ -8,7 +8,7 @@ import com.revature.models.User;
 
 public class LoadUserHelper {
 	public Object process(HttpServletRequest req, HttpServletResponse res) {
-		System.out.println("UserHelper called");
+		//System.out.println("UserHelper called");
 		switch(req.getRequestURI()) {
 		case "/AlgustusLeeProject1/user.loadUser":
 			

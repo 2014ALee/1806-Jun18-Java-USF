@@ -17,7 +17,7 @@ public class LoadUserServlet extends HttpServlet{
 	private static final long serialVersionUID = 1L;
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException{
-		System.out.println("get Request in the user servlet");
+		//System.out.println("get Request in the user servlet");
 		Object user = new LoadUserHelper().process(req, res);
 		ObjectMapper mapper = new ObjectMapper();
 		String json = mapper.writeValueAsString(user);
@@ -27,7 +27,7 @@ public class LoadUserServlet extends HttpServlet{
 		pw.write(json);
 	}
 	protected void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException{
-		System.out.println("Somehow calling post");
+		//System.out.println("Somehow calling post");
 		doGet(req, res);
 	}
 

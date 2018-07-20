@@ -5,7 +5,7 @@ import javax.servlet.http.HttpServletResponse;
 
 public class RequestViewHelper {
 	public String process(HttpServletRequest req, HttpServletResponse res) {
-		System.out.println("Processing called somehow");
+		//System.out.println("Processing called somehow");
 		switch (req.getRequestURI()) {
 		case "/AlgustusLeeProject1/login.view":
 			return "partials/login.html";

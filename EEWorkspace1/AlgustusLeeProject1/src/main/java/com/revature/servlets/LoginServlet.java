@@ -21,7 +21,7 @@ public class LoginServlet extends HttpServlet{
 	private static final long serialVersionUID = 1L;
 	
 	protected void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException{
-		System.out.println("LoginServlet doPost called");
+		//System.out.println("LoginServlet doPost called");
 		int responseCode =0;
 		ErsService eservice = new ErsService();
 		Scanner scan = new Scanner(new InputStreamReader(req.getInputStream()));
@@ -34,15 +34,15 @@ public class LoginServlet extends HttpServlet{
 		String[] credentials = mapper.readValue(json, String[].class);
 		String username = credentials[0];
 		String password = credentials[1];
-		System.out.println("Values read");
+		//System.out.println("Values read");
 		User temp = new User();
-		System.out.println("Right before the if statement");
-		System.out.println("Checkusername says: "+eservice.checkUsername(username)+"(Should be false)");
+		//System.out.println("Right before the if statement");
+		//System.out.println("Checkusername says: "+eservice.checkUsername(username)+"(Should be false)");
 		if(!eservice.checkUsername(username)) {
-			System.out.println("Checkusername says: "+eservice.checkUsername(username)+"(Should be false)");
+			//System.out.println("Checkusername says: "+eservice.checkUsername(username)+"(Should be false)");
 			if(eservice.validLogin(username, password)) {
 				temp = eservice.setUser(username, temp);
-				System.out.println("role id: "+temp.getUserRoleId());
+				//System.out.println("role id: "+temp.getUserRoleId());
 				if(temp.getUserRoleId() == 2) {
 					responseCode = 2;
 				}
@@ -51,12 +51,12 @@ public class LoginServlet extends HttpServlet{
 				}
 			}
 			else {
-				System.out.println("invalid password");
+				//System.out.println("invalid password");
 				temp = null;
 			}
 		}
 		else {
-			System.out.println("Temp confirmed null");
+			//System.out.println("Temp confirmed null");
 			temp = null;
 		}
 		HttpSession session = req.getSession();
@@ -67,7 +67,7 @@ public class LoginServlet extends HttpServlet{
 		
 		String userJSON = mapper.writeValueAsString(responseCode);
 		pw.write(userJSON);
-		System.out.println("What's being sent back? It's this: "+userJSON);
+		//System.out.println("What's being sent back? It's this: "+userJSON);
 		scan.close();
 	}
 

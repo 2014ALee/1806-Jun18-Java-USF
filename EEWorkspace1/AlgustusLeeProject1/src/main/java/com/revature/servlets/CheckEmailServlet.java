@@ -21,7 +21,7 @@ public class CheckEmailServlet extends HttpServlet{
 	 */
 	private static final long serialVersionUID = 1L;
 	protected void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException{
-		System.out.println("Check Email servlet post method called");
+		//System.out.println("Check Email servlet post method called");
 		ErsService eservice = new ErsService();
 		Scanner scan = new Scanner(new InputStreamReader(req.getInputStream()));
 		int returnCode = 0;

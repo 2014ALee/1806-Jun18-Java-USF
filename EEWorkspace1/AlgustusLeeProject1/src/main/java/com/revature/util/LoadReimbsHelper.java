@@ -13,7 +13,7 @@ import com.revature.service.ErsService;
 
 public class LoadReimbsHelper {
 	public Object process(HttpServletRequest req, HttpServletResponse res) {
-		System.out.println("ReimbHelper called");
+		//System.out.println("ReimbHelper called");
 		ErsService eservice = new ErsService();
 		switch(req.getRequestURI()) {
 		case "/AlgustusLeeProject1/reimbs.loadReimbs":

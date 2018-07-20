@@ -18,7 +18,7 @@ public class LoadReimbsServlet extends HttpServlet{
 	private static final long serialVersionUID = 1L;
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException{
-		System.out.println("get Request in th reimbs servlet");
+		////System.out.println("get Request in th reimbs servlet");
 		Object reimbs = new LoadReimbsHelper().process(req, res);
 		ObjectMapper mapper = new ObjectMapper();
 		String json = mapper.writeValueAsString(reimbs);
@@ -28,7 +28,7 @@ public class LoadReimbsServlet extends HttpServlet{
 		pw.write(json);
 	}
 	protected void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException{
-		System.out.println("Somehow calling post");
+		////System.out.println("Somehow calling post");
 		doGet(req, res);
 	}
 
