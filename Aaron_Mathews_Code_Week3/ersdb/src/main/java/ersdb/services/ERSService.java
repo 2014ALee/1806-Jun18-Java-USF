@@ -13,10 +13,7 @@ public class ERSService {
 	
 	static UserDAO userDAO = new UserDAOImpl();
 	static ReimbursementDAO reimbDAO = new ReimbursementDAOImpl();
-	
-	public static void main(String[] args) {
-		unameAvailable("hello");
-	}
+
 	
 	public User createNewUser(User user) {
 		User newUser = null;
@@ -31,10 +28,23 @@ public class ERSService {
 		return newUser;
 	}
 	
+	public Reimbursement createReimbursement(Reimbursement newReimb) {
+		Reimbursement reimb = reimbDAO.createReimbursement(newReimb);
+		if (reimb.getAuthor() == 0) {
+			return null;
+		}
+		return reimb;
+	}
+	
 	public User getUserById(int userId) {
 		User user = userDAO.getUserById(userId);
 		
 		return user;
+	}
+	
+	public Reimbursement getReimbursementById(int reimbid) {
+		Reimbursement reimb = reimbDAO.getReimbursementById(reimbid);
+		return reimb;
 	}
 	
 	public User getUserByUsername(String username) {
@@ -73,6 +83,11 @@ public class ERSService {
 		return user;
 	}
 	
+	public Reimbursement resolveReimbursement(Reimbursement updatedReimb) {
+		Reimbursement reimb = reimbDAO.resolveReimbursement(updatedReimb);
+		return reimb;
+	}
+	
 	public ArrayList<User> getUsersByRoleId(int roleId) {
 		ArrayList<User> usersByRole = userDAO.getUsersByRoleId(roleId);
 		
@@ -95,7 +110,7 @@ public class ERSService {
 		return reimbs;
 	}
 
-	private static boolean unameAvailable(String username) {
+	public boolean unameAvailable(String username) {
 		User user = null;
 		
 		user = userDAO.getUserByUsername(username);
@@ -109,7 +124,7 @@ public class ERSService {
 		return false;
  	}
 
-	private static boolean emailAvailable(String email) {
+	public boolean emailAvailable(String email) {
 		User user = null;
 		user = userDAO.getUserByEmail(email);
 		

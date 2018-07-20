@@ -33,6 +33,18 @@ h3 {
 	background-color: #CCCCCC !important;
 }
 
+#view {
+	top: 56px;
+	left: 270px;
+	margin: 10px;
+	padding: 20px;
+}
+
+#reimb-container {
+	top: 56px;
+	padding: 10px;
+}
+
 .sidenav {
     height: 100%; /* Full-height: remove this if you want "auto" height */
      /* Set the width of the sidebar */

@@ -10,25 +10,25 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import ersdb.util.LoadInfoHelper;
 
-@WebServlet("*.loadinfo")
-public class LoadInfoServlet extends HttpServlet {
+import ersdb.util.ValidationHelper;
+
+@WebServlet("*.validate")
+public class ValidationServlet extends HttpServlet {
 
 	private static final long serialVersionUID = 1L;
-	
+
 	@Override
-	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		System.out.println("[LOG] - Request sent to front controller, LoadInfoServlet.doGet()");
+	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		System.out.println("[LOG] - Request sent to front controller, ValidationServlet.doPost()");
 		
-		Object info = new LoadInfoHelper().process(req, resp);
-//		System.out.println(info);
+		String input = new ValidationHelper().process(req, resp);
+		
 		ObjectMapper mapper = new ObjectMapper();
-		String json = mapper.writeValueAsString(info);
+		String json = mapper.writeValueAsString(input);
 		
 		PrintWriter pw = resp.getWriter();
 		resp.setContentType("application/json");
 		pw.write(json);
 	}
-
 }

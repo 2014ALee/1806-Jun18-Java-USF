@@ -262,7 +262,7 @@ public class ReimbursementDAOImpl implements ReimbursementDAO {
 		ArrayList<Reimbursement> reimbs = new ArrayList<>();
 		
 		try (Connection conn = ConnectionFactory.getInstance().getConnection();) {
-			String sql = "SELECT * FROM ers_reimbursements";
+			String sql = "SELECT * FROM ers_reimbursement";
 			
 			Statement stat = conn.createStatement();
 			ResultSet rs = stat.executeQuery(sql);

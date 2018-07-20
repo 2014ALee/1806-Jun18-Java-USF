@@ -23,6 +23,28 @@ public class RequestViewHelper {
 			return "partials/userReim.html";
 		case "/ersdb/reimbursements.view":
 			return "partials/reimbursements.html";
+		case "/ersdb/submitReimb.view":
+			return "partials/submitReimb.html";
+		case "/ersdb/reimbDetails.view":
+			return "partials/reimbDetails.html";
+		case "/ersdb/userProfile.view":
+			return "partials/userProfile.html";
+		case "/ersdb/adminTools.view":
+			return "partials/adminTools.html";
+		case "/ersdb/adminViewUsers.view":
+			return "partials/adminViewUsers.html";
+		case "/ersdb/adminUserDetails.view":
+			return "partials/adminUserDetails.html";
+		case "/ersdb/managerTools.view":
+			return "partials/managerTools.html";
+		case "/ersdb/managerViewUsers.view":
+			return "partials/managerViewUsers.html";
+		case "/ersdb/managerUserDetails.view":
+			return "partials/managerUserDetails.html";
+		case "/ersdb/managerReimbDetails.view":
+			return "partials/managerReimbDetails.html";
+		case "/ersdb/managerViewReimb.view":
+			return "partials/managerViewReimb.html";
 		default:
 			return null;
 		}

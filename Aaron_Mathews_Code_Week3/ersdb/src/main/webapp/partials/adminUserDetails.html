@@ -1,0 +1,42 @@
+<div class="container" id="data-container">
+
+	<h3>User: <span id="userDetailId"></span></h3>
+	
+	<div class="form-group">
+		<label for="firstname">First Name</label>
+		<input type="text" class="form-control" id="firstname" readonly>
+	</div>
+	
+	<div class="form-group">
+		<label for="lastname">Last Name</label>
+		<input type="text" class="form-control" id="lastname" readonly>
+	</div>
+	
+	<div class="form-group">
+		<label for="username">Username</label>
+		<input type="text" class="form-control" id="username" readonly>
+	</div>
+	
+	<div class="form-group">
+		<label for="email">Email</label>
+		<input type="text" class="form-control" id="email" readonly>
+	</div>
+	
+	<div class="form-group">
+		<label for="role">Role</label>
+		<input type="text" class="form-control" id="role"readonly>
+	</div>
+	
+	<div class="form-group" id="changeRoleOption">
+	  <label for="changeRole">Change Role</label>
+	  <select class="form-control" id="changeRole">
+	  	<option value="" disabled selected id="userCurrentRole">Choose Role</option>
+	    <option value="1">Administrator</option>
+	    <option value="2">Manager</option>
+	    <option value="3">User</option>
+	  </select>
+	</div>
+	
+	<button type="submit" class="btn btn-primary" id="saveRole" style="display:none">Save Role Change</button>
+	
+</div>

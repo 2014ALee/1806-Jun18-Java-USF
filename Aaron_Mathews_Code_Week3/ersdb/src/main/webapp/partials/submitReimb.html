@@ -1,0 +1,26 @@
+<div class="container" id="data-container">
+
+	<h3>Submit Reimbursement</h3>
+	
+	<div class="form-group">
+	  <label for="typeSelection">Type of Reimbursement</label>
+	  <select class="form-control" id="typeSelection">
+	    <option value="1">Lodging</option>
+	    <option value="2">Travel</option>
+	    <option value="3">Food</option>
+	    <option value="4">Other</option>
+	  </select>
+	</div>
+	
+	<div class="form-group">
+		<label for="amount">Amount</label>
+		<input type="number" class="form-control" id="amount" placeholder="Enter amount here:">
+	</div>
+	
+	<div class="form-group">
+		<label for="description">Description</label>
+		<input type="text" class="form-control" id="description" placeholder="Enter description here: (If the type of reimbursement is 'Other', please explain here.)">
+	</div>
+	
+	<button type="submit" class="btn btn-primary" id="submitReimb">Submit</button>
+</div>

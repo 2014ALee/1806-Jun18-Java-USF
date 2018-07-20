@@ -1,0 +1,31 @@
+<!DOCTYPE hibernate-configuration PUBLIC
+        "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+        
+<hibernate-configuration>
+	
+	<!-- Configure Session Factory -->
+	
+	<session-factory>
+		<!-- Driver, url, username, password -->
+		<property name="hibernate.connection.driver_class">oracle.jdbc.driver.OracleDriver</property>
+		<property name="hibernate.connection.url">jdbc:oracle:thin:@orm-demo-db.c8azt1nhtup5.us-east-2.rds.amazonaws.com:1521:ORCL</property>
+		<property name="hibernate.connection.user">admin</property>
+		<property name="hibernate.connection.password">p4ssw0rd</property>
+		
+		<!-- JDBC connection pool settings -->
+		<property name="connection.pool_size">1</property>
+		
+		<!-- Select sql dialect -->
+		<property name="dialect">org.hibernate.dialect.Oracle10gDialect</property>
+		
+		<!-- Print any executed SQL to console. Should be disabled in production -->
+		<property name="show_sql">true</property>
+		
+		<!-- Set the current session context -->
+		<property name="current_session_context_class">thread</property>
+		
+		<!-- Include persistence mapping file for employee class -->
+		<mapping resource="employee.hbm.xml"/>
+	</session-factory>
+</hibernate-configuration>
