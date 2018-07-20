@@ -37,4 +37,22 @@ public class BankDaoServices {
 		
 		return user;
 	}
+	
+	public Users getAllUsersReimb() {
+		ImplementReimbursement all = new ImplementReimbursement();
+		ArrayList<Reimbursement> array = new ArrayList<Reimbursement>();
+		
+		array = all.getAllReimbursements();
+		Users temp = new Users();
+		
+		temp.setMyReimb(array);
+		
+		return temp;
+	}
+	
+	public boolean updateReimb(int reimbId, int resolverId, int statusId) {
+		ImplementReimbursement update = new ImplementReimbursement();
+		
+		return update.update(reimbId, resolverId, statusId);
+	}
 }

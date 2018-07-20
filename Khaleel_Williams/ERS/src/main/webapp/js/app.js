@@ -1,12 +1,12 @@
 window.onload = function() {
-	console.log(9);
+	console.log(0);
 	loadLogin();
 	$('#toLogin').on('click', loadLogin);
 	$('#toRegister').on('click', loadRegister);
-//	$('#toHome').on('click', loadHome);
-//	$('#toLogout').on('click', logout);	
+	$('#toLogout').on('click', logout);	
 }
 
+let idList = [];
 
 function loadLogin() {
 	console.log("In loadLogin");
@@ -18,20 +18,19 @@ function loadLogin() {
 		if(xhr.readyState == 4 && xhr.status == 200) {
 			$('#view').html(xhr.responseText);
 			setEventListener();
-			
+			$('#toRegister').show();
+			$('#toLogin').hide();
+			$('#toLogout').hide();
+			$('#login-message').hide();
 		}
-
 	}
+	
 	xhr.open('GET', 'login.view', true);
 	xhr.send();
 }
 function setEventListener() {
 	console.log('in setEventListener');
 
-//	$('#toLogin').hide();
-//	$('#toLogout').hide();
-//	$('#toRegister').show();
-//	$('#login-message').hide();
 	$('#submitLogin').on('click', login);
 }
 
@@ -46,20 +45,17 @@ function loadRegister(){
 		if (xhr.readyState == 4 && xhr.status == 200) {
 			$('#view').html(xhr.responseText);
 			setEventListenersForRegister();
-			
-			
+			$('#toRegister').hide();
+			$('#toLogin').show();
+			$('#toLogout').hide();
 		}
 	}
-
-
+	
 	xhr.open('GET', 'register.view', true);
 	xhr.send();
 }
 
 function setEventListenersForRegister(){
-	//document.getElementById('reg-username').setEventListener('blur', somefunction)
-	
-	//$('#toRegister').hide();
 	$('#register').on('click', register);
 	console.log("inside setEventListenersForRegister");
 }
@@ -90,7 +86,7 @@ function register(){
 	
 	xhr.onreadystatechange	= function() {
 		if(xhr.readyState == 4 && xhr.status == 200) {
-			//$('#message').hide();
+			$('#message').hide();
 			alert('Enrollment successful! Please login using your credentials');
 			loadLogin();	
 		}
@@ -112,6 +108,9 @@ function loadHome(){
 			//document.getElementById('view').html(xhr.responseText);
 			$('#view').html(xhr.responseText);
 			eventForHome();
+			$('#toLogin').hide();
+			$('#toLogout').show();
+			$('toRegister').hide();
 		}
 	}
 	
@@ -126,6 +125,217 @@ function eventForHome(){
 	$('#showReimb').on('click', showReimb);
 }
 
+function managerView(){
+	console.log("in managerView");
+
+	let xhr = new XMLHttpRequest();
+
+	xhr.onreadystatechange = function() {
+		if(xhr.readyState == 4 && xhr.status == 200) {
+			//document.getElementById('view').html(xhr.responseText);
+			$('#view').html(xhr.responseText);
+			eventForManager();
+			$('#toLogin').hide();
+			$('#toLogout').show();
+			$('toRegister').hide();
+		}
+	}
+	
+	xhr.open('GET', 'manager.view', true);
+	xhr.send();
+}
+
+function eventForManager(){
+	$('#showAllReimb').on('click', showAllReimb);
+	$('#submitAction').on('click', submitAction);
+}
+
+function showAllReimb(){
+
+	console.log('in showReimb()');
+	//reinjects the view so to not reappend
+	managerView();
+	
+	let xhr = new XMLHttpRequest();
+
+	xhr.onreadystatechange = function() {
+
+		if(xhr.readyState == 4 && xhr.status == 200) {
+			let user = JSON.parse(xhr.responseText);
+			idList = []
+			idList = user.myReimb;
+			
+			if(user == null) {
+				$('#login-message').show();
+				$('#login-message').html('Something went wrong!');
+				console.log("Failed to get users and its list");
+
+			} else {
+				//alert('got user with list!');
+				console.log("got list successfuly!");
+				//$('#toLogin').hide();
+				$('#toLogout').show();
+				
+				
+				for (let i = 0; i < idList.length; i++){
+					let table = document.getElementById("table");
+                    
+					let tr = document.createElement("tr");
+					tr.setAttribute("id", idList[i].reimbId)
+					
+					
+					let td = document.createElement("td");
+					let txt = document.createTextNode(idList[i].reimbId);
+					td.appendChild(txt);
+					tr.appendChild(td);
+					
+					let td2 = document.createElement("td");
+					let txt2 = document.createTextNode(`$`+idList[i].amount);
+					td2.appendChild(txt2);
+					tr.appendChild(td2);
+					
+					let td3 = document.createElement("td");
+					let txt3 = document.createTextNode(idList[i].sumbitted);
+					td3.appendChild(txt3);
+					tr.appendChild(td3);
+					
+					let td4 = document.createElement("td");
+					let txt4 = document.createTextNode(idList[i].resolved);
+					td4.appendChild(txt4);
+					tr.appendChild(td4);
+					
+					let td5 = document.createElement("td");
+					let txt5 = document.createTextNode(idList[i].description);
+					td5.appendChild(txt5);
+					tr.appendChild(td5);
+					
+					let td6 = document.createElement("td");
+					let txt6 = document.createTextNode(idList[i].receipt);
+					td6.appendChild(txt6);
+					tr.appendChild(td6);
+					
+					let td7 = document.createElement("td");
+					let txt7 = document.createTextNode(idList[i].author);
+					td7.appendChild(txt7);
+					tr.appendChild(td7);
+					
+					let td8 = document.createElement("td");
+					let txt8 = document.createTextNode(idList[i].resolver);
+					td8.appendChild(txt8);
+					tr.appendChild(td8);
+					
+					let td9 = document.createElement("td");
+					let id = '';
+					switch(idList[i].statusId){
+					case 1:
+						id = 'PENDING';
+						//console.log("id = " + id);
+						break;
+					case 2:
+						id = 'APPROVED';
+						//console.log("id = " + id);
+						break;
+					case 3:
+						id = 'DENIED';
+						//console.log("id = " + id);
+						break;
+					dafault:
+						id = 'DEFAULT'
+						console.log('could not get status id')
+					}
+					let txt9 = document.createTextNode(id);
+					td9.appendChild(txt9);
+					tr.appendChild(td9);
+					
+					let td10 = document.createElement("td");
+					let type = '';
+					switch(idList[i].typeId){
+					case 1:
+						type = 'LODGING';
+						//console.log("type = " + type);
+						break;
+					case 2:
+						type = 'TRAVEL';
+						//console.log("type = " + type);
+						break;
+					case 3:
+						type = 'FOOD';
+						//console.log("type = " + type);
+						break;
+					case 4:
+						type = 'OTHER';
+						//console.log("type = " + type);
+						break;
+					dafault:
+						type = 'DEFAULT'
+						console.log('could not get status type')
+					}
+					let txt10 = document.createTextNode(type);
+					td10.appendChild(txt10);
+					tr.appendChild(td10);
+					
+					let td11 = document.createElement("td");
+					let select = document.createElement("select");
+					select.setAttribute('id', 'select' + idList[i].reimbId);
+					
+					let opt = document.createElement("option")
+					let option = document.createElement("option");
+					let option1 = document.createElement("option");
+					let tx = document.createTextNode("DENY");
+					let tx1 = document.createTextNode("APPROVE");
+					
+					option.appendChild(tx);
+					option1.appendChild(tx1);
+					
+					opt.setAttribute('value', 'Nothing');
+					option.setAttribute('value', 'DENY');
+					option1.setAttribute('value', 'APPROVE');
+					
+					select.appendChild(opt);
+					select.appendChild(option);
+					select.appendChild(option1);
+					
+					td11.appendChild(select);
+					tr.appendChild(td11);
+					
+					table.appendChild(tr);
+					
+					//idList.push(list[i].reimbId);
+				}
+			}
+		}
+	}
+
+	xhr.open('GET', 'showAllReimb', true);    //what is application/json for?
+	xhr.setRequestHeader('Content-type', 'application/json');
+	xhr.send();
+
+}
+function submitAction(){
+	console.log('sumbitAction register function is called');
+	
+	for(let i = 0; i < idList.length; i++){
+		idList[i].act = document.getElementById('select'+idList[i].reimbId).value;
+	}
+	//let id = document.getElementById(idList[0].reimbId);
+	//console.log("val=" + document.getElementById('select'+idList[0].reimbId).value);
+	
+	let json = JSON.stringify(idList);
+	
+	let xhr = new XMLHttpRequest();
+	
+	xhr.onreadystatechange	= function() {
+		if(xhr.readyState == 4 && xhr.status == 200) {
+			//$('#message').hide();
+			alert('Reimbursements Modified');
+			managerView();	
+		}
+	}
+	
+	xhr.open('POST', 'update', true);
+	xhr.setRequestHeader('Content-type', 'application/json');
+	xhr.send(json);
+}
 
 function login() {
 	console.log('in login()');
@@ -152,7 +362,12 @@ function login() {
 
 			} else {
 				alert('Login successful!');
-				loadHome();
+				if (user.roleId != 1){
+					loadHome();
+				} else {
+					managerView();
+				}
+	
 				console.log(`User id: ${user.userId} login successful!`)
 				//$('#toLogin').hide();
 				$('#toLogout').show();
@@ -165,6 +380,7 @@ function login() {
 	xhr.send(json);
 }
 
+//submitting reimbursement view
 function viewReimb() {
 	console.log("In viewReimb");
 
@@ -175,7 +391,9 @@ function viewReimb() {
 		if(xhr.readyState == 4 && xhr.status == 200) {
 			$('#view').html(xhr.responseText);
 			eventForReimb();
-			
+			$('#toLogin').hide();
+			$('#toLogout').show();
+			$('toRegister').hide();
 		}
 
 	}
@@ -189,9 +407,10 @@ function eventForReimb(){
 }
 
 function showReimb(){
-
 	console.log('in showReimb()');
-
+	//reinjects the view so to not reappend
+	loadHome();
+	
 	let xhr = new XMLHttpRequest();
 
 	xhr.onreadystatechange = function() {
@@ -201,7 +420,7 @@ function showReimb(){
 			let list = []
 			list = user.myReimb;
 			
-			console.log("user array list = " + list[0].reimbId );
+			//console.log("user array list id = " + list[0].reimbId );
 			
 			if(user == null) {
 				$('#login-message').show();
@@ -215,7 +434,7 @@ function showReimb(){
 				$('#toLogout').show();
 				for (let i = 0; i < list.length; i++){
 					let table = document.getElementById("table");
-
+                    
 					let tr = document.createElement("tr");
 					
 					let td = document.createElement("td");
@@ -224,11 +443,12 @@ function showReimb(){
 					tr.appendChild(td);
 					
 					let td2 = document.createElement("td");
-					let txt2 = document.createTextNode(list[i].amount);
+					let txt2 = document.createTextNode(`$`+list[i].amount);
 					td2.appendChild(txt2);
 					tr.appendChild(td2);
 					
-					let td3 = document.createElement("td");
+					let td3 = document.createElement("" +
+							"td");
 					let txt3 = document.createTextNode(list[i].sumbitted);
 					td3.appendChild(txt3);
 					tr.appendChild(td3);
@@ -258,13 +478,54 @@ function showReimb(){
 					td8.appendChild(txt8);
 					tr.appendChild(td8);
 					
+					//convert statusId from int to String
 					let td9 = document.createElement("td");
-					let txt9 = document.createTextNode(list[i].statusId);
+					let id = '';
+					switch(list[i].statusId){
+					case 1:
+						id = 'PENDING';
+						//console.log("id = " + id);
+						break;
+					case 2:
+						id = 'APPROVED';
+						//console.log("id = " + id);
+						break;
+					case 3:
+						id = 'DENIED';
+						//console.log("id = " + id);
+						break;
+					dafault:
+						id = 'DEFAULT'
+						console.log('could not get status id')
+					}
+					//console.log("id outside switch = " + id);
+					let txt9 = document.createTextNode(id);
 					td9.appendChild(txt9);
 					tr.appendChild(td9);
 					
 					let td10 = document.createElement("td");
-					let txt10 = document.createTextNode(list[i].typeId);
+					let type = '';
+					switch(list[i].typeId){
+					case 1:
+						type = 'LODGING';
+						//console.log("type = " + type);
+						break;
+					case 2:
+						type = 'TRAVEL';
+						//console.log("type = " + type);
+						break;
+					case 3:
+						type = 'FOOD';
+						break;
+					case 4:
+						type = 'OTHER';
+						break;
+					dafault:
+						id = 'DEFAULT'
+						console.log('could not get status type')
+					}
+					
+					let txt10 = document.createTextNode(type);
 					td10.appendChild(txt10);
 					tr.appendChild(td10);
 					
@@ -300,7 +561,7 @@ function addReimb(){
 
 		if(xhr.readyState == 4 && xhr.status == 200) {
 			let check = JSON.parse(xhr.responseText);
-			console.log("check = " + check);
+			//console.log("check = " + check);
 			
 			if(check != '1') {
 				$('#login-message').show();
@@ -320,4 +581,21 @@ function addReimb(){
 	xhr.open('POST', 'reimb', true);    //what is application/json for?
 	xhr.setRequestHeader('Content-type', 'application/json');
 	xhr.send(json);
+}
+
+function logout(){
+	console.log("In logout");
+
+	let xhr = new XMLHttpRequest();
+
+	xhr.onreadystatechange = function() {
+		
+		if(xhr.readyState == 4 && xhr.status == 200) {
+			alert('You are now logged out');
+			loadLogin();
+		}
+
+	}
+	xhr.open('GET', 'logout', true);
+	xhr.send();
 }

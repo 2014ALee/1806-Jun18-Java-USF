@@ -57,7 +57,7 @@ public class AddReimbServlet extends HttpServlet {
 		addReimb.setSubmitted(new Timestamp(System.currentTimeMillis()));
 		System.out.println("userId = " + currentUser.getUserId());
 		addReimb.setAuthor(currentUser.getUserId());
-		addReimb.setStatusId(2);
+		addReimb.setStatusId(1);
 		addReimb.setResolver(1);
 		switch(type.toLowerCase()) {
 		case "lodging":

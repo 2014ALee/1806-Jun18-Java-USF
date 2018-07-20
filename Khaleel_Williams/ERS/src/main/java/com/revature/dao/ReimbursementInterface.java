@@ -14,7 +14,7 @@ public interface ReimbursementInterface {
 	public ArrayList<Reimbursement> getPastReimbById(int userId);
 	
 	//approve/deny reimbursement, add timestamp and resolver.
-	public boolean update(Timestamp resolvedTimestamp, int resolverId, int statusId);
+	public boolean update(int userId, int resolverId, int statusId);
 	
 	//view all reimbursements for all employees
 	public ArrayList<Reimbursement> getAllReimbursements();

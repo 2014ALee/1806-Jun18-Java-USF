@@ -10,6 +10,7 @@
 	</div>
 	
 	<hr-->
+	<div style="overflow-y:scroll;height:295px" >
 	<input type="text" id="input" onkeyup="myFunction()" placeholder="Search for names.." title="Type in a name">
 	<table class="table" id="table" >
 		
@@ -25,17 +26,19 @@
 				<th>Resolver</th>
 				<th>Status ID</th>
 				<th>Reimb Type</th>
+				<th>Status Action</th>
 			</tr>
 		</thead>
 		
 		<tbody id = "body"></tbody>
 		
 	</table>
+	</div>
 	
-	<button type="button" id="showReimb">Show Reimbursements!</button>
-	<button type="button" id="addReimb">Add Reimbursement!</button>
+	<button type="button" id="showAllReimb">Show All Reimbursements!</button>
+	<button type="button" id="submitAction">Submit</button>
 	
-	<script>
+<script>
 function myFunction() {
   var input, filter, table, tr, td, i;
   input = document.getElementById("input");

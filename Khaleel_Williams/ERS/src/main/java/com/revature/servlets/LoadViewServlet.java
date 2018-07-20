@@ -37,6 +37,10 @@ public class LoadViewServlet extends HttpServlet {
 		case "/ERS/viewReimb.view":
 			nextView = "partials/addReimb.html";
 			break;
+			
+		case "/ERS/manager.view":
+			nextView = "partials/manager.html";
+			break;
 
 		default:
 			nextView = null;

@@ -3,6 +3,7 @@ package com.revature.models;
 import java.sql.Blob;
 import java.sql.Timestamp;
 
+
 public class Reimbursement {
 
 	private int reimbId;
@@ -15,6 +16,8 @@ public class Reimbursement {
 	private int resolver;
 	private int statusId;
 	private int typeId;
+	
+	private String act;
 	
 	
 	public Reimbursement() {
@@ -36,6 +39,14 @@ public class Reimbursement {
 		this.typeId = typeId;
 	}
 
+
+	public String getAct() {
+		return act;
+	}
+
+	public void setAct(String act) {
+		this.act = act;
+	}
 
 	public int getReimbId() {
 		return reimbId;

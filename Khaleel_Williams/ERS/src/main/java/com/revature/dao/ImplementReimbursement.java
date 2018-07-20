@@ -97,18 +97,18 @@ public class ImplementReimbursement implements ReimbursementInterface {
 	}
 
 	@Override
-	public boolean update(Timestamp resolvedTimestamp, int resolverId, int statusId) {
+	public boolean update(int reimbId, int resolverId, int statusId) {
 		
 		int rowsUpdated = 0;
 		
 		try (Connection conn = MakeConnection.getConnectionInstance().createConnection()){
 			
-			String sql = "UPDATE reimbursement SET resolved = ?, resolver = ?, status_id = ? ";
+			String sql = "UPDATE reimbursement SET resolver = ?, status_id = ? WHERE reimb_id = ?";
 			
 			PreparedStatement prepare = conn.prepareStatement(sql);
-			prepare.setTimestamp(1, resolvedTimestamp);
-			prepare.setInt(2, resolverId);
-			prepare.setInt(3, statusId);
+			prepare.setInt(1, resolverId);
+			prepare.setInt(2, statusId);
+			prepare.setInt(3, reimbId);
 			
 			rowsUpdated = prepare.executeUpdate();
 			
@@ -168,7 +168,7 @@ public class ImplementReimbursement implements ReimbursementInterface {
 	public ArrayList<Reimbursement> filterReimbursements(int status) {
 		
 		ArrayList<Reimbursement> allReimb = getAllReimbursements();
-		ArrayList<Reimbursement> filteredReimb = new ArrayList();
+		ArrayList<Reimbursement> filteredReimb = new ArrayList<Reimbursement>();
 		
 		for (Reimbursement reimb : allReimb) {
 			
