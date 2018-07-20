@@ -1,5 +1,6 @@
 package com.revature.models;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 
 import com.revature.DAO.ReimbDAOImpl;
@@ -20,6 +21,20 @@ public class EmployeeReimbursementSystem implements EmployeeReimbursementSystemI
 		userDAO.registerUser(newUser);
 	}
 
+	//our servlet calls this
+	public boolean updateReimb(int reimbID, int newTypeId) {
+		
+		Timestamp dateResolved = new Timestamp(System.currentTimeMillis());
+		
+		Reimbursement reimb = reimbDAO.getReimbursementByID(reimbID);
+		reimb.setStatusID(newTypeId);
+		reimb.setDateResolved(dateResolved);
+		
+		
+		reimbDAO.updateReimbursement(reimb);
+		return true;
+	}
+	
 	public boolean registrationValid(User user) {
 
 		return userDAO.validRegistration(user);

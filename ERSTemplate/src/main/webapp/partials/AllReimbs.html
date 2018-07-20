@@ -6,31 +6,77 @@
 </head>
 <body>
 
-<table class="table allReimbTable">
-		<thead>
-			<tr>
-				<th>Id</th>
-				<th>Amount</th>
-				<th>Date Submitted</th>
-				<th>Date Resolved</th>
-				<th>Description</th>			
-				<th>Type</th>
-				<th>Status</th>
-			</tr>
+	<div class="container">
+		<div class="row">
+			<div class="column-lg-12 py-4 px-4">
+
+
+				<button type="button" onclick="backToLoggedInManager()">Back
+					to Home</button>
+
+				<h4>Filter By Status</h4>
+				
+				<input class="form-control" id="myInputs" type="text"
+					onkeyup="myFunction()" placeholder="Search.."> <br>
+
+
+				<table id="allReimbTableId" class="table allReimbTable table-hover ">
+
+
+					<h1>All Reimbursements</h1>
+
+					<th>Reimbursement Id</th>
+					<th>Amount</th>
+					<th>Date Submitted</th>
+					<th>Date Resolved</th>
+					<th>Author Id</th>
+					<th>Description</th>
+					<th>Type</th>
+					<th>Current Status</th>
+					<th>Change Status</th>
+
+					
+
+					</thead>
+					<tbody id="reimbTableBody">
+
+
+					</tbody>
+				</table>
 		
-		</thead>
-		<tbody>
+				<button type="button" onclick="submitTypeChanges()">Submit Changes</button>		
+		
+			</div>
+		</div>
+	</div>
 
+	<script>
 
-		</tbody>
-	</table>
-
-
-
-
+	 function myFunction() {
+	  var input, filter, table, tr, td, i;
+	  input = document.getElementById("myInputs");
+	  filter = input.value.toUpperCase();
+	  table = document.getElementById("allReimbTableId");
+	  tr = table.getElementsByTagName("tr");
+	  for (i = 0; i < tr.length; i++) {
+	    td = tr[i].getElementsByTagName("td")[7];
+	   
+	    console.log(td);
+	    
+	    if (td) {
+	      if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
+	        tr[i].style.display = "";
+	      } else {
+	        tr[i].style.display = "none";
+	      }
+	    }       
+	  }
+	}
+</script>
 
 
 </body>
 
 <script type="text/javascript" src="js/AllReimbs.js"></script>
+
 </html>

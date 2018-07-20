@@ -90,12 +90,8 @@ public class ReimbDAOImpl implements ReimbDao{
 		return validReimb;
 	}
 	
-	public Reimbursement getReimbById() {
-		
-		return null;
-	}
 	
-	@Override
+		@Override
 	public Reimbursement addReimbursement(Reimbursement newReimb, int userID) {
 		
 		if(validReimbursement(newReimb)) {
@@ -158,7 +154,7 @@ public class ReimbDAOImpl implements ReimbDao{
 	}
 	
 	
-	public static Reimbursement getReimbursementByID(int reimbId) {
+	public Reimbursement getReimbursementByID(int reimbId) {
 		
 		Reimbursement reimb = new Reimbursement();
 		
@@ -206,6 +202,7 @@ public class ReimbDAOImpl implements ReimbDao{
 		}
 		return null;
 	}
+
 	
 	private static int getReimbursementID(String typeName) {
 	System.out.println("Our type Name is: " + typeName);
@@ -292,22 +289,76 @@ public class ReimbDAOImpl implements ReimbDao{
 		return reimbursements;
 	}
 
-	@Override
-	public boolean approveOrDenyReimb(Reimbursement newReimb, String approveOrDeny) {
+	public boolean approveOrDenyReimb(User resolver,Reimbursement newReimb, String approveOrDeny) {
+		Timestamp dateResolved = new Timestamp(System.currentTimeMillis());
 		
-		if(approveOrDeny == "denied") {
+		newReimb.setResolverID(resolver.getUserID());
+		newReimb.setDateResolved(dateResolved);
+		
+		if(approveOrDeny.equals("denied")) {
 			newReimb.setStatusName("denied");
 			newReimb.setStatusID(3);
+			newReimb.setDateResolved(dateResolved);
+			updateReimbursement(newReimb);
 			return true;
 			
-		}  else if(approveOrDeny == "approved") {
+		}  else if(approveOrDeny.equals("approved")) {
 			newReimb.setStatusName("approved");
 			newReimb.setStatusID(2);
+			newReimb.setDateResolved(dateResolved);
+			updateReimbursement(newReimb);
 			return true;
 		}
 		
 		return false;	
 	}
 
+public boolean updateReimbursement(Reimbursement reimb) {
 
+	
+	
+	try(Connection con = ConnectionFactory.getInstance().getConnection();){
+
+		String sql = "UPDATE ERS_REIMBURSEMENT SET"
+				+ " REIMB_AMOUNT = ?,"
+				+ "REIMB_SUBMITTED = ?,"
+				+ "REIMB_RESOLVED = ?,"
+				+ "REIMB_DESCRIPTION = ?,"
+				+ "REIMB_AUTHOR = ?," 
+				+ "REIMB_RESOLVER = ?,"
+				+ "REIMB_STATUS_ID = ?,"
+				+ "REIMB_TYPE_ID = ?"
+				+ " WHERE REIMB_ID = ?";
+
+		PreparedStatement statement = con.prepareStatement(sql);
+
+		
+		statement.setDouble(1, reimb.getReimbursementAmount());
+		statement.setTimestamp(2, reimb.getDateSubmitted());
+		statement.setTimestamp(3, reimb.getDateResolved());
+		statement.setString(4, reimb.getDescription());
+		statement.setInt(5, reimb.getAuthorID());
+		statement.setInt(6, reimb.getResolverID());
+		statement.setInt(7, reimb.getStatusID());
+		statement.setInt(8, reimb.getTypeID());
+		statement.setInt(9, reimb.getReimbursementID());
+		
+		statement.executeUpdate();
+
+		return true;
+	} catch (SQLException e) {
+		e.printStackTrace();
+		
+		return false;
+	}
+
+}
+
+
+@Override
+public boolean approveOrDenyReimb(Reimbursement newReimb, String approveOrDeny) {
+	// TODO Auto-generated method stub
+	return false;
+}
+	
 }
