@@ -2,11 +2,7 @@ window.onload = function() {
 	loadLogin();
 	$('#toLogin').on('click', loadLogin);
 	$('#toRegister').on('click', loadRegister);
-	$('#toHome').on('click', loadHome);
-//	$('#toProfile').on('click', loadProfile);
 	$('#toLogout').on('click', logout);
-	
-	$('#toReimbursements').on('click', loadReimbursements);
 }
 
 function loadLogin() {
@@ -58,7 +54,7 @@ function login() {
 				$('#login-message').html('Invalid credentials!');
 			} else {
 				alert('Login successful!');
-				loadHome();
+				loadLanding();
 				console.log(`User id: ${user.id} login successful!`)
 			}
 		}
@@ -274,11 +270,10 @@ function loadReimbursements(){
 	
 	let xhr = new XMLHttpRequest();
 	
-	xhr.onreadystaechange = _ => {
-		console.log(`Ready State: ${xhr.readyState}, Status: ${xhr.status}`);
+	xhr.onreadystatechange = function() {
 		if(xhr.readyState == 4 && xhr.status == 200){
 			$('#view').html(xhr.responseText);
-			console.log('run');
+			loadReimbursementInfo();
 		}
 	};
 	
@@ -287,5 +282,179 @@ function loadReimbursements(){
 }
 
 function loadReimbursementInfo(){
-	console.log('In loadReimbursementInfo()')
+	console.log('In loadReimbursementInfo()');
+	
+	let xhr = new XMLHttpRequest();
+	
+	xhr.onreadystatechange = function(){
+		if(xhr.readyState == 4 && xhr.status == 200){
+			
+		}
+	};
 }
+
+function loadCreateReimbursement(){
+	console.log('In loadCreateReimbursement()');
+	
+	let xhr = new XMLHttpRequest();
+	
+	xhr.onreadystatechange = function() {
+		if(xhr.readyState == 4 && xhr.status == 200){
+			$('#view').html(xhr.responseText);
+			loadCreateReimbursementInfo();
+		}
+	};
+	
+	xhr.open('GET', 'createReimbursement.view');
+	xhr.send();
+}
+
+function loadCreateReimbursementInfo(){
+	console.log('In loadCreateReimbursementInfo()');
+	
+	$('#reimbursement-message').hide();
+	$('#description').blur(validateReimbursementInfo);
+	$('#amount').blur(validateReimbursementInfo);
+	$('#submit').on('click', createReimbursement);
+	$('#submit').attr('disabled', true)
+}
+
+function validateReimbursementInfo(){
+	console.log('In validateReimbursementInfo()');
+	
+	$('#submit').attr('disabled', false);
+	$('#reimbursement-message').hide();
+	
+	if(!$('#description').val()){
+		$('#submit').attr('disabled', true);
+		$('#reimbursement-message').html('Please enter a description');
+		$('#reimbursement-message').show();
+	} else if(isNaN(parseFloat($('#amount').val()))){
+		$('#submit').attr('disabled', true);
+		$('#reimbursement-message').html('Please enter a number for the amount');
+		$('#reimbursement-message').show();
+	}
+}
+
+function createReimbursement(){
+	console.log('In createReimbursement()');
+	
+	let desc = $('#description').val();
+	let amt = parseFloat($('#amount').val());
+	let time = new Date();
+	let type = parseInt($('#type').val());
+	console.log(type);
+	
+	let reimb = {
+		id: 0,
+		amount: amt,
+		timeSubmitted: time,
+		timeResolved: null,
+		description: desc,
+		receipt: null,
+		author: null,
+		resolver: null,
+		status: 1,
+		type: type
+	};
+	
+	let json = JSON.stringify(reimb);
+	
+	let xhr = new XMLHttpRequest();
+	
+	xhr.onreadystatechange = () => {
+		if(xhr.readyState == 4 && xhr.status == 200){
+			loadLanding();
+		}
+	};
+	
+	xhr.open('POST', 'createReimbursement', true);
+	xhr.setRequestHeader('Content-type', 'application/json');
+	xhr.send(json);
+}
+
+function loadLanding(){
+	console.log('In loadLanding()');
+	
+	xhr = new XMLHttpRequest();
+	
+	xhr.onreadystatechange = () => {
+		if(xhr.readyState == 4 && xhr.status == 200){
+			$('#view').html(xhr.responseText);
+			loadLandingInfo();
+			$('#toLogin').hide();
+			$('#toRegister').hide();
+			
+			$('#toLogout').show();
+			
+			$('#create').click(loadCreateReimbursement);
+		}
+	};
+	
+	xhr.open('GET', 'landing.view', true);
+	xhr.send();
+}
+
+function loadLandingInfo(){
+	console.log('In loadLandingInfo()');
+	
+	xhr = new XMLHttpRequest();
+	
+	xhr.onreadystatechange = () => {
+		if(xhr.readyState == 4 && xhr.status == 200){
+			let reimbs = JSON.parse(xhr.responseText);
+			console.log(reimbs);
+			
+			let statuses = ['', 'Pending', 'Approved', 'Denied'];
+			let types = ['', 'Lodging', 'Travel', 'Food', 'Other'];
+			
+			reimbs.forEach((r) => {
+				let status = r.status;
+				let type = r.type;
+				let desc = r.description;
+				let amount = r.amount;
+				let resolver = r.resolver;
+				let time = new Date(r.timeSubmitted);
+				
+				let markup = `
+					<tr>
+						<td>${statuses[status]}</td>
+						<td>${types[type]}</td>
+						<td>${desc}</td>
+						<td>${time.toString()}</td>
+						<td>${amount}</td>
+						<td>${resolver}</td>
+					</tr>
+				`;
+				
+				$('table tbody').append(markup);
+			});
+		}
+	};
+	
+	xhr.open('GET', 'landing.loadinfo', true);
+	xhr.send();
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

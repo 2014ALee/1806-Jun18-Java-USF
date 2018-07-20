@@ -5,8 +5,6 @@ DROP TABLE ers_users;
 DROP TABLE ers_user_roles;
 
 DROP SEQUENCE user_seq;
-DROP SEQUENCE user_roles_seq;
-DROP SEQUENCE reimb_status_seq;
 DROP SEQUENCE reimb_seq;
 
 CREATE TABLE ers_user_roles(
@@ -84,13 +82,6 @@ CREATE TABLE ers_reimbursement(
 );
 
 
-INSERT INTO ers_reimbursement_type VALUES(1, 'LODGING');
-INSERT INTO ers_reimbursement_type VALUES(2, 'TRAVEL');
-INSERT INTO ers_reimbursement_type VALUES(3, 'FOOD');
-INSERT INTO ers_reimbursement_type VALUES(4, 'OTHER');
-
-INSERT INTO ers_user_roles VALUES(1, 'USER');
-INSERT INTO ers_user_roles VALUES(2, 'MANAGER');
 
 
 CREATE SEQUENCE user_seq
@@ -106,32 +97,6 @@ END;
 /
 
 
-CREATE SEQUENCE user_roles_seq
-START WITH 1
-INCREMENT BY 1;
-
-CREATE OR REPLACE TRIGGER before_insert_user_roles
-BEFORE INSERT ON ers_user_roles
-FOR EACH ROW
-BEGIN
-    :NEW.ers_user_role_id := user_roles_seq.NEXTVAL;
-END;
-/
-
-
-CREATE SEQUENCE reimb_status_seq
-START WITH 1
-INCREMENT BY 1;
-
-CREATE OR REPLACE TRIGGER before_insert_reimb_status
-BEFORE INSERT ON ers_reimbursement_status
-FOR EACH ROW
-BEGIN
-    :NEW.reimb_status_id := reimb_status_seq.NEXTVAL;
-END;
-/
-
-
 CREATE SEQUENCE reimb_seq
 START WITH 1
 INCREMENT BY 1;
@@ -143,5 +108,18 @@ BEGIN
     :NEW.reimb_id := reimb_seq.NEXTVAL;
 END;
 /
+
+
+INSERT INTO ers_reimbursement_type VALUES(1, 'LODGING');
+INSERT INTO ers_reimbursement_type VALUES(2, 'TRAVEL');
+INSERT INTO ers_reimbursement_type VALUES(3, 'FOOD');
+INSERT INTO ers_reimbursement_type VALUES(4, 'OTHER');
+
+INSERT INTO ers_user_roles VALUES(1, 'USER');
+INSERT INTO ers_user_roles VALUES(2, 'MANAGER');
+
+INSERT INTO ers_reimbursement_status VALUES(1, 'PENDING');
+INSERT INTO ers_reimbursement_status VALUES(2, 'APPROVED');
+INSERT INTO ers_reimbursement_status VALUES(3, 'DENIED');
 
 COMMIT;

@@ -1,0 +1,39 @@
+<div class="container">
+  <h3>Employee Requests</h3>
+
+  Show:<select>
+      <option (click)="filter(0)">All</option>
+      <option (click)="filter(1)">Pending</option>
+      <option (click)="filter(2)">Approved</option>
+      <option (click)="filter(3)">Denied</option>
+    </select> 
+  <br/>
+  <table id="datatable" class="table table-bordered">
+    <thead>
+      <tr>
+        <th (click)="sortByStatus()" >Status</th>
+        <th>Type</th>
+        <th>Employee Name</th>
+        <th>Description</th>
+        <th>Amount</th>
+        <th (click)="sortByTimeSubmitted()">Time Submitted</th>
+        <th>Approve/Deny</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let reimb of reimbs">
+        <td>{{statuses[reimb.status]}}</td>
+        <td>{{types[reimb.type]}}</td>
+        <td>{{getName(reimb)}}</td>
+        <td>{{reimb.description}}</td>
+        <td>${{reimb.amount}}</td>
+        <td>{{toDateString(reimb.timeSubmitted)}}</td>
+        <td>
+          <button *ngIf="reimb.status == 1" (click)="setStatus(reimb, 2)" class="btn btn-success">Approve</button>
+          <button *ngIf="reimb.status == 1" (click)="setStatus(reimb, 3)" class="btn btn-danger">Deny</button>
+          <span *ngIf="reimb.status != 1" >Resolved</span>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

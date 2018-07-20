@@ -1,0 +1,24 @@
+<div class="container" id="data-container">
+  <h3>Create new request</h3>
+  <div class="form-group">
+    <label for="description">*Description:</label>
+    <textarea class="form-control" rows="5" [(ngModel)]="this.reimb.description" (blur)="validate()" ></textarea>
+  </div>
+  <div class="form-group">
+    <label for="amount">*Amount:</label>
+    <input type="text" class="form-control" [(ngModel)]="this.reimb.amount" (blur)="validate()" >
+  </div>
+  <div class="form-group">
+    <label for="type">*Type:</label>
+    <select class="form-control" [(ngModel)]="this.reimb.type" (blur)="validate()" >
+      <option value="1">Lodging</option>
+      <option value="2">Food</option>
+      <option value="3">Travel</option>
+      <option value="4">Other</option>
+    </select>
+  </div>
+  
+  <button (click)="createReimbursement()" class="btn btn-primary" [disabled]="!valid" >Submit</button>
+  
+  <div *ngIf="message" class="alert alert-danger" >{{message}}</div>
+  </div>

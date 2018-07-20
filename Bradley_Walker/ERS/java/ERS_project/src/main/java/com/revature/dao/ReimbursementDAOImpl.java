@@ -7,8 +7,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
-import javax.sql.rowset.serial.SerialBlob;
-
 import com.revature.models.Reimbursement;
 import com.revature.util.ConnectionFactory;
 
@@ -119,8 +117,7 @@ public class ReimbursementDAOImpl implements ReimbursementDAO {
 			PreparedStatement ps = conn.prepareStatement(sql);
 			
 			ps.setTimestamp(1, r.getTimeResolved());
-			SerialBlob sb = new SerialBlob(r.getReceipt());
-			ps.setBlob(2, sb);
+			ps.setBlob(2, r.getReceipt());
 			ps.setInt(3, r.getResolver());
 			ps.setInt(4, r.getStatus());
 			ps.setInt(5, r.getId());

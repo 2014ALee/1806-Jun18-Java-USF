@@ -34,6 +34,8 @@ public class UserDAOImpl implements UserDAO {
 
 			if(rs.next()) {
 				user.setId(rs.getInt(1));
+			} else {
+				user.setId(-1);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();

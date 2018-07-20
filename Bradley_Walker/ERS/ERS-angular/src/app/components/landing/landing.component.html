@@ -1,0 +1,9 @@
+<div class="row justify-content-center">
+  <app-create-reimbursement class="col-4"></app-create-reimbursement>
+  <app-reimbursements class="col-4"></app-reimbursements>
+</div>
+<br/>
+<div class="row">
+  <div class="col-md-2"></div>
+  <app-manager-reimbursement *ngIf="this.user.role == 2" class="col-md-8 col-md-offset-2"></app-manager-reimbursement>
+</div>

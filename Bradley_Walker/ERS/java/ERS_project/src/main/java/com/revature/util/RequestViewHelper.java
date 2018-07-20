@@ -9,6 +9,7 @@ public class RequestViewHelper {
 
 	public String process(HttpServletRequest req, HttpServletResponse res) {
 		System.out.println("[LOG] - Request sent to RequestViewHelper.process()");
+		System.out.println(req.getRequestURI());
 		switch(req.getRequestURI()) {
 		case uri + "login.view":
 			return "partials/login.html";
@@ -16,6 +17,10 @@ public class RequestViewHelper {
 			return "partials/register.html";
 		case uri + "reimbursements.view":
 			return "partials/reimbursements.html";
+		case uri + "createReimbursement.view":
+			return "partials/createReimbursement.html";
+		case uri + "landing.view":
+			return "partials/landing.html";
 		default:
 			return null;
 		}

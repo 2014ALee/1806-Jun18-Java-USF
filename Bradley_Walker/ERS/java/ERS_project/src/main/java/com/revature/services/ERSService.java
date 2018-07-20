@@ -87,6 +87,31 @@ public class ERSService {
 		User u = userDao.getUserByUsername(username);
 		return u == null;
 	}
+	
+	public Reimbursement createReimbursement(Reimbursement r) {
+		System.out.println("[LOG] - In ERSService.createReimbursement()");
+		
+		Reimbursement reimb = null;
+		
+		reimb = reimbDao.createReimbursement(r);
+		
+		return reimb;
+	}
+	
+	public ArrayList<Reimbursement> getAllReimbursements() {
+		System.out.println("[LOG] - In ERSService.getAllReimbursements()");
+		return reimbDao.getAllReimbursements();
+	}
+	
+	public Reimbursement updateReimbursement(Reimbursement r) {
+		System.out.println("[LOG] - In ERSService.updateReimbursement()");
+		
+		Reimbursement reimb = null;
+		
+		reimb = reimbDao.updateReimbursement(r);
+		
+		return reimb;
+	}
 
 	public Reimbursement getReimbursementById(int id) {
 		System.out.println("[LOG] - In ERSService.getReimbursementById()");
