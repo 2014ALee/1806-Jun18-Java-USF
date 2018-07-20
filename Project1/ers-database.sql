@@ -20,6 +20,24 @@ INSERT INTO ers_user_roles VALUES (2, 'Manager');
 
 INSERT INTO ers_users VALUES (0, 'jbein', 'password', 'John', 'Beineke', 'jbein@gmail.com', 2);
 
+CREATE OR REPLACE PROCEDURE get_all_reimbursements(my_cursor OUT SYS_REFCURSOR)
+AS
+BEGIN 
+    OPEN my_cursor FOR 
+    SELECT *
+    FROM ers_reimbursement;
+END;
+/
+
+CREATE OR REPLACE PROCEDURE update_type(my_cursor OUT SYS_REFCURSOR)
+AS
+BEGIN 
+    OPEN my_cursor FOR 
+    SELECT *
+    FROM ers_reimbursement;
+END;
+/
+
 
 CREATE TABLE ers_reimbursement(
     reimb_id                    NUMBER,

@@ -15,6 +15,7 @@ public class Reimbursement {
 	private int reimb_resolver;
 	private int reimb_status_id;
 	private int reimb_type_id;
+	private String edit;
 	
 	
 	public Reimbursement() {}
@@ -22,7 +23,7 @@ public class Reimbursement {
 	
 	public Reimbursement(int reimb_id, double reimb_amount, Date reimb_submitted, Date reimb_resolved,
 			String reimb_description, Blob reimb_receipt, int reimb_author, int reimb_resolver, int reimb_status_id,
-			int reimb_type_id) {
+			int reimb_type_id, String edit) {
 		super();
 		this.reimb_id = reimb_id;
 		this.reimb_amount = reimb_amount;
@@ -34,6 +35,7 @@ public class Reimbursement {
 		this.reimb_resolver = reimb_resolver;
 		this.reimb_status_id = reimb_status_id;
 		this.reimb_type_id = reimb_type_id;
+		this.edit = edit;
 	}
 
 
@@ -137,7 +139,14 @@ public class Reimbursement {
 	}
 
 
-	
+	public String getEdit() {
+		return edit;
+	}
+
+
+	public void setEdit(String edit) {
+		this.edit = edit;
+	}
 
 
 	@Override

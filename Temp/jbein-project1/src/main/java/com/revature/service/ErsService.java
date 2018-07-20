@@ -33,6 +33,12 @@ public class ErsService {
 		return newUser;
 
 	}
+	
+	public User getUsersById(int id) {
+		User user = new User();
+		user = userDao.getUsersById(id);
+		return user;
+	}
 
 	
 	public User getUserByUsername(User u) {
@@ -124,7 +130,14 @@ public class ErsService {
 		return true;
 
 	}
+	 
+public Reimbursement getReimbursementById(int id) {
+	Reimbursement reimb = new Reimbursement();
+	reimb = reimbursementDao.getReimbursementById(id);
+	return reimb;
 	
+	
+}
 	
 public boolean createReimb(Reimbursement newReim, User user) {
 		
@@ -139,6 +152,19 @@ public ArrayList<Reimbursement> getReimbursmentsByAuthor(int authorId) {
 	System.out.println("made it here");
 	return reimbursementDao.getReimbursementsByAuthor(authorId);
 
+}
+
+public ArrayList<Reimbursement> getAllReimbursements(){
+	return reimbursementDao.getAllReimbursements();
+}
+
+public ArrayList<Reimbursement> getAllReimbursementsByStatus(int statusID){
+	return reimbursementDao.getAllReimbursementsByStatus(statusID);
+}
+
+public boolean updateType(User user, Reimbursement reimb) {
+	return reimbursementDao.updateType(user, reimb);
+	
 }
 
 }

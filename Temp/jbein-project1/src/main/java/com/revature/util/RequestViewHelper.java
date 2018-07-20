@@ -23,7 +23,22 @@ public class RequestViewHelper {
 			return "partials/employee-reimbursement.html";
 			
 		case "/jbein-project1/manager-reimbursement.view":
-			return "partials/manager-reimbursements.html"; 
+			return "partials/manager-reimbursements.html";
+			
+		case "/jbein-project1/all-reimbursements.view":
+			return "partials/all-reimbursements.html";
+			
+		case "/jbein-project1/pending-reimbursements.view":
+			return "partials/pending-reimbursements.html";
+			
+		case "/jbein-project1/approved-reimbursements.view":
+			return "partials/approved-reimbursements.html";
+			
+		case "/jbein-project1/denied-reimbursements.view":
+			return "partials/denied-reimbursements.html";
+			
+		case "/jbein-project1/edit-reimbursements.view":
+			return "partials/edit-reimbursements.html";
 			
 		default:
 			return null;

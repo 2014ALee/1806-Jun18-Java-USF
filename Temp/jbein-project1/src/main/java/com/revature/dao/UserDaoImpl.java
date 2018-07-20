@@ -57,6 +57,34 @@ public class UserDaoImpl implements UserDao {
 		// TODO Auto-generated method stub
 		return null;
 	}
+	
+	@Override
+	public User getUsersById(int id) {
+		User u = new User();
+		u.setErs_users_id(id);
+		try (Connection conn = ConnectionFactory.getInstance().getConnection()) {
+			
+			String sql = "SELECT * FROM ers_users WHERE ers_user_id = ?";
+			
+			PreparedStatement pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, id);
+			
+			ResultSet rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				u.setErs_username(rs.getString(2));
+				u.setErs_password(rs.getString(3));
+				u.setUser_first_name(rs.getString(4));
+				u.setUser_last_name(rs.getString(5));
+				u.setUser_email(rs.getString(6));
+				u.setUser_role_id(rs.getInt(7));
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return u;
+	}
 
 		@Override
 		public User addUser(User newUser) {

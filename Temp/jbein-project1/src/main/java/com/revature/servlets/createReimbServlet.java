@@ -35,14 +35,17 @@ public class createReimbServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		System.out.println("got to createReimbServlet");
 		ErsService ersService = new ErsService();
+		
 		String json = "";
 		ObjectMapper mapper = new ObjectMapper();
 		HttpSession session = req.getSession();
 		
 		if(req.getInputStream() != null) {
+			
 			System.out.println("got to createReimbServlet if " + session.getAttribute("user"));
 			Reimbursement reim = mapper.readValue(req.getInputStream(), Reimbursement.class);
 			reim.setReimb_submitted(new java.sql.Date(new Date().getTime()));
+			
 			System.out.println(reim.getReimb_submitted());
 			boolean created = ersService.createReimb(reim, (User) session.getAttribute("user"));
 			System.out.println("got to createReimbServlet boolean = " + created);

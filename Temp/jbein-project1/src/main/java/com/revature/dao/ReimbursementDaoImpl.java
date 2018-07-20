@@ -1,15 +1,18 @@
 package com.revature.dao;
 
+import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Timestamp;
+import java.sql.Statement;
 import java.util.ArrayList;
 
 import com.revature.models.Reimbursement;
 import com.revature.models.User;
 import com.revature.util.ConnectionFactory;
+
+import oracle.jdbc.internal.OracleTypes;
 
 public class ReimbursementDaoImpl implements ReimbursementDao {
 
@@ -68,7 +71,7 @@ public class ReimbursementDaoImpl implements ReimbursementDao {
 
 	@Override
 	public boolean updateReimbursement(Reimbursement reimb) {
-		Reimbursement r = new Reimbursement();
+		
 		
 		try (Connection conn = ConnectionFactory.getInstance().getConnection()){
 			
@@ -98,6 +101,23 @@ public class ReimbursementDaoImpl implements ReimbursementDao {
 			e.printStackTrace();
 		}
 		return false;
+	}
+	
+	public boolean updateType(User u, Reimbursement r) {
+		try(Connection conn = ConnectionFactory.getInstance().getConnection()){
+			String sql = "UPDATE ers_reimbursement SET reimb_status_id = ?, reimb_resolver = ? WHERE reimb_id = ?";
+			PreparedStatement pstmt = conn.prepareCall(sql);
+			pstmt.setInt(1, r.getReimb_status_id());
+			pstmt.setInt(2, u.getErs_users_id());
+			pstmt.setInt(3, r.getReimb_id());
+			
+			pstmt.executeQuery();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return false;
+		}
+		return true;
 	}
 
 	@Override
@@ -143,11 +163,7 @@ public class ReimbursementDaoImpl implements ReimbursementDao {
 	}
 
 
-	@Override
-	public Reimbursement getReimbursement(int reimb_id) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	
 
 
 	// SMOOTH THIS OUT
@@ -185,5 +201,131 @@ public class ReimbursementDaoImpl implements ReimbursementDao {
 		}
 		return reimbs;
 	}
+
+
+	@Override
+	public ArrayList<Reimbursement> getAllReimbursements() {
+		ArrayList<Reimbursement> reimbs = new ArrayList<>();
+		try(Connection conn = ConnectionFactory.getInstance().getConnection()){
+			String sql = "{CALL get_all_reimbursements(?)}";
+			CallableStatement cstmt = conn.prepareCall(sql);
+			cstmt.registerOutParameter(1, OracleTypes.CURSOR);
+			cstmt.execute();
+			ResultSet rs = (ResultSet) cstmt.getObject(1);
+			
+			while(rs.next()) {
+				Reimbursement reimb = new Reimbursement();
+				reimb.setReimb_id(rs.getInt("reimb_id"));
+				reimb.setReimb_amount(rs.getDouble("reimb_amount"));
+				reimb.setReimb_submitted(rs.getDate("reimb_submitted"));
+				reimb.setReimb_resolved(rs.getDate("reimb_resolved"));
+				reimb.setReimb_description(rs.getString("reimb_description"));
+				reimb.setReimb_author(rs.getInt("reimb_author"));
+				reimb.setReimb_resolver(rs.getInt("reimb_resolver"));
+				reimb.setReimb_status_id(rs.getInt("reimb_status_id"));
+				reimb.setReimb_type_id(rs.getInt("reimb_type_id"));
+				reimbs.add(reimb);
+				
+			}			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return reimbs;
+	}
+
+
+	@Override
+	public ArrayList<Reimbursement> getAllReimbursementsByStatus(int statusID) {
+		ArrayList<Reimbursement> statusReimbursements = new ArrayList<>();
+		try(Connection conn = ConnectionFactory.getInstance().getConnection()){
+			String sql = "SELECT * FROM ers_reimbursement WHERE reimb_status_id = ?";
+			
+			PreparedStatement pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, statusID);
+			ResultSet rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				Reimbursement reimb = new Reimbursement();
+				reimb.setReimb_id(rs.getInt("reimb_id"));
+				reimb.setReimb_amount(rs.getDouble("reimb_amount"));
+				reimb.setReimb_submitted(rs.getDate("reimb_submitted"));
+				reimb.setReimb_resolved(rs.getDate("reimb_resolved"));
+				reimb.setReimb_description(rs.getString("reimb_description"));
+				reimb.setReimb_author(rs.getInt("reimb_author"));
+				reimb.setReimb_resolver(rs.getInt("reimb_resolver"));
+				reimb.setReimb_status_id(rs.getInt("reimb_status_id"));
+				reimb.setReimb_type_id(rs.getInt("reimb_type_id"));
+				statusReimbursements.add(reimb);
+				
+			}			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return statusReimbursements;
+	}
+
+
+	@Override
+	public boolean updateReimb(Reimbursement reimb) {
+		try (Connection conn = ConnectionFactory.getInstance().getConnection()) {
+			
+			String sql = "UPDATE ers_reimbursement SET reimb_amount=?, reimb_submitted=?, reimb_resolved=?, reimb_description=?, reimb_author=?, reimb_resolver=?, reimb_status_id=?, reimb_type_id=? WHERE reimb_id = ?";
+			
+			PreparedStatement pstmt = conn.prepareStatement(sql);
+			pstmt.setDouble(1, reimb.getReimb_amount());
+			pstmt.setDate(2, reimb.getReimb_submitted());
+			pstmt.setDate(3, reimb.getReimb_resolved());
+			pstmt.setString(4, reimb.getReimb_description());
+			pstmt.setInt(5, reimb.getReimb_author());
+			pstmt.setInt(6, reimb.getReimb_resolver());
+			pstmt.setInt(7, reimb.getReimb_status_id());
+			pstmt.setInt(8, reimb.getReimb_type_id());
+			pstmt.setInt(9, reimb.getReimb_id());
+			
+			pstmt.execute();
+			
+			return true;
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
+
+
+	@Override
+	public Reimbursement getReimbursementById(int id) {
+		Reimbursement r = new Reimbursement();
+		r.setReimb_id(id);
+		try (Connection conn = ConnectionFactory.getInstance().getConnection()) {
+			
+			String sql = "SELECT * FROM ers_reimbursement WHERE reimb_id = ?";
+			
+			PreparedStatement pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, id);
+			
+			ResultSet rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				r.setReimb_amount(rs.getInt(2));
+				r.setReimb_submitted(rs.getDate(3));
+				r.setReimb_resolved(rs.getDate(4));
+				r.setReimb_description(rs.getString(5));
+				r.setReimb_author(rs.getInt(7));
+				r.setReimb_resolver(rs.getInt(8));
+				r.setReimb_status_id(rs.getInt(9));
+				r.setReimb_type_id(rs.getInt(10));
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return r;
+	}
+
+
+	
 
 }

@@ -4,9 +4,12 @@ window.onload = function() {
 	$('#toRegister').on('click', loadRegister);
 	$('#toEmpReimbursements').on('click', loadEmpReimb);	
 //	$('#toHome').on('click', loadHome);
-	$('#toLogout').on('click', logout);	
+	$('#toLogout').on('click', function(){
+		loadLogin();
+	});	
 	$('#toEmpReimbursements').hide();
 	$('#toManReimbursements').hide();
+	$('#toAllReimbursements').hide();
 }
 
 function loadLogin() {
@@ -25,6 +28,7 @@ function loadLogin() {
 			$('#toEmployeeReimbursements').hide();
 			$('#toManagerReimbursements').hide();
 			$('#toLogout').hide();
+			$('#toAllReimbursements').hide();
 		}
 	}
 	
@@ -40,6 +44,7 @@ function loadLoginInfo() {
 	$('#toHome').hide();
 	$('#toEmployeeReimbursements').hide();
 	$('#toManagerReimbursements').hide();
+	$('#toAllReimbursements').hide();
 	
 	$('#login-message').hide();
 	$('#login-submit').on('click', login);
@@ -59,10 +64,7 @@ function login() {
 	xhr.onreadystatechange = function() {
 		
 		
-		if(xhr.readyState == 4 && xhr.status == 200) {
-			
-			console.log(xhr.status);
-			
+		if(xhr.readyState == 4 && xhr.status == 200) {			
 			
 			let user = JSON.parse(xhr.responseText);
 			console.log(user);
@@ -116,6 +118,7 @@ function loadRegisterInfo() {
 	$('#toHome').hide();
 	$('#toEmployeeReimbursements').hide();
 	$('#toManagerReimbursements').hide();
+	$('#toAllReimbursements').hide();
 	$('#reg-message').hide();
 	//$('#register-username').blur(validateUsername);
 	//$('#register-email').blur(validateEmail);
@@ -179,29 +182,6 @@ function register() {
 	
 }
 
-//function loadHome(){
-//console.log('in loadLogin()');
-//	
-//	let xhr = new XMLHttpRequest();
-//	
-//	xhr.onreadystatechange = function() {
-//		if(xhr.readyState == 4 && xhr.status == 200) {
-//			$('#view').html(xhr.responseText);
-//			loadHomeInfo();
-//			$('#toRegister').show();
-//			$('#toLogin').hide();
-//			
-//			$('#toHome').hide();
-//			$('#toEmployeeReimbursements').show();
-//			$('#toManagerReimbursements').show();
-//			$('#toLogout').show();
-//		}
-//	}
-//	
-//	xhr.open('GET', 'home.view', true);
-//	xhr.send();
-//}
-
 function loadEmpReimb() {
 	let xhr = new XMLHttpRequest();
 	
@@ -209,12 +189,16 @@ function loadEmpReimb() {
 		if(xhr.readyState == 4 && xhr.status == 200) {
 			$('#view').html(xhr.responseText);
 			loadEmpReimbInfo();
-			$('#toRegister').show();
+			$('#toRegister').hide();
 			$('#toLogin').hide();
-			
+			$('#toLogout').on('click', function(){
+				loadLogin();
+			});	
+	
 			$('#toHome').hide();
-			$('#toEmployeeReimbursements').show();
-			$('#toManagerReimbursements').show();
+			$('#toEmployeeReimbursements').hide();
+			$('#toManagerReimbursements').hide();
+			$('#toAllReimbursements').hide();
 			$('#toLogout').show();
 		}
 	}
@@ -232,9 +216,7 @@ console.log('in empReimbInfo()');
 	
 	xhr.onreadystatechange = function() {
 		if(xhr.readyState == 4 && xhr.status == 200) {
-			
-
-			
+						
 			let empInfo = JSON.parse(xhr.responseText);
 			console.log(empInfo);
 			let user = empInfo.user;
@@ -259,36 +241,51 @@ console.log('in empReimbInfo()');
 					let reimbId = reimb.reimb_id
 					let amount = parseFloat(Math.round(reimb.reimb_amount * 100) / 100).toFixed(2);
 					let description = reimb.reimb_description;
-					let status = reimb.reimb_status_id;
-					let type = reimb.reimb_type_id;
-					let date = reimb.reimb_submitted;
+					// With help from Algustus
+					let submitTime = reimb.reimb_submitted;
+					let sYear = new Date(submitTime).getFullYear();
+					let sMonth = new Date(submitTime).getMonth();
+					let sDay = new Date(submitTime).getDate();
+					let sTime = `${sMonth}/${sDay}/${sYear}`;
 					let resolver = reimb.reimb_resolver;
 					let resolved = reimb.reimb_resolved;
 					
-//					if(reimb.reimb_status_id === 1){
-//						let status = 'Pending';
-//					}else if(reimb.reimb_status_id === 2){
-//						let status = 'Approved';
-//					}else{
-//						let status = 'Denied';
-//					}
-//				 
-//					 
-//					if(reimb.reimb_type_id === 1){
-//						let status = 'Lodging';
-//					}else if(reimb.reimb_type_id === 2){
-//						let type = 'Travel';
-//					}else if (reimb.reimb_type_id === 3){
-//						let type = 'Food';
-//					}else{
-//						let type = 'Other';
-//					}
+					switch(reimb.reimb_status_id){
+					case 1:
+						status = 'Pending';
+						break;
+					case 2:
+						status = 'Approved';
+						break; 
+					case 3:
+						status = 'Denied';
+						break;
+					default:
+						status = 'Pending';
+					}
+					let type = '';
+					switch(reimb.reimb_type_id){
+					case 1:
+						type = 'Lodging';
+						break;
+					case 2:
+						type = 'Travel';
+						break;
+					case 3:
+						type = 'Food';
+						break;
+					case 4:
+						type = 'Other';
+						break;
+					default:
+						type = 'Other';
+					}
 					
 					
 					let markup = `<tr>
 									<td>${reimbId}</td>
 									<td>${amount}</td>
-									<td>${date}</td>
+									<td>${sTime}</td>
 									
 									<td>${description}</td>
 									
@@ -300,7 +297,7 @@ console.log('in empReimbInfo()');
 					$('table tbody').append(markup);
 				})
 			} else {
-				$('#reimb-info').html('No reimbursemnets on record');
+				$('#reimb-info').html('No reimbursements on record');
 			}
 		}
 	}
@@ -312,6 +309,7 @@ console.log('in empReimbInfo()');
 }
 
 function createReimb() {
+	
 	console.log('in createreimb()');
 	let type = $("#reimbType option:selected").val();
 	let amount = $("#empAmount").val();
@@ -333,11 +331,12 @@ function createReimb() {
 	let xhr = new XMLHttpRequest();
 	
 	xhr.onreadystatechange = function() {
-		console.log('xhrReadyState = ' + xhr.readyState +' xhrStatus = ' + xhr.status);
+		
 		if(xhr.readyState == 4 && xhr.status == 200) {
 			console.log('in callback');
 			$('#message').hide();
 			alert('Reimbursement Created Successfully!');
+			loadEmpReimb();
 		}
 	}
 	xhr.open('POST', 'createReim', true);
@@ -357,8 +356,13 @@ function loadManReimb() {
 			
 			$('#toHome').hide();
 			$('#toEmployeeReimbursements').hide();
-			$('#toManagerReimbursements').show();
+			$('#toManagerReimbursements').hide();
+			$('#toAllReimbursements').hide();
 			$('#toLogout').show();
+			$('#toLogout').on('click', function(){
+				loadLogin();
+			});	
+
 		}
 	}
 	
@@ -369,19 +373,17 @@ function loadManReimb() {
 
 function loadManReimbInfo(){
 	
-	console.log('in empReimbInfo()');
+	console.log('in manReimbInfo()');
 		
 		let xhr = new XMLHttpRequest();
 		
 		xhr.onreadystatechange = function() {
 			if(xhr.readyState == 4 && xhr.status == 200) {
-				
-
-				
+								
 				let manInfo = JSON.parse(xhr.responseText);
 				console.log(manInfo);
 				let user = manInfo.user;
-				
+				let reimbs = manInfo.userReimbursements;
 
 				console.log(user.ers_users_id)
 				$('#man-user_id').html(user.ers_users_id);
@@ -403,15 +405,295 @@ function loadManReimbInfo(){
 		xhr.open('GET', 'reimbursement.loadinfo', true);
 		xhr.send();
 
-		$('#man-reimb').on('click', getEmpReimbs);
-		$('#retrieveAllReimbs').on('click', getAllReimbs);
+		$('#retrieveAllReimbs').on('click', loadGetAllReimbs);
 	}
 
 
-function getAllReimbs(){
+function loadGetAllReimbs(){
+let xhr = new XMLHttpRequest();
+	
+	xhr.onreadystatechange = function() {
+		
+		if(xhr.readyState == 4 && xhr.status == 200) {
+			
+			$('#view').html(xhr.responseText);
+			getAllReimbs();
+			$('#toRegister').hide();
+			$('#toLogin').hide();
+			
+			$('#toHome').hide();
+			$('#toEmployeeReimbursements').hide();
+			$('#toManReimbursements').show();
+			$('#toManReimbursements').on('click', loadManReimb);
+			$('#toAllReimbursements').hide();
+			$('#toLogout').show();
+			$('#toLogout').on('click', function(){
+				loadLogin();
+			});	
+
+		}
+	}
+	
+	xhr.open('GET', 'all-reimbursements.view', true);
+	xhr.send();
 	
 }
 
+function getAllReimbs(){
+	
+	console.log('In getAllReimbs()');
+	
+	let xhr = new XMLHttpRequest();
+	
+    xhr.onreadystatechange = function(){
+    	
+    	if(xhr.readyState == 4 && xhr.status == 200){
+    	let allInfo = JSON.parse(xhr.responseText);
+    	console.log(allInfo);
+		let user = allInfo.user;
+		let reimbs = allInfo.userReimbursements;
+    	
+    	if(reimbs.length > 0) {
+			reimbs.forEach((reimb) => {
+				let author = reimb.reimb_author;
+				let reimbId = reimb.reimb_id
+				let amount = parseFloat(Math.round(reimb.reimb_amount * 100) / 100).toFixed(2);
+				let description = reimb.reimb_description;
+				// With help from Algustus
+				let submitTime = reimb.reimb_submitted;
+				let sYear = new Date(submitTime).getFullYear();
+				let sMonth = new Date(submitTime).getMonth();
+				let sDay = new Date(submitTime).getDate();
+				let sTime = `${sMonth}/${sDay}/${sYear}`;
+				let resolver = reimb.reimb_resolver;
+				let resolved = reimb.reimb_resolved;
+				
+				switch(reimb.reimb_status_id){
+				case 1:
+					status = 'Pending';
+					break;
+				case 2:
+					status = 'Approved';
+					break; 
+				case 3:
+					status = 'Denied';
+					break;
+				default:
+					status = 'Pending';
+				}
+				let type = '';
+				switch(reimb.reimb_type_id){
+				case 1:
+					type = 'Lodging';
+					break;
+				case 2:
+					type = 'Travel';
+					break;
+				case 3:
+					type = 'Food';
+					break;
+				case 4:
+					type = 'Other';
+					break;
+				default:
+					type = 'Other';
+				} 
+				
+				
+				let markup = `<tr>
+								<td>${reimbId}</td>
+								<td>${amount}</td>
+								<td>${sTime}</td>
+								<td>${resolved}</td>
+								<td>${description}</td>
+								<td>${author}</td>
+								<td>${resolver}</td>			
+								<td>${type}</td>
+								<td>${status}</td>
+							  </tr>`;
+				
+				$('table tbody').append(markup);
+			})
+
+		} else {
+			$('#reimb-info').html('No reimbursemnets on record');
+		}
+      }
+	}
+    
+    $('#showPending').on('click', loadGetPendingReimbs);
+    $('#showApproved').on('click', loadGetApprovedReimbs);
+    $('#showDenied').on('click', loadGetDeniedReimbs);
+    $('#editReimbs').on('click', loadEditReimbs);
+    
+    xhr.open('GET', 'allreimbursements.loadinfo', true);
+	xhr.setRequestHeader('Content-type', 'application/json');
+	xhr.send();	
+}
+
+function loadEditReimbs(){
+	console.log('in loadEditReimbs()');
+
+	let xhr = new XMLHttpRequest();
+	
+	xhr.onreadystatechange = function(){
+		console.log(xhr.readyState + xhr.status);
+		
+		if(xhr.readyState == 4 && xhr.status == 200){
+			$('#view').html(xhr.responseText);
+			editReimbursements();
+			$('#toRegister').hide();
+			$('#toLogin').hide();
+			
+			$('#toHome').hide();
+			$('#toEmployeeReimbursements').hide();
+			$('#toManReimbursements').show();
+			$('#toManReimbursements').on('click', loadManReimb);
+			$('#toAllReimbursements').show();
+			$('#toAllReimbursements').on('click', function(){
+				loadGetAllReimbs();
+			})
+	}
+	}
+	xhr.open('GET', 'edit-reimbursements.view', true);
+	xhr.send();
+}
+
+function editReimbursements(){
+	
+	console.log('in editReimbursements.');
+	
+	let xhr = new XMLHttpRequest();
+	
+	xhr.onreadystatechange = function(){
+		
+		console.log('in update callback function');
+		
+		if(xhr.readyState == 4 && xhr.status == 200){
+			
+			let userReimb = JSON.parse(xhr.responseText);
+			let user = userReimb.user;
+			let reimbs = userReimb.userReimbursements;
+			
+			if(reimbs.length > 0){ 
+				reimbs.forEach((reimb)=>{
+					let reimbId = reimb.reimb_id;
+					let resolver = reimb.reimb_resolver;
+					let submitID = reimb.reimb_author;
+					let resolved = reimb.reimb_author;
+					// With help from Algustus
+					let submitTime = reimb.reimb_submitted;
+					let sYear = new Date(submitTime).getFullYear();
+					let sMonth = new Date(submitTime).getMonth();
+					let sDay = new Date(submitTime).getDate();
+					let sTime = `${sMonth}/${sDay}/${sYear}`;
+					let amount = parseFloat(Math.round(reimb.reimb_amount*100)/100).toFixed(2);
+					let desc = reimb.reimb_description;
+					let status = ' ';
+					switch(reimb.reimb_status_id){
+					case 1:
+						status = 'Pending';
+						break;
+					case 2:
+						status = 'Approved';
+						break; 
+					case 3:
+						status = 'Denied';
+						break;
+					default:
+						status = 'Pending';
+					}
+					let type = '';
+					switch(reimb.reimb_type_id){
+					case 1:
+						type = 'Lodging';
+						break;
+					case 2:
+						type = 'Travel';
+						break;
+					case 3:
+						type = 'Food';
+						break;
+					case 4:
+						type = 'Other';
+						break;
+					default:
+						type = 'Other';
+					} 
+					
+					let adminOption = reimb.edit;
+					let markup = 
+					`<tr>
+					<td>${reimbId}</td>
+					<td>${amount}</td>
+					<td>${sTime}</td>					
+					<td>${resolved}</td>
+					<td>${desc}</td>
+					<td>${submitID}</td>
+					<td>${resolver}</td>
+					<td>${type}</td>
+					<td>${status}</td>
+					<td>
+						<select id="${reimbId}">
+						<option value="1">Pending</option>
+						<option value="2">Approve</option>
+						<option value="3">Deny</option>
+						</select>
+					</td>
+					</tr>`;
+					
+					
+					$('table tbody').append(markup);
+					
+				})  
+			}
+			else{
+				alert('No reimbursements have been submitted.');
+			}
+				
+		}	
+	}
+	
+	$('#editReimbursements-table').on('change', 'select', submitStatus);
+	
+	xhr.open('GET','editreimbursements.loadinfo', true);
+	xhr.send();
+}
+
+function submitStatus(event){
+	
+	console.log('in submitStatus')
+	
+	let status = $('#managerChoice option:selected').val();
+	
+	let reimb = {
+			reimb_id: event.target.id,
+			reimb_amount: 1,
+			reimb_submitted: Date.now(),
+			reimb_resolver: 1,
+			reimb_description: '',
+			reimb_status_id: event.target.value,
+			reimb_type_id: 1
+			}
+	
+	console.log(event.target.value);
+	console.log(event.target.id);
+		
+	let reimbJson = JSON.stringify(reimb);
+	
+	let xhr = new XMLHttpRequest();
+	
+    xhr.readystatechange = function(){
+    	if (xhr.readyState == 4 && xhr.status == 200){
+    	alert('Reimbursement Successfully Updated')	
+    	loadEditReimbs();
+    	}
+	}
+	
+	xhr.open('POST', 'update', true);
+	xhr.send(reimbJson);
+	
+}
 
 function validateUsername() {
 	console.log('in validateUsername()');
@@ -442,33 +724,387 @@ function validateUsername() {
 	
 }
 
-function validateEmail() {
-	console.log('in validateEmail()');
+function loadGetPendingReimbs(){
+	let xhr = new XMLHttpRequest();
 	
-	$('#register').attr('disabled', false);
-	$('#reg-message').hide();
+	xhr.onreadystatechange = function() {
+		if(xhr.readyState == 4 && xhr.status == 200) {
+			$('#view').html(xhr.responseText);
+			getPendingReimbs();
+			$('#toRegister').hide();
+			$('#toLogin').hide();
+			
+			$('#toHome').hide();
+			$('#toEmployeeReimbursements').hide();
+			$('#toManagerReimbursements').show();
+			$('#toManReimbursements').on('click', loadManReimb);
+			$('#toAllReimbursements').show();
+			$('#toAllReimbursements').on('click', function(){
+				loadGetAllReimbs();
+			})
+			$('#toLogout').show();
+			$('#toLogout').on('click', function(){
+				loadLogin();
+			});
+		}
+	}
 	
-	let email = $('#register-email').val();
-	let toSend = email;
-	let json = JSON.stringify(toSend);
+	xhr.open('GET', 'pending-reimbursements.view', true);
+	xhr.send();
+	
+}
+
+function getPendingReimbs(){
+	
+console.log('In getPendingReimbs()');
+	
+	let xhr = new XMLHttpRequest();
+	
+    xhr.onreadystatechange = function(){
+    	
+    	if(xhr.readyState == 4 && xhr.status == 200){
+	    	let pendingInfo = JSON.parse(xhr.responseText);
+	    	console.log(pendingInfo);
+			let user = pendingInfo.user;
+			let reimbs = pendingInfo.userReimbursements;
+	    	
+	    	if(reimbs.length > 0) {
+				reimbs.forEach((reimb) => {
+					let author = reimb.reimb_author;
+					let reimbId = reimb.reimb_id
+					let amount = parseFloat(Math.round(reimb.reimb_amount * 100) / 100).toFixed(2);
+					let description = reimb.reimb_description;
+					let status = '';
+					// With help from Algustus
+					let submitTime = reimb.reimb_submitted;
+					let sYear = new Date(submitTime).getFullYear();
+					let sMonth = new Date(submitTime).getMonth();
+					let sDay = new Date(submitTime).getDate();
+					let sTime = `${sMonth}/${sDay}/${sYear}`;
+					let resolver = reimb.reimb_resolver;
+					let resolved = reimb.reimb_resolved;
+					
+					switch(reimb.reimb_status_id){
+					case 1:
+						status = 'Pending';
+						break;
+					case 2:
+						status = 'Approved';
+						break; 
+					case 3:
+						status = 'Denied';
+						break;
+					default:
+						status = 'Pending';
+					}
+					let type = '';
+					switch(reimb.reimb_type_id){
+					case 1:
+						type = 'Lodging';
+						break;
+					case 2:
+						type = 'Travel';
+						break;
+					case 3:
+						type = 'Food';
+						break;
+					case 4:
+						type = 'Other';
+						break;
+					default:
+						type = 'Other';
+					}
+					
+					
+					let markup = `<tr>
+									<td>${reimbId}</td>
+									<td>${amount}</td>
+									<td>${sTime}</td>
+									<td>${resolved}</td>
+									<td>${description}</td>
+									<td>${author}</td>
+									<td>${resolver}</td>			
+									<td>${type}</td>
+									<td>${status}</td>
+								  </tr>`;
+					
+					$('table tbody').append(markup);
+				})
+
+		} else {
+			$('#reimb-info').html('No reimbursements on record');
+		}
+	}
+    }
+    
+    xhr.open('GET', 'pendingreimbursements.loadinfo', true);
+	xhr.setRequestHeader('Content-type', 'application/json');
+	xhr.send();	
+    
+}
+
+function loadGetApprovedReimbs(){
 	
 	let xhr = new XMLHttpRequest();
 	
 	xhr.onreadystatechange = function() {
 		if(xhr.readyState == 4 && xhr.status == 200) {
-			let user = JSON.parse(xhr.responseText);
-			if(user == null) {
-				$('#reg-message').show();
-				$('#reg-message').html('Email address is already in use! Please try another.');
-				$('#register').attr('disabled', true)
-			}
+			$('#view').html(xhr.responseText);
+			getApprovedReimbs();
+			$('#toRegister').hide();
+			$('#toLogin').hide();
+			
+			$('#toHome').hide();
+			$('#toEmployeeReimbursements').hide();
+			$('#toManagerReimbursements').show();
+			$('#toAllReimbursements').show();
+			$('#toAllReimbursements').on('click', function(){
+				loadGetAllReimbs();
+			});
+			$('#toManReimbursements').on('click', loadManReimb);
+			$('#toLogout').show();
+			$('#toLogout').on('click', function(){
+				loadLogin();
+			});
 		}
 	}
 	
-	xhr.open('POST', email.validate, true);
-	xhr.setRequestHeader('Content-type', 'application/json');
-	xhr.send(json);
+	xhr.open('GET', 'approved-reimbursements.view', true);
+	xhr.send();
+	
 }
+
+function getApprovedReimbs(){
+	
+console.log('In getApprovedReimbs()');
+	
+	let xhr = new XMLHttpRequest();
+	
+    xhr.onreadystatechange = function(){
+    	
+    	if(xhr.readyState == 4 && xhr.status == 200){
+    	let approvedInfo = JSON.parse(xhr.responseText);
+    	console.log(approvedInfo);
+		let user = approvedInfo.user;
+		let reimbs = approvedInfo.userReimbursements;
+    	
+    	if(reimbs.length > 0) {
+			reimbs.forEach((reimb) => {
+				let author = reimb.reimb_author;
+				let reimbId = reimb.reimb_id
+				let amount = parseFloat(Math.round(reimb.reimb_amount * 100) / 100).toFixed(2);
+				let description = reimb.reimb_description;
+				let status = reimb.reimb_status_id;
+				// With help from Algustus
+				let submitTime = reimb.reimb_submitted;
+				let sYear = new Date(submitTime).getFullYear();
+				let sMonth = new Date(submitTime).getMonth();
+				let sDay = new Date(submitTime).getDate();
+				let sTime = `${sMonth}/${sDay}/${sYear}`;
+				let resolver = reimb.reimb_resolver;
+				let resolved = reimb.reimb_resolved;
+				
+				switch(reimb.reimb_status_id){
+				case 1:
+					status = 'Pending';
+					break;
+				case 2:
+					status = 'Approved';
+					break; 
+				case 3:
+					status = 'Denied';
+					break;
+				default:
+					status = 'Pending';
+				}
+				let type = '';
+				switch(reimb.reimb_type_id){
+				case 1:
+					type = 'Lodging';
+					break;
+				case 2:
+					type = 'Travel';
+					break;
+				case 3:
+					type = 'Food';
+					break;
+				case 4:
+					type = 'Other';
+					break;
+				default:
+					type = 'Other';
+				}
+				
+				
+				let markup = `<tr>
+								<td>${reimbId}</td>
+								<td>${amount}</td>
+								<td>${sTime}</td>
+								<td>${resolved}</td>
+								<td>${description}</td>
+								<td>${author}</td>
+								<td>${resolver}</td>			
+								<td>${type}</td>
+								<td>${status}</td>
+							  </tr>`;
+				
+				$('table tbody').append(markup);
+			})
+
+		} else {
+			$('#reimb-info').html('No reimbursemnets on record');
+		}
+	}
+    }
+    
+    xhr.open('GET', 'approvedreimbursements.loadinfo', true);
+	xhr.setRequestHeader('Content-type', 'application/json');
+	xhr.send();
+	
+}
+
+function loadGetDeniedReimbs(){
+
+	let xhr = new XMLHttpRequest();
+	
+	xhr.onreadystatechange = function() {
+		if(xhr.readyState == 4 && xhr.status == 200) {
+			$('#view').html(xhr.responseText);
+			getDeniedReimbs();
+			$('#toRegister').hide();
+			$('#toLogin').hide();
+			$('#toEmployeeReimbursements').hide();
+			$('#toManagerReimbursements').show();
+			$('#toAllReimbursements').show();
+			$('#toAllReimbursements').on('click', function(){
+				loadGetAllReimbs();
+			});
+			$('#toManReimbursements').on('click', loadManReimb);
+			$('#toLogout').show();
+			$('#toLogout').on('click', function(){
+				loadLogin();
+			});
+		}
+	}
+	
+	xhr.open('GET', 'denied-reimbursements.view', true);
+	xhr.send();
+	
+}
+function getDeniedReimbs(){
+	
+	console.log('In getPendingReimbs()');
+	
+	let xhr = new XMLHttpRequest();
+	
+    xhr.onreadystatechange = function(){
+    	
+    	let deniedInfo = JSON.parse(xhr.responseText);
+    	console.log(deniedInfo);
+		let user = deniedInfo.user;
+		let reimbs = deniedInfo.userReimbursements;
+    	
+    	if(reimbs.length > 0) {
+    		
+			reimbs.forEach((reimb) => {
+				let author = reimb.reimb_author;
+				let reimbId = reimb.reimb_id
+				let amount = parseFloat(Math.round(reimb.reimb_amount * 100) / 100).toFixed(2);
+				let description = reimb.reimb_description;
+				let status = reimb.reimb_status_id;
+				// With help from Algustus
+				let submitTime = reimb.reimb_submitted;
+				let sYear = new Date(submitTime).getFullYear();
+				let sMonth = new Date(submitTime).getMonth();
+				let sDay = new Date(submitTime).getDate();
+				let sTime = `${sMonth}/${sDay}/${sYear}`;
+				let resolver = reimb.reimb_resolver;
+				let resolved = reimb.reimb_resolved;
+				
+				switch(reimb.reimb_status_id){
+				case 1:
+					status = 'Pending';
+					break;
+				case 2:
+					status = 'Approved';
+					break; 
+				case 3:
+					status = 'Denied';
+					break;
+				default:
+					status = 'Pending';
+				}
+				let type = '';
+				switch(reimb.reimb_type_id){
+				case 1:
+					type = 'Lodging';
+					break;
+				case 2:
+					type = 'Travel';
+					break;
+				case 3:
+					type = 'Food';
+					break;
+				case 4:
+					type = 'Other';
+					break;
+				default:
+					type = 'Other';
+				}
+				
+				
+				let markup = `<tr>
+								<td>${reimbId}</td>
+								<td>${amount}</td>
+								<td>${date}</td>
+								<td>${resolved}</td>
+								<td>${description}</td>
+								<td>${author}</td>
+								<td>${resolver}</td>			
+								<td>${type}</td>
+								<td>${status}</td>
+							  </tr>`;
+				
+				$('table tbody').append(markup);
+			})
+
+		} else {
+			$('#reimb-info').html('No reimbursemnets on record');
+		}
+	}
+    
+    xhr.open('GET', 'deniedreimbursements.loadinfo', true);
+	xhr.setRequestHeader('Content-type', 'application/json');
+	xhr.send();	
+}
+
+//function validateEmail() {
+//	console.log('in validateEmail()');
+//	
+//	$('#register').attr('disabled', false);
+//	$('#reg-message').hide();
+//	
+//	let email = $('#register-email').val();
+//	let toSend = email;
+//	let json = JSON.stringify(toSend);
+//	
+//	let xhr = new XMLHttpRequest();
+//	
+//	xhr.onreadystatechange = function() {
+//		if(xhr.readyState == 4 && xhr.status == 200) {
+//			let user = JSON.parse(xhr.responseText);
+//			if(user == null) {
+//				$('#reg-message').show();
+//				$('#reg-message').html('Email address is already in use! Please try another.');
+//				$('#register').attr('disabled', true)
+//			}
+//		}
+//	}
+//	
+//	xhr.open('POST', email.validate, true);
+//	xhr.setRequestHeader('Content-type', 'application/json');
+//	xhr.send(json);
+//}
 
 function logout(){
 	console.log("in logout")
