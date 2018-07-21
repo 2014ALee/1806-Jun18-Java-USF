@@ -68,7 +68,7 @@ public class ReimbursementDAOImpl implements ReimbursementDAO {
 			// manager
 			return getManagerView(u);
 		} else {
-			System.out.println("[Log] viewAll: Invalid Role. Check database");
+			// System.out.println("[Log] viewAll: Invalid Role. Check database");
 			return null;
 		}
 	}

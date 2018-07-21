@@ -8,7 +8,6 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.revature.models.User;
@@ -19,30 +18,40 @@ public class RegistrationServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	@Override
+	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		// System.out.println("[LOG] - Request sent to LogoutServlet.doGet().");
+		// System.out.println("[LOG] - Redirecting to LogoutServlet.doPost()");
+
+		doPost(req,resp);
+	}
+
+	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		// System.out.println("[LOG] - Request sent to RegistrationServlet.doPost()");
+
 		User temp;
 		UserService userService = new UserService();
 
 		if(req.getInputStream() != null) {
-		ObjectMapper mapper = new ObjectMapper();
-		String[] userInfo = mapper.readValue(req.getInputStream(), String[].class);
-		
-		if(userInfo.length == 5) {
-			temp = userService.addUser(userInfo);
+			// Get values
+			ObjectMapper mapper = new ObjectMapper();
+			String[] userInfo = mapper.readValue(req.getInputStream(), String[].class);
 
-			if(temp != null) {
-				temp.setPassword("****");
-				HttpSession session = req.getSession();
-				session.setAttribute("user", temp);
+			if(userInfo.length == 5) {
+				// Attempt to register
+				temp = userService.addUser(userInfo);
+
+				if(temp != null) {
+					temp.setPassword("****");
+				}
+			} else {
+				temp = null;
 			}
-		} else {
-			temp = null;
-		}
-		
-		PrintWriter pw = resp.getWriter();
-		resp.setContentType("application/json");
-		
-		pw.write(mapper.writeValueAsString(temp));
+
+			// return response
+			PrintWriter pw = resp.getWriter();
+			resp.setContentType("application/json");
+			pw.write(mapper.writeValueAsString(temp));
 		}
 	}
 }

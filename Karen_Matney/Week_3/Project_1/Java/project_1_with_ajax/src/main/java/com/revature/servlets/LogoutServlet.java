@@ -15,7 +15,7 @@ public class LogoutServlet extends HttpServlet {
 	
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		System.out.println("[LOG] - Request sent to LogoutServlet.doGet()");
+		// System.out.println("[LOG] - Request sent to LogoutServlet.doGet()");
 		
 		if(req.getSession(false) == null) {
 			resp.sendRedirect("index.html");
@@ -24,14 +24,14 @@ public class LogoutServlet extends HttpServlet {
 		HttpSession session = req.getSession(false);
 		session.invalidate();  // Should unbind attribute: user
 		
-		System.out.println("[LOG] - Session invalidated!");
+		// System.out.println("[LOG] - Session invalidated!");
 		resp.sendRedirect("index.html");
 	}
 	
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		System.out.println("[LOG] - Request sent to LogoutServlet.doPost().");
-		System.out.println("[LOG] - Redirecting to LogoutServlet.doGet()");
+		// System.out.println("[LOG] - Request sent to LogoutServlet.doPost().");
+		// System.out.println("[LOG] - Redirecting to LogoutServlet.doGet()");
 		
 		doGet(req,resp);
 	}

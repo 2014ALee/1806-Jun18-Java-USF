@@ -34,7 +34,7 @@ public class UserDAOImpl implements UserDAO {
 		try(Connection conn = ConnectionFactory.getInstance().getConnection();) {
 			
 			// Get user for comparison
-			String sql = "SELECT * from users WHERE "+ column + " = '" + value + "'";
+			String sql = "SELECT * from users WHERE " + column + " = '" + value + "'";
 			
 			Statement stmt = conn.createStatement();
 			ResultSet rs = stmt.executeQuery(sql);
@@ -59,7 +59,7 @@ public class UserDAOImpl implements UserDAO {
 				// There isn't a matching user
 				return null;
 			} else {
-				System.out.println("[LOG] - Check for duplicates");
+				// System.out.println("[LOG] - Check for duplicates");
 				return null;
 			}
 		} catch (SQLException sqle) {

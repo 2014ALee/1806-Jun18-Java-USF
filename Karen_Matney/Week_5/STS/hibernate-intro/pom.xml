@@ -5,4 +5,18 @@
   <version>0.0.1-SNAPSHOT</version>
   <name>hibernate-intro</name>
   <description>Demo application introducing the Hibernate framework</description>
+  
+  <dependencies>
+  		<dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-core</artifactId>
+            <version>5.2.0.Final</version>
+        </dependency>
+        
+		<dependency>
+        	<groupId>com.oracle</groupId>
+        	<artifactId>ojdbc7</artifactId>
+    		<version>12.1.0.2</version>
+		</dependency>
+	</dependencies>
 </project>

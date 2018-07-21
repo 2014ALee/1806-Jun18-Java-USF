@@ -18,9 +18,18 @@ import com.revature.services.ReimbursementService;
 @WebServlet("/addrequest")
 public class addRequestServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	
+	@Override
+	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		// System.out.println("[LOG] - Request sent to LogoutServlet.doGet().");
+		// System.out.println("[LOG] - Redirecting to LogoutServlet.doPost()");
+		
+		doPost(req,resp);
+	}
 
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		// System.out.println("[LOG] - Request sent to addRequestServlet.doPost");
 		ReimbursementService reimbService = new ReimbursementService();
 		User u;
 		HttpSession session = req.getSession();

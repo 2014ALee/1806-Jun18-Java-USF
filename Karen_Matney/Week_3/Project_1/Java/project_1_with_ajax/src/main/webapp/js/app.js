@@ -7,7 +7,7 @@ window.onload = function () {
 
 // Logging In
 function loadLogin() {
-	console.log('in loadLogin');
+	// console.log('in loadLogin()');
 	
 	let xhr = new XMLHttpRequest();
 	
@@ -28,12 +28,13 @@ function loadLogin() {
 }
 
 function loadLoginInfo() {
-	console.log('in loadLoginInfo');
+	// console.log('in loadLoginInfo()');
+	
 	$('#login').on('click',login);
 }
 
 function login() {
-	console.log('in login()');
+	// console.log('in login()');
 	
 	let username = $('#username').val();
 	let password = $('#password').val();
@@ -48,9 +49,11 @@ function login() {
 			let user = JSON.parse(xhr.responseText);
 			
 			if(user == null) {
-				console.log('Invalid');
+				// console.log('Invalid');
+				$('#invalidCredentials').addClass('alert alert-danger');
+				$('#invalidCredentials').html('Invalid Login Credentials');
 			} else {
-				console.log('Successful, user=${user}');
+				// console.log('Successful,');
 				
 				$('#toHome').on('click',() => loadDashboard(user,'all'));
 				loadDashboard(user,'all');
@@ -65,12 +68,13 @@ function login() {
 
 // Logging out
 function logout() {
-	console.log('in logout()');
+	// console.log('in logout()');
+	
 	let xhr = new XMLHttpRequest();
 	
 	xhr.onreadystatechange = function() {
 		if(xhr.readyState == 4 && xhr.status == 200) {
-			console.log('Session invalidated!');
+			// console.log('Session invalidated!');
 			loadLogin();
 		}
 	}
@@ -81,7 +85,7 @@ function logout() {
 
 // Registering
 function loadRegister() {
-	console.log('in loadRegister');
+	// console.log('in loadRegister()');
 	
 	let xhr = new XMLHttpRequest();
 	
@@ -102,12 +106,13 @@ function loadRegister() {
 }
 
 function loadRegisterInfo() {
-	console.log('in loadRegisterInfo');
+	// console.log('in loadRegisterInfo()');
+	
 	$('#register').on('click',register);
 }
 
 function register() {
-	console.log('in register()');
+	// console.log('in register()');
 	
 	let username = $('#username').val();
 	let password = $('#password').val();
@@ -116,7 +121,8 @@ function register() {
 	let email = $('#email').val();
 
 	// TODO: add javascript to verify values here (before toSend)
-	let toSend = [username, password,firstname,lastname,email];
+	let toSend;
+	toSend = [username, password,firstname,lastname,email];
 	let json = JSON.stringify(toSend);
 
 	let xhr = new XMLHttpRequest();
@@ -126,9 +132,11 @@ function register() {
 			let user = JSON.parse(xhr.responseText);
 			
 			if(user == null) {
-				console.log('Invalid');
+				// console.log('Invalid');
+				$('#invalid').addClass('alert alert-danger');
+				$('#invalid').html('Unable to create user');
 			} else {
-				console.log('Successful');
+				// console.log('Successful');
 				loadLogin();
 			}
 		}
@@ -139,10 +147,19 @@ function register() {
 	xhr.send(json);
 }
 
+function filterUsername(username) {
+	return 0;
+
+}
+
+function filterEmail(email) {
+	return 0;
+}
+
 
 // Dashboard - viewing requests
 function loadDashboard(user,version) {
-	console.log('in loadDashboard');
+	// console.log('in loadDashboard()');
 	
 	let xhr = new XMLHttpRequest();
 	
@@ -153,7 +170,6 @@ function loadDashboard(user,version) {
 			$('#toRegister').hide();
 			$('#toHome').show();
 			$('#toLogout').show();
-			console.log('loadDashboard ' + version)
 			loadReimbursementTable(user,version);
 			loadRequestChoices(user,version);
 		}
@@ -164,7 +180,8 @@ function loadDashboard(user,version) {
 }
 
 function loadReimbursementTable (user,version) {
-	console.log('in loadReimbursementTable()');
+	// console.log('in loadReimbursementTable()');
+	
 	$('table tbody').html('Loading...');
 	
 	let json = JSON.stringify(version);
@@ -176,9 +193,6 @@ function loadReimbursementTable (user,version) {
 			let values = JSON.parse(xhr.responseText);
 			let reimbursements = values[0];
 			let humanReadableValues = values[1];
-			console.log(values);
-			console.log(reimbursements);
-			console.log(humanReadableValues);
 			
 			$('table tbody').html('');
 			
@@ -186,13 +200,13 @@ function loadReimbursementTable (user,version) {
 				let i = 0;
 				reimbursements.forEach((reimbursement) => {
 					let id = reimbursement.id;
+					reimbursement.amount = Number.parseFloat(reimbursement.amount).toFixed(2);
 					let amount = reimbursement.amount;
 					let submitted = dateToString(new Date(reimbursement.submitted));
 					let resolved = 	
 						(reimbursement.resolved != null) ? dateToString(new Date(reimbursement.resolved)) : '-';
-					let receipt = (reimbursement.reciept == null) ? '-' : reimbursement.reciept;
-					reimbursement.author = humanReadableValues[i][2];
-					let author = reimbursement.author;
+					reimbursement.authorName = humanReadableValues[i][2];
+					let author = reimbursement.authorName;
 					reimbursement.resolver = humanReadableValues[i][3];
 					let resolver = (reimbursement.resolver == '') ? '-' : reimbursement.resolver;
 					reimbursement.status = humanReadableValues[i][1];
@@ -208,10 +222,9 @@ function loadReimbursementTable (user,version) {
                     <td>${status}</td>
                     <td>${submitted}</td>
                     <td>${resolved}</td>
-                    <td>${receipt}</td>
                     <td>${author}</td>
                     <td>${resolver}</td>
-                    <td><button type="button" class="btn btn-primary" id="${id}">View</button></td>
+                    <td class="text-center"><button type="button" class="btn btn-primary" id="${id}">View</button></td>
                 </tr>`;
 					
 					$('table tbody').append(markup);
@@ -224,32 +237,33 @@ function loadReimbursementTable (user,version) {
 	
 	xhr.open('POST','getReimbursements',true);
 	xhr.setRequestHeader('Content-type','application/json');
-	console.log(json);
 	xhr.send(json);
 }
 
 function dateToString(date){
+	// console.log('in dateToString()');
+	
 	return date.getMonth() + '/' + date.getDate() + '/' + date.getFullYear();
 }
 
-function loadRequestChoices(user,version) {
-	console.log('in loadRequestChoices');
-	$('#addRequest').on('click',() => loadAddRequest(user,version));
+function loadRequestChoices(user) {
+	// console.log('in loadRequestChoices()');
+	
+	$('#addRequest').on('click',() => loadAddRequest(user));
 	$('#filter').on('change',() => loadFilterBy(user));
 }
 
 function loadFilterBy(user) {
-	console.log('in loadFilterBy')
+	// console.log('in loadFilterBy()');
+	
 	let version = $('#filter').val();
 	loadDashboard(user,version);
 }
 
-//
-
 //Adding requests
 function loadAddRequest(user) {
-	console.log('in loadAddRequest');
-	
+	// console.log('in loadAddRequest()');
+
 	let xhr = new XMLHttpRequest();
 	
 	xhr.onreadystatechange = function () {
@@ -269,13 +283,27 @@ function loadAddRequest(user) {
 }
 
 function loadAddRequestInfo(user) {
-	console.log('in loadAddRequest');
+	// console.log('in loadAddRequestInfo()');
+	
+	$('#add').prop("disabled",true);
 	$('#add').on('click',() => addRequest(user));
+	$('#amount').on('change',checkNumber)
+}
+
+function checkNumber() {
+	let amount = $('#amount').val();
+	let number = /(\d+\.\d*)|(\d*\.d+)|(\d)/;
+	
+	if(amount.match(number)) {
+		$('#add').prop("disabled",false);
+	} else {
+		$('#add').prop("disabled",true);
+	}
 }
 
 function addRequest(user) {
-	console.log('in addRequest()');
-	
+	// console.log('in addRequest()');
+
 	let type = $('#type').val();
 	let amount = $('#amount').val();
 
@@ -287,13 +315,14 @@ function addRequest(user) {
 	
 	xhr.onreadystatechange = function () {
 		if(xhr.readyState == 4 && xhr.status == 200) {
-			let user = JSON.parse(xhr.responseText);
+			let reimb = JSON.parse(xhr.responseText);
 			
-			if(user == null) {
-				console.log('Invalid');
+			if(reimb == null) {
+				// console.log('Invalid');
 			} else {
-				console.log('Successful');
+				// // console.log('Successful');
 				loadDashboard(user,'all');
+				// console.log('AfterDashboard');
 			}
 		}
 	}
@@ -306,13 +335,13 @@ function addRequest(user) {
 // Updating requests
 
 function loadUpdateRequestInfo(user,reimb,version) {
-	console.log('in loadUpdateRequestInfo');
+	// console.log('in loadUpdateRequestInfo()');
 	
 	$(`#${reimb.id}`).on('click',() => loadUpdateRequest(user,reimb,version));
 }
 
 function loadUpdateRequest(user,reimb,version) {
-	console.log('in loadAddRequest');
+	// console.log('in loadUpdateRequest()');
 	
 	let xhr = new XMLHttpRequest();
 	
@@ -333,25 +362,29 @@ function loadUpdateRequest(user,reimb,version) {
 }
 
 function loadRequestInfo(user,reimb,version) {
+	// console.log('in loadRequestInfo()');
+
 	$('#back').on('click',() => loadDashboard(user,version));
 	$('#id').html(`Reimbursement ${reimb.id}`);
 	$('#amount').html(reimb.amount);
-	$('#receipt').html(reimb.receipt);
 	$('#type').html(reimb.type);
 	$('#status').html(reimb.status);
-	$('#submitted').html(reimb.submitted);
-	$('#author').html(reimb.author);
-	$('#resolved').html(reimb.resolved);
-	$('#resolver').html(reimb.resolver);
+	$('#submitted').html(dateToString(new Date(reimb.submitted)));
+	$('#author').html(reimb.authorName);
+	$('#resolved').html((reimb.resolved != null) ? dateToString(new Date(reimb.resolved)) : '-');
+	$('#resolver').html((reimb.resolver == '') ? '-' : reimb.resolver);
 	
-	console.log('Resolver');
-	console.log(reimb.resolver);
-	
-	if(user.userRole == 'FinancMngr' && reimb.resolver == 0){
+	if(user.userRole == 'FinancMngr' && reimb.resolver == 0 && user.userId == reimb.author) {
 		$('#managerOptions').html(`
-				<button type="button" class="btn btn-primary" id="approve">Approve</button>
-				<button type="button" class="btn btn-primary" id="deny">Deny</button>
-				<br>
+				<div class="alert alert-warning">Unable to edit own request</div>
+				`);
+		
+	} else if(user.userRole == 'FinancMngr' && reimb.resolver == 0){
+		$('#managerOptions').html(`
+				<div class="my-1 mt-2">
+					<button type="button" class="btn btn-primary mr-sm-2" id="approve">Approve</button>
+					<button type="button" class="btn btn-primary" id="deny">Deny</button>
+				</div>
 			`);
 		
 		$('#approve').on('click',() => updateRequest(user,reimb,version,'approve'));
@@ -362,20 +395,27 @@ function loadRequestInfo(user,reimb,version) {
 }
 
 function updateRequest(user,reimb,version,approval) {
+	// console.log('in updateRequest()');
 	
 	let toString = [reimb,approval]
 	let json = JSON.stringify(toString);
-	console.log(json);
 	
 	let xhr = new XMLHttpRequest();
 	
 	xhr.onreadystatechange = function () {
 		if(xhr.readyState == 4 && xhr.status == 200) {
 			response = JSON.parse(xhr.responseText);
-			console.log(response);
+			// console.log(response);
 			
 			if(response != null){
-				reimb = response;
+				reimb = response[0];
+				let humanReadableValues = response[1];
+				
+				reimb.status = humanReadableValues[1];
+				reimb.type = humanReadableValues[0];
+				reimb.authorName = humanReadableValues[2];
+				reimb.resolver = humanReadableValues[3];
+				
 				loadRequestInfo(user,reimb,version);
 			} else {
 				loadRequestInfo(user,reimb,version);

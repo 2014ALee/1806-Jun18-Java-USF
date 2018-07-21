@@ -21,7 +21,17 @@ public class ReimbursementsServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	
 	@Override
+	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		// System.out.println("[LOG] - Request sent to LogoutServlet.doGet().");
+		// System.out.println("[LOG] - Redirecting to LogoutServlet.doPost()");
+		
+		doPost(req,resp);
+	}
+	
+	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		// System.out.println("[LOG] Request sent to ReimbursementServlet.doPost()");
+		
 		ReimbursementService reimbursementService = new ReimbursementService();
 		ArrayList<Reimbursement> allReimbursements = new ArrayList<>();
 		HttpSession session = req.getSession();
@@ -62,8 +72,6 @@ public class ReimbursementsServlet extends HttpServlet {
 		
 		valuesToSend.add(allReimbursements);
 		valuesToSend.add(humanReadableValues);
-		System.out.println(mapper.writeValueAsString(allReimbursements));
-		System.out.println(mapper.writeValueAsString(valuesToSend));
 		
 		PrintWriter pw = resp.getWriter();
 		resp.setContentType("application/json");

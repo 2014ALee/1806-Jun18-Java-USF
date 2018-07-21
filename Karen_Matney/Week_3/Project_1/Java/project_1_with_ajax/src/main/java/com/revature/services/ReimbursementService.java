@@ -13,6 +13,8 @@ import com.revature.models.User;
 
 public class ReimbursementService {
 	public ArrayList<Reimbursement> getAllReimbursements(User u) {
+		// System.out.println("[LOG] - ReimbursementService - retrieving reimbursements array");
+		
 		ReimbursementDAO reimbDao = new ReimbursementDAOImpl();
 		if(u != null) {
 			return reimbDao.viewAll(u);
@@ -22,6 +24,8 @@ public class ReimbursementService {
 	}
 	
 	public ArrayList<Reimbursement> getReimbursementsByStatus(User u,int status) {
+		// System.out.println("[LOG] - ReimbursementService - retrieving reimbursements array by status");
+		
 		ReimbursementDAO reimbDao = new ReimbursementDAOImpl();
 		if(u != null) {
 			return reimbDao.viewRequestsByStatus(u,status);
@@ -31,11 +35,13 @@ public class ReimbursementService {
 	}
 	
 	public Reimbursement addRequest(String[] values, User u) {
+		// System.out.println("[LOG] - ReimbursementService - adding reimbursement");
+		
 		ReimbursementDAO reimbDao = new ReimbursementDAOImpl();
 		Reimbursement temp = new Reimbursement();
 		
 		for(String value : values) {
-			System.out.println(value);
+			// System.out.println(value);
 			if(value == "")
 				return null;
 		}
@@ -62,11 +68,14 @@ public class ReimbursementService {
 	}
 	
 	public Reimbursement updateRequest(Object[] values, User u) {
+		// System.out.println("[LOG] - ReimbursementService - updating reimbursement");
+		
 		Reimbursement temp = new Reimbursement();
 		ReimbursementDAO reimbDao = new ReimbursementDAOImpl();
 		
 		// TODO: user values match
 		
+		@SuppressWarnings("unchecked")
 		LinkedHashMap<String,Object> reimbValues = (LinkedHashMap<String, Object>) values[0];
 		
 		temp.setId((int) reimbValues.get("id"));
@@ -94,6 +103,8 @@ public class ReimbursementService {
 	}
 	
 	public String[] getHumanReadableValues(Reimbursement reimb) {
+		// System.out.println("[LOG] - ReimbursementService - retrieving human readable values");
+		
 		String[] values = new String[4];
 		
 		// TODO: Get type values from SQL

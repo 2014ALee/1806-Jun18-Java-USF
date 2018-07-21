@@ -16,11 +16,19 @@ public class LoadContentServlet extends HttpServlet {
 	
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		System.out.println("[LOG] - Reqest sent to front controller, LoadContentServlet.goGet()");
+		// System.out.println("[LOG] - Reqest sent to LoadContentServlet.doGet()");
 		
 		String nextView = new RequestViewHelper().process(req,resp);
-		System.out.println(nextView);
+		// System.out.println(nextView);
 		
 		req.getRequestDispatcher(nextView).forward(req, resp);
+	}
+	
+	@Override
+	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		// System.out.println("[LOG] - Request sent to LogoutServlet.doPost()");
+		// System.out.println("[LOG] - Redirecting to LogoutServlet.doGet()");
+		
+		doGet(req,resp);
 	}
 }
