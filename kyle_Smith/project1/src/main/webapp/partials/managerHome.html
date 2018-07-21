@@ -1,52 +1,86 @@
-<div>
-	<h1>Manager Home</h1><br>
-	<div id="user-info">
-		<b>User ID:</b> <span id="user_id"></span><br><br>
-		<b>First name:</b> <span id="user_fn"></span><br><br>
-		<b>Last name:</b> <span id="user_ln"></span><br><br>
-		<b>Email address:</b> <span id="user_email"></span><br><br>
-		<b>Username:</b> <span id="user_username"></span><br><br>
-		<b>Password:</b> <span id="user_password"></span><br><br>
-	</div>
+<div id="bootstrap-overrides" class="">
+	<h1 class="text-center">Manager Home</h1>
+	<br>
 	<hr>
-	<form class="form-group col-md-4 offset-md-4 bootstrap-overrides">
-			<h3>Create New Reimbursment</h3>
-			<div class="form-group">
-				<label for="reimType">Reimbursment Type</label>
-				<select class="form-control" id="reimType" required>
-					<option id="selectLodging" value="1">Lodging</option>
-					<option id="selectTravel" value="2">Travel</option>
-					<option id="selectFood" value="3">Food</option>
-					<option id="selectOther" value="4">Other</option>
-				</select>
-			</div>
-			<div class="form-label-group">
-				<input type="number" id="amount" class="form-control" placeholder="Amount" required>
-				<label for="amount">Amount</label>
-			</div>
-			<div class="form-group">
-				<label for="description">Description</label>
-				<textarea class="form-control" id="description" rows="3"></textarea>
-			</div>
+	<div class="col-lg-12">
+			<button class="btn btn-secondary offset-9" type="button" data-toggle="collapse" data-target="#collapse" aria-expanded="true" aria-controls="collapse">
+				Create New Reimbursement
+				<i class="fa fa-caret-down"></i>
+			</button>
 
-			<div class="form-group">
-				<label for="receipt">Receipt</label>
-				<input type="file" class="form-control-file" id="receipt">
+			<div class="form-group collapse col-6" id="collapse" style="">
+				<div class="form-group">
+					<label for="reimType">Reimbursement Type</label>
+					<select class="form-control" id="reimType" required="">
+						<option id="selectLodging" value="1">Lodging</option>
+						<option id="selectTravel" value="2">Travel</option>
+						<option id="selectFood" value="3">Food</option>
+						<option id="selectOther" value="4">Other</option>
+					</select>
+				</div>
+				<div class="form-label-group">
+					<input type="number" id="amount" class="form-control" placeholder="Amount" required="">
+					<label for="amount">Amount</label>
+				</div>
+				<div class="form-group">
+					<label for="description">Description</label>
+					<textarea class="form-control" id="description" rows="3"></textarea>
+				</div>
+				<div class="form-group">
+					<label for="receipt">Receipt</label>
+					<input type="file" class="form-control-file" id="receipt">
+				</div>
+				<button class="btn btn-lg btn-primary" type="submit" id="createReim">Submit</button>
+				<span id="validationError" style="display: none"></span>
 			</div>
-			<button class="btn btn-lg btn-primary" type="submit" id="createReim">Submit</button>
-			<span id="validationError" style="display: none"></span>  
-		</form>
-		<ul id="list"></ul>
+			<hr>
+		</div>
+	<div class="col-lg-12">
+			<h2>My Reimbursements</h2>
+			<br>
+			<div id="managerReims">
+				<table class="table table-bordered table-striped">
+					<thead>
+						<tr>
+							<th>ID</th>
+							<th>Amount</th>
+							<th>Description</th>
+							<th>Submitted Date</th>
+							<th>Author ID</th>
+							<th>Reimb Type</th>
+							<th>Status</th>
+						</tr>
+					</thead>
+					<tbody id="userReimGen">
+
+					</tbody>
+				</table>
+			</div>
+		</div>
+		
+		<br>
 	<hr>
-	
-	<table class="table" id="userAccounts-table">
-		<thead>
-			<tr>
-				<th>Account Id</th>
-				<th>Account Type</th>
-				<th>Balance</th>
-			</tr>
-		</thead>
-		<tbody></tbody>
-	</table>
+	<br>
+	<h2 class="text-center">Active Reimbursements</h2>
+	<br>
+	<div>
+	<div id="reimTable" class="col-md-12">
+		<table class="table table-bordered table-striped">
+			<thead>
+				<tr>
+					<th>ID</th>
+					<th>Amount</th>
+					<th>Description</th>
+					<th>Submitted Date</th>
+					<th>Author ID</th>
+					<th>Reimb Type</th>
+					<th>Approve/Reject</th>
+				</tr>
+			</thead>
+			<tbody id="genTable">
+
+			</tbody>
+		</table>
+		</div>
+	</div>
 </div>

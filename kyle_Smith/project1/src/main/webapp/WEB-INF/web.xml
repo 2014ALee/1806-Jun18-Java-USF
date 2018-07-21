@@ -9,4 +9,14 @@
     <welcome-file>default.htm</welcome-file>
     <welcome-file>default.jsp</welcome-file>
   </welcome-file-list>
+  <servlet>
+    <description></description>
+    <display-name>updateReimServlet</display-name>
+    <servlet-name>updateReimServlet</servlet-name>
+    <servlet-class>ers.run.servlets.updateReimServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>updateReimServlet</servlet-name>
+    <url-pattern>/updateReimServlet</url-pattern>
+  </servlet-mapping>
 </web-app>

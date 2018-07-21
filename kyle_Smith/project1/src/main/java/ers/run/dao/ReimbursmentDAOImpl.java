@@ -111,15 +111,6 @@ public class ReimbursmentDAOImpl implements ReimbursmentDAO {
 			pstmt.setInt(5, reim.getAuthor());
 			pstmt.setInt(6, reim.getStatusId());
 			pstmt.setInt(7, reim.getTypeId());
-			System.out.println(reim.getReimbursmentId());
-			System.out.println(reim.getAmount());
-			System.out.println(reim.getSubmitted());
-			System.out.println(reim.getDescription());
-			System.out.println(reim.getAuthor());
-			System.out.println(reim.getResolver());
-			System.out.println(reim.getStatusId());
-			System.out.println(reim.getTypeId());
-			System.out.println("creating reimDAO " + sql );	
 			int rowsUpdated = pstmt.executeUpdate();
 			
 			ResultSet rs = pstmt.getGeneratedKeys();
@@ -141,6 +132,7 @@ public class ReimbursmentDAOImpl implements ReimbursmentDAO {
 	@Override
 	public boolean updateReimbursment(Reimbursment reim) {
 		try(Connection conn = ConnectionFactory.getInstance().getConnection();){
+			System.out.println("in update reim DAO "+reim.toString());
 //			
 			String sql = "UPDATE ERS_REIMBURSEMENT SET REIMB_ID = ?, REIMB_AMOUNT = ?, REIMB_SUBMITTED = ?,"
 					+ "REIMB_RESOLVED = ?, REIMB_DESCRIPTION = ?, REIMB_RECEIPT = ?, REIMB_AUTHOR = ?, "
@@ -198,6 +190,7 @@ public class ReimbursmentDAOImpl implements ReimbursmentDAO {
 
 	@Override
 	public Reimbursment getReimbursmentById(int reimId) {
+		System.out.println("in get reim id " + reimId);
 		Reimbursment reimb = new Reimbursment();
 		
 		try(Connection conn = ConnectionFactory.getInstance().getConnection();){
@@ -208,24 +201,68 @@ public class ReimbursmentDAOImpl implements ReimbursmentDAO {
 			conn.setAutoCommit(false);
 			PreparedStatement pstmt = conn.prepareStatement(sql, keys);
 			pstmt.setInt(1, reimId);
-			ResultSet rs = pstmt.executeQuery(sql);
+			pstmt.setInt(1, reimId);
+			System.out.println("before execute");
+			ResultSet rs = pstmt.executeQuery();
+			System.out.println("in get reim execute");
 			
 			while(rs.next()) {
+				System.out.println("in result set");
 				reimb.setReimbursmentId(rs.getInt("REIMB_ID"));
 				reimb.setAmount(rs.getInt("REIMB_AMOUNT"));
 				reimb.setSubmitted(rs.getDate("REIMB_SUBMITTED"));
 				reimb.setResolved(rs.getDate("REIMB_RESOLVED"));
 				reimb.setDescription(rs.getString("REIMB_DESCRIPTION"));
+				System.out.println("in result set 2");
 				reimb.setReceipt(rs.getBlob("REIMB_RECEIPT"));
 				reimb.setAuthor(rs.getInt("REIMB_AUTHOR"));
 				reimb.setResolver(rs.getInt("REIMB_RESOLVER"));
 				reimb.setStatusId(rs.getInt("REIMB_STATUS_ID"));
 				reimb.setTypeId(rs.getInt("REIMB_TYPE_ID"));
+				System.out.println("in result set 3");
 			}
 		} catch (SQLException e) {
+			System.out.println("this is the error");
 			e.printStackTrace();
 		}
 		return reimb;
+	}
+
+	@Override
+	public ArrayList<Reimbursment> getReimbursmentsMinusAuthor(int author) {
+		ArrayList<Reimbursment> reims = new ArrayList<>();
+		
+		try(Connection conn = ConnectionFactory.getInstance().getConnection();){
+			System.out.println("error 1");
+			String sql = "SELECT * FROM ERS_REIMBURSEMENT WHERE REIMB_AUTHOR != ? AND REIMB_STATUS_ID = 1 ORDER BY REIMB_ID";
+			String[] keys = new String[1];
+			keys[0] = "REIMB_ID";
+			System.out.println("error 2");
+			PreparedStatement pstmt = conn.prepareStatement(sql, keys);
+			pstmt.setInt(1, author);
+			ResultSet rs = pstmt.executeQuery();
+			System.out.println("error 3");
+			
+			while(rs.next()) {
+				Reimbursment temp = new Reimbursment();
+				temp.setReimbursmentId(rs.getInt("REIMB_ID"));
+				temp.setAmount(rs.getInt("REIMB_AMOUNT"));
+				temp.setSubmitted(rs.getDate("REIMB_SUBMITTED"));
+				temp.setResolved(rs.getDate("REIMB_RESOLVED"));
+				temp.setDescription(rs.getString("REIMB_DESCRIPTION"));
+				temp.setReceipt(rs.getBlob("REIMB_RECEIPT"));
+				temp.setAuthor(rs.getInt("REIMB_AUTHOR"));
+				temp.setResolver(rs.getInt("REIMB_RESOLVER"));
+				temp.setStatusId(rs.getInt("REIMB_STATUS_ID"));
+				temp.setTypeId(rs.getInt("REIMB_TYPE_ID"));
+				System.out.println("temp to string " + temp.toString());
+				reims.add(temp);
+			}
+		} catch (SQLException e) {
+			System.out.println("error in sql statement");
+			e.printStackTrace();
+		}
+		return reims;
 	}
 
 }

@@ -22,6 +22,7 @@ public class LoginServlet extends HttpServlet {
 
 	private static final long serialVersionUID = 1L;
 	
+	@SuppressWarnings("unused")
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		System.out.println("[LOG] - Request sent to LoginServlet.doPost()");
@@ -44,9 +45,14 @@ public class LoginServlet extends HttpServlet {
 		String username = userInfo[0];
 		String password = userInfo[1];
 		System.out.println(username);
+		System.out.println(password);
 		System.out.println(service.getUserByUsername(username).getUserId());
 		System.out.println(service.getUserByUsername(username).getUsername());
-		User temp = (service.getUserByUsername(username).getUserId() != 0) ? service.getUserByUsername(username) : null;
+		User temp = new User();
+		if(username.contains("@"))
+			temp = (service.getUserByEmailAddress(username).getUserId() != 0) ? service.getUserByEmailAddress(username) : null;
+		else
+			temp = (service.getUserByUsername(username).getUserId() != 0) ? service.getUserByUsername(username) : null;
 		
 		if(temp == null) {
 			System.out.println("[LOG] - Variable 'temp' in LoginServlet is null");
@@ -65,7 +71,6 @@ public class LoginServlet extends HttpServlet {
 		
 		PrintWriter pw = resp.getWriter();
 		resp.setContentType("application/json");
-		
 		String userJSON = mapper.writeValueAsString(temp);
 		pw.write(userJSON);
 	}

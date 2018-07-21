@@ -88,3 +88,6 @@ RemoteSystemsTempFiles/
 
 # package-lock.json
 package-lock.json
+
+#hibernate
+hibernate.cfg.xml

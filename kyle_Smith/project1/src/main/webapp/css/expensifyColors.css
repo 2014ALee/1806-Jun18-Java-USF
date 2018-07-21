@@ -1,3 +1,7 @@
+#bootstrap-overrides body {
+  min-height: 75rem;
+  padding-top: 4.5rem;
+}
 #bootstrap-overrides .btn-primary{ 
     /* background-color: #00A5D5;
     border-color: #00A5D5; */
@@ -19,6 +23,10 @@
     float: left;
     width: 50%;
   }
+.bg-primary {
+	background-color: #f5f5f5!important;
+}
+
 
   /* Full-width input fields */
     input[type=email], input[type=password] {
@@ -38,7 +46,7 @@
   top: 0;
   width: 100%; /* Full width */
   /* overflow: auto; Enable scroll if needed */
-  background-color: rgb(93, 110, 115, .5);
+  background-color: #7A7A7A!important;
   padding-top: 50px;
 }
 

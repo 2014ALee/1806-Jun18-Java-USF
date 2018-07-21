@@ -22,13 +22,14 @@ public class ErsService {
 //	}
 
 	public User createNewUser(User user) {
-
+		System.out.println("got here bois");
 		User newUser = null;
 
 		boolean emailAddressAvailable = isEmailAvailable(user.getEmail());
 		boolean usernameAvailable = isUsernameAvailable(user.getUsername());
 		System.out.println("got to regServlet " + emailAddressAvailable);
 		System.out.println("got to regServlet " + usernameAvailable);
+		System.out.println(user.getUsername());
 		if (emailAddressAvailable && usernameAvailable) {
 			userDao.insertUser(user);
 			newUser = getUserByUsername(user.getUsername());
@@ -75,14 +76,15 @@ public class ErsService {
 	public User loginUser(String username, String password) {
 
 		User loggedInUser = null;
-
+		System.out.println("in login");
 		// stores returned User object from getUserByUsername() based on given username; ignores case
 		User usernameMatch = userDao.getUserByUsername(username.toLowerCase());
-
+		System.out.println("in login after dao");
 		if (usernameMatch.getUsername() != null) {
-
+			System.out.println("if check login after dao");
 			if (usernameMatch.getPassword().equals(password)) {
 				loggedInUser = usernameMatch;
+				System.out.println("if check if check login after dao");
 			}
 
 			else {
@@ -127,7 +129,8 @@ public class ErsService {
 	public boolean isEmailAvailable(String emailAddress) {
 
 		ArrayList<User> users = userDao.getAllUsers();
-
+		System.out.println(emailAddress);
+		System.out.println(users);
 		for (User user : users) {
 			if (user.getEmail().equalsIgnoreCase(emailAddress)) {
 				return false;
@@ -194,7 +197,6 @@ public class ErsService {
 	}
 	
 	public ArrayList<Reimbursment> getReimbursmentsByAuthor(int authorId) {
-		System.out.println("made it here");
 		return reim.getReimbursmentsByAuthor(authorId);
 
 	}
@@ -207,12 +209,37 @@ public class ErsService {
 		
 		return created;
 	}
-//
-//	public ArrayList<AccountRegistrar> getUsersOnAccount(Account acct) {
-//
-//		ArrayList<AccountRegistrar> usersOnAccount = accountRegistrarDao.getUsersOnAccount(acct.getAcctId());
-//		return usersOnAccount;
-//
-//	}
+	
+	public ArrayList<Reimbursment> getReimMinusAuth(int authId) {
+		return reim.getReimbursmentsMinusAuthor(authId);
 
+	}
+	
+	public boolean getLogin(User currUser) {
+		int count = 0;
+		ArrayList<ArrayList<String>> users = userDao.getLogin();
+		for(ArrayList<String> arrayList: users) {
+			for(String val: arrayList) {
+				if (val == currUser.getEmail())
+					count +=1;
+				if (val == currUser.getPassword())
+					count +=1;
+				if (val == currUser.getUsername())
+					count +=1;
+			}
+		}
+		if(count == 3) 
+			return true;
+		return false;
+	}
+	
+	public boolean updateReim(Reimbursment newReim) {
+		System.out.println("in update reim " + newReim.getReimbursmentId());
+		Reimbursment temp = reim.getReimbursmentById(newReim.getReimbursmentId());
+		temp.setResolver(newReim.getResolver());
+		temp.setResolved(newReim.getResolved());
+		temp.setStatusId(newReim.getStatusId());
+		System.out.println("ERS SERVICE UPDATE = " + temp.toString());
+		return reim.updateReimbursment(temp);
+	}
 }

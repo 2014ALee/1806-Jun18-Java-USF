@@ -9,8 +9,11 @@
   }
   
   body {
-    /* padding-top: 40px; */
-    background-color: #f5f5f5;
+    /* padding-top: 40px;  #f5f5f5*/
+    background-color: #7A7A7A;
+  }
+  .nav {
+    padding-bottom: 20px;
   }
   
   .form-signin {

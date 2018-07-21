@@ -1,13 +1,14 @@
 package ers.run.dao;
 
+import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-
 import ers.run.util.ConnectionFactory;
+import oracle.jdbc.internal.OracleTypes;
 import ers.run.models.User;
 
 public class UserDAOImpl implements UserDAO{
@@ -128,7 +129,7 @@ public class UserDAOImpl implements UserDAO{
 			String sql = "SELECT * FROM ERS_USERS WHERE USER_EMAIL = ?";
 			
 			String[] keys = new String[1];
-			keys[0] = "ERS_USERS_ID";
+			keys[0] = "ERS_USERS_ID"; 
 			
 			PreparedStatement pstmt = conn.prepareStatement(sql, keys);
 			pstmt.setString(1, userEmail);
@@ -198,6 +199,38 @@ public class UserDAOImpl implements UserDAO{
 	public boolean updateUser(User user) {
 		// TODO Auto-generated method stub
 		return false;
+	}
+	
+	@Override
+	public ArrayList<ArrayList<String>> getLogin() {
+		User user = new User();
+		ArrayList<String> usernames = new ArrayList<>();
+		ArrayList<String> emails = new ArrayList<>();
+		ArrayList<String> passwords = new ArrayList<>();
+		ArrayList<ArrayList<String>> usremailpass = new ArrayList<>();
+		try(Connection conn = ConnectionFactory.getInstance().getConnection();){
+
+			String sql = "{CALL get_loggin_user_proc(?,?,?)}";
+
+			String[] keys = new String[1];
+			keys[0] = "ERS_USERS_ID";
+			CallableStatement cstmt = conn.prepareCall(sql);
+			cstmt.registerOutParameter(1, OracleTypes.VARCHAR);
+			cstmt.registerOutParameter(2, OracleTypes.VARCHAR);
+			cstmt.registerOutParameter(3, OracleTypes.VARCHAR);
+			
+			ResultSet rs = cstmt.executeQuery();
+			
+			while(rs.next()) {
+				emails.add(rs.getString("USER_EMAIL"));
+				usernames.add(rs.getString("ERS_USERNAME"));
+				passwords.add(rs.getString("ERS_PASSWORD"));
+//				usernames.add(rs.getString("ERS_USERNAME"));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return usremailpass;
 	}
 
 	@Override

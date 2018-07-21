@@ -36,6 +36,7 @@ public class RegistrationServlet extends HttpServlet {
 		
 		ObjectMapper mapper = new ObjectMapper();
 		User temp = mapper.readValue(json, User.class);
+		System.out.println(temp+ "before create new User");
 		temp = service.createNewUser(temp);
 		
 		PrintWriter pw = resp.getWriter();

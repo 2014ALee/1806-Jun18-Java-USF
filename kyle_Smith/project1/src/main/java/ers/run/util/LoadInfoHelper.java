@@ -28,7 +28,9 @@ public class LoadInfoHelper {
 		case "/project1/adminHome.loadinfo":
 			return homeInfo;
 		case "/project1/managerHome.loadinfo":
-			return homeInfo;
+			ArrayList<Reimbursment> sessionReimList = service.getReimMinusAuth(sessionUser.getUserId());
+			UserReimbursments managerHomeInfo = new UserReimbursments(sessionUser, sessionReimList);
+			return managerHomeInfo;
 		default:
 			return null;
 		}

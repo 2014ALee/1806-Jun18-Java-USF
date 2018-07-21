@@ -8,6 +8,7 @@ public interface ReimbursmentDAO {
 
 	ArrayList<Reimbursment> getAllReimbursments();
 	ArrayList<Reimbursment> getReimbursmentsByAuthor(int author);
+	ArrayList<Reimbursment> getReimbursmentsMinusAuthor(int author);
 	
 	Reimbursment getTypeAndStatus(int reimbursmentId);
 	Reimbursment getReimbursmentById(int reimId);
