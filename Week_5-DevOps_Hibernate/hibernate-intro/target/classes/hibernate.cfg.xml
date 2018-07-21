@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC
+        "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+        
+<hibernate-configuration>
+
+	<!--  Configure our SessionFactory -->
+	<session-factory>
+	
+		<!-- Database connection properties - driver, URL, username, password -->
+		<property name="hibernate.connection.driver_class">oracle.jdbc.driver.OracleDriver</property>
+		<property name="hibernate.connection.url">jdbc:oracle:thin:@hibernate-demo.c0nbqj7oncuf.us-east-1.rds.amazonaws.com:1521:ORCL</property>
+		<property name="hibernate.connection.username">admin</property>
+		<property name="hibernate.connection.password">p4ssw0rd</property>
+		
+		<!-- JDBC connection pool settings -->
+		<property name="connection.pool_size">1</property>
+		
+		<!-- Select our SQL dialect -->
+		<property name="dialect">org.hibernate.dialect.Oracle10gDialect</property>
+		
+		<!-- Print any executed SQL to the console (should be disabled in production) -->
+		<property name="show_sql">true</property>
+		
+		<!-- Set the current session context -->
+		<property name="current_session_context_class">thread</property>
+		
+		<!--  Include persistence mapping file for the Employee class -->
+		<mapping resource="employee.hbm.xml"/>
+		
+		<!--  Include persistence mapping file for the named queries -->
+		<mapping resource="named-queries.hbm.xml"/>
+	
+	</session-factory>
+
+</hibernate-configuration>
