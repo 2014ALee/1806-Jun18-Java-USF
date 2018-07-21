@@ -35,8 +35,14 @@ export class ManagerReimbursementComponent implements OnInit {
     this.reimbs = [];
     this.rService.getAllReimbursements();
     this.rService.allReimbursements.subscribe(ar => {
-      this.reimbs = ar;
-      this.holdReimbs = ar;
+      if (ar != null) {
+        ar = ar.filter(r => {
+          console.log(r.author === this.user.id);
+          return r.author !== this.user.id;
+        });
+        this.reimbs = ar;
+        this.holdReimbs = ar;
+      }
     });
   }
 
@@ -81,7 +87,7 @@ export class ManagerReimbursementComponent implements OnInit {
 
 
   filter(by: number) {
-    console.log('Filtering');
+    // console.log('Filtering');
     this.reimbs = this.holdReimbs;
     if (by !== 0) {
       this.reimbs = this.reimbs.filter(r => {

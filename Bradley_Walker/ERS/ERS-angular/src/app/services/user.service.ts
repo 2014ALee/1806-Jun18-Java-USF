@@ -21,25 +21,25 @@ export class UserService {
   constructor(private http: HttpClient) { }
 
   registerUser(user: User): Observable<User> {
-    console.log(`Attempting to register user: ${user.username}`);
+    // console.log(`Attempting to register user: ${user.username}`);
     let json = JSON.stringify(user);
     return this.http.post<User>(environment.apiUrl + 'register', json, HTTP_OPTIONS);
   }
 
   loginUser(creds: string[]): Observable<User> {
-    console.log(`Attempting to login user: ${creds[0]}`);
+    // console.log(`Attempting to login user: ${creds[0]}`);
     let json = JSON.stringify(creds);
     return this.http.post<User>(environment.apiUrl + 'login', json, HTTP_OPTIONS);
   }
 
   getUserById(id: number) {
-    console.log('In UserService.getUserById()');
+    // console.log('In UserService.getUserById()');
     const json = JSON.stringify(id);
     return this.http.post<User>(environment.apiUrl + 'userForReimbursement.loadinfo', json, HTTP_OPTIONS);
   }
 
   getAllUsers() {
-    console.log('In UserService.getAllUsers()');
+    // console.log('In UserService.getAllUsers()');
     const json = '';
     return this.http.post<User[]>(environment.apiUrl + 'allUsers.loadinfo', json, HTTP_OPTIONS);
   }

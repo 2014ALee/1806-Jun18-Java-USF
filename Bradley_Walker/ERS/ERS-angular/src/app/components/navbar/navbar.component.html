@@ -13,6 +13,8 @@
 					<div class="navbar-nav">
 						<a *ngIf="this.loggedUser == null" class="nav-item nav-link" id="toLogin" routerLink="login">Login</a>
 						<a *ngIf="this.loggedUser == null" class="nav-item nav-link" id="toRegister" routerLink="register">Register</a>
+						<a *ngIf="this.loggedUser != null && this.loggedUser.role == 2" class="nav-item nav-link" routerLink="landing" >Home</a>
+						<a *ngIf="this.loggedUser != null && this.loggedUser.role == 2" class="nav-item nav-link" routerLink="manager" >Manage Reimbursements</a>
 						<a *ngIf="this.loggedUser != null" class="nav-item nav-link" id="toLogout" (click)="logout()" routerLink="" >Logout</a>
 					</div>
 				</div>

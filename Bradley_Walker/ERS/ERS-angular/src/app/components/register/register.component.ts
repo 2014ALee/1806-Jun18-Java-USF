@@ -45,7 +45,7 @@ export class RegisterComponent implements OnInit {
       } else {
         this.userService.subscribers.next(u);
         localStorage.setItem('user', JSON.stringify(u));
-        console.log(`User, ${this.user.username}, successfully registered`);
+        // console.log(`User, ${this.user.username}, successfully registered`);
         this.router.navigate(['landing']);
       }
     });

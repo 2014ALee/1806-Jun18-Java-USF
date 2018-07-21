@@ -32,7 +32,7 @@ export class LoginComponent implements OnInit {
       } else {
         this.userService.subscribers.next(user);
         localStorage.setItem('user', JSON.stringify(user));
-        console.log(`User, ${this.usr}, successfully logged in!`);
+        // console.log(`User, ${this.usr}, successfully logged in!`);
         this.router.navigate(['landing']);
       }
     });

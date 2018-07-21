@@ -72,7 +72,7 @@ export class ReimbursementsComponent implements OnInit {
   }
 
   filter(by: number) {
-    console.log('Filtering');
+    // console.log('Filtering');
     this.reimbs = this.holdReimbs;
     if (by !== 0) {
       this.reimbs = this.reimbs.filter(r => {

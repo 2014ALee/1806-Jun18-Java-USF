@@ -22,7 +22,7 @@ export class ReimbursementService {
   constructor(private http: HttpClient) { }
 
   getReimbursementsForUser(user: User) {
-    console.log('In ReimbursementService.getReimbursementsForUser()');
+    // console.log('In ReimbursementService.getReimbursementsForUser()');
     const json = JSON.stringify(user);
     this.http.post<Reimbursement[]>(environment.apiUrl + 'landing.loadinfo', json, HTTP_OPTIONS).subscribe(reimbs => {
       this.userReimbursements.next(reimbs);
@@ -30,7 +30,7 @@ export class ReimbursementService {
   }
 
   getAllReimbursements() {
-    console.log('In ReimbursementService.getAllReimbursements()');
+    // console.log('In ReimbursementService.getAllReimbursements()');
     let json = '';
     this.http.post<Reimbursement[]>(environment.apiUrl + 'allReimbs.loadinfo', json, HTTP_OPTIONS).subscribe(reimbs => {
       this.allReimbursements.next(reimbs);
@@ -38,7 +38,7 @@ export class ReimbursementService {
   }
 
   createReimbursement(reimb: Reimbursement) {
-    console.log('In ReimbursementService.createReimbursement()');
+    // console.log('In ReimbursementService.createReimbursement()');
     const json = JSON.stringify(reimb);
     this.http.post<Reimbursement>(environment.apiUrl + 'createReimbursement', json, HTTP_OPTIONS).subscribe(r => {
       const u: User = JSON.parse(localStorage.getItem('user'));
@@ -48,7 +48,7 @@ export class ReimbursementService {
   }
 
   updateReimbursement(reimb: Reimbursement) {
-    console.log('In ReimbursementService.updateReimbursement()');
+    // console.log('In ReimbursementService.updateReimbursement()');
     const json = JSON.stringify(reimb);
     this.http.post<Reimbursement>(environment.apiUrl + 'updateReimbursement', json, HTTP_OPTIONS).subscribe(r => {
       const u: User = JSON.parse(localStorage.getItem('user'));
