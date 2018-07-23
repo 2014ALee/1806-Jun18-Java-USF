@@ -87,3 +87,9 @@ RemoteSystemsTempFiles/
 
 # .properties files
 *.properties
+
+# package-lock.json
+package-lock.json
+
+# hibernate config xml
+hibernate.cfg.xml
