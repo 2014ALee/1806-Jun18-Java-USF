@@ -23,7 +23,7 @@ public class LogoutServlet extends HttpServlet {
 		}
 		
 		HttpSession session = req.getSession(false);
-		session.invalidate();
+		//session.invalidate();
 		
 		System.out.println("[LOG] - Session invalidated!");
 		

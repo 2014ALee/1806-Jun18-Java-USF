@@ -1,81 +1,101 @@
 <div>
-	<h1>Home</h1><br>
-	<div id="user-info">
-		<b>User ID:</b> <span id="user_id"></span><br><br>
-		<b>First name:</b> <span id="user_fn"></span><br><br>
-		<b>Last name:</b> <span id="user_ln"></span><br><br>
-		<b>Email address:</b> <span id="user_email"></span><br><br>
-		<b>Username:</b> <span id="user_username"></span><br><br>
-		<b>Password:</b> <span id="user_password"></span><br><br>
-		<b>User Role ID:</b><span id="user_role_id"></span><br><br>
+	<br>
+	<br>
+	<h1 class="row mx-5 welcome">Welcome,  <span class="mx-2"id="welcomespan"></span>!</h1>
+	<br>
+	<hr>
+	<br>
+
+<div class="row mx-5"id="div1">
+	<p>
+		<button class="btn btn-outline-primary" type="button" data-toggle="collapse" data-target="#collapseTarget" aria-expanded="false" aria-controls="collapseTarget">
+	    Create Reimbursement
+		</button>
+		
+	</p>
+</div>
+	<br>
+	<div class="collapse" id="collapseTarget">
+ 		<div class="card card-body">
+
+			<div class="card text-white bg-primary mb-3" style="max-width: 50rem;">
+			 	<div class="card-header">
+			    Create New Reimbursement Request
+			    </div>
+			 	<div class="card-body">
+			    	<h5 class="card-title">Enter Reimbursement Details</h5>	   
+				    <p class="card-text">Reimbursement Amount:</p>
+				    <input type="number" id="amount" class="form-control" placeholder="Amount..."><br>
+				    <p class="card-text">Reimbursement Description:</p>
+				    <input type="text" id="description" class="form-control" placeholder="Description..."><br>		    
+			   		<div class="input-group mb-3">
+						<select class="custom-select" id="reimb-type-dropdown">
+							<option selected>Reimbursement Type...</option>
+							<option value="1">Lodging</option>
+							<option value="2">Travel</option>
+							<option value="3">Food</option>
+							<option value="4">Other</option>
+						</select>
+					</div>   
+				<br>
+				<div>
+	       			 <a id = "button-add-reimb" tabindex="0" class="btn btn-outline-light" role="button" data-toggle="popover" data-delay="2000"data-trigger="focus"  data-content="Reimbursement Failed! Please Try Again">Submit Reimbursement</a>
+				</div>			    </div>
+			</div>		  
+		</div>
 	</div>
 
-	<br>
+
+	
 	<hr>
 	<br>
 
-	<div id="createreimbdiv">
 
-		<h2>Create New Reimbursement Request</h2>
 
-		<div class="input-group mb-3">
-			<input type="number" id="amount" class="form-control" placeholder="Amount..."> 
-			<input type="text" id="description" class="form-control" placeholder="Description...">
-		</div>
 
-		<div class="input-group mb-3">
-			<select class="custom-select" id="reimb-type-dropdown">
-				<option selected>Reimbursement Type...</option>
-				<option value="1">Lodging</option>
-				<option value="2">Travel</option>
-				<option value="3">Food</option>
-				<option value="4">Other</option>
-			</select>
-		</div>
-
-		<div id="buttondiv">
-			<button class="btn btn-outline-primary" id="button-add-reimb"
-				type="submit">Submit Reimbursement</button>
-		</div>
-
-	</div>
-
+<div class="row mx-5"id="div1">
+	<p>
+		<button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseTarget2" aria-expanded="false" aria-controls="collapseTarget2">
+	    Approve or Reject
+		</button>
+		
+	</p>
+</div>
 	<br>
-	<hr>
-	<br>
+	<div class="collapse" id="collapseTarget2">
 	
 	
-	<br>
-	<hr>
-	<br>
+	<div class="row mx-5" id="updatereimbdiv">
 
-	<div id="updatereimbdiv">
+		<h3>Approve or Reject Reimbursement Request</h3>
 
-		<h2>Approve/Reject Reimbursement Request</h2>
-
-		<div class="input-group mb-3">
-			<input type="number" id="reimb-id" class="form-control" placeholder="Reimbursement ID..."> 
-			<p class="mb-3">or</p>
-			<input type="text" id="author" class="form-control" placeholder="Author...">
+		<div class="row input-group mb-3 " >
+			<input type="number" id="reimb-id" class=" mx-3 form-control" placeholder="Reimbursement ID..."> 
+			
 		</div>
 
 		<div id="approvebuttondiv">
 			<button class="btn btn-outline-success" id="button-approve-reimb"
 				type="submit">Approve</button>
 		</div>
-		<div id="rejectbuttondiv">
+		<div class="mx-3"id="rejectbuttondiv">
 			<button class="btn btn-outline-danger" id="button-reject-reimb"
 				type="submit">Reject</button>
 		</div>
 
 	</div>
+	
+	</div>
+	
 
-	<br>
+	
 	<hr>
 	<br>
+	
+	<div class="row mx-5">
 	<div class = "btn-group">
 		<div class="dropdown">
-		  <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+		  <button class="btn btn-outline-dark dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 		    Filter by Status
 		  </button>
 		  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
@@ -83,31 +103,33 @@
 		    <a id = "filterapproved" class="dropdown-item" >Approved</a>
 		    <a id = "filterrejected" class="dropdown-item" >Rejected</a>
 		  </div>
-		  
+		  <br>
+		  <br>
 	 	  <div class="input-group mb-3">
 		  <div class="input-group-prepend">
-		    	<button class="btn btn-outline-secondary" type="button" id="filteruserbtn">Filter by Author</button>
+		    	<button class="btn btn-dark" type="button" id="filteruserbtn">Filter by Author</button>
 		  </div>
 		  		<input id = "userfilter" type="text" class="form-control" placeholder="Author..." aria-label="text with button addon" aria-describedby="button-addon1">
 		  </div>
-			  
+		</div>	  
 		</div>
-	</div>
-	<br>
 	
-	<table class="table" id="userReimbursements-table">
+</div>
+
+	<div class="tablediv">
+	<table class="table table-striped" id="userReimbursements-table">
 		
-		<thead>
+		<thead class="thead-dark">
 			<tr>
-				<th>ID</th>
-				<th>Amount</th>
-				<th>Date Resolved</th>
-				<th>Date Submitted</th>
-				<th>Description</th>
-				<th>Author</th>
-				<th>Resolver</th>
-				<th>Status ID</th>
-				<th>Type ID</th>
+				<th scope="col">ReimbursementID</th>
+				<th scope="col">AuthorID</th>
+				<th scope="col">ResolverID</th>
+				<th scope="col">Date Submitted</th>
+				<th scope="col">Date Resolved</th>						
+				<th scope="col">Description</th>
+				<th scope="col">Type</th>
+				<th scope="col">Amount</th>
+				<th scope="col">Status</th>
 			</tr>
 		</thead>
 		
@@ -115,4 +137,10 @@
 		
 	</table>
 	<p id="acct-info"></p>
+	</div>
 </div>
+
+<!-- link to css file in root directory -->
+    <link href="css/home.css" rel="stylesheet">
+    <!--link to js file in root directory-->
+    <script src="js/home.js"></script>

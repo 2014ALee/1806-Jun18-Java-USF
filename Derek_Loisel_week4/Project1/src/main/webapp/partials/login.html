@@ -1,20 +1,25 @@
-<br>
-<br>
-<br>
-<br>
 
 <div class="outerdiv">
+
+<br>
+<br>
+<br>
+<br>
+<br>
 	<div class="alignlogin form-signin">
 			<div class="imagediv">
-	        <!--  <img class="mb-4" src="media/images/revERS.png" alt="" width="200" height="100">-->
+	        <img class="mb-4" src="media/images/revERS.png" alt="" width="200" height="100">
 	        </div>
 	        <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
 	        <label for="inputUsername" class="sr-only">Email address</label>
 	        <input type="text" id="inputUsername" class="form-control" placeholder="Username" required="" autofocus="">
 	        <label for="inputPassword" class="sr-only">Password</label>
 	        <input type="password" id="inputPassword" class="form-control" placeholder="Password" required="">
-	        <p class="mb-4" id="createid">Create Account</p>
-	        <button id="login" class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+	        <a class="pointer mb-4" id="createid">Create Account</a>
+	        <!-- <button id="login" class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button> -->
+	        <div>
+	        <a id = "login" tabindex="0" class="btn btn-lg btn-primary btn-block" role="button" data-toggle="popover" data-delay="2000"data-trigger="focus"  data-content="Login Failed! Please Try Again">Sign In</a>
+			</div>
 	</div>
 
 </div>

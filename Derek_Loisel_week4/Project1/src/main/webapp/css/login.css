@@ -2,19 +2,16 @@
 
 html,
 
-.outerdiv{
-	
-}
 
 .alignlogin{
-	margin-top: 25px;
+
   display: flex;
   flex-direction: column;
   justify-content: center; 
   /*height:100%;*/
   /*width:100%;*/
   text-align: center;
-  background-color: aliceblue;
+
 }
 
 .form-signin {
@@ -23,10 +20,6 @@ html,
   max-width: 400px;
   padding: 15px;
   margin: auto;
-}
-
-.imagediv{
-	
 }
 
 .form-signin .createaccount {
@@ -57,7 +50,3 @@ html,
   border-top-right-radius: 0;
 }
 
-.form-signin .btn {
-
-  margin-top: 10px;
-}

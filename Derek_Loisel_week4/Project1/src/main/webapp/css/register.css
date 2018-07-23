@@ -3,19 +3,17 @@
 
 html,
 
-.outerdiv{
-	
-}
+
 .alignregister{
  
-  margin-top: 25px;
+
   display: flex;
   flex-direction: column;
   justify-content: center; 
   /*height:100%;*/
   /*width:100%;*/
   text-align: center;
-  background-color: aliceblue;
+
 }
 
 .form-signin {
@@ -39,9 +37,4 @@ html,
   margin-bottom: 5px;
   border-bottom-right-radius: 0;
   border-bottom-left-radius: 0;
-}
-
-.form-signin .btn {
-
-  margin-top: 10px;
 }

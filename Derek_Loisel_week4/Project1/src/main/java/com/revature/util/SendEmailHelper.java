@@ -1,8 +1,8 @@
 package com.revature.util;
 
-import java.util.*;
-import javax.mail.*;
-import javax.mail.internet.*;
+//import java.util.*;
+//import javax.mail.*;
+//import javax.mail.internet.*;
 import java.util.Properties;
 
 import javax.mail.Message;
@@ -83,7 +83,7 @@ public class SendEmailHelper {
 	   			message.setRecipients(Message.RecipientType.TO,
 	   				InternetAddress.parse(to));
 	   			message.setSubject("Your revERS Manager Account was created!");
-	   			message.setText("Your revERS Manager account has been created.  Please log in and change your password as soon as possible. \n Username: " + username2 + "\n Password: " + password2);
+	   			message.setText("Your revERS Manager account has been created. \n Username: " + username2 + "\n Password: " + password2);
 
 	   			Transport.send(message);
 

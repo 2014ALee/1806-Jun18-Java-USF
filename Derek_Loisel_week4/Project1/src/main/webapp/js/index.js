@@ -7,18 +7,18 @@ window.onload = function() {
 	$('#toHome').on('click', navigateHome);
 	$('#toProfile').on('click', loadProfile);
 	$('#toLogout').on('click', logout);
-
 }
  
 function loadProfile() {
-	console.log('in loadProfile()');
+	//console.log('in loadProfile()');
 
+		
 		let xhr = new XMLHttpRequest();
 		
 		xhr.onreadystatechange = function() {
 			
-			console.log('ready state: ' + xhr.readyState);
-			console.log('xhr status: ' + xhr.status);
+			//console.log('ready state: ' + xhr.readyState);
+			//console.log('xhr status: ' + xhr.status);
 			if(xhr.readyState == 4 && xhr.status == 200) {
 				$('#view').html(xhr.responseText);
 				loadProfileInfo();			
@@ -33,27 +33,43 @@ function loadProfileInfo(){
 	$('#user_ln').html(passedUser.lastname);
 	$('#user_email').html(passedUser.email);
 	$('#user_username').html(passedUser.username);
-	$('#user_role_id').html(passedUser.userRoleID);
+	
+	//determine role by id
+	let role = passedUser.userRoleID;
+	switch(role){
+	case 1:
+		role = 'Employee';
+		break;		
+	case 2:
+		role = 'Manager';
+		break;		
+	case 3:
+		role = 'Administrator';
+		break;
+	}
+	$('#user_role_id').html(role);
 }
 
 function loadLogin() {
-console.log('in loadLogin()');
-
+	////console.log('in loadLogin()');
+	$('#login').popover('hide');
 	let xhr = new XMLHttpRequest();
 	
 	xhr.onreadystatechange = function() {
 		
-		console.log('ready state: ' + xhr.readyState);
-		console.log('xhr status: ' + xhr.status);
+		//console.log('ready state: ' + xhr.readyState);
+		//console.log('xhr status: ' + xhr.status);
 		if(xhr.readyState == 4 && xhr.status == 200) {
 			$('#view').html(xhr.responseText);
 			loadLoginInfo();
-			$('#toRegister').show();
-			$('#toLogin').show();
 			
+			//nav items
+			$('#toRegister').show();
+			$('#toLogin').show();			
 			$('#toHome').hide();
 			$('#toProfile').hide();
 			$('#toLogout').hide();
+
 		}
 	}
 	
@@ -62,15 +78,18 @@ console.log('in loadLogin()');
 }
 
 function loadLoginInfo() {
-	console.log('in loadLoginInfo()');
+	//console.log('in loadLoginInfo()');
 	
-	$('#login-message').hide();
+	//$('#login-message').hide();
 	$('#login').on('click', login);
 	$('#createid').on('click', loadRegister);
 }
 
 function login() {
-	console.log('in login()');
+	//hide toggle from popover button click
+	$('#login').popover('hide');
+	
+	//console.log('in login()');
 	
 	let username = $('#inputUsername').val();
 	let password = $('#inputPassword').val();
@@ -88,15 +107,28 @@ function login() {
 			if(user == null) {
 				//$('#login-message').html('Invalid credentials!');
 				//alert('Invalid credentials!')
-				console.log('invalid credentials!');
+				//console.log('invalid credentials!');
+				//popover message
+				$('#login').popover('show');
+				
 			} else {
 				//instead of passing a user to load home, have 3 different load homes, that all call the same load home info
 				//alert('Login successful!');
-				console.log('user role id inside loadHome after loadHomeInfo: ' + user.userRoleID);
+							
+//				//console.log('user role id inside loadHome after loadHomeInfo: ' + user.userRoleID);			
+//				//console.log('username: ' + user.username);
+//				//console.log('User id: ' + user.userID);
+				//console.log('login successful!');
 				
-				console.log('username: ' + user.username);
-				console.log('User id: ' + user.userID);
-				console.log('login successful!');
+				//adjust popover
+				$('#login').popover('hide');
+				//adjust nav bar items to be shown
+				$('#toHome').show();
+				$('#toProfile').show();
+				$('#toLogout').show();
+				$('#toLogin').hide();
+				$('#toRegister').hide();
+				
 				//load home according to user role
 				if(user.userRoleID == 1){
 					loadEmployeeHome();
@@ -119,7 +151,7 @@ function login() {
 }
 
 function loadRegister() {
-	console.log('in loadRegister()');
+	//console.log('in loadRegister()');
 	
 	let xhr = new XMLHttpRequest();
 	
@@ -127,6 +159,7 @@ function loadRegister() {
 		if(xhr.readyState == 4 && xhr.status == 200) {
 			$('#view').html(xhr.responseText);
 			loadRegisterInfo();
+			
 		}
 	}
 	
@@ -137,8 +170,10 @@ function loadRegister() {
 function loadRegisterInfo() {
 
 	
-	console.log('in loadRegisterInfo()');
+	//console.log('in loadRegisterInfo()');
 	
+	$('#login').popover('hide');
+	$('#login').popover('hide');
 	$('#reg-message').hide();
 	//$('#reg-username').blur(validateUsername);
 	//$('#email').blur(validateEmail);
@@ -147,7 +182,12 @@ function loadRegisterInfo() {
 }
 
 function register() {
-	console.log('in register()');
+	
+	//hide toggle from popover button click
+	$('#register').popover('hide');
+	
+	
+	//console.log('in register()');
 	
 	let fn = $('#inputFirstname').val();
 	let ln = $('#inputLastname').val();
@@ -159,15 +199,16 @@ function register() {
 	 let regularExpression = /^([a-zA-Z0-9_\.\-+])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
 	 let emailValid = regularExpression.test(em);
 	 if(!emailValid){
-		 alert("Please enter a valid email!");
+
+		 $('#register').popover('show');
 		 return;
 	 }
 	 
-	console.log(fn);
-	console.log(ln);
-	console.log(em);
-	console.log(use);
-	console.log(pass);
+	//console.log(fn);
+	//console.log(ln);
+	//console.log(em);
+	//console.log(use);
+	//console.log(pass);
 	
 	let user = {
 		userID: 0,
@@ -185,18 +226,20 @@ function register() {
 	
 	xhr.onreadystatechange = function() {
 		
-		console.log("xhr readyState: " + xhr.readyState);
-		console.log("xhr status: " + xhr.status);
+		//console.log("xhr readyState: " + xhr.readyState);
+		//console.log("xhr status: " + xhr.status);
 		
 		if(xhr.readyState == 4 && xhr.status == 200) {		
 			//registeration servlet returns json of user
 			let user = JSON.parse(xhr.responseText);
 			if(user == null) {
 //				$('#login-message').html('Username/Email unavailable!');
-				alert('Username/Email unavailable!');
+				//alert('Username/Email unavailable!');
+				$('#register').popover('show');
 			} else {
 //				$('#message').hide();
-				alert('Account Created!');
+				//alert('Account Created!');
+				$('#register').popover('hide');
 				loadLogin();			
 			}
 
@@ -210,7 +253,7 @@ function register() {
 
 
 function loadEmployeeHome() {
-	console.log('in loadEmployeeHome()');
+	//console.log('in loadEmployeeHome()');
 	
 	let xhr = new XMLHttpRequest();
 	
@@ -219,12 +262,6 @@ function loadEmployeeHome() {
 			$('#view').html(xhr.responseText);
 			loadHomeInfo();
 			
-			
-			$('#toHome').show();
-			$('#toProfile').show();
-			$('#toLogout').show();
-			$('#toLogin').hide();
-			$('#toRegister').hide();
 		}
 	}
 	
@@ -233,7 +270,7 @@ function loadEmployeeHome() {
 }
 
 function loadManagerHome() {
-	console.log('in loadManagerHome()');
+	//console.log('in loadManagerHome()');
 	
 	let xhr = new XMLHttpRequest();
 	
@@ -256,7 +293,7 @@ function loadManagerHome() {
 }
 
 function loadAdminHome() {
-	console.log('in loadAdminHome()');
+	//console.log('in loadAdminHome()');
 	
 	let xhr = new XMLHttpRequest();
 	
@@ -287,9 +324,11 @@ let statusFilter;
 
 function loadHomeInfo() {
 	
-	console.log('in loadHomeInfo()');
+	//console.log('in loadHomeInfo()');
 	
 	$('#toLogout').on('click', logout);
+
+	$('#button-add-reimb').popover('hide');
 	
 	let xhr = new XMLHttpRequest();
 	
@@ -301,26 +340,22 @@ function loadHomeInfo() {
 			let reimbursements = homeInfo.userReimbursements;
 			passedReimbs = reimbursements;
 			
-			$('#user_id').html(user.userID);
-			$('#user_fn').html(user.firstname);
-			$('#user_ln').html(user.lastname);
-			$('#user_email').html(user.email);
-			$('#user_username').html(user.username);
-			$('#user_password').html(user.password);
-			$('#user_role_id').html(user.userRoleID);
-			
-			//click nav to go to profile page
-//			$('#toProfile').on('click', loadProfile);
-			
-			
+			$('#welcomespan').html(user.firstname);
+//			$('#user_id').html(user.userID);
+//			$('#user_ln').html(user.lastname);
+//			$('#user_email').html(user.email);
+//			$('#user_username').html(user.username);
+//			$('#user_password').html(user.password);
+//			$('#user_role_id').html(user.userRoleID);
+
 			//create table: list the users reimbursements if employee signed in 
-							//or list from all reimbursements if manager or admin signed in
-			console.log('reimbursements length in loadHomeInfo at initial table creation: ' + reimbursements.length);
+			//or list from all reimbursements if manager or admin signed in
+			//console.log('reimbursements length in loadHomeInfo at initial table creation: ' + reimbursements.length);
 			if(reimbursements.length > 0) {
 				reimbursements.forEach((reimbursement) => {
 									
 					let id = reimbursement.reimbursementID;
-					let amount = reimbursement.reimbursementAmount;
+					let amount = '$'+ reimbursement.reimbursementAmount;
 					let dateSubmitted = reimbursement.reimbursementSubmitted;
 					//convert date to readable format
 					let formattedSubmitted = new Date();
@@ -349,8 +384,36 @@ function loadHomeInfo() {
 					}
 					
 					let statusID = reimbursement.reimbursementStatusID;
+					//determine reimb status by id
+					let status = statusID;
+					switch(status){
+					case 1:
+						status = 'Pending';
+						break;		
+					case 2:
+						status = 'Approved';
+						break;		
+					case 3:
+						status = 'Rejected';
+						break;
+					}		
 					let typeID = reimbursement.reimbursementTypeID;
-								
+					//determine reimb type by id
+					let type = typeID;
+					switch(type){
+					case 1:
+						type = 'Lodging';
+						break;		
+					case 2:
+						type = 'Travel';
+						break;		
+					case 3:
+						type = 'Food';
+						break;
+					case 4:
+						type = 'Other';
+						break;
+					}		
 					//apply active filters
 					//user filter
 					if (filteredByUser){	
@@ -369,14 +432,14 @@ function loadHomeInfo() {
 											
 					let markup = `<tr>
 									<td>${id}</td>
-									<td>${amount}</td>
-									<td>${formattedResolved}</td>
-									<td>${formattedSubmitted}</td>
-									<td>${description}</td>
 									<td>${author}</td>
 									<td>${resolver}</td>
-									<td>${statusID}</td>
-									<td>${typeID}</td>
+									<td>${formattedSubmitted}</td>
+									<td>${formattedResolved}</td>
+									<td>${description}</td>
+									<td>${type}</td>
+									<td>${amount}</td>
+									<td>${status}</td>				
 								  </tr>`;
 					
 					$('table tbody').append(markup);
@@ -443,15 +506,15 @@ function filterByRejected(){
 }
 
 function filterTableByUser(){
-	console.log('in filterTableByUser()');
-	console.log('#userfilter: ' + $('#userfilter').val());
+	//console.log('in filterTableByUser()');
+	//console.log('#userfilter: ' + $('#userfilter').val());
 	//make sure theres input in the field
 	if($('#userfilter').val() == '' || $('#userfilter').val() == null || $('#userfilter').val() == undefined){
-		console.log('Enter a valid user');
+		//console.log('Enter a valid user');
 		return;
 	}
 	//make sure the user being searched for exists
-	console.log('passedReimbs length: ' + passedReimbs.length);
+	//console.log('passedReimbs length: ' + passedReimbs.length);
 	let userExists = false;
 	for(let i = 0; i < passedReimbs.length; i++){
 		if(passedReimbs[i].reimbursementAuthor == $('#userfilter').val()){
@@ -459,7 +522,7 @@ function filterTableByUser(){
 		}
 	}
 	if(!userExists){
-		console.log('Enter a valid user');
+		//console.log('Enter a valid user');
 		return;
 	}
 		
@@ -498,8 +561,8 @@ function approveReimbursement(){
 		authorExists = false;
 	}
 	
+	//invalid input if both exist, return home
 	if (reimbIDExists && authorExists){
-		console.log('select to approve by either reimbursement ID or by author');
 		//check user to load correct home		
 		if(passedUser.userRoleID == 1){
 			loadEmployeeHome();	
@@ -508,11 +571,11 @@ function approveReimbursement(){
 			loadManagerHome();
 		}
 		if(passedUser.userRoleID == 3){
-			loadAdminHomem();
+			loadAdminHome();
 		}
 	}
+	//invalid input if neither exist, return home
 	if(reimbIDExists == false && authorExists == false){
-		console.log('select either a reimbursement ID or an author to update reimbursement');
 		//check user to load correct home		
 		if(passedUser.userRoleID == 1){
 			loadEmployeeHome();	
@@ -521,7 +584,7 @@ function approveReimbursement(){
 			loadManagerHome();
 		}
 		if(passedUser.userRoleID == 3){
-			loadAdminHomem();
+			loadAdminHome();
 		}
 	}
 	
@@ -546,7 +609,7 @@ function rejectReimbursement(){
 	}
 	
 	if (reimbIDExists && authorExists){
-		console.log('select to approve by either reimbursement ID or by author');
+		//console.log('select to approve by either reimbursement ID or by author');
 		//check user to load correct home		
 		if(passedUser.userRoleID == 1){
 			loadEmployeeHome();	
@@ -555,11 +618,11 @@ function rejectReimbursement(){
 			loadManagerHome();
 		}
 		if(passedUser.userRoleID == 3){
-			loadAdminHomem();
+			loadAdminHome();
 		}
 	}
 	if(reimbIDExists == false && authorExists == false){
-		console.log('select either a reimbursement ID or an author to update reimbursement');
+		//console.log('select either a reimbursement ID or an author to update reimbursement');
 		//check user to load correct home		
 		if(passedUser.userRoleID == 1){
 			loadEmployeeHome();	
@@ -568,7 +631,7 @@ function rejectReimbursement(){
 			loadManagerHome();
 		}
 		if(passedUser.userRoleID == 3){
-			loadAdminHomem();
+			loadAdminHome();
 		}
 	}
 	
@@ -581,7 +644,7 @@ function updateReimbursement(statusId, reimbIDExists, authorExists){
 	
 //set up reimbursment object to send over in json
 	
-	console.log('in updateReimbursement()');
+	//console.log('in updateReimbursement()');
 	
     //set vars to pass to reimb object
 	let dateResolved = new Date();
@@ -612,19 +675,19 @@ function updateReimbursement(statusId, reimbIDExists, authorExists){
 		
 		xhr.onreadystatechange = function() {
 			
-			console.log("xhr readyState: " + xhr.readyState);
-			console.log("xhr status: " + xhr.status);
+			//console.log("xhr readyState: " + xhr.readyState);
+			//console.log("xhr status: " + xhr.status);
 			
 			if(xhr.readyState == 4 && xhr.status == 200) {		
 				//registeration servlet returns json of user
 				let reimburBool = JSON.parse(xhr.responseText);
-				console.log(reimburBool);
+				//console.log(reimburBool);
 				if(reimburBool == false) {
 //					$('#login-message').html('Username/Email unavailable!');
-					console.log('reimbursement update unsuccessful, enter valid input');
+					//console.log('reimbursement update unsuccessful, enter valid input');
 				} else {
 //					$('#message').hide();
-					console.log('reimbursement update successful');
+					//console.log('reimbursement update successful');
 					
 					//check user to load correct home		
 					if(passedUser.userRoleID == 1){
@@ -634,7 +697,7 @@ function updateReimbursement(statusId, reimbIDExists, authorExists){
 						loadManagerHome();
 					}
 					if(passedUser.userRoleID == 3){
-						loadAdminHomem();
+						loadAdminHome();
 					}
 				}
 
@@ -648,13 +711,19 @@ function updateReimbursement(statusId, reimbIDExists, authorExists){
 }
 
 function addReimbursement(){
-
+	$('#button-add-reimb').popover('hide');
 	//set up reimbursment object to send over in json
 	
-	console.log('in addReimbursement()');
+	//console.log('in addReimbursement()');
 	
     //set vars to pass to reimb object
 	let amount = $('#amount').val();
+	if(!(amount > 0)){
+		$('#button-add-reimb').popover('show');
+		return
+	}
+	
+	
 	let dateSubmitted = new Date();
 	
 	let dateResolved = null;
@@ -699,19 +768,20 @@ function addReimbursement(){
 		
 		xhr.onreadystatechange = function() {
 			
-			console.log("xhr readyState: " + xhr.readyState);
-			console.log("xhr status: " + xhr.status);
+			//console.log("xhr readyState: " + xhr.readyState);
+			//console.log("xhr status: " + xhr.status);
 			
 			if(xhr.readyState == 4 && xhr.status == 200) {		
 				//registeration servlet returns json of user
 				let reimbur = JSON.parse(xhr.responseText);
 				if(reimbur == null) {
 //					$('#login-message').html('Username/Email unavailable!');
-					console.log('reimbursement creation unsuccessful, enter valid input');
+					//console.log('reimbursement creation unsuccessful, enter valid input');
+					$('#button-add-reimb').popover('show');
 				} else {
 //					$('#message').hide();
-					console.log('reimbursement creation successful');
-					
+					//console.log('reimbursement creation successful');
+					$('#button-add-reimb').popover('hide');
 					//check user to load correct home		
 					if(passedUser.userRoleID == 1){
 						loadEmployeeHome();	
@@ -720,7 +790,7 @@ function addReimbursement(){
 						loadManagerHome();
 					}
 					if(passedUser.userRoleID == 3){
-						loadAdminHomem();
+						loadAdminHome();
 					}
 				}
 
@@ -735,7 +805,7 @@ function addReimbursement(){
 
 function createNewManager(){
 	
-console.log('in createNewManager()');
+//console.log('in createNewManager()');
 	
 	//get input from html
 	let fn = $('#managerFirstname').val();
@@ -748,7 +818,7 @@ console.log('in createNewManager()');
 	 let regularExpression = /^([a-zA-Z0-9_\.\-+])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
 	 let emailValid = regularExpression.test(em);
 	 if(!emailValid){
-		 alert("Please enter a valid email!");
+		 //alert("Please enter a valid email!");
 		 return;
 	 } 
 
@@ -769,18 +839,18 @@ console.log('in createNewManager()');
 	
 	xhr.onreadystatechange = function() {
 		
-		console.log("xhr readyState: " + xhr.readyState);
-		console.log("xhr status: " + xhr.status);
+		//console.log("xhr readyState: " + xhr.readyState);
+		//console.log("xhr status: " + xhr.status);
 		
 		if(xhr.readyState == 4 && xhr.status == 200) {		
 			//registeration servlet returns json of user
 			let user = JSON.parse(xhr.responseText);
 			if(user == null) {
 //				$('#login-message').html('Username/Email unavailable!');
-				alert('Username/Email unavailable!');
+				//alert('Username/Email unavailable!');
 			} else {
 //				$('#message').hide();
-				alert('Account Created!');	
+				//alert('Account Created!');	
 				//clear input text boxes
 //				$('#managerFirstname').val() = '';
 //				$('#managerLastname').val() = '';
@@ -799,13 +869,13 @@ console.log('in createNewManager()');
 
 
 function logout() {
-	console.log('in logout()');
+	//console.log('in logout()');
 	
 	let xhr = new XMLHttpRequest();
 	
 	xhr.onreadystatechange = function() {
 		if(xhr.readyState == 4 && xhr.status == 200) {
-			console.log('Session invalidated!');
+			//console.log('Session invalidated!');
 			loadLogin();
 		}
 	}
