@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:context="http://www.springframework.org/schema/context"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+                        http://www.springframework.org/schema/beans/spring-beans.xsd
+                        http://www.springframework.org/schema/context
+                        http://www.springframework.org/schema/context/spring-context.xsd">
+
+	<bean id="myCoach" class="com.revature.beans.BaseballCoach">
+		<constructor-arg ref="myMotivationService"/>
+	</bean>
+	
+	<bean id="myMotivationService" class="com.revature.services.MotivationServiceImpl"></bean>
+	
+	<bean id="myFootballCoach" class="com.revature.beans.FootballCoach">
+		<property name="motivationService" ref="myMotivationService"/>
+		<!-- 
+		<property name="email" value="coach@revature.com"/>
+		<property name="team" value="Java Addicts"></property>-->
+		
+		<property name="email" value="${coach.email}"/>
+		<property name="team" value="${coach.team}"></property>
+		
+	</bean>
+
+	<context:property-placeholder location="classpath:app.properties"/>
+
+</beans>
