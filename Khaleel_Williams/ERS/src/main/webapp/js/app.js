@@ -1,9 +1,9 @@
 window.onload = function() {
-	console.log(0);
-	loadLogin();
-	$('#toLogin').on('click', loadLogin);
-	$('#toRegister').on('click', loadRegister);
-	$('#toLogout').on('click', logout);	
+	console.log(5);
+	//loadLogin();
+//	$('#toLogin').on('click', loadLogin);
+//	$('#toRegister').on('click', loadRegister);
+//	$('#toLogout').on('click', logout);	
 }
 
 let idList = [];

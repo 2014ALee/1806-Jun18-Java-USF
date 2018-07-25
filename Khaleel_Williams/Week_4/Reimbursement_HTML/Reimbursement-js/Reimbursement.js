@@ -5,3 +5,6 @@ function inject(){
     //document.getElementById('enterMe').appendChild(document.getElementById('centerMe'));
     console.log("did it work?");
 }
+
+
+let idList = [];
