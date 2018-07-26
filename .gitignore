@@ -89,5 +89,9 @@ RemoteSystemsTempFiles/
 # package-lock.json
 package-lock.json
 
+<<<<<<< HEAD
 #hibernate
+=======
+# hibernate config xml
+>>>>>>> 2fb43cf83ebb626930d4d9e8f06ff45eae4d5d87
 hibernate.cfg.xml
