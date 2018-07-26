@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:context="http://www.springframework.org/schema/context"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+                        http://www.springframework.org/schema/beans/spring-beans.xsd
+                        http://www.springframework.org/schema/context
+                        http://www.springframework.org/schema/context/spring-context.xsd">
+   
+   <!-- define our coach bean -->
+   <bean id="myCoach" class="com.revature.beans.TrackCoach"> <!-- this can be changed to baseballcoach too -->
+   		<!-- constructor injection - inject dependency through constructor-->
+   		<constructor-arg ref="myMotivationService"/>
+   </bean>
+     
+   <!-- Define the MotivationService bean -->
+   <bean id="myMotivationService" class="com.revature.services.MotivationServiceImpl">
+   </bean>
+   
+   <!-- define football coach bean -->
+   <bean id="myFootballCoach" class="com.revature.beans.FootballCoach">
+   <!-- setter injection - inject dependency through setter -->
+   <property name="motivationService" ref="myMotivationService"></property>
+   
+   <!-- field injection - inject literal values into the fields of football coach -->
+   <property name="email" value="coach@revature.com"/>
+   
+   <!-- can also do field injection from fields listed in a app.properties file 
+   <context:property-placeholder location="classpath:app.properties"/>-->
+   </bean>
+</beans>
