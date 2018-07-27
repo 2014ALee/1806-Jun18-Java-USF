@@ -40,9 +40,9 @@ public class FlashCardService {
 		return repo.updateCard(fc);
 	}
 	
-	public void deleteCard(int id) {
+	public int deleteCard(int id) {
 		System.out.println("[DEBUG] - In FlashCardService.deleteCard()...");
-		repo.deleteCard(id);
+		return repo.deleteCard(id);
 	}
 	
 }
