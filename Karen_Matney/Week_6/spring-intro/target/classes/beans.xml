@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:context="http://www.springframework.org/schema/context"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+                        http://www.springframework.org/schema/beans/spring-beans.xsd
+                        http://www.springframework.org/schema/context
+                        http://www.springframework.org/schema/context/spring-context.xsd">
+
+	<!-- Define our Coach bean -->
+	<bean id="myCoach" class="com.revature.beans.TrackCoach">
+		<constructor-arg ref="myMotivationService" />
+	</bean>
+	
+	<!-- Define the MotivationService bean -->
+	<bean id="myMotivationService" class="com.revature.services.MotivationServiceImpl"></bean>
+	
+	<!-- Define the FootballCoach bean -->
+	<bean id="myFootballCoach" class="com.revature.beans.FootballCoach">
+		<!-- Inject the dependency using setter injection -->
+		<property name="motivationService" ref="myMotivationService" />
+		<!--
+		<!-/- Inject literal values into the fields of FootballCoach -/->
+		<property name="email" value="coach@revature.com"></property>
+		<property name="team" value="Java Addicts"></property> -->
+		
+		<property name="email" value="${coach.email}"></property>
+		<property name="team" value="${coach.team}"></property>
+	</bean>
+	
+	<context:property-placeholder location="classpath:app.properties"/>
+</beans>

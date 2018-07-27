@@ -1,0 +1,5 @@
+2018-07-24 14:39:37 INFO  root:24 - void com.revature.beans.Bear.setFull(boolean)
+2018-07-24 14:39:37 INFO  root:24 - boolean com.revature.beans.Bear.isFull()
+2018-07-24 14:39:37 INFO  root:24 - void com.revature.beans.Bear.bearHibernates()
+2018-07-24 14:39:37 INFO  root:24 - boolean com.revature.beans.Bear.isAwake()
+2018-07-24 14:39:37 INFO  root:24 - void com.revature.beans.Bear.wakeUpBear()
