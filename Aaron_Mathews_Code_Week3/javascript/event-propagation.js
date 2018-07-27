@@ -84,6 +84,7 @@ const bubbling = false;
 
 //Inner and outer bubbling
 //Middle capturing
+//middle, inner, outer
 document.getElementById('middle').addEventListener('click', function(e) {
     alert('MIDDLE');
     console.log('e.target' + e.target);
