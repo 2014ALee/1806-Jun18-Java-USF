@@ -18,58 +18,96 @@ public class ClientDriver {
 
 		// Get all flash cards
 		try {
-			
-		} catch (Exception e) {
-			LOG.error("Resource consumption failed");
-		}
+			System.out.println("GET ALL FLASH CARDS");
+			ResponseEntity<FlashCard[]> response = restTemplate.getForEntity(API_URL, FlashCard[].class);
+			log.info("Resource consumption successful");
+			log.info(response.toString());
 
-		// Get a flash card by id
-		try {
-			
-			System.out.println("GET FLASH CARD BY ID");
-			ResponseEntity<FlashCard> response = restTemplate.getForEntity(API_URL + "1" , FlashCard.class);
-			LOG.info(response.toString());
-			
 			System.out.println("Status Code: [" + response.getStatusCodeValue() + "] - " + response.getStatusCode());
 			System.out.println("Response Headers: " + response.getHeaders());
+
+			System.out.println("Payload:");
+			FlashCard[] cards = response.getBody();
 			
-			FlashCard card = response.getBody();
-			System.out.println("Payload: " + card + "\n");
+			for(FlashCard card : cards) {
+				System.out.println("\t" + card);
+			}
 			
-		} catch (Exception e) {
-			LOG.error("Resource consumption failed");
+			System.out.println("\n");
+
+		} catch(Exception e) {
+			log.error("Resource consumption unsuccessful");
 		}
 
-		// Add a new flash card
+		// Get flash card by id
+		try {
+			System.out.println("GET FLASH CARD BY ID");
+			ResponseEntity<FlashCard> response = restTemplate.getForEntity(API_URL + "1", FlashCard.class);
+			log.info(response.toString());
+
+			System.out.println("Status Code: [" + response.getStatusCodeValue() + "] - " + response.getStatusCode());
+			System.out.println("Response Headers: " + response.getHeaders());
+
+			FlashCard card = response.getBody();
+			System.out.println("Payload:\n\t" + card + "\n");
+			
+		} catch(Exception e) {
+			log.error("Resource consumption unsuccessful");
+		}
+
+		// Add new flash card
 		try {
 			System.out.println("ADD NEW FLASH CARD");
 			FlashCard card = new FlashCard("What is the minimum number of beans required to configure Hibernate with Spring?", "3");
 			ResponseEntity<FlashCard> response = restTemplate.postForEntity(API_URL, card, FlashCard.class);
-			LOG.info(response.toString());
-			
+			log.info(response.toString());
+
 			System.out.println("Status Code: [" + response.getStatusCodeValue() + "] - " + response.getStatusCode());
 			System.out.println("Response Headers: " + response.getHeaders());
-			
+
 			card = response.getBody();
-			System.out.println("Payload: " + card + "\n");
+			System.out.println("Payload:\n\t" + card + "\n");
 			
-			
-		} catch (Exception e) {
-			LOG.error("Resource creation failed");
+		} catch(Exception e) {
+			log.error("Resource post unsuccessful");
 		}
 
 		// Update a flash card
 		try {
+			System.out.println("UPDATE FLASH CARD");
+			FlashCard card = new FlashCard(6, "What does AOP stand for?", "Aspect-Oriented Programming");
+			//restTemplate.put(API_URL + card.getId(), card, FlashCard.class); // works, but does not give us an object back (not the most helpful)
+
+			// A bit more verbose, but gives us complete access to the request/response data
+			HttpHeaders headers = new HttpHeaders();
+			headers.setContentType(MediaType.APPLICATION_JSON);
+			HttpEntity<FlashCard> request = new HttpEntity<>(card, headers);
+			ResponseEntity<FlashCard> response = restTemplate.exchange(API_URL, HttpMethod.PUT, request, FlashCard.class);
+
+			log.info(response.toString());
+
+			System.out.println("Status Code: [" + response.getStatusCodeValue() + "] - " + response.getStatusCode());
+			System.out.println("Response Headers: " + response.getHeaders() + "\n");
 
 		} catch (Exception e) {
-			LOG.error("Resource update failed");
+			log.error("Resource update unsuccessful");
 		}
-
+		
 		// Delete a flash card
 		try {
+			System.out.println("DELETE FLASH CARD");
+			HttpHeaders headers = new HttpHeaders();
+			headers.setContentType(MediaType.APPLICATION_JSON);
+			HttpEntity<FlashCard> request = new HttpEntity<>(headers);
+			ResponseEntity<FlashCard> response = restTemplate.exchange(API_URL + "123", HttpMethod.DELETE, request, FlashCard.class);
 
+			log.info(response.toString());
+
+			System.out.println("Status Code: [" + response.getStatusCodeValue() + "] - " + response.getStatusCode());
+			System.out.println("Response Headers: " + response.getHeaders());
+			
 		} catch (Exception e) {
-			LOG.error("Resource deletion failed");
+			log.error("Resource delete unsuccessful");
 		}
 	}
 
