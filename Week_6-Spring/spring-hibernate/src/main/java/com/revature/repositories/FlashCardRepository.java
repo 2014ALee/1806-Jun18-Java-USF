@@ -42,15 +42,26 @@ public class FlashCardRepository {
 		System.out.println("[DEBUG] - In FlashCardRepository.updateCard()...");
 		Session s = sessionFactory.getCurrentSession();
 		FlashCard card = s.get(FlashCard.class, updatedCard.getId());
+		
+		if(card == null) {
+			return card;
+		}
+		
 		card = updatedCard;
 		return card;
 	}
 	
-	public void deleteCard(int id) {
+	public int deleteCard(int id) {
 		System.out.println("[DEBUG] - In FlashCardRepository.deleteCard()...");
 		Session s = sessionFactory.getCurrentSession();
 		FlashCard card = s.get(FlashCard.class, id);
+		
+		if(card == null) {
+			return -1;
+		}
+		
 		s.delete(card);
+		return 1;
 	}
 
 }

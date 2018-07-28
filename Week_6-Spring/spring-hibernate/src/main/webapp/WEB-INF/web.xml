@@ -15,17 +15,20 @@
 
 	<!-- Creates a root web application context for our web application to use, 
 		and puts it in the ServletContext -->
+	<!-- 
 	<listener>
 		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
 	</listener>
+	-->
 
 
 	<!-- Tell Spring where it can find the configuration file for the WebApplicationContext -->
+	<!--
 	<context-param>
 		<param-name>contextConfigLocation</param-name>
 		<param-value>/WEB-INF/beans.xml</param-value>
 	</context-param>
-
+	-->
 	<servlet>
 		<servlet-name>DispatcherServlet</servlet-name>
 		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
