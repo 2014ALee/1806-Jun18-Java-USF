@@ -22,7 +22,7 @@ import net.minidev.json.JSONObject;
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
 @ContextConfiguration("classpath:beans.xml")
-public class UserControllerTest {
+public class FlashCardControllerTest {
 
 	private int id;
 	private MockMvc mockMvc;
