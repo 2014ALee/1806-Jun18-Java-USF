@@ -14,7 +14,7 @@ public class FlashcardService {
 	static int count;
 	
 	static {
-		System.out.println("[DEBUG] - Flashcard Instance instanciated");
+		System.out.println("[DEBUG] - Flashcard Instance instantiated");
 		
 		cards = new ArrayList<>();
 		cards.add(new Flashcard(1, "test", "answer"));

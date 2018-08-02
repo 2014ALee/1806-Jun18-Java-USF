@@ -1,0 +1,16 @@
+package com.revature.services;
+
+import java.util.List;
+
+import javax.jws.WebService;
+
+import com.revature.beans.Game;
+
+@WebService
+public interface GameStore {
+	
+	List<Game> getAllGames();
+	String addGame(Game g);
+	Game getGame(String title);
+
+}
