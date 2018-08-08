@@ -1,5 +1,8 @@
 package com.revature;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +22,16 @@ public class ClientDriver {
 		// Get all flash cards
 		try {
 			
+			ResponseEntity<FlashCard[]> response = restTemplate.getForEntity(API_URL, FlashCard[].class);
+			System.out.println(response.getBody() + "\n");
+			
+			LOG.info(response.toString());
+			
+			FlashCard[] cards = response.getBody();
+			for (FlashCard card : cards) {
+				System.out.println("Card: " + card);
+			}
+			
 		} catch (Exception e) {
 			LOG.error("Resource consumption failed");
 		}
@@ -27,7 +40,7 @@ public class ClientDriver {
 		try {
 			
 			System.out.println("GET FLASH CARD BY ID");
-			ResponseEntity<FlashCard> response = restTemplate.getForEntity(API_URL + "1" , FlashCard.class);
+			ResponseEntity<FlashCard> response = restTemplate.getForEntity(API_URL + "2" , FlashCard.class);
 			LOG.info(response.toString());
 			
 			System.out.println("Status Code: [" + response.getStatusCodeValue() + "] - " + response.getStatusCode());
@@ -60,6 +73,15 @@ public class ClientDriver {
 
 		// Update a flash card
 		try {
+			System.out.println("UPDATE FLASH CARD");
+			System.out.println("Current card with id 2: " + restTemplate.getForEntity(API_URL + "2" , FlashCard.class));
+		    Map<String, String> params = new HashMap<String, String>();
+		    params.put("id", "2");
+		     
+		    FlashCard updatedFlashCard = new FlashCard(2, "What is Java?", "An OOP coding language");
+		     
+		    restTemplate.put (API_URL, updatedFlashCard, params);
+			System.out.println("Payload for update: " + restTemplate.getForEntity(API_URL + "2" , FlashCard.class) + ".\n");
 
 		} catch (Exception e) {
 			LOG.error("Resource update failed");
@@ -67,6 +89,8 @@ public class ClientDriver {
 
 		// Delete a flash card
 		try {
+			System.out.println("DELETE A FLASH CARD");
+			restTemplate.delete(API_URL + 17);
 
 		} catch (Exception e) {
 			LOG.error("Resource deletion failed");
