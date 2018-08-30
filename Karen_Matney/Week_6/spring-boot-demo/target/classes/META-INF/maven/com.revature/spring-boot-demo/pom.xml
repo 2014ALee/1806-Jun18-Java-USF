@@ -86,7 +86,7 @@
 		<dependency>
 			<groupId>com.oracle</groupId>
 			<artifactId>ojdbc7</artifactId>
-			<version>12.1.0.2</version>
+			<version>12.2.0.1</version>
 		</dependency>
 	</dependencies>
 	<description>A demo application introducing Spring Boot and Spring Demo</description>
